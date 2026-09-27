@@ -1,0 +1,41 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Forge & Flight",
+      "hasCanvas": false,
+      "bodyTextLen": 552,
+      "bodyTextHash": "586bd8d01fb35a683d6a885d074758cebd02fdcab9bc7283f79388dff180c2ae",
+      "bodyTextPrefix": "Hangar bay Forge & Flight One artifact, one loop. Read the brief",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Forge & Flight",
+      "hasCanvas": false,
+      "bodyTextLen": 552,
+      "bodyTextHash": "586bd8d01fb35a683d6a885d074758cebd02fdcab9bc7283f79388dff180c2ae",
+      "bodyTextPrefix": "Hangar bay Forge & Flight One artifact, one loop. Read the brief",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "desktop: body text changed (495 -> 552 chars, hash mismatch)",
+    "mobile: body text changed (495 -> 552 chars, hash mismatch)"
+  ]
+}

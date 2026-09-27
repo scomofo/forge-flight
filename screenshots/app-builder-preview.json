@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Axiom",
+      "hasCanvas": false,
+      "bodyTextLen": 2697,
+      "bodyTextHash": "1edf4461b8caf972629d4231b16d3e6aefd16aaa93484a9dddabb1428539c979",
+      "bodyTextPrefix": "Skip to content Axiom 24 lessons Twenty-four lessons, then one j",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Axiom",
+      "hasCanvas": false,
+      "bodyTextLen": 2697,
+      "bodyTextHash": "1edf4461b8caf972629d4231b16d3e6aefd16aaa93484a9dddabb1428539c979",
+      "bodyTextPrefix": "Skip to content Axiom 24 lessons Twenty-four lessons, then one j",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

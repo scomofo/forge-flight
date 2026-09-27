@@ -1,0 +1,991 @@
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/cn";
+import { BenchShell, fmt, Readouts, Slider, useReducedMotion, useTicker, WellButton } from "./ui";
+
+const criteria = [
+  { id: "light", label: "Light to carry" },
+  { id: "cold", label: "Stays cold" },
+  { id: "cheap", label: "Cheap to make" },
+] as const;
+
+type Crit = (typeof criteria)[number]["id"];
+
+const bottles: { name: string; scores: Record<Crit, number>; line: string }[] = [
+  {
+    name: "Vacuum steel",
+    scores: { light: 2, cold: 5, cheap: 2 },
+    line: "Excellent insulation. Heavy, and costly to make.",
+  },
+  {
+    name: "Plain HDPE",
+    scores: { light: 5, cold: 2, cheap: 5 },
+    line: "Light and cheap. The water warms up quickly.",
+  },
+  {
+    name: "Plain aluminum",
+    scores: { light: 4, cold: 3, cheap: 4 },
+    line: "A middle road between the other two.",
+  },
+];
+
+export function DesignBench() {
+  const [w, setW] = useState<Record<Crit, number>>({ light: 3, cold: 3, cheap: 3 });
+  const weightSum = criteria.reduce((s, c) => s + w[c.id], 0);
+  const ranked = bottles
+    .map((b) => ({
+      ...b,
+      score: criteria.reduce((s, c) => s + w[c.id] * b.scores[c.id], 0) / weightSum,
+    }))
+    .sort((a, b) => b.score - a.score);
+  const top = ranked[0];
+  const second = ranked[1];
+  const tie = top.score - second.score < 0.08;
+  const heaviest = criteria.slice().sort((a, b) => w[b.id] - w[a.id])[0];
+  const split = criteria.filter((c) => w[c.id] === w[heaviest.id]).length > 1;
+
+  return (
+    <BenchShell
+      prompt="Give each demand a weight from 1 to 5. || The winning bottle changes when you change which demand matters most. The scores of the bottles do not change."
+      note="Scores are fixed judgments on a 1–5 scale, higher meaning better for the hiker. Your weights turn those judgments into a decision. This is not a heat-transfer simulation."
+      controls={
+        <>
+          {criteria.map((c) => (
+            <Slider
+              key={c.id}
+              label={c.label}
+              min={1}
+              max={5}
+              step={1}
+              value={w[c.id]}
+              display={`${w[c.id]}`}
+              onChange={(v) => setW((prev) => ({ ...prev, [c.id]: v }))}
+            />
+          ))}
+        </>
+      }
+    >
+      <p className="font-serif text-2xl leading-snug">
+        {tie ? `${top.name} and ${second.name} are effectively tied.` : `${top.name} wins.`}
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-well-dim">
+        {split
+          ? "Your weights are split, so no single demand is steering."
+          : `${heaviest.label} is the heaviest weight in this decision.`}
+      </p>
+      <div className="mt-5 flex flex-col gap-3">
+        {ranked.map((b, index) => (
+          <div key={b.name}>
+            <div className="flex items-baseline justify-between gap-3 text-sm">
+              <span>
+                {index === 0 && !tie ? "Lead · " : ""}
+                {b.name}
+              </span>
+              <span className="tabular-nums">{fmt(b.score, 2)}</span>
+            </div>
+            <div className="mt-1 h-1.5 rounded-full bg-white/15">
+              <div className="h-1.5 rounded-full bg-well-fg" style={{ width: `${(b.score / 5) * 100}%` }} />
+            </div>
+            <p className="mt-1 text-sm text-well-dim">{b.line}</p>
+          </div>
+        ))}
+      </div>
+    </BenchShell>
+  );
+}
+
+export function ReactionsBench() {
+  const L = 4;
+  const [p, setP] = useState(20);
+  const [a, setA] = useState(1.6);
+  const ra = (p * (L - a)) / L;
+  const rb = (p * a) / L;
+  const moment = (p * a * (L - a)) / L;
+  const xLoad = 36 + (a / L) * 288;
+  const sag = Math.min(36, moment * 0.85);
+  const reduce = useReducedMotion();
+  const [shownSag, setShownSag] = useState(sag);
+  useTicker(!reduce && Math.abs(shownSag - sag) > 0.2, (dt) => {
+    setShownSag((s) => {
+      const next = s + (sag - s) * Math.min(1, dt * 6);
+      return Math.abs(next - sag) < 0.12 ? sag : next;
+    });
+  });
+  const draw = reduce ? sag : shownSag;
+  const aFrac = a / L;
+  const beam = Array.from({ length: 25 }, (_, i) => {
+    const u = i / 24;
+    const bFrac = 1 - aFrac;
+    const raw =
+      u <= aFrac
+        ? bFrac * u * (1 - bFrac * bFrac - u * u)
+        : aFrac * (1 - u) * (1 - aFrac * aFrac - (1 - u) * (1 - u));
+    const peak = 2 * aFrac * aFrac * bFrac * bFrac || 1;
+    const x = 36 + u * 288;
+    const y = 70 + (draw * raw) / peak;
+    return `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`;
+  }).join(" ");
+  const loadY = 70 + draw;
+
+  return (
+    <BenchShell
+      prompt="Slide the load along the beam. || The two reactions add up to the load. The support closer to the load shows the larger number. The bow is that moment, exaggerated. The numbers are not."
+      note="Weightless beam, pin supports at the ends, one downward force. The moment is the sagging moment under the load, P·a·b/L. The curve is that shape, exaggerated. The moment number is not."
+      controls={
+        <>
+          <Slider label="Load" min={5} max={40} step={1} value={p} display={`${fmt(p, 0)} kN`} onChange={setP} />
+          <Slider
+            label="Position from left"
+            min={0.4}
+            max={3.6}
+            step={0.1}
+            value={a}
+            display={`${fmt(a, 1)} m`}
+            onChange={setA}
+          />
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Left reaction", value: `${fmt(ra, 1)} kN` },
+          { label: "Right reaction", value: `${fmt(rb, 1)} kN` },
+          { label: "Moment", value: `${fmt(moment, 1)} kN·m` },
+        ]}
+      />
+      <svg viewBox="0 0 360 150" className="h-auto w-full" aria-hidden>
+        <path d={beam} fill="none" stroke="currentColor" strokeWidth="3" />
+        <path d="M36 70 L24 92 L48 92 Z" fill="currentColor" />
+        <path d="M324 70 L312 92 L336 92 Z" fill="currentColor" />
+        <line x1={xLoad} y1="22" x2={xLoad} y2={loadY - 8} stroke="currentColor" strokeWidth="2" />
+        <path d={`M${xLoad - 6} ${loadY - 16} L${xLoad} ${loadY - 4} L${xLoad + 6} ${loadY - 16}`} fill="none" stroke="currentColor" strokeWidth="2" />
+        <line x1="36" y1="110" x2="36" y2={110 - ra} stroke="currentColor" strokeWidth="2" />
+        <line x1="324" y1="110" x2="324" y2={110 - rb} stroke="currentColor" strokeWidth="2" />
+        <text x="28" y="128" fill="currentColor" fontSize="11">
+          {fmt(ra, 1)}
+        </text>
+        <text x="300" y="128" fill="currentColor" fontSize="11">
+          {fmt(rb, 1)}
+        </text>
+      </svg>
+      <p className="mt-3 text-sm text-well-dim">
+        ΣF = {fmt(ra + rb - p, 1)} kN. The reactions add to the load. Slide toward one support and that reaction grows.
+      </p>
+    </BenchShell>
+  );
+}
+
+const barMats = [
+  { id: "steel", name: "Mild steel", short: "Steel", e: 200, sy: 250 },
+  { id: "al", name: "Aluminum 6061-T6", short: "Aluminum", e: 69, sy: 275 },
+  { id: "ti", name: "Titanium grade 5", short: "Titanium", e: 114, sy: 880 },
+  { id: "nylon", name: "Nylon 6", short: "Nylon", e: 2.5, sy: 70 },
+] as const;
+
+export function AxialBench() {
+  const [id, setId] = useState<(typeof barMats)[number]["id"]>("steel");
+  const [force, setForce] = useState(20);
+  const [diameter, setDiameter] = useState(12);
+  const mat = barMats.find((m) => m.id === id) ?? barMats[0];
+  const area = Math.PI * (diameter / 2) ** 2;
+  const stress = (force * 1000) / area;
+  const strain = stress / (mat.e * 1000);
+  const delta = strain * 250;
+  const n = mat.sy / stress;
+  const holds = n >= 1;
+  const yieldMm = (mat.sy / (mat.e * 1000)) * 250;
+  const perm = holds ? 0 : Math.max(0, delta - yieldMm);
+  const reduce = useReducedMotion();
+  const [loaded, setLoaded] = useState(true);
+  const target = loaded ? delta : perm;
+  const [shown, setShown] = useState(delta);
+  useTicker(!reduce && Math.abs(shown - target) > 0.015, (dt) => {
+    setShown((s) => {
+      const next = s + (target - s) * Math.min(1, dt * 5);
+      return Math.abs(next - target) < 0.02 ? target : next;
+    });
+  });
+  useEffect(() => {
+    if (reduce) setShown(target);
+  }, [reduce, target]);
+  const draw = 150 + Math.min(64, shown * 2.2);
+
+  return (
+    <BenchShell
+      prompt="Change the force, the diameter, and the material. Then press Unload. || Stress is force divided by area. A safety factor below 1 means this bar yields. Unload returns an elastic bar. A yielded bar keeps a set."
+      note="Uniform axial stress, elastic until yield. Length is 250 mm. No notch, no stress concentration. Teaching yield values, not a code allowable. The drawing exaggerates the millimeters so the return, or the set, is visible."
+      controls={
+        <>
+          <div className="flex flex-wrap gap-2 sm:col-span-2">
+            {barMats.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => setId(m.id)}
+                className={cn(
+                  "min-h-11 rounded-lg px-3 py-2 text-sm",
+                  m.id === id ? "bg-well-fg text-well" : "ring-1 ring-white/25",
+                )}
+              >
+                {m.short}
+              </button>
+            ))}
+          </div>
+          <Slider label="Force" min={1} max={80} step={1} value={force} display={`${fmt(force, 0)} kN`} onChange={setForce} />
+          <Slider
+            label="Diameter"
+            min={4}
+            max={40}
+            step={1}
+            value={diameter}
+            display={`${fmt(diameter, 0)} mm`}
+            onChange={setDiameter}
+          />
+          <div className="flex items-end">
+            <WellButton onClick={() => setLoaded((on) => !on)}>{loaded ? "Unload" : "Load again"}</WellButton>
+          </div>
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Stress", value: `${fmt(stress, 0)} MPa` },
+          { label: "Elongation", value: `${fmt(delta, 2)} mm` },
+          { label: "Safety factor", value: fmt(n, 2) },
+        ]}
+      />
+      <svg viewBox="0 0 320 80" className="h-16 w-full" aria-hidden>
+        <rect x="70" y="28" width="150" height="24" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" opacity="0.45" />
+        <rect x="70" y="26" width={draw} height="28" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d={`M40 40 H64 M${70 + draw + 8} 40 H300`} stroke="currentColor" strokeWidth="2" />
+      </svg>
+      <p className="mt-3 text-sm leading-relaxed text-well-dim">
+        {loaded
+          ? holds
+            ? `${mat.name} is under its ${mat.sy} MPa yield. Unload and the bar springs back.`
+            : `${mat.name} is above its ${mat.sy} MPa yield. Unload and a set of about ${fmt(perm, 2)} mm remains.`
+          : holds
+            ? "Unloaded. The stretch came back. The dashed outline is the original 250 mm."
+            : `Unloaded. About ${fmt(perm, 2)} mm stayed. That is the stretch past yield. The dashed outline is the original length.`}
+        {loaded ? ` Strain is ${strain.toFixed(5)}, which is stretch over the 250 mm length.` : ""}
+      </p>
+    </BenchShell>
+  );
+}
+
+const beamMats = [
+  { id: "steel", name: "Steel", e: 200 },
+  { id: "al", name: "Aluminum", e: 69 },
+  { id: "wood", name: "Wood", e: 10 },
+] as const;
+
+export function DeflectionBench() {
+  const [matId, setMatId] = useState<(typeof beamMats)[number]["id"]>("steel");
+  const [length, setLength] = useState(1.6);
+  const [depth, setDepth] = useState(40);
+  const [load, setLoad] = useState(800);
+  const mat = beamMats.find((m) => m.id === matId) ?? beamMats[0];
+  const b = 0.04;
+  const h = depth / 1000;
+  const inertia = (b * h ** 3) / 12;
+  const delta = (load * length ** 3) / (48 * mat.e * 1e9 * inertia);
+  const limit = length / 250;
+  const broken = delta > length / 5;
+  const sag = Math.min(46, (delta / length) * 220);
+  const reduce = useReducedMotion();
+  const [shownSag, setShownSag] = useState(sag);
+  useTicker(!reduce && Math.abs(shownSag - sag) > 0.08, (dt) => {
+    setShownSag((s) => {
+      const next = s + (sag - s) * Math.min(1, dt * 6);
+      return Math.abs(next - sag) < 0.05 ? sag : next;
+    });
+  });
+  const drawSag = reduce ? sag : shownSag;
+
+  return (
+    <BenchShell
+      prompt="Change the span, the depth, and the material. Read the deflection in millimeters. || The drawing exaggerates the sag. The number does not. Compare that number with span/250."
+      note="Simply supported, center point load, rectangular section, width fixed at 40 mm. δ = PL³ / (48EI). If the sag exceeds about a fifth of the span, that formula has left its range."
+      controls={
+        <>
+          <div className="flex gap-2 sm:col-span-2">
+            {beamMats.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => setMatId(m.id)}
+                className={cn(
+                  "min-h-11 rounded-lg px-3 py-2 text-sm",
+                  m.id === matId ? "bg-well-fg text-well" : "ring-1 ring-white/25",
+                )}
+              >
+                {m.name}
+              </button>
+            ))}
+          </div>
+          <Slider label="Span" min={0.8} max={3} step={0.1} value={length} display={`${fmt(length, 1)} m`} onChange={setLength} />
+          <Slider label="Depth" min={10} max={80} step={1} value={depth} display={`${fmt(depth, 0)} mm`} onChange={setDepth} />
+          <div className="sm:col-span-2">
+            <Slider label="Midspan load" min={100} max={2000} step={50} value={load} display={`${fmt(load, 0)} N`} onChange={setLoad} />
+          </div>
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Deflection", value: delta < 1 ? `${fmt(delta * 1000, 1)} mm` : `${fmt(delta, 2)} m` },
+          { label: "Span / 250", value: `${fmt(limit * 1000, 0)} mm` },
+          { label: "I", value: `${fmt(inertia * 1e6, 2)}e-6 m⁴` },
+        ]}
+      />
+      <svg viewBox="0 0 320 120" className="h-auto w-full" aria-hidden>
+        <path
+          d={`M30 36 Q160 ${36 + drawSag * 2} 290 36`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+        />
+        <path d="M30 36 L20 54 L42 54 Z M290 36 L278 54 L302 54 Z" fill="currentColor" />
+      </svg>
+      <p className="mt-2 text-sm leading-relaxed text-well-dim">
+        {broken
+          ? "The small-deflection model has left the building. This section is far too slender for the load — don’t trust the number past “much too saggy.”"
+          : delta > limit
+            ? "It may not be breaking, but it is springier than the usual span/250 serviceability rule. Strength and stiffness are different tests."
+            : "Under the span/250 rule of thumb, this sag would often be accepted. Depth, cubed, is the cheap way to get stiffer."}
+      </p>
+    </BenchShell>
+  );
+}
+
+type ShelfKey = "stiff" | "light" | "cheap" | "looks";
+
+const shelfKeys: { id: ShelfKey; label: string }[] = [
+  { id: "stiff", label: "Stiffness" },
+  { id: "light", label: "Lightness" },
+  { id: "cheap", label: "Low cost" },
+  { id: "looks", label: "Looks" },
+];
+
+const shelves: { name: string; scores: Record<ShelfKey, number> }[] = [
+  { name: "Solid oak", scores: { stiff: 4, light: 3, cheap: 3, looks: 5 } },
+  { name: "Steel angle", scores: { stiff: 5, light: 4, cheap: 4, looks: 2 } },
+  { name: "Acrylic", scores: { stiff: 2, light: 5, cheap: 3, looks: 4 } },
+  { name: "Plywood box", scores: { stiff: 3, light: 3, cheap: 5, looks: 3 } },
+  { name: "Particle board", scores: { stiff: 2, light: 2, cheap: 4, looks: 1 } },
+];
+
+function isDominated(name: string) {
+  const self = shelves.find((s) => s.name === name);
+  if (!self) return false;
+  return shelves.some(
+    (other) =>
+      other.name !== name &&
+      shelfKeys.every((k) => other.scores[k.id] >= self.scores[k.id]) &&
+      shelfKeys.some((k) => other.scores[k.id] > self.scores[k.id]),
+  );
+}
+
+export function TradeoffBench() {
+  const [w, setW] = useState<Record<ShelfKey, number>>({
+    stiff: 4,
+    light: 2,
+    cheap: 3,
+    looks: 2,
+  });
+  const sum = shelfKeys.reduce((s, k) => s + w[k.id], 0);
+  const ranked = shelves
+    .map((shelf) => ({
+      ...shelf,
+      dominated: isDominated(shelf.name),
+      score: shelfKeys.reduce((s, k) => s + w[k.id] * shelf.scores[k.id], 0) / sum,
+    }))
+    .sort((a, b) => b.score - a.score);
+
+  return (
+    <BenchShell
+      prompt="Give each criterion a weight from 1 to 5. || Particle board stays last, because plywood beats it on every criterion. Among the others, your weights choose the winner."
+      note="Scores are 1–5, higher is better, written down in advance. Dominated means another concept is at least as good on every criterion and better on one. No positive weights can save it. These weights assume every shelf already holds the books — that was a screen, not a score."
+      controls={
+        <>
+          {shelfKeys.map((k) => (
+            <Slider
+              key={k.id}
+              label={k.label}
+              min={1}
+              max={5}
+              step={1}
+              value={w[k.id]}
+              display={`${w[k.id]}`}
+              onChange={(v) => setW((prev) => ({ ...prev, [k.id]: v }))}
+            />
+          ))}
+        </>
+      }
+    >
+      <div className="flex flex-col gap-3">
+        {ranked.map((shelf, index) => (
+          <div key={shelf.name} className={cn(shelf.dominated && "opacity-50")}>
+            <div className="flex items-baseline justify-between gap-3 text-sm">
+              <span>
+                {index + 1}. {shelf.name}
+                {shelf.dominated ? " · dominated" : ""}
+              </span>
+              <span className="tabular-nums">{fmt(shelf.score, 2)}</span>
+            </div>
+            <div className="mt-1 h-1.5 rounded-full bg-white/15">
+              <div
+                className="h-1.5 rounded-full bg-well-fg"
+                style={{ width: `${(shelf.score / 5) * 100}%` }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="mt-4 text-sm leading-relaxed text-well-dim">
+        Particle board loses to the plywood box on every criterion listed, so it stays last no matter how you weight them. The lead among the others is your priorities, not a law of nature.
+      </p>
+    </BenchShell>
+  );
+}
+
+export function BucklingBench() {
+  const [side, setSide] = useState(20);
+  const [length, setLength] = useState(1.2);
+  const [frac, setFrac] = useState(0.7);
+  const s = side / 1000;
+  const area = s * s;
+  const inertia = s ** 4 / 12;
+  const e = 200e9;
+  const sy = 250e6;
+  const pCrush = sy * area;
+  const pEuler = (Math.PI ** 2 * e * inertia) / (length * length);
+  const mode = pEuler < pCrush ? "buckling" : "yield";
+  const limit = Math.min(pEuler, pCrush);
+  const load = frac * limit;
+  const failed = frac > 1;
+  const bow = failed && mode === "buckling" ? Math.min(70, (frac - 1) * 90) : 0;
+  const squat = failed && mode === "yield";
+  const [shown, setShown] = useState(bow);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setShown(bow);
+  }, [bow]);
+  useTicker(true, (dt) => {
+    setShown((s) => {
+      const next = s + (bow - s) * Math.min(1, dt * 8);
+      return Math.abs(next - bow) < 0.2 ? bow : next;
+    });
+  });
+
+  return (
+    <BenchShell
+      prompt="Change the side and the length, then move the load past 1 on the last slider. || Governs says whether buckling or yield arrives first. Past 1, the column drawing shows that failure."
+      note="Square section, pinned ends, mild steel with E = 200 GPa and yield 250 MPa. Euler ignores imperfections, so a real column bows earlier. Fatigue and corrosion are in the reading; this bench only settles buckling against yield."
+      controls={
+        <>
+          <Slider label="Side" min={8} max={40} step={1} value={side} display={`${fmt(side, 0)} mm`} onChange={setSide} />
+          <Slider label="Length" min={0.3} max={2.5} step={0.05} value={length} display={`${fmt(length, 2)} m`} onChange={setLength} />
+          <div className="sm:col-span-2">
+            <Slider
+              label="Load, as a fraction of the lower limit"
+              min={0}
+              max={1.5}
+              step={0.01}
+              value={frac}
+              display={`${fmt(load / 1000, 1)} kN`}
+              onChange={setFrac}
+            />
+          </div>
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Euler load", value: `${fmt(pEuler / 1000, 1)} kN` },
+          { label: "Yield load", value: `${fmt(pCrush / 1000, 1)} kN` },
+          { label: "Governs", value: mode === "buckling" ? "Buckling" : "Yield" },
+        ]}
+      />
+      <svg viewBox="0 0 200 180" className="mx-auto h-40 w-full" aria-hidden>
+        <path
+          d={
+            squat
+              ? "M70 150 H130 V48 H70 Z"
+              : `M100 156 Q${100 + shown} 90 100 28`
+          }
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={Math.max(3, side / 4)}
+        />
+        <circle cx="100" cy="24" r="3" fill="currentColor" />
+        <circle cx="100" cy="160" r="3" fill="currentColor" />
+      </svg>
+      <p className="mt-3 text-sm leading-relaxed text-well-dim">
+        {mode === "buckling"
+          ? failed
+            ? "The column bows while the steel is still below yield. A stronger alloy with the same modulus would not raise this Euler load. Shorten it, thicken it, or brace the middle."
+            : "Buckling is the impatient mechanism. You can still add load; the straight shape is what runs out first."
+          : failed
+            ? "This one is stocky enough to squash at yield before it can bow. Area and yield strength are the story. Euler is watching, but it is not first."
+            : "Yield will arrive before buckling. Making the steel stronger actually helps here, unlike the slender case."}
+      </p>
+    </BenchShell>
+  );
+}
+
+export function NotchBench() {
+  const [r, setR] = useState(0.5);
+  const d = 20;
+  const thick = 5;
+  const big = 30;
+  const force = 8;
+  const avg = (force * 1000) / (d * thick);
+  const kt = 1 + 0.75 * Math.sqrt((big - d) / (2 * r));
+  const peak = kt * avg;
+  const sy = 250;
+  const fillet = Math.min(16, 2 + r * 2.4);
+
+  return (
+    <BenchShell
+      prompt="Set the fillet to 0.5 mm, then to 4 mm. || Average stress stays at 80 MPa. Peak stress falls. At 0.5 mm the peak is past the 250 MPa yield while the average still looks safe."
+      note="Flat bar, 8 kN tension. Net section 20 mm by 5 mm, so the average cannot move. The step is 30 mm down to 20 mm. Kt = 1 + 0.75 √((D − d) / (2r)), a teaching curve with the right shape, not a Peterson chart."
+      controls={
+        <Slider
+          label="Fillet radius"
+          min={0.5}
+          max={6}
+          step={0.1}
+          value={r}
+          display={`${fmt(r, 1)} mm`}
+          onChange={setR}
+        />
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Average", value: `${fmt(avg, 0)} MPa` },
+          { label: "Kt", value: fmt(kt, 2) },
+          { label: "Peak", value: `${fmt(peak, 0)} MPa` },
+        ]}
+      />
+      <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
+        <path
+          d={`M24 28 H148 V${46 - fillet} Q148 46 ${148 + fillet} 46 H292 V94 H${148 + fillet} Q148 94 148 ${94 + fillet} V112 H24 Z`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
+        <circle cx={148 + fillet * 0.35} cy={46 - fillet * 0.35} r="3.5" fill="currentColor" />
+      </svg>
+      <p className="mt-3 text-sm leading-relaxed text-well-dim">
+        {peak > sy
+          ? `The average is ${fmt(avg, 0)} MPa, under the ${sy} MPa yield. The peak at the fillet is ${fmt(peak, 0)} MPa. The average is the wrong number to trust.`
+          : `Both numbers are under the ${sy} MPa yield. The average did not move. The fillet did. A sharper corner splits them apart again.`}
+      </p>
+    </BenchShell>
+  );
+}
+
+const fatigueMats = [
+  { id: "al", name: "Aluminum", sy: 280, s1000: 360, send: 100, nEnd: 1e8, knee: false },
+  { id: "steel", name: "Steel", sy: 480, s1000: 540, send: 300, nEnd: 1e6, knee: true },
+] as const;
+
+function fatigueLife(mat: (typeof fatigueMats)[number], stress: number) {
+  if (stress >= mat.sy) return { kind: "yield" as const, n: 1 };
+  if (mat.knee && stress <= mat.send) return { kind: "runout" as const, n: Infinity };
+  const b = Math.log(mat.send / mat.s1000) / Math.log(mat.nEnd / 1000);
+  const n = 1000 * (stress / mat.s1000) ** (1 / b);
+  return { kind: "finite" as const, n };
+}
+
+function cycleLabel(n: number) {
+  if (!Number.isFinite(n)) return "Runout";
+  if (n >= 1e6) return `${fmt(n / 1e6, 1)} million`;
+  if (n >= 1e3) return `${fmt(n / 1e3, 0)} thousand`;
+  return `${fmt(n, 0)}`;
+}
+
+export function FatigueBench() {
+  const [id, setId] = useState<(typeof fatigueMats)[number]["id"]>("al");
+  const [stress, setStress] = useState(120);
+  const mat = fatigueMats.find((m) => m.id === id) ?? fatigueMats[0];
+  const life = fatigueLife(mat, stress);
+  const b = Math.log(mat.send / mat.s1000) / Math.log(mat.nEnd / 1000);
+  const xOf = (n: number) => 36 + ((Math.log10(n) - 3) / 5) * 260;
+  const yOf = (s: number) => 118 - (s / 600) * 96;
+  const curve: string[] = [];
+  for (let i = 0; i <= 32; i++) {
+    const n = 1000 * 10 ** ((Math.log10(mat.nEnd / 1000) * i) / 32);
+    const s = mat.s1000 * (n / 1000) ** b;
+    curve.push(`${xOf(n).toFixed(1)},${yOf(s).toFixed(1)}`);
+  }
+  if (mat.knee) curve.push(`${xOf(1e8).toFixed(1)},${yOf(mat.send).toFixed(1)}`);
+  const dotN = life.kind === "yield" ? 1000 : life.kind === "runout" ? 1e7 : Math.min(life.n, 1e8);
+  const [spin, setSpin] = useState(0);
+  useTicker(life.kind === "finite", (dt) => setSpin((s) => s + dt));
+  const cycle = life.kind === "finite" ? (spin % 4.2) / 4.2 : life.kind === "yield" ? 0 : 0;
+  const crack = life.kind === "finite" ? 4 + cycle * 52 : life.kind === "runout" ? 3 : 0;
+  const pull = life.kind === "finite" ? (Math.floor(spin / 0.45) % 2 === 0 ? 1 : -1) : life.kind === "yield" ? 1 : 0;
+
+  return (
+    <BenchShell
+      prompt="Set aluminum to 120 MPa. || It is under the 280 MPa yield, and the life is still a finite number. The coupon under the chart grows a nick. Switch to steel at 200 MPa. The line has flattened and the nick stays put. This model calls that a runout."
+      note="Fully reversed, polished, no notch. Steel is given a plateau at half of 600 MPa after a million cycles. Aluminum keeps sloping out to 100 million. Corrosion can erase the plateau. A fillet multiplies the stress you bring to this chart. Not an ASME life."
+      controls={
+        <>
+          <div className="flex flex-wrap gap-2 sm:col-span-2">
+            {fatigueMats.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => setId(m.id)}
+                className={cn(
+                  "min-h-11 rounded-lg px-3 py-2 text-sm",
+                  m.id === id ? "bg-well-fg text-well" : "ring-1 ring-white/25",
+                )}
+              >
+                {m.name}
+              </button>
+            ))}
+          </div>
+          <Slider
+            label="Alternating stress"
+            min={40}
+            max={500}
+            step={10}
+            value={stress}
+            display={`${fmt(stress, 0)} MPa`}
+            onChange={setStress}
+          />
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Yield", value: `${mat.sy} MPa` },
+          { label: "Life", value: life.kind === "yield" ? "Yields first" : cycleLabel(life.n) },
+          { label: "Versus yield", value: stress < mat.sy ? "Under" : "At or over" },
+        ]}
+      />
+      <svg viewBox="0 0 320 196" className="h-48 w-full" aria-hidden>
+        <polyline points={curve.join(" ")} fill="none" stroke="currentColor" strokeWidth="2" />
+        {life.kind === "yield" ? null : <circle cx={xOf(dotN)} cy={yOf(stress)} r="4" fill="currentColor" />}
+        <line x1="36" y1="168" x2="284" y2="168" stroke="currentColor" strokeOpacity="0.35" />
+        <rect x="78" y="150" width={168 - (life.kind === "yield" ? 8 : 0)} height="16" fill="none" stroke="currentColor" strokeWidth="2" />
+        {crack > 0 ? <line x1="162" y1="150" x2="162" y2={150 + crack * 0.28} stroke="currentColor" strokeWidth="2" /> : null}
+        {pull !== 0 ? (
+          <path
+            d={pull > 0 ? "M250 158 H286 M278 152 L286 158 L278 164" : "M70 158 H36 M44 152 L36 158 L44 164"}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        ) : null}
+      </svg>
+      <p className="mt-3 text-sm leading-relaxed text-well-dim">
+        {life.kind === "yield"
+          ? `${mat.name} yields on the first pull at ${mat.sy} MPa. The coupon does not get a cycle. Fatigue is the wrong chapter until the stress is back under yield.`
+          : life.kind === "runout"
+            ? `${stress} MPa is under the ${mat.sy} MPa yield and under the ${mat.send} MPa plateau. The nick stays put. This model stops counting. Salt water, a notch, or a bigger part can start it again.`
+            : `${stress} MPa is under the ${mat.sy} MPa yield, and the nick still lengthens. The loop is the life sped up, not one cycle. The life is ${cycleLabel(life.n)} cycles. Below yield is not the same sentence as safe forever.`}
+      </p>
+    </BenchShell>
+  );
+}
+
+export function BoltBench() {
+  const [clamp, setClamp] = useState(12);
+  const [shear, setShear] = useState(1);
+  const [threads, setThreads] = useState(false);
+  const mu = 0.2;
+  const capacity = mu * clamp;
+  const slips = shear > capacity + 1e-6;
+  const reduce = useReducedMotion();
+  const [slipX, setSlipX] = useState(0);
+  const slipTarget = slips ? 22 : 0;
+  useTicker(!reduce && Math.abs(slipX - slipTarget) > 0.4, (dt) => {
+    setSlipX((s) => {
+      const next = s + (slipTarget - s) * Math.min(1, dt * 7);
+      return Math.abs(next - slipTarget) < 0.3 ? slipTarget : next;
+    });
+  });
+  useEffect(() => {
+    if (reduce) setSlipX(slipTarget);
+  }, [reduce, slipTarget]);
+  const tensileArea = 36.6;
+  const shankArea = (Math.PI * 8 * 8) / 4;
+  const shearArea = threads ? tensileArea : shankArea;
+  const tension = (clamp * 1000) / tensileArea;
+  const shearStress = slips ? (shear * 1000) / shearArea : 0;
+
+  return (
+    <BenchShell
+      prompt="Set the clamp to 12 kN and the shear to 1 kN. || Friction holds, so the shank shear is zero. Raise the shear to 4 kN. || The joint slips and the bolt becomes a pin. Put the threads in the shear plane. || The shear stress rises. The load did not."
+      note="One M8 bolt, one interface, μ = 0.20. That friction is a teaching value for dry steel, not a grade of bolt. Thread area used here is the 36.6 mm² tensile stress area. Shank area is πd²/4. No prying, no gasket."
+      controls={
+        <>
+          <div className="flex flex-wrap gap-2 sm:col-span-2">
+            <button
+              type="button"
+              onClick={() => setThreads(false)}
+              className={cn(
+                "min-h-11 rounded-lg px-3 py-2 text-sm",
+                threads ? "ring-1 ring-white/25" : "bg-well-fg text-well",
+              )}
+            >
+              Shank in the plane
+            </button>
+            <button
+              type="button"
+              onClick={() => setThreads(true)}
+              className={cn(
+                "min-h-11 rounded-lg px-3 py-2 text-sm",
+                threads ? "bg-well-fg text-well" : "ring-1 ring-white/25",
+              )}
+            >
+              Threads in the plane
+            </button>
+          </div>
+          <Slider
+            label="Clamp"
+            min={2}
+            max={20}
+            step={1}
+            value={clamp}
+            display={`${fmt(clamp, 0)} kN`}
+            onChange={setClamp}
+          />
+          <Slider
+            label="Shear load"
+            min={0.5}
+            max={8}
+            step={0.5}
+            value={shear}
+            display={`${fmt(shear, 1)} kN`}
+            onChange={setShear}
+          />
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Friction holds to", value: `${fmt(capacity, 1)} kN` },
+          { label: "Bolt tension", value: `${fmt(tension, 0)} MPa` },
+          { label: "Bolt shear", value: slips ? `${fmt(shearStress, 0)} MPa` : "0 MPa" },
+        ]}
+      />
+      <svg viewBox="0 0 320 120" className="h-28 w-full" aria-hidden>
+        <rect x="50" y="40" width="190" height="22" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x={50 + (reduce ? slipTarget : slipX)} y="62" width="190" height="22" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="148" y="28" width="14" height="78" fill="currentColor" />
+      </svg>
+      <p className="mt-3 text-sm leading-relaxed text-well-dim">
+        {slips
+          ? `The shear load is past μ times the clamp, so the plates slip. Shear stress uses the ${threads ? "thread area, 36.6 mm²" : "shank area, 50.3 mm²"}. Tension is still the clamp divided by 36.6 mm².`
+          : "Friction carries the shear. The bolt's job right now is the clamp, which is tension. The shank shear is zero until the plates actually move."}
+      </p>
+    </BenchShell>
+  );
+}
+
+const crackMats = [
+  { id: "steel", name: "Steel", c: 6.9e-12, m: 3, kic: 50, threshold: 5 },
+  { id: "al", name: "Aluminum", c: 6.9e-11, m: 3, kic: 26, threshold: 3 },
+] as const;
+
+function growCrack(mat: (typeof crackMats)[number], stress: number, a0mm: number) {
+  const y = 1.12;
+  const a0 = a0mm / 1000;
+  const aCrit = (mat.kic / (y * stress)) ** 2 / Math.PI;
+  const dK0 = y * stress * Math.sqrt(Math.PI * a0);
+  const rate0 = dK0 < mat.threshold ? 0 : mat.c * dK0 ** mat.m;
+  if (a0 >= aCrit) return { kind: "broken" as const, dK0, rate0, aCrit, n: 0, points: [] as { n: number; a: number }[] };
+  if (dK0 < mat.threshold) return { kind: "sit" as const, dK0, rate0, aCrit, n: Infinity, points: [] as { n: number; a: number }[] };
+  let a = a0;
+  let n = 0;
+  const points = [{ n: 0, a: a0 }];
+  for (let i = 0; i < 500; i++) {
+    const dK = y * stress * Math.sqrt(Math.PI * a);
+    const dadn = mat.c * dK ** mat.m;
+    const da = Math.min(aCrit - a, a * 0.04);
+    n += da / dadn;
+    a += da;
+    if (i % 12 === 0) points.push({ n, a });
+    if (a >= aCrit * 0.999 || n > 1e9) break;
+  }
+  points.push({ n, a: Math.min(a, aCrit) });
+  return { kind: n > 1e9 ? ("long" as const) : ("grew" as const), dK0, rate0, aCrit, n, points };
+}
+
+function lifeLabel(n: number) {
+  if (!Number.isFinite(n)) return "Sits";
+  if (n <= 0) return "Already critical";
+  if (n > 1e9) return "Past a billion";
+  if (n >= 1e6) return `${fmt(n / 1e6, 1)} million`;
+  if (n >= 1e3) return `${fmt(n / 1e3, 0)} thousand`;
+  return fmt(n, 0);
+}
+
+export function CrackBench() {
+  const [id, setId] = useState<(typeof crackMats)[number]["id"]>("steel");
+  const [stress, setStress] = useState(120);
+  const [a0, setA0] = useState(0.5);
+  const mat = crackMats.find((item) => item.id === id) ?? crackMats[0];
+  const grown = growCrack(mat, stress, a0);
+  const [tick, setTick] = useState(0);
+  useTicker(grown.kind === "grew", (dt) => setTick((s) => s + dt));
+  const lifeFrac = (tick % 6) / 6;
+  let dotX = 28;
+  let dotY = 108;
+  if (grown.kind === "grew" && grown.points.length > 1) {
+    const target = lifeFrac * grown.n;
+    let prev = grown.points[0];
+    for (const point of grown.points) {
+      if (point.n >= target) {
+        const span = point.n - prev.n || 1;
+        const f = Math.min(1, Math.max(0, (target - prev.n) / span));
+        const crack = prev.a + (point.a - prev.a) * f;
+        dotX = 28 + (target / grown.n) * 270;
+        dotY = 108 - (crack / grown.aCrit) * 78;
+        break;
+      }
+      prev = point;
+    }
+  }
+  const line =
+    grown.points.length > 1 && grown.n > 0
+      ? grown.points
+          .map((point) => {
+            const x = 28 + (point.n / grown.n) * 270;
+            const y = 108 - (point.a / grown.aCrit) * 78;
+            return `${x.toFixed(1)},${y.toFixed(1)}`;
+          })
+          .join(" ")
+      : "";
+
+  return (
+    <BenchShell
+      prompt="Set steel, a 0.50 mm crack, and 120 MPa. Then double the stress to 240 MPa. || Growth on the first cycle rises about eightfold. Life falls by a little more than that, and the critical length shrinks. The curve stays low, then stands up."
+      note="Edge crack, Y = 1.12, stress from zero to the range so the faces stay open. Steel is the Barsom ferrite-pearlite pair, C = 6.9×10⁻¹² and m = 3, with a teaching toughness of 50 MPa√m and a threshold of 5. Aluminum uses ten times that C, toughness 26, threshold 3. Y = 1.12 stops being honest once the crack is no longer short beside the plate, so the last rise is the shape of the law."
+      controls={
+        <>
+          <div className="flex flex-wrap gap-2 sm:col-span-2">
+            {crackMats.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setId(item.id)}
+                className={cn(
+                  "min-h-11 rounded-lg px-3 py-2 text-sm",
+                  item.id === id ? "bg-well-fg text-well" : "ring-1 ring-white/25",
+                )}
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
+          <Slider
+            label="Stress range"
+            min={40}
+            max={240}
+            step={10}
+            value={stress}
+            display={`${fmt(stress, 0)} MPa`}
+            onChange={setStress}
+          />
+          <Slider
+            label="Starter crack"
+            min={0.2}
+            max={2}
+            step={0.1}
+            value={a0}
+            display={`${fmt(a0, 1)} mm`}
+            onChange={setA0}
+          />
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "ΔK now", value: `${fmt(grown.dK0, 1)} MPa√m` },
+          { label: "This cycle", value: grown.rate0 === 0 ? "Sits" : `${fmt(grown.rate0 * 1e9, 1)} nm` },
+          { label: "Life", value: lifeLabel(grown.n) },
+          { label: "Breaks at", value: `${fmt(grown.aCrit * 1000, 0)} mm` },
+        ]}
+      />
+      <svg viewBox="0 0 320 130" className="h-32 w-full" aria-hidden>
+        {line ? <polyline points={line} fill="none" stroke="currentColor" strokeWidth="2" /> : null}
+        {grown.kind === "grew" ? <circle cx={dotX} cy={dotY} r="4" fill="currentColor" /> : null}
+      </svg>
+      <p className="mt-3 text-sm leading-relaxed text-well-dim">
+        {grown.kind === "sit"
+          ? `ΔK is ${fmt(grown.dK0, 1)}, under the threshold of ${mat.threshold}. This model does not grow the crack. Raise the stress or start with a longer crack and it can leave the floor.`
+          : grown.kind === "broken"
+            ? "The starter crack is already past the toughness at this stress. There is no fatigue life left to integrate."
+            : `Most of the ${lifeLabel(grown.n)} cycles pass while the crack is still short. It stands up at the end because ΔK grew with the square root of the length. Critical length is ${fmt(grown.aCrit * 1000, 0)} mm.`}
+      </p>
+    </BenchShell>
+  );
+}
+
+export function MeanBench() {
+  const [alternating, setAlternating] = useState(200);
+  const [mean, setMean] = useState(0);
+  const endurance = 300;
+  const ultimate = 600;
+  const yieldStress = 480;
+  const goodman = alternating / endurance + mean / ultimate;
+  const peak = mean + alternating;
+  const yields = peak >= yieldStress;
+  const inside = goodman <= 1 + 1e-9 && !yields;
+  const xOf = (value: number) => 36 + (value / ultimate) * 250;
+  const yOf = (value: number) => 112 - (value / endurance) * 84;
+
+  return (
+    <BenchShell
+      prompt="Set alternating stress to 200 MPa and the mean to 0. || The point is inside the line. That 200 MPa was a runout on the fully reversed bench, which had no mean. Raise the mean to 250 MPa. || The same wiggle is now outside the line."
+      note="Goodman line for the steel whose fully reversed plateau is 300 MPa and whose ultimate is 600 MPa. Yield is 480 MPa. Tensile mean only. Gerber would bow this line upward and let more points through. A compressive mean is not drawn."
+      controls={
+        <>
+          <Slider
+            label="Alternating"
+            min={40}
+            max={280}
+            step={10}
+            value={alternating}
+            display={`${fmt(alternating, 0)} MPa`}
+            onChange={setAlternating}
+          />
+          <Slider
+            label="Mean"
+            min={0}
+            max={400}
+            step={10}
+            value={mean}
+            display={`${fmt(mean, 0)} MPa`}
+            onChange={setMean}
+          />
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Goodman sum", value: fmt(goodman, 2) },
+          { label: "Peak", value: `${fmt(peak, 0)} MPa` },
+          { label: "Call", value: yields ? "Yields first" : inside ? "Inside" : "Outside" },
+        ]}
+      />
+      <svg viewBox="0 0 320 130" className="h-32 w-full" aria-hidden>
+        <line x1={xOf(0)} y1={yOf(endurance)} x2={xOf(ultimate)} y2={yOf(0)} stroke="currentColor" strokeWidth="2" />
+        <circle cx={xOf(mean)} cy={yOf(Math.min(alternating, endurance * 1.15))} r="4" fill="currentColor" />
+      </svg>
+      <p className="mt-3 text-sm leading-relaxed text-well-dim">
+        {yields
+          ? `The top of the cycle is ${fmt(peak, 0)} MPa, at or over the ${yieldStress} MPa yield. Fatigue is the wrong chapter until the first pull stays elastic.`
+          : inside
+            ? `Sum ${fmt(goodman, 2)} is on or under 1. Fully reversed, this alternating stress can sit on the plateau. A tensile mean spends some of the ${ultimate} MPa ultimate.`
+            : `Sum ${fmt(goodman, 2)} is over 1. The wiggle did not grow. The mean moved the point off the plateau the other bench allowed.`}
+      </p>
+    </BenchShell>
+  );
+}

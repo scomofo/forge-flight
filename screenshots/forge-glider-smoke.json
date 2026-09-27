@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/mission/glider",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Forge & Flight",
+      "hasCanvas": false,
+      "bodyTextLen": 18,
+      "bodyTextHash": "d402b12148fdf20216d37e548f1af576ec9c32e9834384ab5aaf03778e1e86cf",
+      "bodyTextPrefix": "Opening the bench.",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/forge-glider-smoke.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Forge & Flight",
+      "hasCanvas": false,
+      "bodyTextLen": 18,
+      "bodyTextHash": "d402b12148fdf20216d37e548f1af576ec9c32e9834384ab5aaf03778e1e86cf",
+      "bodyTextPrefix": "Opening the bench.",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/forge-glider-smoke-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/forge-glider-smoke.json"
+}

@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Forge & Flight",
+      "hasCanvas": false,
+      "bodyTextLen": 495,
+      "bodyTextHash": "a562c8bfbafd4fba15b17aac05ddebbd9e1c9921cbc3fa64c7ed67382ba07f42",
+      "bodyTextPrefix": "Hangar bay Forge & Flight One artifact, one loop. Read the brief",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/forge-home.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Forge & Flight",
+      "hasCanvas": false,
+      "bodyTextLen": 495,
+      "bodyTextHash": "a562c8bfbafd4fba15b17aac05ddebbd9e1c9921cbc3fa64c7ed67382ba07f42",
+      "bodyTextPrefix": "Hangar bay Forge & Flight One artifact, one loop. Read the brief",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/forge-home-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/forge-home.json"
+}
