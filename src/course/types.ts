@@ -74,7 +74,13 @@ export type LadderBenchId =
   | "coilspring"
   | "locate"
   | "layers"
-  | "takt";
+  | "takt"
+  | "face"
+  | "transition"
+  | "scc"
+  | "wear"
+  | "scale"
+  | "clocks";
 
 export type BenchId =
   | "families"
@@ -141,6 +147,12 @@ export type Lesson = {
   title: string;
   minutes: number;
   lede: string;
+  /** Taught from a familiar picture. Three parts separated by " || ": the picture, the word, why the rule has that shape. */
+  start: string;
+  /** When you are here, what you do, and when you stop. Three parts separated by " || ". */
+  use: string;
+  /** One worked case. Three parts separated by " || ": the object, the arithmetic, the call. */
+  example: string;
   ideas: [Idea, Idea, Idea];
   bench: BenchId;
   prompt: string;

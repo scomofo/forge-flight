@@ -38,6 +38,9 @@ export const lessons: Lesson[] = [
     title: "The four families",
     minutes: 9,
     lede: "You will name the right material family for a job, and say which requirement forced that choice.",
+    start: "A paperclip bends and stays bent. A plate hits the floor and shatters. A plastic bottle dents and springs partway back. A fishing rod is strong when you flex it and easy to split the long way. || Those are four families: metal, ceramic, polymer, and composite. A family is a way the atoms hold. That way arrives as a pack. You do not get one virtue alone. || You name the family from the demand that cannot be missed, such as conduct, stay hot, take a hit, or be strong in one direction. The brand name comes after.",
+    use: "A job names a demand: conduct, stay hot, take a hit, or be strong in one direction. || Pick the family that demand forces, and say the demand out loud. || You can name the family from the demand, not from a brand. Do not pick a composite because it sounds advanced.",
+    example: "A kiln shelf has to sit at 1400°C and is allowed to crack. || A polymer is gone long before that temperature. A soft metal sags. A ceramic keeps its shape and pays with brittleness. || You start with ceramics. The temperature decided, not the prestige of the material.",
     ideas: [
       {
         heading: "Family before alloy",
@@ -117,6 +120,9 @@ export const lessons: Lesson[] = [
     title: "Bonding",
     minutes: 10,
     lede: "You will connect the bond type to conductivity, melting temperature, and whether the solid bends or snaps.",
+    start: "Copper wire bends in your fingers and still lights a bulb. A grain of table salt does neither. An ice cube melts in your hand while the water itself is unchanged. || The bond is how the atoms hold. In a metal the electrons are a shared sea, so layers can slide and the piece stays whole, and electricity can drift. In salt the charges are locked to their partners. In ice the molecules are intact and only the weak ties between them let go. || Conduct, melt, and bend-or-snap move together because they are the same hold. They are not three separate dials.",
+    use: "You need to know if a solid conducts, when it melts, and whether it bends or snaps. || Tie all three to the bond. A metal conducts and bends. An ionic or network solid usually does neither, as a solid. A molecular solid melts when the weak ties between molecules let go. || The three properties move together. Do not treat them as separate dials.",
+    example: "A copper wire and a glass stirring rod. || The copper bends and still conducts, because the electron sea holds after the planes slip. The glass snaps, and as a solid it does not conduct. || You do not try to draw the glass into wire, and you do not insulate a circuit with the copper.",
     ideas: [
       {
         heading: "Four useful pictures",
@@ -189,6 +195,9 @@ export const lessons: Lesson[] = [
     title: "The stress–strain curve",
     minutes: 12,
     lede: "You will read stiffness, strength, ductility, and toughness as four different features of one curve.",
+    start: "Pull a rubber band, a paperclip, and a stick of chalk. The band springs back. The paperclip stays bent. The chalk snaps with almost no warning. || Draw the pull. Stress is the pull shared over the area. Strain is the stretch compared with the length you started with. The steepness of the first straight part is stiffness. The stress where it stops springing all the way back is yield strength. How far it stretches after that is ductility. The area under the curve is toughness, the energy it absorbed before it broke. || A steep line is not the word strong, and a high peak is not the word tough. You point at the feature you mean.",
+    use: "Someone hands you a curve and calls the material strong. || Read four different things. The slope is stiffness. A stress on the curve is strength. The strain after yield is ductility. The area is toughness. || You can point at each one. Do not call a steep slope strong, or a high peak tough.",
+    example: "A mild-steel bar and a glass rod, pulled on the same machine. || The steel has a slope, then a yield, then a long stretch. The area under that curve is large. The glass is steep and then gone, with almost no area. || You call the steel tough and the glass stiff. The steep line was not strength, and it was not toughness.",
     ideas: [
       {
         heading: "Slope is stiffness, not strength",
@@ -271,6 +280,9 @@ export const lessons: Lesson[] = [
     title: "Side by side",
     minutes: 10,
     lede: "You will compare materials using the column the job needs, including strength divided by density.",
+    start: "A steel nail and a pine stick can both hold a light frame. The nail is smaller. The stick is lighter. Which one wins depends on whether you ran out of strength or out of weight you are willing to carry. || A column is one property and its unit: how heavy, how stiff, how strong. Specific strength is strength divided by density. It is the strength you get for each unit of weight. || Change which column the job needs and the winner changes. One number is not a ranking of materials.",
+    use: "The job needs one column, not a general ranking. || Read that column, with its unit. If the job is a light tie, use strength divided by density. || The winner can change because you changed the column. Do not crown a material from one number.",
+    example: "A steel bike spoke and a carbon-fiber spoke, both able to carry the load. || Steel can win the raw strength column and lose strength divided by density, because it is much heavier. The fiber's win is only along the fiber. || You pick the column the spoke actually needs. One column is not a winner.",
     ideas: [
       {
         heading: "Read the column, name the unit",
@@ -344,6 +356,9 @@ export const lessons: Lesson[] = [
     title: "Grains and processing",
     minutes: 10,
     lede: "You will predict how grain size and a hot anneal change the yield strength of the same alloy.",
+    start: "A stack of tiny bricks is hard to slide, because you keep hitting the joints. A stack of huge bricks slides in long runs. || A metal is a mosaic of little crystals, called grains. The edges between them block the sliding that makes a permanent bend. Smaller grains mean more edges, so it takes a higher stress to bend it for good. Hold it hot and the grains grow, the edges get fewer, and that stress falls. The recipe of the alloy did not change. || You write the grain size, or the heat that grew the grains, next to the alloy name. The name alone did not say how strong it is.",
+    use: "Same alloy, two grain sizes, and you need the yield. || Finer grains raise the yield. A hot anneal grows the grains and the yield falls. || You predict the direction before you read the number. Do not treat a heat treatment as a new chemistry.",
+    example: "Two bars of the same alloy. One has 20 μm grains. You then hold it hot until the grains are 200 μm. || With this page's constants, yield falls from about 254 MPa to about 162 MPa. The chemistry line did not move. || You write the grain size, or the anneal, next to the alloy. The name alone did not specify the yield.",
     ideas: [
       {
         heading: "A metal is a mosaic",
@@ -425,6 +440,9 @@ export const lessons: Lesson[] = [
     title: "Choosing",
     minutes: 11,
     lede: "You will screen materials with a strength floor and a density ceiling, then rank whoever is left.",
+    start: "You will not buy a paddle that snaps, and you will not buy one that sinks the boat. Anything that fails either of those is out of the shop before you argue about which survivor feels nicest. || A screen is a hard limit: strength at least this, weight at most that. An index is how you rank only the ones that passed, for example strength per weight. || A material that already missed a limit cannot win. You throw it out first, then you rank.",
+    use: "You have a strength floor and a density ceiling. || Throw out anything that misses a limit. Rank only the survivors by the index the job wants. || A point outside the window cannot win. Do not fall in love with a material that already failed a screen.",
+    example: "A light tie rod must be at least 200 MPa and no denser than 3 g/cm³. || Steel may be strong enough and still too dense, so it leaves before anyone ranks it. Among what remains, you sort by strength per density. || A point that missed the window cannot win, even if its specific strength looks heroic.",
     ideas: [
       {
         heading: "Log axes, clustered families",
@@ -497,6 +515,9 @@ export const lessons: Lesson[] = [
     title: "Where a crack is born",
     minutes: 10,
     lede: "You will say where a fatigue crack starts in a smooth metal, and which property lasts longer when the strain is large.",
+    start: "Bend a paperclip hard once and it stays bent. Wiggle it only a little, over and over, and a crack still appears at the crease. You never bent it as far as the first time. || That crack from repetition is fatigue, even in a smooth piece. When the wiggle is tiny, the metal that resists the first permanent bend lasts longer. When the wiggle is large, the metal that can stretch a lot without tearing lasts longer. || A single pull does not tell you which one survives. You ask how much of the stretch is permanent.",
+    use: "A smooth metal will be cycled, and the strain is either small or large. || At a small strain the stronger steel lasts longer, because the elastic term dominates. At a large strain the more ductile steel lasts longer, because the plastic term dominates. || You name which term is larger before you pick the winner. Do not use the static yield as a life.",
+    example: "A smooth shaft, fully reversed, at a strain of 0.2%, then the same shaft at 1%. || At 0.2% the hard steel's elastic term is almost the whole strain, so it lasts longer. At 1% the plastic term dominates, and the milder, more ductile steel lasts longer. || You name which term is larger before you pick the steel. The static yield is not a life.",
     ideas: [
       {
         heading: "Slip that does not come back",
@@ -569,6 +590,9 @@ export const lessons: Lesson[] = [
     title: "The design loop",
     minutes: 9,
     lede: "You will write requirements as weights and watch the winning concept change when the weights change.",
+    start: "Say only 'a good water bottle' and every idea can claim it won. Say 'keep water cold for four hours, under 400 grams, under 30 dollars' and an idea can lose. || A requirement is a demand written so that a design can fail it. A concept is one candidate. A weight is how much you care about one demand when two of them fight. || You write the demands before you fall in love with a shape. If you change your mind about what matters, the winner is allowed to change, where someone can see it.",
+    use: "The brief is still a mood. || Write each demand as a number, score more than one concept, and set weights. || A change in priority changes the winner in the open. Do not sketch until a demand can be lost.",
+    example: "A day-hike bottle. You set 'stays cold' to 5 and 'light' to 1. || The vacuum steel bottle wins on that weighting. Swap the weights so light is 5 and cold is 1, and a plain plastic wall can take the lead. The bottle scores never moved. || You write the weights down, because they are the decision. A mood cannot lose.",
     ideas: [
       {
         heading: "A problem without numbers is a mood",
@@ -641,6 +665,9 @@ export const lessons: Lesson[] = [
     title: "Equilibrium",
     minutes: 11,
     lede: "You will find both support forces on a beam and check that they add up to the load.",
+    start: "A seesaw. Sit close to the middle and a lighter friend at the end can lift you. The frame under the middle feels both of you. || Equilibrium means the board is not starting to shift or spin. The upward pushes add up to the downward ones, and the turning effects cancel. The support nearer the load carries more of it. || You find each support from the turning, then you add them. If they do not add up to the load, one of the numbers is wrong.",
+    use: "A beam on two supports carries one load, and you need both support forces. || Take moments. Then add the two reactions and demand that they equal the load. || The nearer support is larger and the sum matches. Do not report one reaction without the check.",
+    example: "A 4 m plank on two sawhorses, with a 20 kN crate 1 m from the left horse. || The left horse takes 20 × 3 / 4 = 15 kN. The right takes 20 × 1 / 4 = 5 kN. They add to 20 kN. || The nearer horse is busier. You do not report 15 kN until the two horses add up to the crate.",
     ideas: [
       {
         heading: "Isolate the body",
@@ -714,6 +741,9 @@ export const lessons: Lesson[] = [
     title: "Stress and safety",
     minutes: 11,
     lede: "You will compute stress, stretch, and factor of safety, and say when the bar yields.",
+    start: "Hang the same weight on a thin wire and on a thick one. The thin one stretches more and breaks first. The weight did not change. Less metal had to carry it. || Stress is the force shared over the area that carries it. Strain is the change in length divided by the length you started with. While it still springs back, strain is stress divided by stiffness. The factor of safety is the stress the material can take, divided by the stress you are asking of it. || A smaller area raises the stress. A factor below one means you have asked for more than it can give. A scratch or a thread makes a local peak worse than this average.",
+    use: "A bar carries an axial force and you need to know if it yields. || Stress is force over area. While it is elastic, strain is stress over modulus. The factor of safety is allowable over actual. || A factor below 1 is a failure, not a margin. Do not stop at the average if the shape has a notch.",
+    example: "A 10 mm mild-steel rod, 250 mm long, carrying 10 kN. Yield is 250 MPa. || Area is about 78.5 mm², so the stress is about 127 MPa. The factor of safety is 250 / 127, about 2. The elastic stretch is a fraction of a millimeter. || Above 250 MPa you call yield, not a tight margin. A notch would make the local peak worse than this average.",
     ideas: [
       {
         heading: "Spread the force",
@@ -788,6 +818,9 @@ export const lessons: Lesson[] = [
     title: "Beams and stiffness",
     minutes: 11,
     lede: "You will separate “will it break?” from “is it too saggy?”, and see how span and depth change the sag.",
+    start: "A yardstick across two chairs sags when you set a book in the middle. A deeper stick sags less. Slide the chairs closer and it sags less again. It may never snap. || Snapping is a stress question. Sagging is a different question. For this simple beam the sag grows with the load and with the span times itself times itself, and it shrinks as the depth does the same. Stiffness of the material matters too. || A beam can be strong enough and still too floppy to use. You say which one failed. Making it deeper helps more than a first guess, because depth is cubed.",
+    use: "The beam may be strong enough and still sag too much. || Check stress and deflection as two requirements. Depth is cubed in the stiffness. Span is worse. || You can say which requirement failed. Do not thicken a beam to fix a span you were allowed to shorten.",
+    example: "A bookshelf, 1 m between supports. The usual sag limit people quote is the span divided by 250, which is 4 mm. || Doubling the depth multiplies the second moment by 8, so the sag falls by about 8. Shortening the span does even more, because length is cubed. || A shelf that is not breaking can still be too springy. You say which test it failed.",
     ideas: [
       {
         heading: "Length is expensive",
@@ -852,6 +885,9 @@ export const lessons: Lesson[] = [
     title: "Tradeoffs",
     minutes: 9,
     lede: "You will throw out an option that loses on every criterion, then let your weights choose among the rest.",
+    start: "One shelf is worse than another at holding books, at its own weight, at cost, and at looks. Caring more about looks cannot save it. It already lost every race you listed. || Dominated means some other option is at least as good on everything you care about, and better on one. Weights are your priorities. They only choose among the options that were not already beaten. A demand that can veto, such as 'must hold 30 kg,' is a screen, not a score. || You throw the beaten option out before any arithmetic. You do not let a high mark somewhere else hide a fatal flaw.",
+    use: "Several concepts already meet the hard requirement. || Drop any concept that loses on every criterion. Then weight what remains. || A dominated option is gone before the weights, and the winner is the consequence of the weights you wrote. Do not average a criterion that can veto.",
+    example: "Four wall shelves, and particle board is worse than the plywood box on stiffness, mass, cost, and looks. || No set of positive weights can make the particle board win. Raise 'looks' and a handsome shelf leads the ones that remain. Raise 'cost' and a plainer one leads. || You throw the dominated shelf out before the arithmetic. A weight is not allowed to rescue it.",
     ideas: [
       {
         heading: "Dominated options",
@@ -926,6 +962,9 @@ export const lessons: Lesson[] = [
     title: "How things fail",
     minutes: 12,
     lede: "You will tell buckling apart from yield, and name fatigue and corrosion as two other ways a part can fail.",
+    start: "Stand a plastic ruler on end and push down. It bows sideways long before it crumples. Bend a paperclip many times and it breaks, never on the first bend. Leave a nail in the rain and it gets thinner until a load it used to carry snaps it. || Yielding is the material crushing or stretching for good. Buckling is that sideways bow of something long and skinny in compression. Fatigue is the crack from repetition. Corrosion is the material disappearing, so the same force sits on less area. || You ask which of those the situation is inviting before you compute the one you remember. A high strength does not stop a slender piece from bowing.",
+    use: "The part is loaded and someone is about to check only the yield. || Ask if it is slender and compressed, cycled, or losing area, before you compute yield. || The first mechanism is named. Do not hand in a yield check for a part that buckles first.",
+    example: "A steel post, 20 mm square and 1.2 m tall, pushed on its end. Yield is 250 MPa. || Yield would wait until about 100 kN. Euler buckling arrives near 18 kN. The post bows while the steel is still, on paper, fine. || You check buckling first. A generous yield strength did not save a slender strut.",
     ideas: [
       {
         heading: "Buckling is not yielding",
@@ -1009,6 +1048,9 @@ export const lessons: Lesson[] = [
     title: "The notch",
     minutes: 9,
     lede: "You will separate the average stress from the peak at a fillet, and refuse to trust the average alone.",
+    start: "A small chip in a drinking glass is where it cracks. The rest of the glass was not feeling much. The chip was. || The average stress is the force divided by the whole area. At a sharp inside corner, a hole, or a scratch, the local stress is higher. A small round hole in a wide plate raises it to about three times the average. Opening the corner into a gentle fillet brings the peak down. || You compare the peak with what the material can take. A calm average can sit next to a corner that has already given up.",
+    use: "The drawing quotes an average stress and the part has a fillet or a hole. || Multiply the average by the concentration. Open the radius if the peak is the problem. A small hole in a wide plate is about 3. || The peak, not the average, is the number you compare with the allowable. Do not report force over area as the local stress.",
+    example: "A shouldered shaft with a 0.5 mm fillet, and a wide plate with a small round hole. || The average force-over-area is the polite number. The hole's peak is about three times that average. Opening the fillet from 0.5 mm to 4 mm is how you actually lower the peak. || You compare the peak with the allowable. You do not sign the drawing on the average.",
     ideas: [
       {
         heading: "The average is the polite number",
@@ -1082,6 +1124,9 @@ export const lessons: Lesson[] = [
     title: "A load that returns",
     minutes: 10,
     lede: "You will read a life off a repeating stress that is still below yield.",
+    start: "You can break a wire by wiggling it, with a bend so small that it never stays bent. Every single wiggle was 'under the limit.' The thousandth was the one that finished it. || Fatigue life is how many repetitions a wiggle of that size survives. The usual chart is for a smooth, dry piece, pulled equally one way and then the other. Being under the stress that would bend it permanently is not the same sentence as lasting forever. || You read a life off the size of the repeating stress. You do not stop at the words 'below yield.'",
+    use: "The stress returns, and it is still below yield. || Read a life off the repeating stress. The chart you are reading is a smooth, polished, fully reversed coupon. || A stress below yield still has a life, or you can say that it does not. Do not treat under yield as forever.",
+    example: "An aluminum lever cycled at 120 MPa, under its yield, and a steel lever cycled at 200 MPa. || The aluminum still comes off the life chart with a finite life. The steel may sit on a plateau and be treated as a runout. Both numbers were below yield. || Under yield is not forever. You read the chart for that metal, and you remember it was a smooth coupon.",
     ideas: [
       {
         heading: "Below yield is not forever",
@@ -1155,6 +1200,9 @@ export const lessons: Lesson[] = [
     title: "The crack grows",
     minutes: 11,
     lede: "You will take a crack that already exists and see why it crawls, then runs.",
+    start: "A tiny cut in a plastic bag stays put while you pull gently. Pull harder, or let the cut get longer, and the bag suddenly rips across. || The crack is already there. How hard the tip is driven depends on the stress and on the square root of how long the crack is. Each cycle can advance it a little. A longer crack is driven harder, so it advances faster. || Most of the life is the early, slow part. The rip at the end is short. You cannot turn a toughness and a stress into a cycle count by dividing them once.",
+    use: "A crack already exists. || Compute how hard the tip is driven, then how far it grows per cycle. The rate rises as the crack grows, so the last part of the life is short. || You can say the crack crawls, then runs. Do not divide a toughness by a stress and call that a life.",
+    example: "A steel bracket already has a 0.5 mm edge crack and sees 120 MPa, fully reversed. || The tip is driven by the stress times the square root of the crack. Double the stress and the growth per cycle jumps by much more than two, because the rate depends on that driving force raised to a power. || You do not divide a toughness by a stress and call the result a life. The crack crawls, then runs.",
     ideas: [
       {
         heading: "One stripe per cycle",
@@ -1228,6 +1276,9 @@ export const lessons: Lesson[] = [
     title: "The bolt",
     minutes: 9,
     lede: "You will tell a clamping bolt from a pin, and keep the threads out of the shear plane.",
+    start: "Two boards squeezed in a clamp resist sliding. Loosen the clamp and the bolt itself has to hold the slide, and it shears. If the skinny threaded part is right there in the sliding plane, that is where it shears. || The clamp force is the squeeze. Friction from that squeeze can carry the sliding load. Once the slide is bigger than the friction, the bolt is only a pin. Threads are a smaller area than the smooth shank. || You decide whether friction is still doing the job. You keep the threads out of the plane that would cut them.",
+    use: "A joint must carry shear. || Clamp it so friction carries the shear. If the shear exceeds the friction, the bolt becomes a pin. Keep the threads out of that plane. || You know whether the joint is clamping or pinning. Do not put the threads in the shear plane.",
+    example: "A bracket joint, clamped to 12 kN, asked to carry 1 kN of shear, then 4 kN. || At 1 kN, friction holds and the shank sees no shear. At 4 kN the friction is spent, the joint slips, and the bolt becomes a pin. If the threads sit in that plane, the same force crosses a smaller area. || You say whether the joint is clamping or pinning. Threads stay out of the shear plane.",
     ideas: [
       {
         heading: "Clamp is tension",
@@ -1302,6 +1353,9 @@ export const lessons: Lesson[] = [
     title: "A tensile mean",
     minutes: 9,
     lede: "You will put a steady tension under a wiggle and watch a runout leave the safe side of the Goodman line.",
+    start: "A bracket always holds the weight of the books. People also bump the shelf. The books are the steady pull. The bump is the wiggle. A wiggle that was fine by itself can be too much on top of the books. || The mean is the steady part. The amplitude is the wiggle around it. The Goodman line is a fence that moves in as the steady pull grows. The highest instant, steady plus wiggle, still has to stay under the stress that would bend it for good. || A test that wiggles equally both ways had no books on the shelf. You do not reuse its 'lasts forever' number once a steady tension is there.",
+    use: "The stress wiggles around a tension that is not zero. || Put the amplitude and the mean on the Goodman line. Also check that the peak, mean plus amplitude, is still under yield. || You know which limit you hit first. Do not reuse a fully reversed endurance once a mean tension is present.",
+    example: "A steel rod with a 200 MPa wiggle and no steady tension, then the same wiggle added to a 250 MPa tension. || The first point sits inside the Goodman line. That 200 MPa was a runout only for a fully reversed test. The second point is outside the line, and the peak is 450 MPa, which also has to face yield. || You check the line and the peak. A fully reversed plateau does not survive a mean tension.",
     ideas: [
       {
         heading: "The plateau was for zero mean",
@@ -1375,6 +1429,9 @@ export const lessons: Lesson[] = [
     title: "Measure and vectors",
     minutes: 10,
     lede: "You will add vectors by their components, and refuse to add the magnitudes when the directions differ.",
+    start: "Walk 3 blocks east and 4 blocks north. You are not 7 blocks from home. Diagonally, you are 5. || A vector has a size and a direction. You add the eastward parts into one eastward total, and the northward parts into one northward total. The straight-line result is the diagonal of those two totals. || You add sizes only when the arrows point the same way. Otherwise the diagonal is shorter than the sum of the sizes.",
+    use: "Two vectors do not point the same way. || Add the components, then take the length of that sum. || The resultant is shorter than the sum of the lengths, unless they point the same way. Do not add the magnitudes.",
+    example: "A wagon pulled with 3 N east and 4 N north. || The components add to 3 N and 4 N. The length of that sum is 5 N, not 7 N. || You add components. You only add the magnitudes when the two pulls point the same way.",
     ideas: [
       {
         heading: "Pick a unit and stay there",
@@ -1437,6 +1494,9 @@ export const lessons: Lesson[] = [
     title: "Kinematics",
     minutes: 11,
     lede: "You will relate position, velocity, and acceleration, and read displacement as the area under the velocity graph.",
+    start: "A speedometer says how fast your position is changing. The push in the seat when you accelerate says how fast your speed is changing. How far you traveled is not the speed. It is the speed times how long you held it, including the moments you were going faster. || Velocity is the slope of position against time. Acceleration is the slope of velocity. The distance you gained is the area under the velocity graph. || A high speed for a short time can be a short trip. You do not read the speedometer as if it were the odometer.",
+    use: "You have a velocity that changes, and you need where the body ends up. || Velocity is the slope of position. Acceleration is the slope of velocity. The area under velocity is the change in position. || A negative area is a move backward. Do not treat a high speed as a large displacement.",
+    example: "A cart starts from rest and accelerates at 2 m/s² for 3 s. || Speed at the end is 6 m/s. The area under that velocity line is a triangle, 3 s by 6 m/s, so the cart moves 9 m. || A high speed is not, by itself, a long trip. The area is the trip.",
     ideas: [
       {
         heading: "Velocity is the slope of position",
@@ -1506,6 +1566,9 @@ export const lessons: Lesson[] = [
     title: "Forces",
     minutes: 12,
     lede: "You will say when a pushed block stays still, and the moment the push is large enough to accelerate it.",
+    start: "Push a fridge gently. It does not move. The floor is pushing back exactly as hard as you are. Push harder than the floor will grip, and only then does it start to go. || If every push on an object cancels, its acceleration is zero. That can mean sitting still, or already coasting at a steady speed. Friction's budget is a grip coefficient times the weight. Under that budget, friction matches you. Over it, the leftover push equals mass times acceleration. || Not moving is not the same as no force. You spend the grip budget before anything speeds up.",
+    use: "A block is pushed and it has not moved yet. || Compare the push with friction's budget. Below that budget the acceleration is zero. Above it, the net force sets the acceleration. || At rest and zero force are different sentences. Do not start the acceleration before the budget is spent.",
+    example: "A 2 kg crate on a floor with μ of 0.30. || Its weight is about 20 N, so the friction budget is about 6 N. A 4 N push is matched by friction and the crate stays put. A 10 N push leaves about 4 N, and the crate accelerates at about 2 m/s². || At rest is not the same sentence as zero force. You do not start the acceleration before the budget is spent.",
     ideas: [
       {
         heading: "Zero net force is not zero motion",
@@ -1582,6 +1645,9 @@ export const lessons: Lesson[] = [
     title: "Energy",
     minutes: 11,
     lede: "You will watch potential become kinetic, see friction divert some of it into heat, and check that mass does not change the speed.",
+    start: "A swing is high and slow at the end of its arc, and low and fast at the bottom. Drag your foot and it does not get as fast, and your shoe gets warm. || Height stores energy. Speed stores energy too, and speed is squared, so twice as fast is four times that store. Friction turns some of the height's energy into heat instead of speed. || With no friction, a heavier rider and a lighter one reach the same speed from the same height. Friction is what changes the speed. Mass is not.",
+    use: "A mass is about to drop and you need the speed at the bottom. || Turn the lost height into kinetic energy. If friction is present, subtract the work it stole. || Changing the mass does not change the speed, and friction does. Do not keep the mechanical energy after some of it became heat.",
+    example: "A 3 kg bag drops 2 m. Then you repeat it with friction that sends 30% of the lost height into heat, as on this page. || With no friction the speed at the bottom is about 6.3 m/s. The 3 kg did not matter. With 30% diverted, about 5.2 m/s remains. || Mass is not the lever. Friction is. You do not keep the mechanical energy after some of it became heat.",
     ideas: [
       {
         heading: "Work is force along the motion",
@@ -1658,6 +1724,9 @@ export const lessons: Lesson[] = [
     title: "Momentum",
     minutes: 11,
     lede: "You will show that an isolated collision keeps momentum, and that kinetic energy survives only when the collision is elastic.",
+    start: "A heavy bowling ball rolls into a lighter ball and they stick. They move off together, slower than the heavy ball was going. You also heard a thud. || Momentum is mass times velocity, the 'oomph.' If nothing outside shoves during the hit, the oomph afterward equals the oomph before. The energy of motion stays the same only when the hit is perfectly bouncy. A sticking hit spends some of that energy as noise and heat. || You can keep the oomph and still lose the energy of motion. Conserving one does not give you the other.",
+    use: "Two bodies hit, and nothing outside pushes during the hit. || Set the momentum after equal to the momentum before. If they stick, kinetic energy drops. If the hit is perfectly elastic, it does not. || You can say which quantity was conserved. Do not conserve kinetic energy just because you conserved momentum.",
+    example: "A 2 kg cart at 3 m/s hits a 1 kg cart at rest, and they stick. || Momentum before is 6 kg·m/s, so they leave together at 2 m/s. Kinetic energy falls from 9 J to 6 J. If the hit had been perfectly elastic, the 9 J would still be there. || Momentum survived the stick. Kinetic energy did not. You do not conserve both just because nothing outside pushed.",
     ideas: [
       {
         heading: "Inertia, already moving",
@@ -1739,6 +1808,9 @@ export const lessons: Lesson[] = [
     title: "Waves",
     minutes: 10,
     lede: "You will show that wave speed equals frequency times wavelength, and that amplitude is not wavelength.",
+    start: "Watch a jump rope. How fast you flick your wrist is one thing. The distance from crest to crest is another. How high the rope swings is a third. The wave runs along the rope, while a knot in the rope only goes up and down. || Frequency is the flicks per second. Wavelength is crest to crest. Amplitude is the height of the swing. The speed of the wave is frequency times wavelength. Amplitude is not in that product. || A taller wave is not a faster wave. The knot's up-and-down is not the wave traveling down the rope.",
+    use: "A wave has a frequency and a wavelength. || Multiply them to get the speed. Amplitude does not enter. || A taller wave is not a faster wave. Do not mix amplitude into the speed.",
+    example: "A jump rope flicked at 2 Hz, with 0.5 m between crests, and the hand moving 3 cm up and down. || Speed is 2 × 0.5 = 1 m/s. The 3 cm is the amplitude and does not enter. || A taller wave is not a faster wave. You multiply frequency by wavelength and stop.",
     ideas: [
       {
         heading: "Amplitude is not wavelength",

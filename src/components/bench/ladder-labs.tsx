@@ -50,7 +50,9 @@ type SketchKind =
   | "coil"
   | "nest"
   | "layers"
-  | "race";
+  | "race"
+  | "snap"
+  | "scar";
 
 type LabSpec = {
   prompt: string;
@@ -180,7 +182,7 @@ function Sketch({ kind, t, aux }: { kind: SketchKind; t: number; aux: Record<str
     );
   }
   if (kind === "crack") {
-    const len = 24 + 200 * ((t % 5) / 5) ** 3;
+    const len = aux.hold ? 36 : 24 + 200 * ((t % 5) / 5) ** 3;
     return (
       <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
         <rect x="30" y="48" width="260" height="40" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -469,6 +471,31 @@ function Sketch({ kind, t, aux }: { kind: SketchKind; t: number; aux: Record<str
       </svg>
     );
   }
+  if (kind === "snap") {
+    const cold = (aux.cold || 0) > 0.5;
+    return (
+      <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
+        {cold ? (
+          <>
+            <rect x="36" y="58" width="100" height="18" fill="none" stroke="currentColor" strokeWidth="2" />
+            <rect x="184" y="64" width="100" height="18" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M136 67 L160 80 L184 67" fill="none" stroke="currentColor" strokeWidth="2" />
+          </>
+        ) : (
+          <path d="M36 52 H120 Q160 96 200 52 H284 M36 82 H120 Q160 38 200 82 H284" fill="none" stroke="currentColor" strokeWidth="2" />
+        )}
+      </svg>
+    );
+  }
+  if (kind === "scar") {
+    const depth = 6 + Math.min(1, Math.max(0, aux.level || 0)) * 36;
+    return (
+      <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
+        <rect x="40" y="36" width="240" height="70" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d={`M70 50 Q160 ${50 + depth} 250 50`} fill="none" stroke="currentColor" strokeWidth="3" />
+      </svg>
+    );
+  }
   const twist = ((aux.twist || 0) * Math.PI) / 180;
   const y = 70 + Math.sin(twist) * 24;
   return (
@@ -539,6 +566,8 @@ const sortJobs = {
     prompt:
       "Read the service, then pick the damage that is impatient. || The note names the one that arrives first. Room-temperature yield is not always that one.",
     note: "Another mechanism can still be in the room. The question is which one you have to calculate before the others are worth arguing about.",
+    doneGood: "The impatient mechanism is separating from the one you happen to know how to calculate.",
+    doneBad: "Read the condition that cannot be ignored — time, a returning stress, a crack, or a slenderness — and match that.",
     jobs: [
       {
         job: "A bolt held at 600°C for a thousand hours.",
@@ -567,6 +596,8 @@ const sortJobs = {
     prompt:
       "Name the impatient mechanism for each part. || Buckling, fatigue, fracture, or creep. The material can be strong and still lose.",
     note: "A real review writes the one that arrives first, then checks the others. This sort only asks for the first.",
+    doneGood: "The impatient mechanism is separating from the one you happen to know how to calculate.",
+    doneBad: "Read the condition that cannot be ignored — time, a returning stress, a crack, or a slenderness — and match that.",
     jobs: [
       {
         job: "A long thin strut in compression. Yield strength is generous.",
@@ -590,6 +621,36 @@ const sortJobs = {
       },
     ],
     acts: ["Buckling", "Fatigue", "Fracture", "Creep"],
+  },
+  face: {
+    prompt:
+      "Read the face, then name the mode. || Dimples, a flat chevron face, beach marks, or grains. The last dull patch does not rename the marks behind it.",
+    note: "A diagram of the description, not a micrograph. Real faces mix. Name the mode that ran for the life, not the tear that finished it.",
+    doneGood: "The face is naming the mode. The calculation comes after the name.",
+    doneBad: "Match the marks. Dimples tear. A flat bright face cleaves. Beach marks fatigue. Grains are intergranular.",
+    jobs: [
+      {
+        job: "The break is a cup and cone. The surface is dull and full of tiny dimples.",
+        answer: "Ductile",
+        why: "Each dimple was a void that grew and joined. The metal used its ductility. This is overload.",
+      },
+      {
+        job: "The break is flat and bright, with chevron marks pointing back to one origin. Almost no neck.",
+        answer: "Cleavage",
+        why: "It parted on crystal planes. Little plasticity. Cold, a high rate, or a coarse grain pushes a steel here.",
+      },
+      {
+        job: "A thumbnail sits at the surface. Curved beach marks bow out from it. The last patch is dull.",
+        answer: "Fatigue",
+        why: "The thumbnail is the origin and the bands are cycles. The dull patch is only how it finished.",
+      },
+      {
+        job: "The face looks like rock candy. The crack followed the grain boundaries.",
+        answer: "Intergranular",
+        why: "The boundary was the weak path. That can be embrittlement or a chemical film. The grains themselves did not tear.",
+      },
+    ],
+    acts: ["Ductile", "Cleavage", "Fatigue", "Intergranular"],
   },
 } as const;
 
@@ -670,7 +731,53 @@ function DamageFilm({ kind }: { kind: string }) {
   );
 }
 
-function SortBench({ id }: { id: "duty" | "review" }) {
+function FaceFilm({ kind }: { kind: string }) {
+  return (
+    <div className="mt-5">
+      <svg viewBox="0 0 320 72" className="h-16 w-full" aria-hidden>
+        {kind === "Ductile" ? (
+          <>
+            <path d="M36 22 H120 Q160 58 200 22 H284" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M36 50 H110 Q160 18 210 50 H284" fill="none" stroke="currentColor" strokeWidth="2" />
+          </>
+        ) : null}
+        {kind === "Cleavage" ? (
+          <>
+            <path d="M40 16 H150 L168 36 L150 56 H40" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M280 16 H170 L152 36 L170 56 H280" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M168 36 L210 28 M168 36 L214 36 M168 36 L210 44" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          </>
+        ) : null}
+        {kind === "Fatigue" ? (
+          <>
+            <rect x="36" y="16" width="248" height="40" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M36 36 Q90 20 110 36 Q90 52 36 36" fill="currentColor" opacity="0.35" />
+            <path d="M36 36 Q140 14 160 36 M36 36 Q180 10 210 36" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          </>
+        ) : null}
+        {kind === "Intergranular" ? (
+          <path
+            d="M40 36 L70 18 L100 40 L130 16 L160 44 L190 20 L220 40 L250 18 L284 36"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+        ) : null}
+      </svg>
+      <p className="mt-2 text-sm leading-relaxed text-well-dim">
+        {kind === "Ductile"
+          ? "Ductile: a neck, then a dull face of dimples."
+          : kind === "Cleavage"
+            ? "Cleavage: flat, bright, chevrons back to the origin."
+            : kind === "Fatigue"
+              ? "Fatigue: a thumbnail origin and beach marks. The last patch can still be dull."
+              : "Intergranular: the crack followed the boundaries."}
+      </p>
+    </div>
+  );
+}
+
+function SortBench({ id }: { id: "duty" | "review" | "face" }) {
   const spec = sortJobs[id];
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
@@ -719,9 +826,7 @@ function SortBench({ id }: { id: "duty" | "review" }) {
         <div>
           <Readouts items={[{ label: "Matched", value: `${correct} of ${spec.jobs.length}` }]} />
           <p className="text-sm leading-relaxed text-well-dim">
-            {correct >= 3
-              ? "The impatient mechanism is separating from the one you happen to know how to calculate."
-              : "Read the condition that cannot be ignored — time, a returning stress, a crack, or a slenderness — and match that."}
+            {correct >= 3 ? spec.doneGood : spec.doneBad}
           </p>
         </div>
       ) : (
@@ -753,7 +858,7 @@ function SortBench({ id }: { id: "duty" | "review" }) {
           </div>
           {picked ? (
             <>
-              <DamageFilm kind={item.answer} />
+              {id === "face" ? <FaceFilm kind={item.answer} /> : <DamageFilm kind={item.answer} />}
               <p className="mt-4 text-sm leading-relaxed text-well-dim">{item.why}</p>
             </>
           ) : null}
@@ -763,7 +868,7 @@ function SortBench({ id }: { id: "duty" | "review" }) {
   );
 }
 
-const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
+const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec> = {
   torque: {
     prompt:
       "Set the angle to 90°, then to 30°. || The force is unchanged. The torque halves, because sin 30° is one half.",
@@ -1888,7 +1993,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   float: {
     prompt:
-      "Set the density to 500, then to 1500. || At 500 the block floats with half its volume under. At 1500 it sinks. The water did not get stronger. The block got heavier than the water it can push aside.",
+      "Decide whether the block floats, and how much of it is under. Set 500 kg/m³, then 1500. || At 500 it floats half under, because half the water's density carries the whole block. At 1500 it sinks. Stop. The floating fraction is only valid while it is at most 1.",
     note: "Block volume is 0.002 m³. Fresh water is 1000 kg/m³. g is 9.81. A floating block sinks until the displaced water weighs as much as the block. A denser block is fully under and still short.",
     animate: false,
     sketch: "hull",
@@ -1915,7 +2020,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   pipe: {
     prompt:
-      "Set the area to 0.010 m², then to 0.005 m². || Speed goes from 1 m/s to 2 m/s. The cubic meters per second did not change.",
+      "The flow stays 0.010 m³/s. Find the speed after the pipe narrows. Set the area to 0.010 m², then to 0.005 m². || Speed goes from 1 m/s to 2 m/s. The cubic meters per second did not change. This is not a pressure.",
     note: "Q is 0.010 m³/s. Nothing is stored and nothing leaks. Speed is Q divided by area. Pressure is not on this page.",
     animate: true,
     sketch: "flow",
@@ -1936,7 +2041,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   turn: {
     prompt:
-      "Set the radius to 2 m, then to 1 m. || Acceleration goes from 50 to 100 m/s². The speed stayed 10 m/s. The curve got tighter.",
+      "Speed stays 10 m/s. Find the inward acceleration on the tighter curve. Set the radius to 2 m, then to 1 m. || Acceleration goes from 50 to 100 m/s², toward the center. The speed did not change. A steady speed is not zero acceleration.",
     note: "a = v² / r with v fixed at 10 m/s. The number is the inward acceleration. The arm length in the drawing is the radius.",
     animate: true,
     sketch: "spin",
@@ -1957,7 +2062,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   diffuse: {
     prompt:
-      "Set the time to 4 hours, then to 16. || The front moves from 1 mm to 2 mm. Time was multiplied by four. Distance only doubled.",
+      "The front is at 1 mm after 4 hours. You need it at 2 mm. Set 4 hours, then 16. || The front moves from 1 mm to 2 mm. Four times the time, twice the distance. Do not double the hours and expect double the distance.",
     note: "x = √(D t) with D fixed at 0.25 mm²/h. One dimension. Temperature is not a slider, so D cannot change.",
     animate: false,
     sketch: "front",
@@ -1978,7 +2083,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   mixture: {
     prompt:
-      "Set the fiber fraction to 0, then to 0.60. || Modulus goes from 3.5 GPa to 139.4 GPa. That number is along the fibers. Across them it is not.",
+      "The pull is along the fibers. Find the modulus with no fiber, then at 0.60, and say which term did the work. || Modulus goes from 3.5 GPa to 139.4 GPa. Almost all of the 139 is the fiber. Across the fibers, do not use it.",
     note: "E = 230 Vf + 3.5 (1 − Vf), in GPa. Longitudinal rule of mixtures. The transverse modulus is not drawn and not reported.",
     animate: false,
     sketch: "fibers",
@@ -2000,7 +2105,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   pinshear: {
     prompt:
-      "Set the pin to 8 mm, then to 16 mm. || Shear stress falls from 79.6 MPa to 19.9 MPa. The 4000 N did not change. The area grew with the square of the diameter.",
+      "The load stays 4000 N on one plane. Find the stress at 8 mm, then at 16 mm. || Shear stress falls from 79.6 MPa to 19.9 MPa, a quarter, not a half. If the pin has two shear planes, this number is the wrong joint.",
     note: "One shear plane. τ = 4000 / (π d² / 4). A pin through two lugs would be double shear and about half of this. Bending of the pin is left out.",
     animate: false,
     sketch: "pin",
@@ -2022,7 +2127,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   coilspring: {
     prompt:
-      "Set the wire to 2 mm, then to 4 mm. || The rate goes from 2500 N/m to 40000 N/m. The wire only doubled. The fourth power made it sixteen times.",
+      "You need a rate, and the lever you have is the wire. Set 2 mm, then 4 mm. || The rate goes from 2500 N/m to 40000 N/m. The wire only doubled. The fourth power made it sixteen times. This is not the stress in the wire.",
     note: "k = G d⁴ / (8 D³ N). G is 80 GPa. Mean diameter is 20 mm. Active coils are 8. This is rate, not the stress in the wire. The coil draws shorter as the rate rises, so the picture matches the stiffness, not a load.",
     animate: false,
     sketch: "coil",
@@ -2044,7 +2149,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   locate: {
     prompt:
-      "Set 3 on the base, 2 on the side, and 1 on the end. || No motion is left. Then set the base to 4. || Still none left. The extra contact did not remove a seventh motion.",
+      "Locate the part. Then try to locate it more. Set 3 on the base, 2 on the side, and 1 on the end. Then set the base to 4. || At 3, 2, and 1, no motion is left. The fourth contact removes nothing. A face that is already full cannot stop a new motion.",
     note: "A free part has 6 motions. The base caps at 3, the side at 2, the end at 1. Contacts past a cap are wasted. The picture shows every contact you placed, including the wasted ones.",
     animate: false,
     sketch: "nest",
@@ -2076,7 +2181,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   layers: {
     prompt:
-      "Leave the knockdown at 2. || Between layers you have 20 MPa. Along the roads you still have 40. Then set the knockdown to 1 and put it back. || 1 is the claim that the bond equals the road.",
+      "The load peels one layer off the next. Read the bond at a knockdown of 2. Then set it to 1 and put it back. || At 2, the bond is 20 MPa and the road is still 40. Use 20 for that pull. Knockdown 1 is a claim that you measured, not a usual print.",
     note: "Strength along a road is 40 MPa. Strength between layers is 40 divided by the knockdown. Voids beyond that ratio are not in the model. The gaps in the drawing grow with the knockdown. They are a picture, not a measured thickness.",
     animate: false,
     sketch: "layers",
@@ -2097,7 +2202,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
   },
   takt: {
     prompt:
-      "Set demand to 50, then to 200. || Takt goes from 8 min to 2 min. The station still takes 4. At 50 you have slack. At 200 you are 2 minutes late on every part.",
+      "You have 400 minutes. Find the pace, then say if the 4-minute station is late. Set demand to 50, then to 200. || Takt goes from 8 min to 2 min. At 50 you have slack. At 200 you are 2 minutes late on every part. Speeding a station that is already inside the pace does not serve this demand.",
     note: "400 minutes available. One station takes 4 minutes. Takt is 400 divided by demand. No breaks and no scrap. The pale bar is takt. The solid bar is the station.",
     animate: false,
     sketch: "race",
@@ -2120,15 +2225,153 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
       };
     },
   },
+  transition: {
+    prompt:
+      "Set the temperature to −20°C, then to 20°C. || Energy goes from about 20 J to about 80 J. Same steel. Cold, it snaps. Warm, it tears.",
+    note: "Teaching Charpy curve centered at 0°C. Lower shelf 15 J, upper shelf 85 J. Not a named plate. Thickness, notch sharpness, and rate move a real transition.",
+    animate: false,
+    sketch: "snap",
+    sliders: [{ key: "temp", label: "Temperature", min: -40, max: 40, step: 5, digits: 0, suffix: "°C" }],
+    initial: { temp: -20 },
+    view: (v) => {
+      const temp = n(v, "temp");
+      const energy = 15 + 70 / (1 + Math.exp(-temp / 8));
+      const call = temp <= -10 ? "Snaps" : temp >= 10 ? "Tears" : "In between";
+      return {
+        readouts: [
+          { label: "Energy", value: `${fmt(energy, 0)} J` },
+          { label: "Temperature", value: `${fmt(temp, 0)}°C` },
+          { label: "Call", value: call },
+        ],
+        sentence:
+          temp < 0
+            ? `At ${fmt(temp, 0)}°C the energy is about ${fmt(energy, 0)} J. You are on the cold side of 0°C, so this teaching steel snaps.`
+            : `At ${fmt(temp, 0)}°C the energy is about ${fmt(energy, 0)} J. You are on the warm side of 0°C, so it tears instead.`,
+        aux: { cold: temp < 0 ? 1 : 0 },
+      };
+    },
+  },
+  scc: {
+    prompt:
+      "Hold 200 MPa in dry air. || The rate is zero. Switch the environment on. || It grows at 0.04 mm per year. Then drop the stress under 120 MPa. || It stops, even though the chemical is still there.",
+    note: "Threshold 120 MPa. Wet rate is 0.04 mm/year at 200 MPa and falls to zero at the threshold. Dry rate is always zero. Not a named alloy-environment pair.",
+    animate: true,
+    sketch: "crack",
+    choices: {
+      key: "env",
+      options: [
+        { value: 0, label: "Dry air" },
+        { value: 1, label: "Wet" },
+      ],
+    },
+    sliders: [{ key: "stress", label: "Stress", min: 40, max: 280, step: 20, digits: 0, suffix: " MPa" }],
+    initial: { env: 0, stress: 200 },
+    view: (v) => {
+      const wet = n(v, "env") > 0.5;
+      const stress = n(v, "stress");
+      const rate = wet && stress > 120 ? (0.04 * (stress - 120)) / 80 : 0;
+      return {
+        readouts: [
+          { label: "Growth", value: `${fmt(rate, 3)} mm/y` },
+          { label: "Stress", value: `${fmt(stress, 0)} MPa` },
+          { label: "Environment", value: wet ? "Wet" : "Dry" },
+        ],
+        sentence:
+          rate > 0
+            ? `Both partners are present. Above 120 MPa in the wet environment the rate is ${fmt(rate, 3)} mm per year.`
+            : wet
+              ? `The chemical is here, but ${fmt(stress, 0)} MPa is not over the 120 MPa threshold. The rate is zero.`
+              : "Dry air. The stress has no chemical partner, so this crack does not grow.",
+        aux: { hold: rate > 0 ? 0 : 1 },
+      };
+    },
+  },
+  wear: {
+    prompt:
+      "Set 200 N, 1000 m, and 1000 MPa. || The volume lost is 20 mm³. Then set hardness to 2000 MPa. || The volume falls to 10 mm³. Hardness was the lever. Yield was not.",
+    note: "V in mm³ = 1000 × k × F × s / H, with k = 10⁻⁴ and H in MPa. The 1000 turns newtons, meters, and megapascals into cubic millimeters. Dry sliding. No grit and no oil.",
+    animate: false,
+    sketch: "scar",
+    sliders: [
+      { key: "load", label: "Load", min: 50, max: 400, step: 50, digits: 0, suffix: " N" },
+      { key: "distance", label: "Distance", min: 200, max: 2000, step: 100, digits: 0, suffix: " m" },
+      { key: "hard", label: "Hardness", min: 250, max: 2000, step: 50, digits: 0, suffix: " MPa" },
+    ],
+    initial: { load: 200, distance: 1000, hard: 1000 },
+    view: (v) => {
+      const volume = (1e-4 * n(v, "load") * n(v, "distance")) / n(v, "hard") * 1000;
+      return {
+        readouts: [
+          { label: "Volume lost", value: `${fmt(volume, 1)} mm³` },
+          { label: "Load", value: `${fmt(n(v, "load"), 0)} N` },
+          { label: "Hardness", value: `${fmt(n(v, "hard"), 0)} MPa` },
+        ],
+        sentence: `1000 × 10⁻⁴ × ${fmt(n(v, "load"), 0)} × ${fmt(n(v, "distance"), 0)} / ${fmt(n(v, "hard"), 0)} = ${fmt(volume, 1)} mm³. Hardness is in MPa. Double it and the pile halves.`,
+        aux: { level: Math.min(1, volume / 80) },
+      };
+    },
+  },
+  scale: {
+    prompt:
+      "Set the section to 10 mm, then to 200 mm. || Toughness and yield stay put. L is 40 mm. The 10 mm section yields through. The 200 mm section can fracture first.",
+    note: "KIc = 80 MPa√m and yield = 400 MPa, so L = (KIc / yield)² = 40 mm. Under L the call is yield-first. Over L, fracture can come first. No crack shape is specified.",
+    animate: false,
+    sketch: "meter",
+    sliders: [{ key: "size", label: "Section", min: 5, max: 300, step: 5, digits: 0, suffix: " mm" }],
+    initial: { size: 10 },
+    view: (v) => {
+      const size = n(v, "size");
+      const limit = 40;
+      const fracture = size > limit;
+      return {
+        readouts: [
+          { label: "Section", value: `${fmt(size, 0)} mm` },
+          { label: "L", value: "40 mm" },
+          { label: "Call", value: fracture ? "Fracture can be first" : "Yields first" },
+        ],
+        sentence: fracture
+          ? `${fmt(size, 0)} mm is over 40 mm. The same metal can fracture while the net section is still under yield.`
+          : `${fmt(size, 0)} mm is under 40 mm. This section yields through before a crack outruns it.`,
+        aux: { level: Math.min(1, size / 300) },
+      };
+    },
+  },
+  clocks: {
+    prompt:
+      "Set fatigue to 0.40 and creep to 0.30. || The sum is 0.70, so the part is still in. Raise creep to 0.70. || The sum is 1.10. Each clock alone was under 1. Together they are done.",
+    note: "D = n/N + t/t_r. Retire at 1. Linear sum only. A hold inside a cycle can be worse, and order is left out.",
+    animate: false,
+    sketch: "meter",
+    sliders: [
+      { key: "fat", label: "Fatigue n/N", min: 0, max: 1, step: 0.05, digits: 2, suffix: "" },
+      { key: "creep", label: "Creep t/tr", min: 0, max: 1, step: 0.05, digits: 2, suffix: "" },
+    ],
+    initial: { fat: 0.4, creep: 0.3 },
+    view: (v) => {
+      const damage = n(v, "fat") + n(v, "creep");
+      const done = damage >= 1;
+      return {
+        readouts: [
+          { label: "Sum", value: fmt(damage, 2) },
+          { label: "Fatigue", value: fmt(n(v, "fat"), 2) },
+          { label: "Creep", value: fmt(n(v, "creep"), 2) },
+        ],
+        sentence: done
+          ? `${fmt(n(v, "fat"), 2)} + ${fmt(n(v, "creep"), 2)} = ${fmt(damage, 2)}. The part is done, even though each fraction is under 1.`
+          : `${fmt(n(v, "fat"), 2)} + ${fmt(n(v, "creep"), 2)} = ${fmt(damage, 2)}. Still under 1. Do not clear the clocks separately and stop.`,
+        aux: { level: Math.min(1, damage) },
+      };
+    },
+  },
 };
 
 type FormulaId = keyof typeof specs;
 
 export function isLadderBench(id: string): id is LadderBenchId {
-  return id in specs || id === "duty" || id === "review";
+  return id in specs || id === "duty" || id === "review" || id === "face";
 }
 
 export function LadderBench({ id }: { id: LadderBenchId }) {
-  if (id === "duty" || id === "review") return <SortBench id={id} />;
+  if (id === "duty" || id === "review" || id === "face") return <SortBench id={id} />;
   return <FormulaBench spec={specs[id as FormulaId]} />;
 }

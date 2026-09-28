@@ -11,11 +11,11 @@ import { cn } from "@/lib/cn";
 const steps = [
   {
     label: "Read",
-    guide: "Each block starts with the point in one sentence. The paragraph under it is only the reason. Learn the point, then go to Try.",
+    guide: "Start here is the lesson. It begins with a thing you can picture, then names the word. The rule comes after the word means something.",
   },
   {
     label: "Try",
-    guide: "Follow “Do this.” Then check “You should see.” If a number looks wild, read “This model leaves out” before you distrust the lesson.",
+    guide: "The picture and the word stay on this page. The bench only lets you watch the rule. It does not introduce a new idea.",
   },
   {
     label: "Check",
@@ -27,6 +27,72 @@ function splitPoint(body: string) {
   const cut = body.indexOf(". ");
   if (cut === -1 || cut > 220) return { point: body, rest: "" };
   return { point: body.slice(0, cut + 1), rest: body.slice(cut + 2) };
+}
+
+function StartHere({ text }: { text: string }) {
+  const parts = text.split(" || ");
+  const rows = [
+    ["Picture this", parts[0]],
+    ["The word", parts[1]],
+    ["Why the rule looks like that", parts[2]],
+  ].filter((row): row is [string, string] => Boolean(row[1]));
+  return (
+    <section>
+      <h2 className="font-serif text-sm text-accent">Start here</h2>
+      <ol className="mt-4 flex flex-col gap-6">
+        {rows.map(([label, line]) => (
+          <li key={label}>
+            <p className="text-sm font-medium text-accent">{label}</p>
+            <p className="mt-1 max-w-prose text-lg leading-relaxed text-ink">{line}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function Example({ text }: { text: string }) {
+  const parts = text.split(" || ");
+  const rows = [
+    ["The case", parts[0]],
+    ["The arithmetic", parts[1]],
+    ["The call", parts[2]],
+  ].filter((row): row is [string, string] => Boolean(row[1]));
+  return (
+    <section className="rounded-lg border border-line bg-surface px-4 py-4 sm:px-5">
+      <h2 className="font-serif text-sm text-accent">For example</h2>
+      <ol className="mt-3 flex flex-col gap-4">
+        {rows.map(([label, line]) => (
+          <li key={label}>
+            <p className="text-sm font-medium text-accent">{label}</p>
+            <p className="mt-1 max-w-prose leading-relaxed text-ink">{line}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function Move({ text }: { text: string }) {
+  const parts = text.split(" || ");
+  const rows = [
+    ["When", parts[0]],
+    ["Do", parts[1]],
+    ["Then stop", parts[2]],
+  ].filter((row): row is [string, string] => Boolean(row[1]));
+  return (
+    <section className="rounded-lg border border-line px-4 py-4 sm:px-5">
+      <h2 className="font-serif text-sm text-accent">The move</h2>
+      <ol className="mt-3 flex flex-col gap-4">
+        {rows.map(([label, line]) => (
+          <li key={label}>
+            <p className="text-sm font-medium text-accent">{label}</p>
+            <p className="mt-1 max-w-prose leading-relaxed text-ink">{line}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
 }
 
 export function LessonView({ lesson }: { lesson: Lesson }) {
@@ -48,7 +114,10 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
         {isPassed(score) ? " · Passed" : ""}
       </p>
       <h1 className="mt-3 font-serif text-4xl leading-tight text-ink sm:text-5xl">{lesson.title}</h1>
-      <p className="mt-4 max-w-prose text-sm font-medium text-accent">Aim</p>
+      <div className="mt-8">
+        <StartHere text={lesson.start} />
+      </div>
+      <p className="mt-10 max-w-prose text-sm font-medium text-accent">What you will be able to do</p>
       <p className="mt-1 max-w-prose text-lg leading-relaxed text-ink">{lesson.lede}</p>
 
       <div className="sticky top-0 z-10 -mx-5 mt-8 border-y border-line bg-bg px-5 sm:-mx-8 sm:px-8">
@@ -81,6 +150,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
 
       {step === 0 ? (
         <div>
+          <h2 className="mt-10 font-serif text-sm text-accent">Now the rule</h2>
           <ol>
             {lesson.ideas.map((idea, i) => {
               const { point, rest } = splitPoint(idea.body);
@@ -97,6 +167,10 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
               );
             })}
           </ol>
+          <div className="mt-10 flex flex-col gap-4">
+            <Example text={lesson.example} />
+            <Move text={lesson.use} />
+          </div>
           <button
             type="button"
             onClick={() => setStep(1)}
@@ -109,7 +183,10 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
 
       {step === 1 ? (
         <div className="pt-8">
-          <Bench key={`${lesson.track}/${lesson.id}`} id={lesson.bench} />
+          <Move text={lesson.use} />
+          <div className="mt-8">
+            <Bench key={`${lesson.track}/${lesson.id}`} id={lesson.bench} />
+          </div>
           {lesson.clip ? <LessonClip clip={lesson.clip} /> : null}
           <button
             type="button"

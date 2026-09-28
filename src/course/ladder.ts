@@ -27,42 +27,42 @@ export const ladderTracks: Track[] = [
     index: "201",
     title: "Materials",
     course: "Materials 201",
-    lede: "Time, a crack through a wall, a hardness guess, metal that quietly disappears, and a front that moves with the square root of time.",
+    lede: "Time, a crack through a wall, a hardness guess, metal that quietly disappears, a front that moves with the square root of time, and a broken face that names the mode.",
   },
   {
     id: "materials-301",
     index: "301",
     title: "Materials",
     course: "Materials 301",
-    lede: "The same chemistry, a different number. Work, a quench, a tie line, a fiber's direction, and how much fiber you actually put in.",
+    lede: "The same chemistry, a different number. Work, a quench, a tie line, a fiber's direction, how much fiber you actually put in, and a temperature where the same steel starts to snap.",
   },
   {
     id: "materials-401",
     index: "401",
     title: "Materials",
     course: "Materials 401",
-    lede: "Which index, which notch, which temper, and which damage shows up first in service.",
+    lede: "Which index, which notch, which temper, which damage shows up first, and a crack that also needs a chemical.",
   },
   {
     id: "engineering-201",
     index: "201",
     title: "Engineering",
     course: "Engineering 201",
-    lede: "Stress that is not one tension. Yield under a combination, a shaft, a shell, a load that misses the center, and a pin in shear.",
+    lede: "Stress that is not one tension. Yield under a combination, a shaft, a shell, a load that misses the center, a pin in shear, and material rubbed away.",
   },
   {
     id: "engineering-301",
     index: "301",
     title: "Engineering",
     course: "Engineering 301",
-    lede: "A shaft's critical speed, a gear pair, a bearing's cube, a bolt that only sees part of a new load, and a coil of wire.",
+    lede: "A shaft's critical speed, a gear pair, a bearing's cube, a bolt that only sees part of a new load, a coil of wire, and why a large part can break before it yields.",
   },
   {
     id: "engineering-401",
     index: "401",
     title: "Engineering",
     course: "Engineering 401",
-    lede: "Damage that adds, heat added to a load, the cycles an inspection buys, and a last sort of how the part fails.",
+    lede: "Damage that adds, heat added to a load, the cycles an inspection buys, a last sort of how the part fails, and a life spent by creep and fatigue together.",
   },
   {
     id: "manufacturing-201",
@@ -108,6 +108,9 @@ export const ladderLessons: Lesson[] = [
     title: "A lever, not just a force",
     minutes: 9,
     lede: "You will compute a torque from the part of the lever that is perpendicular to the force.",
+    start: "A long wrench loosens a bolt that a short wrench will not, with the same push from your hand. Push straight along the wrench, toward the bolt, and nothing turns. || Torque is the turning effect. It uses the force and only the part of the wrench that is sideways to that force. A push aimed at the bolt has no sideways part, so the turning effect is zero. || Longer sideways lever, more torque. The full length of the wrench only counts when your push is square to it.",
+    use: "A force is applied at a handle and you need the turning effect. || Use only the part of the lever perpendicular to the force. A force aimed at the pivot contributes nothing. || Ninety degrees is the full torque and a smaller angle is less. Do not multiply the full length by the force at a shallow angle.",
+    example: "A lug wrench, 0.25 m long, with 40 N on the end. || At 90° to the wrench the torque is 0.25 × 40 = 10 N·m. At 30° it is half, 5 N·m, because only the perpendicular part of the lever counts. Aimed straight at the pivot, the torque is zero. || You use the perpendicular lever. The full 0.25 m is not available at a shallow angle.",
     ideas: [
       {
         heading: "Force at an angle is two stories",
@@ -165,6 +168,9 @@ export const ladderLessons: Lesson[] = [
     title: "Where the mass sits",
     minutes: 8,
     lede: "You will put the same mass in a disk and in a hoop and see the hoop resist spin more.",
+    start: "A hollow hoop is harder to get spinning than a solid disk of the same weight and the same outer size. The hoop's weight is all at the rim. The disk's weight is partly near the middle, where it hardly has to move. || Inertia, for spinning, is how hard it is to change the spin. Weight far from the axis counts much more than weight near it, because distance is squared. A hoop is the whole mass at the rim. A disk is half of that. || You move mass inward if you want it easy to spin up, and outward if you want it to resist. The mass alone does not decide.",
+    use: "The same mass will be spun, and you can choose where it sits. || Put mass far from the axis if you want it to resist a change in spin. A hoop resists more than a disk of the same mass and radius. || The hoop is harder to spin. Do not rank them by mass alone.",
+    example: "A bicycle rim and a solid disk, same mass, same outer radius. || The rim is a hoop, so its inertia is mass times radius squared. The disk is half of that. The same torque spins the disk up faster. || Where the mass sits is the design. You do not rank them by mass alone.",
     ideas: [
       {
         heading: "Distance from the axis is squared",
@@ -223,6 +229,9 @@ export const ladderLessons: Lesson[] = [
     title: "Spin when nothing pushes",
     minutes: 8,
     lede: "You will keep angular momentum fixed and watch spin rise as inertia falls.",
+    start: "A spinning skater pulls their arms in and speeds up. Nobody pushed them. The arms simply got closer to the axis. || Angular momentum is the spin-oomph: inertia times how fast it is spinning. If nothing twists the body, that product stays the same. Smaller inertia means faster spin. || Bring the mass in and the spin rises. You do not expect the rpm to stay put when the shape changes, and friction, if it is there, is a twist that spends the oomph.",
+    use: "Nothing is twisting the body, and the mass is about to move closer to the axis. || Keep the angular momentum fixed. A smaller inertia then means a faster spin. || The spin rises as the mass comes in. Do not expect the spin to stay put when the shape changes.",
+    example: "A skater with arms out, inertia 1.2 kg·m², spinning so the angular momentum is 4.8. || The spin is 4.8 / 1.2 = 4 rad/s. Pull the arms in until the inertia is 0.6 and the spin is 8 rad/s. Nothing twisted them. || Spin rises when the mass comes closer to the axis. You do not expect the rpm to stay put.",
     ideas: [
       {
         heading: "No torque, momentum stays",
@@ -275,6 +284,9 @@ export const ladderLessons: Lesson[] = [
     title: "The period of a spring",
     minutes: 9,
     lede: "You will see a period follow the square root of mass over stiffness, and watch the mass move at that period.",
+    start: "A heavy person on a playground spring rides slower than a light person on the same spring. A stiffer spring, same person, rides faster. Neither change is a simple doubling. || The period is the time for one full bounce. It follows the square root of mass over stiffness. Double the mass and the period grows by about 1.4, not by 2. || Heavier is slower and stiffer is faster, and both sit under a square root. You do not size the spring by feel and expect a proportional time.",
+    use: "A mass on a spring will oscillate and you need the time for one cycle. || The period follows the square root of mass over stiffness. Heavier is slower. Stiffer is faster. Neither is a straight proportion. || Doubling the mass does not double the period. Do not size the rate by feel.",
+    example: "A 1 kg mass on a 100 N/m spring, then a 2 kg mass on the same spring. || The period is 2π times the square root of 1/100, about 0.63 s. At 2 kg it is about 0.89 s, which is 1.41 times longer, not twice. || Heavier is slower, and not in proportion. You do not double the mass and expect to double the time.",
     ideas: [
       {
         heading: "Heavier is slower, not twice as slow",
@@ -327,6 +339,9 @@ export const ladderLessons: Lesson[] = [
     title: "Pressure grows with depth",
     minutes: 8,
     lede: "You will separate gauge pressure from the atmosphere that was already at the surface.",
+    start: "Swim down in a lake and your ears hurt more the deeper you go. At the surface they already felt the air. The hurt is the extra from the water above you. || Gauge pressure is that extra: the weight of a column of liquid, density times gravity times depth. Each meter of fresh water adds the same amount, about 9.8 kPa. Absolute pressure is the gauge reading plus the air that was already there. The width of the lake does not appear. || You add a constant extra per meter. You do not treat the surface as zero of all pressure, unless you only wanted the extra.",
+    use: "You need the pressure at a depth in a liquid. || Gauge pressure is density times gravity times depth. Add the atmosphere if you need the absolute pressure. The width of the tank does not appear. || Each extra meter adds the same extra gauge pressure. Do not treat the surface as zero absolute.",
+    example: "A diver's gauge at the surface, then at 10 m in a lake. || Each meter of fresh water adds 9.81 kPa. At 10 m the gauge reads about 98 kPa. The air was already pressing at the surface, so the absolute pressure is that extra plus about one atmosphere. || The gauge is not the whole pressure. The width of the lake does not appear.",
     ideas: [
       {
         heading: "Each meter adds the same extra",
@@ -380,6 +395,9 @@ export const ladderLessons: Lesson[] = [
     title: "Speed spends pressure",
     minutes: 9,
     lede: "You will trade pressure for speed in a level stream and name the term that moved.",
+    start: "Put your thumb over a garden hose. The water speeds up in the gap, and the stream feels like it is being pulled through, not pushed harder from behind. || In a level pipe that does not leak, the pressure plus a term that grows with speed squared stays constant, until friction spends some of it. A faster section has spent pressure to buy speed. || Speed up the water and the pressure falls. You do not expect a faster throat to be a higher pressure.",
+    use: "A level stream speeds up and you need the pressure. || Pressure plus the speed term stays constant, until friction spends it. A faster section is a lower pressure. || You can name which term moved. Do not expect the pressure to rise because the fluid is moving faster.",
+    example: "Water in a level venturi, starting at 200 kPa with almost no speed, then at 10 m/s. || Half of 1000 times 10 squared is 50 kPa. That 50 kPa comes out of the 200, leaving 150 kPa. The pipe did not go uphill. || A faster throat is a lower pressure. You do not expect the pressure to rise because the water sped up.",
     ideas: [
       {
         heading: "The sum is the budget",
@@ -433,6 +451,9 @@ export const ladderLessons: Lesson[] = [
     title: "When drag catches weight",
     minutes: 8,
     lede: "You will find the speed where aerodynamic drag equals weight.",
+    start: "Stick your hand out of a car window. At twice the speed the push on your palm is about four times, not twice. There is a speed where that push equals the weight of a falling object, and it stops speeding up. || Drag grows with the square of speed, and with the density of the air, the size of the face, and a shape factor. Terminal speed is where drag has grown up to equal the weight. || You solve for that speed. A small change in speed is a large change in drag, so you do not treat drag as proportional to speed.",
+    use: "Something is moving through air and you need the speed where drag catches the weight. || Set the drag equal to the weight and solve for speed. Speed is squared, so a small change in speed is a large change in drag. || You can name that speed, and say whether area or the drag coefficient is the lever you still have. Do not treat drag as proportional to speed.",
+    example: "A 200 g plate, 0.05 m² facing the air, Cd about 1. || Its weight is about 2.0 N. Drag is ½ × 1.2 × v² × 0.05, and that catches the weight near 8 m/s. At 4 m/s the drag is only a quarter of that, because speed is squared. || You find the speed where they match. You do not treat drag as proportional to speed.",
     ideas: [
       {
         heading: "Drag grows with speed squared",
@@ -485,6 +506,9 @@ export const ladderLessons: Lesson[] = [
     title: "Heat that cannot become length",
     minutes: 9,
     lede: "You will turn a temperature rise into either growth or stress, and not into both at once.",
+    start: "A metal rail in the sun grows longer. Bolt the ends so it cannot grow, and the rail pushes on the bolts instead. You do not get the longer rail and the huge push at the same time. || Free growth is a small fraction, alpha, times the length times the temperature rise. If the ends are fixed, that growth is prevented and becomes a stress: stiffness times alpha times the rise. A partial restraint is a fraction of that stress. || You report the growth or the stress, depending on whether it was free. You do not add the free growth on top of the fully fixed stress.",
+    use: "A bar is heated, and it may or may not be free to grow. || If it is free, report the growth and zero stress. If the ends are fixed, report the stress and zero growth. A partial restraint is a fraction of that stress. || You refuse to report both the free growth and the full stress for the same bar. Do not add them.",
+    example: "A 1 m steel bar heated by 50°. || Free, it grows by about 0.60 mm and the stress is zero. Ends fixed, the growth is zero and the stress is about 120 MPa. || You report one of those, not both. The same 50° does not give you the growth and the stress together.",
     ideas: [
       {
         heading: "Free growth is α times length times the rise",
@@ -539,6 +563,9 @@ export const ladderLessons: Lesson[] = [
     title: "How fast the news travels",
     minutes: 8,
     lede: "You will compare wave speeds from modulus and density, and refuse to rank them by density alone.",
+    start: "Tap one end of a long steel rod and a long plastic rod. The tap arrives at the far end sooner in the steel, even though steel is heavier. || The speed of that pulse is the square root of stiffness over density. Steel is dense, but it is so much stiffer that the news outruns the plastic. || You need both numbers. A light rod is not automatically fast, and a heavy rod is not automatically slow.",
+    use: "A wave will run down a rod and you need the speed. || Speed is the square root of modulus over density. A light, stiff rod is fast. || You do not rank two rods by density alone. Do not forget the modulus.",
+    example: "A tap on the end of a steel rod and on a polyethylene rod. || The speed of the pulse is the square root of modulus over density. Steel is dense, but it is so much stiffer that the news outruns the plastic. || You do not rank the rods by density alone. A light rod can still be slow if it is soft.",
     ideas: [
       {
         heading: "Stiffness over density, under a root",
@@ -591,6 +618,9 @@ export const ladderLessons: Lesson[] = [
     title: "The frequency a beam wants",
     minutes: 9,
     lede: "You will shorten a span and watch the first-mode frequency rise with one over length squared.",
+    start: "A short ruler, held at the ends and plucked, hums a higher note than a long one. The ruler did not get stiffer. It got shorter. || The note is the beam's preferred frequency. For the simplest support, that frequency falls with the square of the span. Double the span and the note drops by about four, not by two. || You shorten the span if you need the note up. This is one shape and one way of holding the ends, not every beam.",
+    use: "A beam can ring and you need the first frequency. || Shorten the span if you need the frequency up. Span is squared. Stiffness and mass per length share a root. || Doubling the span cuts the frequency by about four, not by two. Do not treat this shape as every support condition.",
+    example: "A pinned steel bar, 20 mm square, ringing in its first mode. || At a 0.60 m span it has some frequency. At 1.20 m the frequency falls by four. The steel did not get softer. Span is squared. || You shorten the span if you need the pitch up. Doubling the length is not a small detuning.",
     ideas: [
       {
         heading: "Span is squared",
@@ -643,6 +673,9 @@ export const ladderLessons: Lesson[] = [
     title: "A drop is not the weight",
     minutes: 9,
     lede: "You will turn a drop height into a peak force and see the square root, not the height itself.",
+    start: "Catch a falling brick with stiff arms and it hurts. Let your arms give, and the same brick is easier. The brick's weight did not change. The distance you used to stop it did. || The energy of the drop has to be absorbed by whatever stops it. A spring-like stop stores that energy as a deflection. The peak force is larger than the weight, and it grows with the square root of the drop height, not with the height itself. || You do not design the stop for the static weight. A softer, longer stop lowers the peak.",
+    use: "A mass is dropped onto a spring or a bracket, and someone used the static weight. || Put the lost height into the spring and solve for the peak force. The peak is larger than the weight, and it grows with the square root of the drop. || A shorter drop is not a proportionally smaller force. Do not design the bracket for the weight alone.",
+    example: "A mass dropped 0.50 m onto a spring, then the same mass dropped 0.10 m. || The lost height has to fit in the spring as ½kδ². The peak force is larger than the weight, and the 0.50 m drop is not five times the force of the 0.10 m drop, because the height sits under a square root. || You do not size the stop for the static weight. A shorter drop is not a proportional discount.",
     ideas: [
       {
         heading: "The energy has to fit in the spring",
@@ -695,6 +728,9 @@ export const ladderLessons: Lesson[] = [
     title: "Driving at the natural frequency",
     minutes: 10,
     lede: "You will put the drive on the natural frequency and watch amplitude become a damping problem.",
+    start: "Push a child on a swing at just the right rhythm and a small push becomes a huge arc. Push at a random rhythm and almost nothing happens. If you cannot change your rhythm, only friction in the chain keeps the arc from growing without limit. || The rhythm the swing prefers is its natural frequency. On that rhythm, the size of the motion is capped by damping and almost nothing else. Off that rhythm, the motion collapses. || You move the driving rhythm away first. Damping is what you have left when the rhythm cannot move. Stiffening the swing also moves its preferred rhythm, and you can land on a new match by accident.",
+    use: "A machine shakes a part near the frequency the part wants. || If you can, move the drive off that frequency. If you cannot, damping is what caps the amplitude. || Off resonance, the amplitude collapses. Do not add stiffness without checking you did not land on a new resonance.",
+    example: "A bracket whose natural frequency matches the motor, with damping ratio 0.05. || On that match the motion is about 10 times the sag the same force would cause if it were steady. Move the motor to 1.5 times the natural frequency and the motion falls below that steady sag. || You move the drive first. Damping is what you have left when the drive cannot move.",
     ideas: [
       {
         heading: "On resonance, damping is the only cap",
@@ -753,6 +789,9 @@ export const ladderLessons: Lesson[] = [
     title: "Time at a high temperature",
     minutes: 10,
     lede: "You will cut a creep life by raising stress a little, and again by raising temperature a little.",
+    start: "A candle on a warm windowsill slowly bends under its own weight. It is not melting in a puddle. It is creeping. A slightly hotter sill, or a heavier candle, bends much sooner. || Creep is ongoing stretch under a steady load at a high temperature, for a metal as well as a candle. The time to a given sag falls sharply if you raise the stress, because stress is raised to a power, and even more sharply if you raise the temperature, because temperature sits in an exponential. || A small change in stress or temperature is a large change in life. The strength measured in a quick pull at room temperature is the wrong chapter.",
+    use: "A part sits hot, under stress, for a long time. || Treat both stress and temperature as life inputs. A small rise in either one cuts the life by a lot. || The room-temperature yield is not the answer. Do not use it for a thousand hot hours.",
+    example: "A hanger at 800 K and 100 MPa, then the same hanger with the stress doubled, then with the temperature raised 50 K instead. || Doubling the stress cuts the time to 1% strain by about 32, because stress is raised to a power. The extra 50 K cuts it to about a tenth, because temperature sits in an exponential. || A small change is not a small change in life. The room-temperature yield is the wrong chapter.",
     ideas: [
       {
         heading: "Stress is raised to a power",
@@ -811,6 +850,9 @@ export const ladderLessons: Lesson[] = [
     title: "A hardness guess",
     minutes: 7,
     lede: "You will turn a Vickers number into an estimated tensile strength and refuse to treat it as ductility.",
+    start: "Press a sharp point into a steel and see how big a dent you leave. A harder steel leaves a smaller dent. You have not yet pulled the steel until it breaks, and you have not measured how far it stretches. || The Vickers number is that dent test. For many steels, a rough estimate of the ultimate pull-strength in MPa is about three times the Vickers number. 200 HV is about 600 MPa. The estimate says nothing about elongation. || You may use it to guess a strength, and you say you used the factor of three. Then you measure the stretch separately.",
+    use: "You have a Vickers number for a steel and you need a rough tensile strength. || Multiply by about 3 to estimate the ultimate strength in MPa. Then measure the ductility separately, and say that you used the factor of 3. || 200 HV is about 600 MPa, and it is not an elongation. Do not quote the estimate as a measured strength.",
+    example: "A steel file-tested at 200 HV. || The shop estimate is 3 × 200 = 600 MPa for the ultimate tensile strength. The test did not bend the bar, so it did not measure elongation. || You may say about 600 MPa, and you say it was the factor of 3. You still go measure how far it stretches.",
     ideas: [
       {
         heading: "For steels, about three times",
@@ -863,6 +905,9 @@ export const ladderLessons: Lesson[] = [
     title: "Leak before it breaks",
     minutes: 9,
     lede: "You will compare a critical crack length with the wall thickness and say which event is first.",
+    start: "A garden hose with a slit may drip for a long time. A glass rod with a small crack may shatter instead of weeping. The difference is whether the crack becomes unstable before it has opened all the way through the wall. || Toughness and stress set a critical crack length. If that length is longer than the wall is thick, the wall opens through and leaks while the crack is still stable. If the critical length fits inside the wall, it can burst first. || You compare those two lengths. Leak and burst are different events, and you say which one this wall will do.",
+    use: "A wall has a crack and you need to know whether it weeps before it bursts. || Compare the critical crack length with the thickness. Longer than the wall means it opens through while the crack is still stable. || You can say leak or break. Do not skip the toughness.",
+    example: "A pipe wall 8 mm thick, toughness 50 MPa√m, stress 150 MPa, with an edge crack. || The critical crack is longer than 8 mm, so the wall opens through and weeps while the crack is still stable. Drop the toughness to 25 and the critical crack fits inside the wall, so it can burst first. || You compare the critical length with the thickness. Leak and break are different calls.",
     ideas: [
       {
         heading: "Critical length shrinks if toughness falls or stress rises",
@@ -915,6 +960,9 @@ export const ladderLessons: Lesson[] = [
     title: "The area you used to have",
     minutes: 8,
     lede: "You will let a corrosion rate remove thickness and watch the stress rise at constant force.",
+    start: "A rusty chain link looks the same on a scale. The load did not change. The metal that is still there got thinner, so each remaining bit is working harder. || Stress is force divided by the area that is still there. A steady corrosion rate times the years is the thickness you subtract. The stress climbs even though a load cell would have looked calm. || You recompute on the thickness at the end of life. The safety factor from the new link does not survive the subtraction. A pit, which this even-thinning picture leaves out, is worse.",
+    use: "The force stays, and the bar loses thickness every year. || Subtract rate times years from the thickness, then divide the force by the area that is left. || The stress at the end of life is higher even though the load never moved. Do not keep the safety factor that was computed on the original thickness.",
+    example: "A flat steel link, 20 mm wide and 6 mm thick, carrying 8 kN, losing 0.10 mm a year. || Today the area is 120 mm² and the stress is about 67 MPa. After 20 years, 2 mm is gone, the area is 80 mm², and the stress is 100 MPa. The load cell still reads 8 kN. || You recompute on the thickness that will be left. The original safety factor does not survive the subtraction.",
     ideas: [
       {
         heading: "Force over a shrinking area",
@@ -968,6 +1016,9 @@ export const ladderLessons: Lesson[] = [
     title: "Work changes the number",
     minutes: 8,
     lede: "You will raise cold work and watch strength climb while elongation falls, in the same alloy.",
+    start: "Bend a paperclip back and forth a few times, not enough to break it. The bent spot is harder to bend again, and it has less bending left before it snaps. || Cold work is permanent deformation that multiplies the tangles inside the metal. More tangles mean a higher stress to bend it further, and less stretch remaining. An anneal, a hot hold, lets the tangles rearrange and the softness return. The alloy recipe never changed. || You write how much it was worked, or the number is not specified. 'The alloy' was both the soft bar and the hard one.",
+    use: "The alloy name is fixed, and the bar may have been drawn. || More cold work raises strength and spends elongation. Write the amount of work, or the number is not specified. || Forty percent cold work is a different material, in practice, from the annealed bar of the same name. Do not specify the alloy alone.",
+    example: "One aluminum bar, annealed, and the same bar after a 40% draw. || Annealed, this page's curve says about 250 MPa and about 40% elongation. At 40% cold work the strength is near 490 MPa and the elongation is down near 4%. || You write the cold work. 'The alloy' was both of these bars.",
     ideas: [
       {
         heading: "Dislocations are the obstacle",
@@ -1020,6 +1071,9 @@ export const ladderLessons: Lesson[] = [
     title: "The center cools late",
     minutes: 8,
     lede: "You will thicken a section and watch the surface stay hard while the center falls behind.",
+    start: "Drop a hot frying pan into water. The skin hisses immediately. The middle of a thick pan is still hot. A thin pan is hot all the way through for only a moment, then it is all cool. || Quenching hardens steel that cools fast enough. The surface always meets the water. The center is insulated by the metal around it, so a thicker section leaves a softer middle. || A hardness number has to say where it was measured. The skin of a thick bar is not the center.",
+    use: "A section has to be hard through, not only on the skin. || The surface meets the quenchant. The center lags, and a thicker bar lags more. Ask where the hardness was measured. || A surface reading is not the middle of a thick part. Do not take it as one.",
+    example: "A 10 mm steel bar and a 40 mm bar, both quenched, surface hardness 550 HV. || The 10 mm bar is hard much of the way through. The 40 mm bar's center falls well below 550 HV, because the middle is insulated by the metal around it. || A hardness call says where it was measured. The surface of the thick bar is not its center.",
     ideas: [
       {
         heading: "The surface meets the quenchant",
@@ -1078,6 +1132,9 @@ export const ladderLessons: Lesson[] = [
     title: "The lever rule",
     minutes: 8,
     lede: "You will move the overall composition and read the fraction solid off a fixed tie line.",
+    start: "A half-frozen slush has ice and water in it. Warm it a little, still in that slushy range, and some ice melts. Cool it and more water freezes. The solid bits are still ice. The liquid is still water. || While both are present, each one has its own fixed makeup. Those two makeups are the ends of a line. Your overall mix sits somewhere between the ends, and that position is how much is solid. Slide toward the ice end and you get more ice. The ends do not move. || You do not average the two ends and call that the amount of ice. The amount is how far you are from one end, toward the other.",
+    use: "An alloy sits in a two-phase field and you need how much is solid. || The ends of the tie line stay put. The overall composition sets the amounts. || Moving the composition changes the fractions, not the composition of each phase. Do not average the two ends and call that the fraction.",
+    example: "An alloy held at one temperature, solid at 20% B and liquid at 80% B. || At an overall 50% B, the solid fraction is (80 − 50) / 60 = 0.50. At 30% B it is (80 − 30) / 60 = 0.83. The two phases are still 20% and 80%. || You move the overall composition to change the amounts. You do not move the ends of the tie line by wishing.",
     ideas: [
       {
         heading: "The ends of the tie line are the two phases",
@@ -1130,6 +1187,9 @@ export const ladderLessons: Lesson[] = [
     title: "The fiber has a direction",
     minutes: 8,
     lede: "You will swing the load off the fiber and watch the strength collapse.",
+    start: "A bundle of dry spaghetti is hard to pull apart lengthwise and easy to separate sideways. Turn your pull 30 degrees off the bundle and you are already mostly separating, not pulling the strands. || A unidirectional composite is that bundle in glue. Along the fibers it can be very strong. Across them it is nearly the glue. The strength at an angle is a blend that collapses quickly once the across-fiber term wakes up. || You write the direction of the load next to the strength. A number with no angle is a different part than the one you have.",
+    use: "A unidirectional composite will be loaded, and the load may not follow the fiber. || Write the angle next to the strength. Along the fiber is one number. Thirty degrees off is already much weaker. Across is a different material. || The direction is part of the requirement. Do not quote the along-fiber strength without the angle.",
+    example: "A unidirectional carbon plate, 900 MPa along the fiber and 40 MPa across it, with a bracket load 30° off the fiber. || The estimate 1 / (cos²30° / 900 + sin²30° / 40) is about 140 MPa. The fiber did not weaken. The load left its best direction. || You write 140 MPa at 30°, not 900 MPa. The angle is part of the requirement.",
     ideas: [
       {
         heading: "900 MPa is a direction, not a material",
@@ -1182,6 +1242,9 @@ export const ladderLessons: Lesson[] = [
     title: "The index for a panel",
     minutes: 8,
     lede: "You will rank materials for a light, stiff panel and not reuse that ranking for a tie rod.",
+    start: "A light stiff tabletop wants to be deep and not dense, because sagging hates thinness. A hanging rod wants to be strong for its weight, and depth is not the trick, because a rod does not sag that way. || For a flat panel of a given width and stiffness, the material index is the cube root of stiffness divided by density. Wood can beat steel on that index. A tie rod uses stiffness or strength divided by density, with no cube root, and the ranking flips. || You keep the index with the shape it was built for. Winning as a panel is not a reason to make the rod out of the same material.",
+    use: "You are choosing a material for a light, stiff panel. || Rank by modulus to the one-third, over density. A tie rod wants a different index, with no cube root. || Wood can beat steel here, and you can say why that ranking is the wrong boast for a rod. Do not carry one index into a different shape.",
+    example: "A flat panel of fixed width that must not sag, in steel and in wood. || The index is the cube root of modulus divided by density. Wood's index is several times steel's, because the panel pays heavily for steel's density. A tie rod, which wants modulus or strength over density with no cube root, ranks them the other way. || You use this index for the panel only. Wood winning here is not a reason to make the tie rod out of wood.",
     ideas: [
       {
         heading: "A panel pays for density with a cube root on modulus",
@@ -1234,6 +1297,9 @@ export const ladderLessons: Lesson[] = [
     title: "How much the notch counts",
     minutes: 8,
     lede: "You will separate the notch's geometry from the material's sensitivity to it.",
+    start: "A scratched glass snaps at the scratch. A scratched soft metal often just yields there and blunts the scratch. The scratch was the same shape. The material did not care equally. || Kt is the peak from the shape alone. Kf is the peak the material actually feels in fatigue. A sensitivity between zero and one turns Kt into Kf. You then divide the smooth-bar fatigue strength by Kf. || The drawing's sharp corner is not automatically the full fatigue penalty. A sensitive metal feels more of it. An insensitive one feels less.",
+    use: "A notch is on the drawing and you need a fatigue strength. || Turn the geometric concentration into the factor the metal actually feels, using its sensitivity. Then divide the smooth-bar strength by that factor. || A sensitive metal feels more of the same notch. Do not divide by the full geometric factor for a metal that barely feels it.",
+    example: "A shoulder with Kt of 2.5, and a smooth-bar fatigue strength of 300 MPa. || At sensitivity 0, Kf is 1 and you keep 300 MPa. At sensitivity 0.8, Kf is 1 + 0.8 × 1.5 = 2.2, and the fatigue strength falls to about 136 MPa. The fillet did not change. || You divide by the factor the metal feels. The drawing's Kt is not automatically that factor.",
     ideas: [
       {
         heading: "Kt is the shape. Kf is what the metal feels",
@@ -1286,6 +1352,9 @@ export const ladderLessons: Lesson[] = [
     title: "The condition is the spec",
     minutes: 8,
     lede: "You will treat annealed and T6 as different materials that share a chemistry.",
+    start: "Two pieces stamped 6061 can be nothing alike in your hands. One bends like soft wire. The other is springy and snaps sooner. The recipe of elements can be the same. || The letters after the alloy, such as O for annealed or T6 for a heat treatment, are the condition. They set the yield and the stretch. T6 buys a high yield by spending stretch. Annealed is the opposite. || You write the letters. 'Aluminum' is a family. '6061' is a chemistry window. Neither is a strength.",
+    use: "A drawing says 6061 and a strength. || Write the condition. Annealed and T6 do not share a yield or an elongation. The treatment that raises the yield spends ductility. || A supplier can fill the order without a phone call. Do not write the alloy number alone.",
+    example: "A purchase order that says only 6061. || Annealed, the yield is about 55 MPa and it stretches about 25%. In T6 the yield is about 275 MPa and it stretches about 12%. Both are 6061. || You write 6061-T6, or 6061-O, and the product form. The alloy number was not a strength.",
     ideas: [
       {
         heading: "6061 is not a strength",
@@ -1338,6 +1407,9 @@ export const ladderLessons: Lesson[] = [
     title: "Which damage is impatient",
     minutes: 9,
     lede: "You will name creep, fatigue, fracture, or corrosion as the mechanism that has to be calculated first.",
+    start: "A bolt left glowing hot for a thousand hours slowly stretches. A spinning shaft with a shoulder cracks after millions of turns, under a stress that would not bend it once. A scratched thin wall can split. A bracket in the rain gets thinner. || The impatient mechanism is the one the service will hit first. Hot and held is creep. A stress that returns is fatigue. A crack already there is fracture. Metal disappearing is corrosion. Yield is what is left when none of those is in the sentence. || You name that one before you open a calculation. The strength from a quick pull at room temperature is often the slow one.",
+    use: "A part is in service and you are about to open a yield calculation. || Name the impatient mechanism from the service. Hot and held is creep. A returning stress is fatigue. A crack is fracture. A disappearing area is corrosion. || The first chapter is the one the service demands. Do not open the calculation you happen to remember.",
+    example: "Four parts on one desk: a bolt at 600°C for a thousand hours, a polished rod reversed a million times, a scratched thin wall, and a bracket rusting outdoors for ten years. || The hot bolt is creep. The rod is fatigue. The scratch is fracture. The rust is corrosion, because the area is leaving. || You name that one before you open a yield calculation. Room-temperature yield is not impatient in any of these four.",
     ideas: [
       {
         heading: "The datasheet yield is not always first",
@@ -1390,6 +1462,9 @@ export const ladderLessons: Lesson[] = [
     title: "Yield under a combination",
     minutes: 9,
     lede: "You will fold a tension and a shear into one von Mises stress.",
+    start: "Pull a stick of taffy and it stretches. Twist it while you pull and it starts to tear sooner, even though your pull did not get stronger. || Yielding watches a combination, not the tension alone. On this page that combination is the square root of the tension squared plus three times the shear squared. You compare that one number with the yield from a simple pull test. || Adding shear raises the effective stress while the tension sits still. Checking the tension alone can pass a point that will yield.",
+    use: "One point sees a tension and a shear together. || Combine them, and compare that one number with the tensile yield. Shear raises it even when the tension does not change. || The combined stress is the one you check. Do not check the tension alone.",
+    example: "A point with 100 MPa of tension, then the same tension plus 60 MPa of shear. || With no shear, von Mises is 100 MPa. With the shear it is the square root of 100² + 3 × 60², about 144 MPa. The tension did not change. || You compare 144 MPa with the tensile yield. Checking 100 MPa alone would have passed a point that does not.",
     ideas: [
       {
         heading: "Yield does not watch only the tension",
@@ -1442,6 +1517,9 @@ export const ladderLessons: Lesson[] = [
     title: "A round shaft in torsion",
     minutes: 9,
     lede: "You will see shear stress in a solid shaft fall with the cube of the radius.",
+    start: "A thin screwdriver shaft twists in your hand. A shaft twice as thick, same hand, barely twists. It did not get twice as stubborn. It got much more than that. || Torque in a round shaft makes a shear stress that is highest at the outside. The stiffness of the cross-section grows with the radius four times over. The stress still multiplies by radius once more, so doubling the radius divides the stress by eight. || You size the radius with that power. A shoulder or a keyway is a scratch this smooth-shaft formula does not know about.",
+    use: "A solid round shaft carries a torque. || Stress falls with the cube of the radius, because the section property grows with the fourth power and the outer fiber only moves out by one. A shoulder is not in this formula. || Doubling the radius divides the stress by 8. Do not expect it to halve.",
+    example: "A solid shaft, 10 mm radius, carrying 200 N·m, then the same torque at 20 mm radius. || J grows with the fourth power of radius, and stress still multiplies by radius once more, so doubling the radius divides the stress by 8. || You size the radius with that power. A shoulder fillet is not inside this number.",
     ideas: [
       {
         heading: "J grows with radius to the fourth",
@@ -1494,6 +1572,9 @@ export const ladderLessons: Lesson[] = [
     title: "The stress around a shell",
     minutes: 8,
     lede: "You will compute hoop stress and the longitudinal stress that is half of it.",
+    start: "A balloon is tighter around its middle than along the knot when you squeeze it. An overfilled one splits around the equator, not from the knot down. || In a thin closed tank the stress going around the wall is pressure times radius, divided by thickness. The stress running from end to end is half of that. You size the wall from the around-the-middle number. || The hoop is the one that governs. This picture is for a thin wall. A thick wall shares the pressure differently.",
+    use: "A thin closed shell holds pressure. || Size the thickness from the hoop stress, pressure times radius over thickness. The stress along the axis is half of that. || The hoop is the one that governs. Do not use this on a thick wall.",
+    example: "A closed tank, 4 mm wall, 200 mm radius, at 2 MPa. || Hoop stress is 2 × 200 / 4 = 100 MPa. Along the tank it is half, 50 MPa. || You size the wall from the 100 MPa. This is a thin wall. A thick wall is a different calculation.",
     ideas: [
       {
         heading: "Hoop is pr/t",
@@ -1547,6 +1628,9 @@ export const ladderLessons: Lesson[] = [
     title: "A load that misses the center",
     minutes: 8,
     lede: "You will add the bending from an offset load to P/A.",
+    start: "Stand a book on your palm, centered, and it is easy. Shift it toward your fingers and your wrist strains, even though the book got no heavier. || A centered compressive load is force over area, the same everywhere. A load that misses the center adds bending: high stress on one face, less on the other. A miss of a few millimeters can outweigh the average. || You check the high face, not the average. If the piece is also long, it can still buckle, which this addition does not include.",
+    use: "A compressive load misses the center of the section. || Add the axial stress to the bending from the offset. Compare the peak, not the average, with the allowable. || A miss of a few millimeters is not a small extra. Do not forget buckling if the bar is also long.",
+    example: "A short post carrying a compressive load on center, then the same load 20 mm off center. || On center you have only P/A. The 20 mm miss adds a bending stress, P times the offset times the distance to the edge, divided by the second moment. The peak can dwarf the average. || You check the peak. Twenty millimeters of miss is not a small correction, and a long post still has buckling on top.",
     ideas: [
       {
         heading: "P/A is only the centered part",
@@ -1599,6 +1683,9 @@ export const ladderLessons: Lesson[] = [
     title: "The speed a shaft avoids",
     minutes: 9,
     lede: "You will lengthen a shaft and watch its critical speed fall faster than the length grew.",
+    start: "A jump rope turns slowly and hangs in a gentle loop. Turn it faster, through one particular speed, and it suddenly stands out in a wide bow. A longer rope does that at a slower turn. || A shaft has a speed where the spin matches the frequency at which the shaft wants to vibrate. That is the critical speed. Lengthening the shaft drops that speed faster than the length grew. || You keep the running speed away from it. You do not stretch the shaft and keep the old rpm.",
+    use: "A shaft will spin and you need the speed it must not sit on. || The critical speed is the shaft's natural frequency in revolutions. Lengthening the shaft drops that speed faster than the length grew. || The running speed is not the critical speed. Do not lengthen a shaft and keep the old rpm.",
+    example: "A shaft running happily at 0.40 m long, then the same shaft stretched to 0.80 m with the motor left alone. || Critical speed is the shaft's natural frequency. Doubling the length drops it by more than half, because length is worse than linear. || You recompute the forbidden speed. You do not keep the old rpm on the longer shaft.",
     ideas: [
       {
         heading: "Critical speed is the shaft's natural frequency",
@@ -1651,6 +1738,9 @@ export const ladderLessons: Lesson[] = [
     title: "Teeth trade speed for torque",
     minutes: 8,
     lede: "You will raise torque by the teeth ratio and refuse to raise power by that same ratio.",
+    start: "A low gear on a bike makes the pedals easy and the bike slow. You did not create extra power. You traded speed for force. || Torque out grows with the ratio of teeth, then shrinks a little for friction in the mesh. Speed out shrinks by the same ratio. Power, which is torque times speed, does not get multiplied. || You can have the torque or the speed. A three-to-one reduction is not triple the power.",
+    use: "A gear pair has to deliver a torque, or a speed. || Torque scales with the tooth ratio, then with efficiency. Speed scales the other way. Power does not multiply. || A three-to-one reduction is not triple the power. Do not claim that it is.",
+    example: "A 20-tooth gear driving a 60-tooth gear, 10 N·m going in, lossless for a moment. || Torque out is 30 N·m. Speed out is one third. A real mesh gives a bit less than 30 N·m after efficiency. Power is not tripled either way. || You can have the torque or the speed. You do not get both, and you do not get triple the power.",
     ideas: [
       {
         heading: "Torque follows the teeth, then the efficiency",
@@ -1710,6 +1800,9 @@ export const ladderLessons: Lesson[] = [
     title: "A bearing's cube",
     minutes: 8,
     lede: "You will double a ball bearing's load and watch the life fall by eight.",
+    start: "A wheelbarrow bearing lasts for years with a light load. Fill the barrow until it is twice as heavy and it does not last half as long. It lasts a small fraction of that. || For a ball bearing the life in revolutions scales with one over the load cubed. Double the load and the life falls by eight. The published life is also a statistic: most bearings pass it, and some do not. || You reprice the life when the load changes. The catalog number was not independent of the load, and it was not a promise for every single bearing.",
+    use: "A ball bearing carries a load and you need a life. || Life falls with the cube of the load. Double the load and the life falls by eight. || The load, not the catalog slogan, sets the life. Do not treat the rated life as a guarantee that every bearing reaches it.",
+    example: "A ball bearing you expected to run for 8 million revolutions at 4 kN. || Life scales with one over load cubed. At 8 kN the life is one eighth, about 1 million revolutions. || You reprice the life when the load changes. The catalog life was not a promise that every bearing reaches it, and it was not independent of the load.",
     ideas: [
       {
         heading: "Life is (C/P) cubed, in millions of revolutions",
@@ -1763,6 +1856,9 @@ export const ladderLessons: Lesson[] = [
     title: "The bolt does not see all of it",
     minutes: 9,
     lede: "You will give a new external load mostly to the clamped members, until the joint separates.",
+    start: "A tightly clamped clothespin barely notices a light extra tug on the cloth. Yank hard enough to open the pin and the spring suddenly feels the whole yank. || A preloaded bolt already squeezes the joint. A new external load is shared. The clamped members are usually harder to stretch than the bolt, so they take most of the new load. The bolt sees only its fraction, until the joint separates. After that, the bolt sees all of it. || The preload is a choice. You do not add the full new load on top of the preload while the joint is still closed.",
+    use: "A bolted joint already has a preload, and a new external load arrives. || Give the bolt only its stiffness share of the new load, until the joint separates. After that, the bolt takes all of it. || The preload is a choice you made, not a leftover. Do not add the full external load on top of the preload.",
+    example: "A joint clamped to 15 kN. A new 10 kN load arrives, then a 20 kN load. || At 10 kN the bolt only rises to about 17 kN, because the clamped members take most of the new load. At 20 kN the joint opens and the bolt sees all 20 kN. || The preload was the design. You do not add the full external load on top of 15 kN while the joint is still closed.",
     ideas: [
       {
         heading: "Stiffness decides the split",
@@ -1816,6 +1912,9 @@ export const ladderLessons: Lesson[] = [
     title: "Damage adds",
     minutes: 8,
     lede: "You will add three blocks of cycles and fail the part on the sum, not on any one block.",
+    start: "A runner who does some hard days and some easy days is tired from the sum, not from any single day that was 'under the limit' by itself. || Each block of cycles spends a fraction: cycles you used, divided by the cycles that block's stress would have allowed. When the fractions add to one, the part is done, even if no block reached its own life. || You add the fractions. Clearing each block on its own is the wrong test. The order of the blocks, which can matter, is left out of this sum.",
+    use: "The part sees more than one amplitude in its life. || Add the fraction of life each block spends. The part is done when the sum reaches one, even if no single block reached its own life. || The severe block is priced by the fraction it spends. Do not clear a block just because it was under its own life, and remember that order is left out.",
+    example: "A part with three blocks of cycles, none of which reaches its own life. || Each block spends cycles-used over cycles-allowed. If those fractions add to 1, the part is done, even though every individual block looked fine. The severe block is the one that spends the large fraction. || You add the fractions. Clearing each block on its own is the wrong test, and the order of the blocks is still left out.",
     ideas: [
       {
         heading: "Each block spends n/N",
@@ -1868,6 +1967,9 @@ export const ladderLessons: Lesson[] = [
     title: "Heat added to the load",
     minutes: 8,
     lede: "You will add a constrained thermal stress to a mechanical tension and see which term is larger.",
+    start: "A bolted rail already carries the force of the bolts. The sun then tries to grow the rail, and the bolts will not let it. The rail feels the bolts and the sunlight. A gauge on the bolt still only reports the bolt. || If the bar cannot grow, you add the mechanical stress, force over area, to the thermal stress, stiffness times alpha times the temperature rise. Either one can be the larger. || You add them when growth is prevented. You do not report the load-cell force as the whole stress.",
+    use: "A bar carries a force and it is also heated, and it cannot grow. || Add the mechanical stress to the thermal stress. Either term can be the larger one. || You can say which term dominates. Do not report the load-cell force as the whole stress.",
+    example: "A fixed steel bar already at some tension from a load, then heated 40° while the ends still cannot move. || The heat adds about E × α × 40, on the order of 100 MPa for steel, on top of P/A. Either term can be the larger one. A load cell on the bolt still reports force, not this extra stress. || You add them when the bar cannot grow. You do not report the load-cell number as the whole story.",
     ideas: [
       {
         heading: "They add when the bar cannot grow",
@@ -1920,6 +2022,9 @@ export const ladderLessons: Lesson[] = [
     title: "What an inspection buys",
     minutes: 9,
     lede: "You will start a crack at the smallest size you can find and read the cycles left.",
+    start: "A small leak in a dam, found early, gives you years. The same leak found when it is already a wide crack gives you much less than 'four times wider, so four times less time.' The early growth was the slow part. || You integrate how fast the crack grows from the size you can find to the size that fails. Because a short crack grows slowly, most of the cycles are spent while it is small. Finding it later skips that slow chapter. || Four times the length is not four times less life. You buy cycles by finding it smaller.",
+    use: "A crack is already there, and an inspection can find it only after some size. || Integrate the growth from the size you can find out to the size that fails. Finding it smaller buys many cycles, because the early growth is slow. || A later find is not a proportional loss of life. Do not divide the remaining length by one rate.",
+    example: "An inspector can find a crack at 0.5 mm, or only once it is 2.0 mm. || The cycles left are the integral of growth from the size you find to the size that fails. Most of those cycles are spent while the crack is short, so the 2 mm find has already spent the slow part. || Four times the crack is not four times less life. You buy cycles by finding it smaller.",
     ideas: [
       {
         heading: "The integral cares most about the short crack",
@@ -1972,6 +2077,9 @@ export const ladderLessons: Lesson[] = [
     title: "The impatient mechanism",
     minutes: 9,
     lede: "You will name buckling, fatigue, fracture, or creep before you compute the one you happen to remember.",
+    start: "Before you multiply anything, you look at the part and say the sentence. Long and skinny and pushed on the end: it will bow. A shoulder on a spinning shaft: a crack will grow. A crack already in a shell: it may run. Hot for a year: it will sag. || That sentence picks the chapter: buckling, fatigue, fracture, or creep. Then you calculate that one. Yield strength can be generous and still be the wrong first page. || You name the mode from the conditions, then you open the matching calculation. A careful answer to the wrong question is still wrong.",
+    use: "You are about to compute, and you have not named the failure. || Pick buckling, fatigue, fracture, or creep from the conditions. Then open that calculation. || The chapter matches the service. Do not hand in a yield check for a part that fails another way first.",
+    example: "A long thin strut, a rotating shaft with a shoulder, a shell with a long crack, and a hanger near 0.6 of its melting temperature for a year. || The strut is buckling, even with a generous yield. The shaft is fatigue. The shell is fracture. The hanger is creep. || You name that one, then you calculate it. A careful yield check on the strut is the wrong homework.",
     ideas: [
       {
         heading: "Strength is not the first question",
@@ -2024,6 +2132,9 @@ export const ladderLessons: Lesson[] = [
     title: "The force in the roll gap",
     minutes: 9,
     lede: "You will estimate a rolling force from the contact length, which follows the square root of the draft.",
+    start: "Roll a ball of dough thinner and the roller touches the dough over a longer patch when you take a bigger bite. The force in your hands follows that patch, not the millimeters of thickness in a straight proportion. || The contact length is about the square root of the roll radius times how much thickness you removed. Force is the metal's flow stress times the width times that length. || A deeper pass is a longer bite and a higher force, and not in proportion to the extra thickness. Friction would pile on more force. This page leaves that hill out.",
+    use: "A strip is reduced in a roll gap and you need a force estimate. || The bite gets longer with the square root of the draft. A longer bite is a higher force. || A deeper draft is not a linear change in force. Do not forget that friction would add a hill this page leaves out.",
+    example: "A strip entering a roll and leaving at 8 mm, then a heavier pass leaving at 5 mm. || The contact length grows with the square root of the radius times the draft. The 5 mm exit is a longer bite and a higher force, and not in proportion to the extra millimeters you took. || You estimate the force from that length. Friction would add a hill this page does not draw.",
     ideas: [
       {
         heading: "Contact length is the square root of radius times draft",
@@ -2076,6 +2187,9 @@ export const ladderLessons: Lesson[] = [
     title: "Speed spends the tool",
     minutes: 8,
     lede: "You will raise cutting speed by half and watch tool life collapse.",
+    start: "Whittle a stick slowly and the knife stays sharp. Race, and the edge is gone long before you have whittled proportionally more. || For a cutting tool, speed and life are tied so that speed times life-to-a-power stays constant. A modest increase in speed is a large loss of minutes before the edge is worn. || You price the life you spent to go faster. You also say what 'worn' meant, because that defines the constant.",
+    use: "You want to cut faster. || A higher speed spends the tool by much more than the speed rose. Say what worn means for the constant you used. || You can price the life you gave away. Do not raise the speed and expect the same tool to last.",
+    example: "A cut at 100 m/min, then the same cut at 150 m/min. || At 100 m/min the tool lasts about 32 minutes. At 150 m/min it lasts about 4 minutes. V times T to the n stayed constant. The edge did not. || You price the life you spent. You say what 'worn' meant for that constant.",
     ideas: [
       {
         heading: "V times T to the n is a constant",
@@ -2128,6 +2242,9 @@ export const ladderLessons: Lesson[] = [
     title: "The pattern is longer than the part",
     minutes: 7,
     lede: "You will add a shrinkage allowance so the cold casting matches the drawing.",
+    start: "A tray of ice is smaller than the compartment you filled, once it has frozen and cooled. If you needed the ice to match a drawing, the compartment had to start bigger. || Metal castings shrink as they cool. The pattern, the shape you mold, is the finished size times one plus the shrink fraction. Faces you will machine need a second addition, so there is metal left to cut. || The cavity starts larger than the drawing. You do not cut the pattern to the cold dimension and hope.",
+    use: "A casting must match a drawing after it cools and shrinks. || Make the pattern larger than the part by the shrinkage. Add a machining allowance only on the faces you will cut. || The cavity is larger than the drawing. Do not cut the pattern to the cold dimension.",
+    example: "A drawing calls for a 200 mm casting. || The metal shrinks as it cools, so the pattern is 200 mm times one plus the shrink fraction. A 1% alloy needs a 202 mm pattern before you even add machining stock on the faces you will cut. || The cavity starts big. You do not machine the pattern to the cold dimension on the drawing.",
     ideas: [
       {
         heading: "The cavity must start big",
@@ -2180,6 +2297,9 @@ export const ladderLessons: Lesson[] = [
     title: "Why the weld bows",
     minutes: 8,
     lede: "You will scale a teaching bow with heat, and with one over thickness squared.",
+    start: "Weld a bead on a thin sheet and the sheet potato-chips. The hot bead wants to shrink as it cools, and it is stuck to metal that does not. A thicker sheet fights back much harder than a slightly cooler weld. || On this teaching picture the bow grows with the heat you put in, and it falls with the square of the thickness. Double the thickness and the bow drops by about four. || Thickness is the stiff resistance. The coefficient in the picture is a stand-in so you can see the powers. It is not a measured weld on your drawing.",
+    use: "A weld is about to bow a plate. || The bow grows with the heat and falls with the square of the thickness. Thickness is the stiff resistance. || Doubling the thickness matters more than a small change in heat. Do not treat the coefficient on this page as a measured weld.",
+    example: "A plate with a weld bead, first at some heat, then at double the heat, then at double the thickness instead. || Double the heat and the teaching bow doubles. Double the thickness and the bow falls by about four, because thickness is squared in the stiffness. || You buy flatness with thickness more than you buy it with a small tweak to the heat. The coefficient on this page is a teaching stand-in, not a measured weld.",
     ideas: [
       {
         heading: "Heat wants to shrink a strip that is stuck to cold plate",
@@ -2232,6 +2352,9 @@ export const ladderLessons: Lesson[] = [
     title: "A larger hole may sit farther off",
     minutes: 8,
     lede: "You will add a bonus tolerance when a hole is larger than its maximum-material size.",
+    start: "A loose peg in a large hole can sit farther off center and still go in. A peg in a hole that is barely big enough has to be almost perfectly centered. || Maximum material is the tightest fit: the smallest allowed hole, or the largest allowed peg. If the real hole is larger than that, some drawings let you add the extra size onto the position tolerance. That extra is the bonus. It exists only when the drawing says so. || A bigger hole may sit farther off center. You do not grant the bonus on a drawing that never offered it.",
+    use: "A hole is off its true position, and it is larger than the tightest size the drawing allows. || Add the departure from that tightest size to the position tolerance, and only if the drawing grants the bonus. || A larger hole may sit farther off. Do not grant the bonus on a drawing that does not.",
+    example: "A hole whose tightest allowed size is 10.0 mm, with a position tolerance, and a real hole that measures 10.2 mm. || If the drawing grants a bonus, the extra 0.2 mm of size is added to the position tolerance. At 10.0 mm there is no bonus. || A larger hole may sit farther off center. You do not grant the 0.2 mm on a drawing that never said so.",
     ideas: [
       {
         heading: "Maximum material is the tightest fit",
@@ -2284,6 +2407,9 @@ export const ladderLessons: Lesson[] = [
     title: "The surface is a fatigue input",
     minutes: 8,
     lede: "You will multiply a fatigue strength by a surface factor and watch a forged skin take half.",
+    start: "A polished rod survives many bends. The same rod, left with a rough forged skin, cracks sooner at the same bend. The roughness is a field of tiny chips, like the chip in the glass. || A fatigue strength measured on a polished bar gets multiplied by a surface factor before you use it on a real part. On this page polished is 1, machined is about 0.8, and forged is about 0.5. The alloy did not change. || You multiply before you claim a repeating-load life. You do not use this factor on a one-time pull to yield. Roughness matters to fatigue, not to that static test.",
+    use: "A fatigue strength was measured on a polished bar, and the part is not polished. || Multiply by a surface factor. A rougher surface is a field of small notches. || The forged skin does not get the polished number. Do not apply this factor to a static yield check.",
+    example: "A steel whose polished, fully reversed plateau is 300 MPa, then the same steel with a forged skin. || Polished keeps 300 MPa. Machined multiplies by about 0.8, so 240 MPa. Forged multiplies by about 0.5, so 150 MPa. The alloy did not change. || You multiply before you claim a fatigue life. You do not use this factor on a one-time yield check.",
     ideas: [
       {
         heading: "The plateau assumed a kind surface",
@@ -2336,6 +2462,9 @@ export const ladderLessons: Lesson[] = [
     title: "How long the arc stays",
     minutes: 8,
     lede: "You will slow a weld's travel and watch the heat per length double.",
+    start: "Hold a lighter under one spot on a stick and it chars. Sweep the lighter along the stick and each spot barely warms. The flame did not get smaller. It just did not stay. || Heat per length of weld is the electrical power divided by how fast the torch travels. Slow the travel and every millimeter receives more heat. Current and voltage can sit still while the heat per length doubles. || You look at the speed before you turn the current up. The crawl of the torch is the heat.",
+    use: "Current and voltage are already set, and you can still change how fast the torch moves. || Heat per length is the power divided by the travel. Slowing the torch piles more heat on each millimeter. || Halving the travel doubles the heat. Do not turn the current up before you look at the speed.",
+    example: "A weld at 20 V and 150 A, traveling at 300 mm/min, then at 150 mm/min. || Heat per length is the power spread over the travel. Halving the travel doubles the heat on each millimeter. Current and voltage never moved. || You look at the speed before you turn the current up. The torch's crawl is the heat.",
     ideas: [
       {
         heading: "Heat per length is power divided by speed",
@@ -2388,6 +2517,9 @@ export const ladderLessons: Lesson[] = [
     title: "Yield is a product",
     minutes: 8,
     lede: "You will multiply many small chances of a defect and watch the first-pass yield fall.",
+    start: "Flip a coin that lands well 98 times out of 100. Do it ten times in a row and you only get a clean run about 82 times out of 100. Do it forty times and you are under half. You multiplied the chances. You did not average 98. || First-pass yield is the chance a part survives every step. It is the product of the success at each step. || Adding a step multiplies a new chance of a defect. Removing a step beats polishing every step a little.",
+    use: "A part has to survive several steps, and each step has a small chance of a defect. || Multiply the chance of surviving each step. Do not average them. || Adding a step multiplies a new chance of failure. Removing a step beats tightening all of them a little.",
+    example: "A part through 10 steps that each keep 98% of what they receive, then the same part through 40 steps. || Ten steps ship about 82% the first time, because 0.98 to the 10th is about 0.82. Forty steps ship about 45%. You multiplied. You did not average 98%. || Adding a step multiplies a new chance of a defect. Removing a step beats polishing every step a little.",
     ideas: [
       {
         heading: "Each step keeps 98%",
@@ -2440,6 +2572,9 @@ export const ladderLessons: Lesson[] = [
     title: "The slow station",
     minutes: 8,
     lede: "You will speed up a station that is not the constraint and watch the throughput refuse to move.",
+    start: "A cafeteria line moves at the speed of the slowest server. Hiring a second person at a station that was already waiting does not feed people faster. || Throughput is set by the slowest station. Time per part there, turned into parts per hour, is the rate of the whole line. Speeding any other station leaves that rate alone. || You find the constraint and speed that one. A faster station that was already idle is a different project, and it will not hide a station that is behind.",
+    use: "The line is slow and you are about to speed up a station. || Throughput is the slowest station. Speed that one, or the rate does not move. || A faster station that was already waiting changes nothing. Do not optimize a station that is not the constraint.",
+    example: "Three stations at 20 s, 45 s, and 30 s. || The line makes 3600/45 = 80 parts an hour. Cut the 20 s station to 10 s and you still make 80. Cut the 45 s station to 25 s and the rate finally moves, and the 30 s station is now the slow one. || You speed the constraint. A station that was already waiting is the wrong project.",
     ideas: [
       {
         heading: "Throughput is the slowest station",
@@ -2492,6 +2627,9 @@ export const ladderLessons: Lesson[] = [
     title: "The tool divided by the count",
     minutes: 8,
     lede: "You will split a tooling cost across a batch and watch it vanish only when the batch is large.",
+    start: "A cookie cutter costs a lot and each cookie costs a little dough and a little time. Bake ten cookies and the cutter is most of the cost of each one. Bake ten thousand and the cutter almost disappears into the price. || Unit cost is the material and the minutes, which are on every part, plus the tool divided by how many parts share it. || A process with an expensive die can be a bad idea at a small batch and a fine idea at a large one. You compare processes at the quantity you will actually make.",
+    use: "A process needs a tool, and you may make a few parts or many. || Unit cost is the material and the minutes on every part, plus the tool divided by how many parts share it. || An expensive die can still be the wrong process at a small batch. Do not compare two processes at one quantity and call it general.",
+    example: "A die that costs 8000, material 4, and 2.40 of cycle time on every part. || At 100 parts the tool is 80 each, so the part is 86.40. At 10000 parts the tool is 0.80, so the part is 7.20. The press did not get faster. || An expensive die is a bad idea at 100 and a fine idea at 10000. You compare processes at the quantity you will actually make.",
     ideas: [
       {
         heading: "Material and minutes are there at any quantity",
@@ -2545,6 +2683,9 @@ export const ladderLessons: Lesson[] = [
     title: "Parts you can delete",
     minutes: 8,
     lede: "You will remove parts and watch assembly time fall by the handling you no longer do.",
+    start: "Assembling a toy with twelve screws takes longer than one held by two snaps, even when the screws are cheap. Most of the time is picking up and placing, not the price of the screw. || On this count, the first essential part takes a base time and each extra part adds a handling. You delete a part only when the product still does its job without it. || A removed part is a removed handling. You do not delete a fastener and call it saved if the joint then falls apart.",
+    use: "Assembly takes too long, and the part count is the lever you have. || Each extra part costs a handling. Delete a part only if the function does not need it. || A removed part is a removed handling, and the joint still does the job. Do not delete a part the function required.",
+    example: "A housing in 6 parts, each extra part costing 8 s of handling on top of a 20 s base. || Six parts take 20 + 5 × 8 = 60 s. Three parts take 20 + 2 × 8 = 36 s. The 16 s is real only if the three-part version still does the job. || You delete a part the function does not need. You do not delete a fastener and call it saved if the joint then fails.",
     ideas: [
       {
         heading: "Every extra part costs a handling",
@@ -2598,6 +2739,9 @@ export const ladderLessons: Lesson[] = [
     title: "Scrap you already paid for",
     minutes: 8,
     lede: "You will divide process cost by yield and refuse to subtract the scrap fraction instead.",
+    start: "Bake 100 loaves and throw 20 away. Every loaf, including the 20, used flour and oven time. The 80 you can sell have to carry that cost. They each cost more than one loaf's ingredients. || Cost per good part is the process cost divided by the fraction that ship. You divide. Subtracting the bad fraction from the cost pretends the waste saved you money. || A lower yield raises the price of each good part. If you can repair a bad part instead of throwing it away, say so, because this division assumed you scrapped it.",
+    use: "Some parts will not ship, and every part was already processed. || Divide the process cost by the yield. The bad parts land on the good ones. || A lower yield raises the cost of each good part. Do not subtract the scrap fraction, and say so if rework exists, because this division assumes you throw the bad part away.",
+    example: "Every part costs 10 to process. At 80% yield, 20 of every 100 are thrown away. || Cost per good part is 10 / 0.80 = 12.50. At 95% yield it is 10 / 0.95, about 10.53. Subtracting 2 from 10 to get 8 pretends the scrap saved you money. || You divide. If you can rework the bad part instead of scrapping it, you say so, because this number assumes you threw it away.",
     ideas: [
       {
         heading: "Every part was processed",
@@ -2652,6 +2796,9 @@ export const ladderLessons: Lesson[] = [
     title: "Whether it floats",
     minutes: 8,
     lede: "You will compare a block's density with the water and read how much of it has to be under.",
+    start: "A log rides high in a lake. A stone the same size goes to the bottom. Push the log down and you feel the water push back. || That push is buoyancy. It equals the weight of the water you pushed aside, not the weight of the log. Fresh water weighs about 1000 kilograms per cubic meter. If the log is lighter than that, it sinks only until the displaced water weighs as much as the log. The fraction under is the log's density divided by 1000. If the log is heavier even when fully under, it sinks. || You compare with the water, not with the log's weight alone. You stop using the floating fraction once it would need to be more than the whole log.",
+    use: "A solid block goes into fresh water and you need to know if it floats, and how deep. || Compare its density with 1000 kg per cubic meter. If it is lighter, the fraction under is its density over 1000. If it is heavier, it sinks, because even a full volume of water weighs less. || You can say the fraction, or say sunk. Do not keep using the floating fraction after it would pass 1.",
+    example: "A pine block at 500 kg/m³ in a lake, and a steel block of the same size. || Pine over 1000 is 0.50, so half the block is under and the displaced water weighs the same as the pine. Steel is several times 1000, so even fully under the water weighs less than the block. || Pine floats at half draft. Steel sinks. You stop using the floating fraction once it would pass 1.",
     ideas: [
       {
         heading: "The water pushes with the weight of what was displaced",
@@ -2705,6 +2852,9 @@ export const ladderLessons: Lesson[] = [
     title: "A narrower pipe",
     minutes: 8,
     lede: "You will hold the volume per second fixed and watch the speed rise as the area falls.",
+    start: "A river that narrows runs faster. The same water per second has to get through a smaller opening. The river is not filling up, and it is not leaking. || What enters must leave. Speed is the volume per second divided by the area. Halve the area and the speed doubles. This page does not say what the pressure did. That is a different question. || You hold the flow fixed and let the speed answer. You do not read a pressure off a page that never used one.",
+    use: "The same stream enters a narrower section, and the pipe does not fill or leak. || Divide the volume per second by the new area. Halving the area doubles the speed. || The speed changed and the flow did not. Do not read a pressure off this page.",
+    example: "A ventilation duct that must pass 0.010 m³ of air each second, wide and then necked down. || At 0.010 m² the air moves at 1 m/s. At 0.005 m² it moves at 2 m/s. The fan did not get stronger. || You doubled the speed by halving the area. You still do not know the pressure. That is a different page.",
     ideas: [
       {
         heading: "What enters must leave, if nothing is stored",
@@ -2758,6 +2908,9 @@ export const ladderLessons: Lesson[] = [
     title: "The cost of a tight turn",
     minutes: 8,
     lede: "You will keep the speed and cut the radius, and read the acceleration toward the center.",
+    start: "Swing a weight on a string. To keep the speed the same on a shorter string, you have to pull inward harder. The weight is not speeding up. It is only changing direction. || A change of direction is an acceleration, pointed at the center, even when the speedometer is steady. Its size is speed squared divided by the radius of the curve. || A tighter curve at the same speed costs more inward acceleration. You do not treat a steady speed as zero acceleration.",
+    use: "Something rounds a corner at a steady speed and you need the inward acceleration. || Divide the speed squared by the radius. A tighter curve at the same speed costs more, and the acceleration points at the center. || Halving the radius doubles the acceleration, and you did not blame the speed. Do not treat a steady speed as zero acceleration.",
+    example: "A camera on a 2 m boom, swung at a steady 10 m/s, then the same speed on a 1 m boom. || Inward acceleration is 10² / 2 = 50 m/s², then 10² / 1 = 100 m/s². The speed number never changed. The direction did. || A tighter boom costs double the acceleration, pointed at the pivot. Steady speed is not zero acceleration.",
     ideas: [
       {
         heading: "The same speed on a tighter curve needs more acceleration",
@@ -2810,6 +2963,9 @@ export const ladderLessons: Lesson[] = [
     title: "The front moves slowly",
     minutes: 8,
     lede: "You will give a diffusion front four times as long and watch it travel only twice as far.",
+    start: "A drop of food coloring in still water spreads. The first centimeter arrives sooner than you expect. The next centimeter takes much longer. Waiting is a poor way to buy distance. || Diffusion distance grows with the square root of time, when the temperature, which sets how eager the atoms are to jump, is held fixed. Twice the distance takes four times as long. || You price the wait as the square. If someone heats the bath, the eagerness changes and these hours no longer apply.",
+    use: "A dissolved front has to travel a set distance, and the temperature is not changing. || Distance follows the square root of time. To go twice as far, allow four times as long. || A longer wait is priced as the square, not as the double. Do not reuse the hours if the furnace changed the diffusivity.",
+    example: "A carburizing front that has reached 1 mm in 4 hours. The drawing needs 2 mm, and the furnace temperature stays put. || Distance follows the square root of time, so twice the distance is four times the time. You allow 16 hours, not 8. || Waiting is a poor way to buy millimeters. If someone raises the furnace temperature, this 16 hours is no longer the answer, because the diffusivity changed.",
     ideas: [
       {
         heading: "Distance grows with the square root of time",
@@ -2863,6 +3019,9 @@ export const ladderLessons: Lesson[] = [
     title: "How much fiber",
     minutes: 9,
     lede: "You will add fiber fraction and read the modulus along the fibers, not across them.",
+    start: "Pull on a rope made of strong fibers and weak string wound together, along the rope. The fibers carry almost all of it. Cut across the rope and you are only breaking the string. || Along the fibers, the stiffness is the fiber stiffness times the fraction that is fiber, plus the glue stiffness times the rest. At 60 percent carbon and the rest epoxy, almost all of the number is the carbon. With no fiber, you just have the epoxy. || You use this only for a pull along the fibers. Across them the glue still governs, and this number is a lie.",
+    use: "You are adding fiber to epoxy and the load will run along the fibers. || The modulus is the fiber's stiffness times its fraction, plus the epoxy's stiffness times what is left. Split the answer into those two shares. || You can say how much of the number is fiber. Do not use this number across the fibers.",
+    example: "A ski spar, 60% carbon fiber by volume in epoxy, pulled along the fibers. Fiber is 230 GPa, epoxy is 3.5 GPa. || 0.60 × 230 + 0.40 × 3.5 = 138 + 1.4 = 139.4 GPa. With no fiber at all you have 3.5 GPa, which is just the epoxy. || Almost all of the 139 is the fiber. A pull across the spar does not get to use 139.",
     ideas: [
       {
         heading: "Along the fibers, the two stiffnesses share the load by volume",
@@ -2916,6 +3075,9 @@ export const ladderLessons: Lesson[] = [
     title: "A pin in one shear",
     minutes: 8,
     lede: "You will size a pin and watch the shear stress fall with the square of the diameter.",
+    start: "A single nail through two boards has one circular face that the load tries to slice. A thicker nail is much harder to slice than 'twice as thick' suggests, because the face grows in both directions. || Shear stress is the load divided by that circular area. The area is pi times diameter squared, over 4. Double the diameter and the area grows by four, so the stress falls to a quarter. || You are looking at one slice. A pin held between two lugs has two slices and about half the stress. You say which joint you have before you use the number.",
+    use: "One pin carries a known load across one shear plane. || Divide the load by the area of the circle, and compare that stress with an allowable shear. Diameter is squared, so doubling it quarters the stress. || The stress you checked is the diameter you actually have, in single shear. Do not use this number if the pin is in double shear.",
+    example: "An 8 mm clevis pin carrying a 4000 N cable across one face, then a 16 mm pin in the same single lug. || The 8 mm circle is about 50 mm², so the shear stress is 4000 / 50, about 80 MPa, more precisely 79.6. The 16 mm pin has four times the area and 19.9 MPa. || Doubling the pin quarters the stress. If the cable is held between two lugs, you have two faces and this number is the wrong joint.",
     ideas: [
       {
         heading: "One shear plane carries the whole load",
@@ -2970,6 +3132,9 @@ export const ladderLessons: Lesson[] = [
     title: "Wire to the fourth",
     minutes: 9,
     lede: "You will double a coil's wire and watch the spring rate grow by sixteen, not by two.",
+    start: "A spring wound from thin wire is easy to compress. The same coil wound from wire only twice as thick is not twice as stiff. It is wildly stiffer. The wire got thicker in a way the coil feels four times over. || The rate, newtons of push per meter of squeeze, follows the wire diameter to the fourth power, and it falls if the coil is wider or has more turns. Doubling the wire multiplies the rate by 16. || You set the rate with the wire, mostly. The rate does not tell you whether that wire is about to yield. That is a different number.",
+    use: "A coil has to push back a known amount per meter, and you can change the wire. || Rate follows the wire diameter to the fourth. Doubling the wire multiplies the rate by sixteen. Mean diameter and coil count are the other levers, and they are weaker. || The rate is the number you meant to set. Do not treat that rate as proof the wire will not yield.",
+    example: "A return spring in 2 mm wire, 20 mm mean diameter, 8 active coils, in steel. Then the same spring wound in 4 mm wire. || The 2 mm spring rates at 2500 N/m. The 4 mm spring rates at 40000 N/m, sixteen times, because the wire diameter is to the fourth. || You got a much harder spring from a wire that only looked twice as thick. You still have not checked whether that wire yields.",
     ideas: [
       {
         heading: "Rate cares about the wire much more than about the coil count",
@@ -3023,6 +3188,9 @@ export const ladderLessons: Lesson[] = [
     title: "Six motions, then stop",
     minutes: 8,
     lede: "You will place contacts until a part has no motion left, and see a spare contact do nothing.",
+    start: "A book on a table can still slide in two directions and spin flat, and it can tip. Add a stop on the left, another on the front, and it runs out of ways to move. A second stop on the same edge, after the first has already blocked that slide, does not block a new direction. It only argues with the first stop. || A free part has six motions: three slides and three turns. The base can stop three, a side can stop two, and an end can stop one. That is 3, 2, and 1. Contacts past those caps are wasted. || You place contacts until no motion is left, and you do not celebrate an extra dot on a face that was already full.",
+    use: "A part must not move while you cut it. || Remove all six motions: up to three contacts on the base, two on a side, and one on an end. A further contact on a face that is already full removes nothing. || Motions left is zero, and you can point at any contact that is wasted. Do not add a fourth on the base and call the part more located.",
+    example: "A rectangular block in a milling vise. You have placed 3 contacts on the base, 2 on the side, and 1 on the end. || That is 6, and a free part only had 6 motions, so nothing is left to rattle. A fourth contact on the base does not remove a seventh motion. There is not one. || You stop at 3, 2, and 1. The extra dot argues with the base contacts already there.",
     ideas: [
       {
         heading: "A free part can move in six ways",
@@ -3076,6 +3244,9 @@ export const ladderLessons: Lesson[] = [
     title: "The bond between roads",
     minutes: 8,
     lede: "You will weaken only the joint between printed layers, and leave the road itself alone.",
+    start: "A stack of papers glued at the edges is strong if you pull a sheet in its own plane. Peel one sheet off the next and you are only fighting the glue. The paper did not get weaker. You changed direction. || Printed plastic is that stack. Along a printed road you have the plastic's strength. Between layers you have that strength divided by a knockdown, often around 2 unless you measured better. A knockdown of 1 is a claim that the glue equals the paper. || The direction of the load picks the number. A pull that peels uses the smaller one. You do not quote the road strength for that pull.",
+    use: "A printed part will be loaded, and the load may peel one layer off the next. || Strength along a road is the plastic. Strength between layers is that number divided by the knockdown. Use the smaller one when the load opens the bond. || The orientation and the knockdown are both written next to the strength. Do not quote the road strength for a pull between layers.",
+    example: "A printed bracket, 40 MPa along a road of plastic, with a knockdown of 2, and a load that peels one layer off the next. || The road is still 40 MPa. The bond is 40 / 2 = 20 MPa. Knockdown 1 would claim the bond equals the road, which you only say if you measured it. || The peel uses 20 MPa. Quoting 40 MPa for that pull is the wrong direction.",
     ideas: [
       {
         heading: "Along a road and between roads are different materials in practice",
@@ -3128,6 +3299,9 @@ export const ladderLessons: Lesson[] = [
     title: "The pace already set",
     minutes: 8,
     lede: "You will divide the minutes you have by the parts you owe, and compare that with how long the station takes.",
+    start: "A bakery owes 50 loaves in a 400-minute morning. That is a loaf every 8 minutes, whether the oven likes it or not. Owe 200 loaves and it is a loaf every 2 minutes. An oven that takes 4 minutes was early for the first promise and late for the second. || Takt is the pace the demand already set: the minutes you have, divided by the parts you owe. The station's cycle is how long the work actually takes. Late is a cycle longer than takt. || You compare the station with the customer's pace. Speeding a station that is already inside the pace does not serve the demand. The customer did not ask what the oven prefers.",
+    use: "You owe a number of parts, and you have a fixed number of minutes. || Divide the minutes by the demand. That pace is not the station's cycle. Compare the two. || You can say slack or late, per part. Do not speed a station that is already inside the pace and call it service to the demand.",
+    example: "A shift with 400 minutes, owing 50 parts, and one station that takes 4 minutes. Then the same shift owing 200 parts. || Takt at 50 is 400 / 50 = 8 minutes, so the station has 4 minutes of slack. At 200, takt is 2 minutes, and every part is 2 minutes late. || You compare the station with the pace the demand already set. Speeding a station that is inside an 8 minute takt does not serve the 50-part day.",
     ideas: [
       {
         heading: "Takt is the customer's pace, not the station's",
@@ -3171,6 +3345,343 @@ export const ladderLessons: Lesson[] = [
         options: ["Takt is 4 min, matching the station", "Takt is 8 min", "The station must take 100 min", "Demand does not enter"],
         answer: 0,
         why: "400 / 100 = 4. You are exactly on the pace this model knows.",
+      },
+    ],
+  },
+  {
+    id: "face",
+    track: "materials-201",
+    index: 6,
+    title: "What the break shows",
+    minutes: 9,
+    lede: "You will name the failure mode from the fracture face, before you pick a calculation.",
+    start: "Bend a paperclip until it stays bent and then breaks. The ends look torn and a little thinner. Snap a cold carrot. The face is flat and sudden. Bend the paperclip at one spot, back and forth, fifty times. It breaks there, smoother, starting from one point. || The broken face is a record. A torn, necked face full of tiny dimples is ductile overload: it stretched, then tore. A flat bright face is cleavage: it parted on the crystals with little stretch. Marks that bow out from a small origin are fatigue: it grew over many cycles. A face like rock candy, outlining the grains, is intergranular: it followed the boundaries. || You name the marks that show how it spent its life. The rough bit at the end, where it finally let go, is only the ending. It does not rename the whole face.",
+    use: "A part has already broken and you can see the face. || Match the marks to a mode. Dimples are ductile overload. A flat bright face with chevrons is cleavage. Beach marks from an origin are fatigue. A rock-candy face is intergranular. || You name the mode that started. Do not let the last patch of tearing rename the whole life.",
+    example: "A shaft face with a smooth thumbnail and beach marks over two thirds, and a dull fibrous patch over the last third. || The thumbnail grew by fatigue. The dull patch is the final overload, after the crack was large enough to tear the rest. || You write fatigue, not ductile. The last patch is how it finished, not how it spent its life.",
+    ideas: [
+      {
+        heading: "Dimples mean it stretched, then tore",
+        body: "A cup-and-cone break is dull because the surface is a field of tiny dimples. Each dimple was a void that grew in the neck and joined its neighbors. The metal used up its ductility. This is overload, not a crack that lived for a million cycles.",
+        formula: "dull dimples, a neck → ductile overload",
+      },
+      {
+        heading: "A flat bright face parted on the crystals",
+        body: "Cleavage is flat, often shiny, with little neck. Chevron marks point back toward the origin. The metal split on crystal planes instead of sliding. Cold, a high rate, or a coarse grain pushes a steel toward this face.",
+        formula: "flat, bright, chevrons, almost no neck → cleavage",
+      },
+      {
+        heading: "The origin is not the last patch",
+        body: "Fatigue leaves an origin, often a thumbnail at a surface, and beach marks that bow out from it. Intergranular cracking follows the grain boundaries and looks like rock candy. Either one can end in a dull tear. That tear is the finish. The marks behind it are the mode.",
+        formula: "beach marks from an origin → fatigue. Grains on the face → intergranular",
+      },
+    ],
+    bench: "face",
+    prompt: "Read four faces. Name ductile overload, cleavage, fatigue, or intergranular.",
+    note: "The drawing is a diagram of the words, not a micrograph. A real face can mix modes. You name the one that ran for the life of the part.",
+    checks: [
+      {
+        prompt: "A dull cup-and-cone covered in dimples is…",
+        options: ["Fatigue", "Cleavage", "Ductile overload", "Intergranular"],
+        answer: 2,
+        why: "The dimples are voids that joined after a lot of plastic strain. The metal tore. It did not snap on a crystal plane.",
+      },
+      {
+        prompt: "Chevron marks on a flat face point toward…",
+        options: ["The origin", "The toughest region", "The last beach mark", "A grain boundary only"],
+        answer: 0,
+        why: "The arrows grow away from where the crack started. Follow them backward.",
+      },
+      {
+        prompt: "Beach marks around a thumbnail mean the crack…",
+        options: ["Was one overload", "Advanced over many cycles", "Followed grain boundaries only", "Proves the steel was below its transition"],
+        answer: 1,
+        why: "Each band is a chapter of cycles. The thumbnail is the origin. A dull patch at the end can still be the final tear.",
+      },
+      {
+        prompt: "A rock-candy face, crack on the boundaries, is…",
+        options: ["Ordinary ductile dimples", "Intergranular", "Proof of a high factor of safety", "A beach-mark fatigue face"],
+        answer: 1,
+        why: "The grains are outlined because the boundary was the weak path. That can be embrittlement or a chemical film. It is not a cup and cone.",
+      },
+    ],
+  },
+  {
+    id: "transition",
+    track: "materials-301",
+    index: 6,
+    title: "The same steel, cold",
+    minutes: 8,
+    lede: "You will drop the temperature through a transition and watch one steel change from tearing to snapping.",
+    start: "A chocolate bar bends on a warm day and snaps on a cold one. You did not buy a different chocolate. You changed the temperature. || Steels do this too. Above a transition temperature they tear and absorb a lot of energy. Below it they cleave, flat and bright, and absorb little. The energy falls off a shelf as you cool through that temperature. A thicker piece, a sharper notch, or a faster blow moves the shelf warmer, so a thin lab bar can lie about a thick cold plate. || You quote the energy with the temperature, and you remember the lab bar is not the ship. Same steel, two faces.",
+    use: "A steel part may see a temperature below its transition, with a notch and a fast load. || Read the energy on either side of the transition. Below it, the face is cleavage and the energy is the lower shelf. Above it, the steel tears and the energy is the upper shelf. || You do not use the room-temperature energy for a cold night. Thickness, notch, and rate move the transition too.",
+    example: "A plate whose teaching curve is centered at 0°C. || At −20°C it absorbs about 20 J and the call is snaps. At 20°C it absorbs about 80 J and the call is tears. The chemistry did not change. || You write the lowest service temperature next to the energy. A room-temperature coupon did not speak for the cold night.",
+    ideas: [
+      {
+        heading: "One steel, two faces",
+        body: "Above the transition the bar bends and the fracture is dull. Below it the bar snaps and the face is bright and flat. You did not switch alloys. You crossed a temperature.",
+        formula: "below the transition → cleavage. Above it → ductile tear",
+      },
+      {
+        heading: "The energy falls off a shelf",
+        body: "On this page the lower shelf is 15 J and the upper shelf is 85 J, with the rise centered at 0°C. At −20°C you are near 20 J. At 20°C you are near 80 J. The middle of the rise is the worst place to quote a single number.",
+        formula: "energy climbs from the lower shelf to the upper shelf across the transition",
+      },
+      {
+        heading: "The coupon is not the ship",
+        body: "A thicker section, a sharper notch, and a faster blow all move the transition warmer. A thin Charpy bar that tore in the lab can still be a plate that snaps on a cold dock. This curve is the shape of that warning, not a certificate.",
+      },
+    ],
+    bench: "transition",
+    prompt: "Set −20°C, then 20°C.",
+    note: "Teaching curve, not a named steel. Lower shelf 15 J, upper shelf 85 J, centered at 0°C.",
+    checks: [
+      {
+        prompt: "At −20°C on this curve the energy is about…",
+        options: ["20 J, and it snaps", "80 J, and it tears", "50 J, exactly on the shelf", "Unchanged from 20°C"],
+        answer: 0,
+        why: "You are on the cold side of a transition centered at 0°C. The energy has fallen to about 20 J.",
+      },
+      {
+        prompt: "At 20°C the same steel…",
+        options: ["Snaps at 20 J", "Tears, near 80 J", "Has no energy", "Cleaves because the alloy changed"],
+        answer: 1,
+        why: "Above the transition the upper shelf is available. The chemistry is the steel you started with.",
+      },
+      {
+        prompt: "A single energy quoted with no temperature is…",
+        options: ["Always the upper shelf", "Incomplete, because the shelf depends on temperature", "The yield strength", "Only valid below −40°C"],
+        answer: 1,
+        why: "This curve moves from about 20 J to about 80 J across a few tens of degrees. The number needs the temperature.",
+      },
+      {
+        prompt: "A thicker, sharper, faster test tends to…",
+        options: ["Move the transition colder", "Move the transition warmer", "Remove the transition", "Raise the lower shelf to 85 J"],
+        answer: 1,
+        why: "Constraint, notch, and rate all make cleavage easier. The lab bar can look tougher than the plate.",
+      },
+    ],
+  },
+  {
+    id: "scc",
+    track: "materials-401",
+    index: 5,
+    title: "A crack that needs a partner",
+    minutes: 8,
+    lede: "You will show that stress corrosion needs the stress and the chemical together, and that either one missing stops it.",
+    start: "A rubber band under tension in the sun cracks. The same band in a drawer, under the same tension, does not. The same band in the sun, lying slack, does not. You needed the stretch and the sun together. || Stress corrosion is that partnership in a metal. A steady tension opens the tip of a crack. A specific chemical keeps the tip from blunting. Miss either one and the crack does not grow. There is also a threshold: under some stress, even in the chemical, nothing happens. || You do not clear the part with a pull test in dry air, and you do not clear it with a corrosion coupon that was not stressed. The service is both.",
+    use: "A metal sits in a specific environment under a steady tension. || If the environment is absent, the rate is zero. If the stress is under the threshold, the rate is zero. Only both together grow the crack. || You do not call it fatigue, and you do not call a dry coupon the service. Name the environment on the drawing.",
+    example: "A stainless tube at 200 MPa. || In dry air the growth on this page is 0. With the corrodent present it is 0.04 mm per year. Drop the stress under 120 MPa and the wet tube stops as well. || You needed both. A stress check alone, or a corrosion coupon with no stress, would have missed it.",
+    ideas: [
+      {
+        heading: "Neither one is sufficient",
+        body: "Stress corrosion is a partnership. The tension opens the tip. The chemical keeps the tip from blunting the way a ductile metal wants to. Remove the chemical and you have a static stress. Remove the stress and you have a surface film. Neither of those, alone, is this crack.",
+        formula: "rate = 0 unless the environment is present and the stress is over the threshold",
+      },
+      {
+        heading: "Under the threshold it sleeps",
+        body: "This page puts the threshold at 120 MPa. At 200 MPa in the wet environment the crack grows at 0.04 mm per year. At 80 MPa in the same environment it grows at nothing. More stress is not a gentle increase from zero. There is a step.",
+        formula: "above 120 MPa, wet: 0.04 mm/year × (stress − 120) / 80",
+      },
+      {
+        heading: "The dry coupon is a different test",
+        body: "A tensile test in air will not grow this crack, however long you wait. The face, if it does run in service, is often intergranular. That is a clue, not the whole proof. The proof is the pair: this metal, this environment, this tension.",
+      },
+    ],
+    bench: "scc",
+    prompt: "Hold 200 MPa in dry air, then switch the environment on.",
+    note: "Teaching threshold 120 MPa. Wet rate 0.04 mm/year at 200 MPa, linear up from the threshold. No specific alloy-environment pair. Real lists are particular: some stainless steels in chlorides, some brasses in ammonia, some steels in caustic.",
+    checks: [
+      {
+        prompt: "200 MPa in dry air, on this page…",
+        options: ["Grows at 0.04 mm/year", "Grows faster than when wet", "Does not grow", "Grows only below 120 MPa"],
+        answer: 2,
+        why: "The stress is real and the partner is missing. The rate is zero.",
+      },
+      {
+        prompt: "200 MPa with the environment present grows at…",
+        options: ["0", "0.04 mm/year", "120 mm/year", "The fatigue rate"],
+        answer: 1,
+        why: "Both partners are here, and 200 is above 120. The page's rate at that point is 0.04 mm per year.",
+      },
+      {
+        prompt: "80 MPa in the same wet environment…",
+        options: ["Grows at 0.04 mm/year", "Does not grow. The stress is under the threshold", "Grows faster, because the stress is gentler", "Switches the mode to fatigue"],
+        answer: 1,
+        why: "The chemical is present and the tension is not enough. Under 120 MPa the rate is zero.",
+      },
+      {
+        prompt: "A passing tensile test in air means…",
+        options: ["The service crack cannot happen", "You have not run the partnership", "The threshold is 200 MPa", "The face will be a cup and cone in service"],
+        answer: 1,
+        why: "Air is the dry branch. Stress corrosion is the wet branch above the threshold.",
+      },
+    ],
+  },
+  {
+    id: "wear",
+    track: "engineering-201",
+    index: 6,
+    title: "Rubbed away",
+    minutes: 8,
+    lede: "You will predict how much material a sliding contact removes, and which lever actually helps.",
+    start: "A shoe sole is thin at the heel and fine at the arch. The sidewalk was never stronger than your weight. It only rubbed, a little, for a long way. || Wear is material rubbed off. The loss is a volume of debris. It grows with the load and with the distance slid, and it shrinks if the surface is harder to scratch. A coefficient says how severe the pair is. Oil can make that coefficient tiny. This page is a dry pair. || Hardness, load, and distance are the levers. A yield strength from a pull test does not appear. A part can pass a strength check and still disappear.",
+    use: "Two surfaces slide under a load for a known distance. || Volume lost is a wear coefficient times load times distance, divided by hardness. Harder is better. Less load and less distance are better. A strength number does not enter. || You do not size a wearing surface from yield alone. Say whether it is lubricated, because that coefficient assumed a dry pair.",
+    example: "A dry slider, wear coefficient 10⁻⁴, 200 N, 1000 m of travel, hardness 1000 MPa. || In mm³ the page uses 1000 × 10⁻⁴ × 200 × 1000 / 1000 = 20. Double the hardness and you lose 10 mm³. Double the distance and you lose 40 mm³. || Hardness, load, and distance are the three levers. The yield strength was not one of them.",
+    ideas: [
+      {
+        heading: "The pile of debris has a volume",
+        body: "Archard's rule says the volume removed is proportional to the load and to how far you slid, and inversely proportional to the hardness of the softer face. On this page the dimensionless coefficient is 10⁻⁴, a dry teaching pair.",
+        formula: "V in mm³ = 1000 × k × F × s / H    k = 10⁻⁴, H in MPa",
+      },
+      {
+        heading: "Hardness is the material lever",
+        body: "At 200 N and 1000 m, a 1000 MPa face loses 20 mm³. A 500 MPa face loses 40 mm³. You did not change the force or the route. You changed how hard the surface was to cut.",
+        formula: "V ∝ 1 / H",
+      },
+      {
+        heading: "Lubrication is a different k",
+        body: "A film between the faces can drop the coefficient by orders of magnitude. This page will not do that for you. If the real contact is oiled, do not quote 20 mm³. If it is dry and gritty, the real pile can be worse than k = 10⁻⁴.",
+      },
+    ],
+    bench: "wear",
+    prompt: "Set 200 N, 1000 m, and 1000 MPa. Then double the hardness.",
+    note: "V = kFs/H with k = 10⁻⁴. Load in newtons, distance in meters, hardness in MPa, volume in mm³. No lubrication and no third-body grit.",
+    checks: [
+      {
+        prompt: "200 N, 1000 m, 1000 MPa removes…",
+        options: ["2 mm³", "20 mm³", "200 mm³", "1000 mm³"],
+        answer: 1,
+        why: "10⁻⁴ × 200 × 1000 / 1000 = 20. The units on this page land on mm³.",
+      },
+      {
+        prompt: "Doubling the hardness, same load and distance…",
+        options: ["Doubles the volume", "Halves the volume", "Does nothing, because yield was the lever", "Removes the load"],
+        answer: 1,
+        why: "Volume is divided by hardness. 1000 MPa to 2000 MPa takes 20 mm³ to 10 mm³.",
+      },
+      {
+        prompt: "Doubling the distance…",
+        options: ["Doubles the volume", "Squares the volume", "Halves the volume", "Changes the hardness"],
+        answer: 0,
+        why: "Distance is in the numerator, to the first power. Twice as far, twice the debris.",
+      },
+      {
+        prompt: "A yield strength does not appear because…",
+        options: ["Wear is not the same chapter as yielding", "Yield and hardness are always equal", "The coefficient is a stress", "Distance is a hardness"],
+        answer: 0,
+        why: "The surface is being cut away, a little at a time. The hardness resists that. A static yield check can pass while the part disappears.",
+      },
+    ],
+  },
+  {
+    id: "scale",
+    track: "engineering-301",
+    index: 6,
+    title: "Big parts break sooner",
+    minutes: 9,
+    lede: "You will compare a section size with (toughness / yield) squared and say whether yield or fracture is the first mode.",
+    start: "A thin strand of uncooked spaghetti bends and then breaks after it has folded a lot. A bundle as thick as your wrist, made of the same brittle stuff, snaps while it still looks straight. Being bigger changed the way it failed. || Toughness and yield together set a length: toughness divided by yield, then squared. A piece much smaller than that length yields through. A piece much larger can fracture while the stress on the whole section is still under yield. Raising the yield, without raising the toughness, shortens that length, so fracture can win in a smaller part. || You compare the part with that length before you trust a small coupon. The coupon was the small piece. It was supposed to yield.",
+    use: "You know a toughness and a yield, and the part has a size. || Compute (KIc / σ_y) squared. A section much smaller than that length yields through. A section much larger can fracture while the net stress is still under yield. || You do not carry a coupon result onto a member ten times thicker without this comparison.",
+    example: "A metal with KIc of 80 MPa√m and yield of 400 MPa. || (80 / 400) squared is 0.04 m, which is 40 mm. A 10 mm ligament is under that length, so it yields through. A 200 mm member is over it, so fracture can arrive first. || Same metal, two modes. The coupon was the small one.",
+    ideas: [
+      {
+        heading: "Toughness and yield set a length",
+        body: "KIc over yield has units of square root of meters. Squared, it is a length. On this page that length is the border between a part that runs out of strength and a part that runs out of crack stability.",
+        formula: "L = (KIc / σ_y)²",
+      },
+      {
+        heading: "Small yields. Large can snap",
+        body: "80 MPa√m and 400 MPa give 40 mm. A 10 mm section is on the yield side of 40 mm. A 200 mm section is on the fracture side. The metal did not become brittle. The part became big enough for a crack to matter before the whole section yielded.",
+        formula: "section under L → yield first. Section over L → fracture can come first",
+      },
+      {
+        heading: "The coupon is the small piece",
+        body: "A lab bar is usually on the yield side of L, which is why it necks. A bridge member, a rotor, a thick plate can be on the other side of the same metal. This page draws the border at L. A real assessment also needs the crack size, not only the section.",
+      },
+    ],
+    bench: "scale",
+    prompt: "Set the section to 10 mm, then to 200 mm.",
+    note: "KIc fixed at 80 MPa√m, yield at 400 MPa, so L = 40 mm. The call is yield-first under L and fracture-possible over L. No specified crack shape.",
+    checks: [
+      {
+        prompt: "(80 MPa√m / 400 MPa) squared is…",
+        options: ["4 mm", "40 mm", "400 mm", "80 mm"],
+        answer: 1,
+        why: "80/400 = 0.2. 0.2 squared is 0.04 m, which is 40 mm.",
+      },
+      {
+        prompt: "A 10 mm section of this metal…",
+        options: ["Is over L, so fracture is first", "Is under L, so it yields through", "Has no yield", "Changes KIc"],
+        answer: 1,
+        why: "10 mm is below 40 mm. There is not enough size for the crack to outrun yielding.",
+      },
+      {
+        prompt: "A 200 mm member of the same metal…",
+        options: ["Must yield, because the metal did", "Can fracture while the net section is still under yield", "Has a lower yield", "Is immune because it is bigger"],
+        answer: 1,
+        why: "200 mm is well above L. Size moved the mode. The datasheet yield did not change.",
+      },
+      {
+        prompt: "Raising the yield while toughness stays put…",
+        options: ["Makes L larger, so fracture is harder", "Makes L smaller, so fracture can win in a smaller part", "Does not move L", "Removes KIc"],
+        answer: 1,
+        why: "L has yield in the denominator. A stronger metal is not automatically a tougher structure. The length got shorter.",
+      },
+    ],
+  },
+  {
+    id: "clocks",
+    track: "engineering-401",
+    index: 5,
+    title: "Two clocks, one life",
+    minutes: 8,
+    lede: "You will add a fatigue fraction and a creep fraction, and retire the part when the sum reaches one.",
+    start: "A runner who does hard days and also stands in a hot kitchen for long shifts is tired from both. A logbook that says the hard days were 'under the limit,' and another logbook that says the shifts were 'under the limit,' can both be true while the runner is finished. || A hot part that is also cycled has two such logbooks. Cycles spend a fraction of the fatigue life. Time at temperature spends a fraction of the creep-rupture life. They draw on one life. When the fractions add to one, you retire it. || You add them. You do not clear each logbook alone. This addition is the gentle version. A hold in the middle of a cycle can be worse, and the order is left out.",
+    use: "A hot part is also cycled. || Spend n/N for the cycles and t/t_r for the time at temperature. When the sum reaches 1, the life is used, even if each fraction is still under 1. || You do not clear the part because the fatigue block was fine, or because it has not reached the creep-rupture time. Say that this is a linear sum. Interaction can be worse, and order is left out.",
+    example: "A disk that has used 0.40 of its fatigue life and 0.70 of its creep-rupture life. || 0.40 + 0.70 = 1.10. Each clock alone would have said there was life left. Together they have passed 1. || You retire it. A fatigue-only folder and a creep-only folder would each have signed.",
+    ideas: [
+      {
+        heading: "Each mechanism spends the same life",
+        body: "Cycles use up n/N, as in the Miner sum. Time at temperature uses up t/t_r, the fraction of the rupture life. They are not two wallets. They draw on one.",
+        formula: "D = n/N + t / t_r",
+      },
+      {
+        heading: "Under on each can still be over together",
+        body: "0.40 of the fatigue life plus 0.30 of the creep life is 0.70, and the part is still in. Raise the creep fraction to 0.70 and the sum is 1.10. Nothing here reached its own 1. The part is done anyway.",
+        formula: "retire when D reaches 1",
+      },
+      {
+        heading: "The sum is the gentle version",
+        body: "A hold in a cycle can grow a crack faster than this addition. The order can matter. This page will not show that. If you use the sum, say it is linear and that a worse interaction is still possible.",
+      },
+    ],
+    bench: "clocks",
+    prompt: "Set fatigue to 0.40 and creep to 0.30. Then raise creep to 0.70.",
+    note: "Linear life fraction. Fatigue damage and creep damage add. No interaction term and no order.",
+    checks: [
+      {
+        prompt: "0.40 fatigue and 0.30 creep is…",
+        options: ["0.10, the difference", "0.70, still under 1", "1.10, already done", "0.40, because creep does not count"],
+        answer: 1,
+        why: "You add. 0.70 is life left. Neither fraction is the answer by itself.",
+      },
+      {
+        prompt: "0.40 fatigue and 0.70 creep is…",
+        options: ["0.30", "0.70, because the larger one wins", "1.10, and the part is done", "Safe, because both are under 1"],
+        answer: 2,
+        why: "0.40 + 0.70 = 1.10. Each clock was under its own life. The sum was not.",
+      },
+      {
+        prompt: "Clearing each mechanism on its own is…",
+        options: ["The rule", "The mistake this page is about", "Required, because they do not share a life", "Only valid above the transition"],
+        answer: 1,
+        why: "Two passing fractions can add past 1. The folders have to be in the same sum.",
+      },
+      {
+        prompt: "This addition leaves out…",
+        options: ["The possibility that a hold makes the crack worse than the sum", "The fatigue fraction", "The creep fraction", "The number 1"],
+        answer: 0,
+        why: "Linear damage is the gentle rule. Creep-fatigue interaction, and the order of the blocks, can spend the life faster.",
       },
     ],
   },

@@ -17,18 +17,20 @@ export function BenchShell({
   children: ReactNode;
   controls: ReactNode;
 }) {
-  const [task, expect] = prompt.split(" || ");
+  const parts = prompt.split(" || ").map((part) => part.trim()).filter(Boolean);
+  const task = parts[0] ?? "";
+  const follow = parts.slice(1);
   return (
     <div className="flex flex-col gap-5">
       <div className="rounded-lg border border-line bg-surface px-4 py-4 sm:px-5">
         <p className="text-sm font-medium text-accent">Do this</p>
         <p className="mt-1 text-lg leading-relaxed text-ink">{task}</p>
-        {expect ? (
-          <>
-            <p className="mt-4 text-sm font-medium text-accent">You should see</p>
-            <p className="mt-1 leading-relaxed text-ink">{expect}</p>
-          </>
-        ) : null}
+        {follow.map((line, i) => (
+          <div key={line}>
+            <p className="mt-4 text-sm font-medium text-accent">{i === 0 ? "You should see" : "Then"}</p>
+            <p className="mt-1 leading-relaxed text-ink">{line}</p>
+          </div>
+        ))}
       </div>
       <div className="overflow-hidden rounded-lg bg-well text-well-fg">
         <div className="px-4 py-5 sm:px-6">{children}</div>
