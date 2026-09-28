@@ -591,3 +591,410 @@ export function WaveBench() {
     </BenchShell>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Physics 101, Week 3 benches                                         */
+/* ------------------------------------------------------------------ */
+
+import { blockOnIncline, FRICTION_PAIRS, frictionPair } from "@/course/forces";
+
+export function FrictionInclineBench() {
+  const [pairId, setPairId] = useState("wood");
+  const [mass, setMass] = useState(5);
+  const [angle, setAngle] = useState(20);
+  const pair = frictionPair(pairId);
+  const result = blockOnIncline(mass, angle, pair.muS, pair.muK);
+  const slipAngle = (Math.atan(pair.muS) * 180) / Math.PI;
+  const tanNow = Math.tan((angle * Math.PI) / 180);
+
+  const theta = (angle * Math.PI) / 180;
+  const sx = 40;
+  const sy = 152;
+  const L = 250;
+  const ex = sx + L * Math.cos(theta);
+  const ey = sy - L * Math.sin(theta);
+  const mx = sx + (L / 2) * Math.cos(theta);
+  const my = sy - (L / 2) * Math.sin(theta);
+
+  return (
+    <BenchShell
+      prompt="Pick a material pair and raise the incline angle until the block slips. || Read the slip angle, compute μs = tan θ, and compare it against the pair's stated value — then push past the angle and watch kinetic friction take the smaller share. || Run all five pairs: the slip angle moves, but one quantity never depends on the mass."
+      note="The μ values are classroom values, not tribology data — real friction depends on finish, humidity, and history. The identity μs = tan θ is exact inside the model, which is why the slip angle is the lab's instrument."
+      controls={
+        <>
+          <Segmented
+            label="Material pair"
+            value={pairId}
+            onChange={setPairId}
+            options={FRICTION_PAIRS.map((p) => ({ value: p.id, label: p.label }))}
+          />
+          <Slider label="Mass" min={0.5} max={12} step={0.5} value={mass} display={`${fmt(mass, 1)} kg`} onChange={setMass} />
+          <Slider label="Incline angle" min={0} max={50} step={0.5} value={angle} display={`${fmt(angle, 1)}°`} onChange={setAngle} />
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Normal force", value: `${fmt(result.normal, 1)} N` },
+          { label: "Static budget μs·N", value: `${fmt(pair.muS * result.normal, 1)} N` },
+          { label: "State", value: result.state === "stuck" ? "Stuck" : "Sliding" },
+          { label: "Acceleration", value: `${fmt(result.accel, 2)} m/s²` },
+          { label: "Slip angle", value: `${fmt(slipAngle, 1)}°` },
+          { label: "tan θ now", value: fmt(tanNow, 3) },
+        ]}
+      />
+      <svg viewBox="0 0 320 180" className="h-auto w-full" aria-hidden>
+        <line x1="20" y1={sy} x2="300" y2={sy} stroke="currentColor" strokeOpacity="0.4" />
+        <line x1={sx} y1={sy} x2={ex} y2={ey} stroke="currentColor" strokeWidth="2" />
+        <path d={`M ${sx + 34} ${sy} A 34 34 0 0 0 ${sx + 34 * Math.cos(theta)} ${sy - 34 * Math.sin(theta)}`} fill="none" stroke="currentColor" strokeOpacity="0.5" strokeDasharray="3 3" />
+        <g transform={`rotate(${-angle} ${mx} ${my})`}>
+          <rect x={mx - 26} y={my - 34} width="52" height="34" fill="none" stroke="currentColor" strokeWidth="2" />
+        </g>
+      </svg>
+      <p className="mt-2 text-sm leading-relaxed text-well-dim">
+        {result.state === "stuck"
+          ? `Holding: the downslope pull mg·sinθ is inside the μs·N budget, so friction matches it exactly and nothing moves. At the slip angle tan θ equals μs = ${fmt(pair.muS, 2)} — the mass canceled out of that identity.`
+          : `Sliding: the pull exceeded the static budget, so kinetic friction μk·N = ${fmt(result.friction, 1)} N opposes the motion and the remainder accelerates the block at ${fmt(result.accel, 2)} m/s².`}
+      </p>
+    </BenchShell>
+  );
+}
+
+type FbdForce = {
+  id: string;
+  label: string;
+  /** Whether the force genuinely acts in this scenario. */
+  present: boolean;
+  directions: string[];
+  /** Index into directions of the correct direction (only meaningful when present). */
+  correctDir: number;
+  why: string;
+};
+
+type FbdScenario = {
+  id: string;
+  title: string;
+  setup: string;
+  forces: FbdForce[];
+};
+
+const FBD_SCENARIOS: FbdScenario[] = [
+  {
+    id: "slope",
+    title: "Block on a rough incline",
+    setup: "A block slides down a rough incline. The diagram is for the block alone.",
+    forces: [
+      {
+        id: "weight",
+        label: "Weight",
+        present: true,
+        directions: ["Straight down", "Perpendicular into the slope", "Down the slope"],
+        correctDir: 0,
+        why: "Gravity acts on the block always, straight down — it does not tilt with the slope.",
+      },
+      {
+        id: "normal",
+        label: "Normal force",
+        present: true,
+        directions: ["Perpendicular out of the slope", "Straight up", "Down the slope"],
+        correctDir: 0,
+        why: "The surface pushes back perpendicular to itself. Straight up is wrong on a slope — that is the flat-ground habit misfiring.",
+      },
+      {
+        id: "friction",
+        label: "Kinetic friction",
+        present: true,
+        directions: ["Up the slope", "Down the slope", "Perpendicular out of the slope"],
+        correctDir: 0,
+        why: "The block slides down, so kinetic friction opposes the motion: up the slope, at μk·N.",
+      },
+      {
+        id: "motion",
+        label: "Force of motion",
+        present: false,
+        directions: ["Down the slope"],
+        correctDir: 0,
+        why: "Invented. Motion needs no force to sustain it — only changes in motion do. This arrow explains nothing and predicts nothing.",
+      },
+      {
+        id: "tension",
+        label: "Tension",
+        present: false,
+        directions: ["Up the slope"],
+        correctDir: 0,
+        why: "No string, no tension. Every force needs an agent you can point at.",
+      },
+    ],
+  },
+  {
+    id: "pulley",
+    title: "Mass over a pulley (the 3 kg side)",
+    setup: "A 3 kg mass hangs from a massless string over an ideal pulley, the other side holding 5 kg. The diagram is for the 3 kg mass alone.",
+    forces: [
+      {
+        id: "weight",
+        label: "Weight",
+        present: true,
+        directions: ["Straight down", "Straight up", "Toward the pulley"],
+        correctDir: 0,
+        why: "m₁g straight down, always. 3.0 × 9.81 = 29.4 N.",
+      },
+      {
+        id: "tension",
+        label: "Tension",
+        present: true,
+        directions: ["Straight up, along the string", "Toward the 5 kg mass", "Straight down"],
+        correctDir: 0,
+        why: "The string pulls the mass up along itself. Tension is uniform in the ideal string — the 5 kg side feels the same pull.",
+      },
+      {
+        id: "normal",
+        label: "Normal force",
+        present: false,
+        directions: ["Straight up"],
+        correctDir: 0,
+        why: "Nothing touches the mass — no contact, no normal force. Hanging is not resting.",
+      },
+      {
+        id: "pulley-side",
+        label: "Sideways pull from the pulley",
+        present: false,
+        directions: ["Toward the pulley"],
+        correctDir: 0,
+        why: "The pulley acts on the string, not on the mass. The mass feels only what touches it: the string above, and gravity.",
+      },
+    ],
+  },
+  {
+    id: "crate",
+    title: "Crate pushed at constant velocity",
+    setup: "You push a crate across a warehouse floor and it moves at constant velocity. The diagram is for the crate alone.",
+    forces: [
+      {
+        id: "weight",
+        label: "Weight",
+        present: true,
+        directions: ["Straight down", "Backward", "Straight up"],
+        correctDir: 0,
+        why: "mg straight down, as always — the one force that needs no contact.",
+      },
+      {
+        id: "normal",
+        label: "Normal force",
+        present: true,
+        directions: ["Straight up", "Forward", "Perpendicular to the push"],
+        correctDir: 0,
+        why: "The floor pushes up, perpendicular to itself. On flat ground that is straight up, equal to the weight here.",
+      },
+      {
+        id: "push",
+        label: "Applied push",
+        present: true,
+        directions: ["Forward, horizontal", "Downward", "Backward"],
+        correctDir: 0,
+        why: "Your hand is an agent you can point at — the push is a legitimate arrow, forward and horizontal.",
+      },
+      {
+        id: "friction",
+        label: "Kinetic friction",
+        present: true,
+        directions: ["Backward, opposing the motion", "Forward, with the motion", "Straight down"],
+        correctDir: 0,
+        why: "The crate slides forward, so kinetic friction points backward at μk·N. Constant velocity means it exactly balances the push — read the push's value off the friction.",
+      },
+      {
+        id: "motion",
+        label: "Force of motion",
+        present: false,
+        directions: ["Forward"],
+        correctDir: 0,
+        why: "Invented again. The crate moves at constant velocity because the net force is zero, not because a forward force sustains it.",
+      },
+    ],
+  },
+];
+
+const FBD_KEY = "ff:fbd-w3";
+
+export function FbdBuilderBench() {
+  const [scenarioId, setScenarioId] = useState("slope");
+  const scenario = FBD_SCENARIOS.find((s) => s.id === scenarioId) ?? FBD_SCENARIOS[0];
+  const [included, setIncluded] = useState<Record<string, boolean>>({});
+  const [dirs, setDirs] = useState<Record<string, number>>({});
+  const [checked, setChecked] = useState(false);
+  const [done, setDone] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem(FBD_KEY) ?? "[]");
+    } catch {
+      return [];
+    }
+  });
+
+  const selectScenario = (id: string) => {
+    setScenarioId(id);
+    setIncluded({});
+    setDirs({});
+    setChecked(false);
+  };
+
+  const toggle = (fid: string) =>
+    setIncluded((prev) => ({ ...prev, [fid]: !prev[fid] }));
+  const setDir = (fid: string, i: number) => {
+    setDirs((prev) => ({ ...prev, [fid]: i }));
+    setIncluded((prev) => ({ ...prev, [fid]: true }));
+  };
+
+  const grade = () => {
+    let setRight = 0;
+    let dirRight = 0;
+    let presentCount = 0;
+    const lines: string[] = [];
+    for (const f of scenario.forces) {
+      const on = included[f.id] ?? false;
+      if (on === f.present) {
+        setRight += 1;
+      } else {
+        lines.push(on ? `“${f.label}” does not act here — ${f.why}` : `Missing “${f.label}” — ${f.why}`);
+      }
+      if (f.present) {
+        presentCount += 1;
+        if (on && (dirs[f.id] ?? -1) === f.correctDir) {
+          dirRight += 1;
+        } else if (on) {
+          lines.push(`“${f.label}” points the wrong way — ${f.why}`);
+        }
+      }
+    }
+    return { setRight, dirRight, presentCount, total: scenario.forces.length, lines };
+  };
+
+  const result = checked ? grade() : null;
+  const perfect = result !== null && result.setRight === result.total && result.dirRight === result.presentCount;
+
+  useEffect(() => {
+    if (!perfect || done.includes(scenario.id)) return;
+    const next = [...done, scenario.id];
+    setDone(next);
+    try {
+      localStorage.setItem(FBD_KEY, JSON.stringify(next));
+    } catch {
+      /* private browsing: the portfolio simply does not persist */
+    }
+  }, [perfect, scenario.id, done]);
+
+  return (
+    <BenchShell
+      prompt="Build the diagram: toggle every force the scenario exerts — and none it does not — then set each arrow's direction. || The bench grades the force set first and the directions second, the way a grader does. || Get all three scenarios green, then name the two forces beginners invent most often."
+      note="Your portfolio saves in this browser. The two classic invented arrows are the “force of motion” sustaining movement and a centrifugal arrow drawn in an inertial frame — if either is on your diagram, ask what agent exerts it."
+      controls={
+        <>
+          <Segmented
+            label="Scenario"
+            value={scenarioId}
+            onChange={selectScenario}
+            options={FBD_SCENARIOS.map((s) => ({ value: s.id, label: s.title }))}
+          />
+          <div className="sm:col-span-2">
+            <div className="mb-2 text-sm text-well-dim">Portfolio</div>
+            <div className="flex flex-wrap gap-2">
+              {FBD_SCENARIOS.map((s) => (
+                <span
+                  key={s.id}
+                  className={
+                    done.includes(s.id)
+                      ? "rounded-lg bg-well-fg px-3 py-1 text-sm text-well"
+                      : "rounded-lg px-3 py-1 text-sm text-well-fg ring-1 ring-white/25"
+                  }
+                >
+                  {done.includes(s.id) ? "✓ " : "○ "}{s.title}
+                </span>
+              ))}
+            </div>
+          </div>
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Scenario", value: scenario.title },
+          { label: "Portfolio", value: `${done.length} / ${FBD_SCENARIOS.length}` },
+          {
+            label: "Last check",
+            value: result === null ? "—" : perfect ? "Green" : `${result.setRight}/${result.total} set · ${result.dirRight}/${result.presentCount} dirs`,
+          },
+        ]}
+      />
+      <p className="mb-4 text-sm leading-relaxed text-well-dim">{scenario.setup}</p>
+      <div className="flex flex-col gap-3">
+        {scenario.forces.map((f) => {
+          const on = included[f.id] ?? false;
+          return (
+            <div key={f.id} className="rounded-lg ring-1 ring-white/15 p-3">
+              <label className="flex cursor-pointer items-center gap-3 text-sm text-well-fg">
+                <input
+                  type="checkbox"
+                  checked={on}
+                  onChange={() => {
+                    toggle(f.id);
+                    setChecked(false);
+                  }}
+                  className="h-4 w-4 shrink-0 accent-white"
+                />
+                <span className="font-medium">{f.label}</span>
+              </label>
+              {on && (
+                <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3" role="radiogroup" aria-label={`${f.label} direction`}>
+                  {f.directions.map((d, i) => {
+                    const sel = (dirs[f.id] ?? -1) === i;
+                    return (
+                      <button
+                        key={d}
+                        type="button"
+                        role="radio"
+                        aria-checked={sel}
+                        onClick={() => {
+                          setDir(f.id, i);
+                          setChecked(false);
+                        }}
+                        className={
+                          sel
+                            ? "min-h-11 rounded-lg bg-well-fg px-3 py-2 text-left text-sm text-well"
+                            : "min-h-11 rounded-lg px-3 py-2 text-left text-sm text-well-fg ring-1 ring-white/25"
+                        }
+                      >
+                        {d}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div className="mt-4">
+        <WellButton onClick={() => setChecked(true)}>Check this diagram</WellButton>
+      </div>
+      {result !== null && (
+        <div className="mt-3">
+          {perfect ? (
+            <p className="text-sm leading-relaxed text-well-fg">
+              Green. Every force placed, every arrow defended — this scenario joins the portfolio.
+              {done.length === FBD_SCENARIOS.length && (
+                <> Portfolio complete. The two invented forces to retire: a “force of motion” pushing along the velocity, and a centrifugal arrow drawn in an inertial frame.</>
+              )}
+            </p>
+          ) : (
+            <ul className="flex flex-col gap-1">
+              {result.lines.map((line) => (
+                <li key={line} className="text-sm leading-relaxed text-well-dim">
+                  {line}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </BenchShell>
+  );
+}

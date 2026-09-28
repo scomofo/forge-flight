@@ -34,6 +34,8 @@ import {
 import {
   CollisionBench,
   EnergyBench,
+  FbdBuilderBench,
+  FrictionInclineBench,
   KinematicsBench,
   NewtonBench,
   VectorBench,
@@ -85,6 +87,10 @@ export function Bench({ id }: { id: BenchId }) {
       return <KinematicsBench />;
     case "newton":
       return <NewtonBench />;
+    case "incline":
+      return <FrictionInclineBench />;
+    case "fbdbuilder":
+      return <FbdBuilderBench />;
     case "energy":
       return <EnergyBench />;
     case "collision":
