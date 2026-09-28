@@ -34,7 +34,7 @@ function JobPage() {
           <ShelfJob alreadyPassed={isPassed(score)} onPassed={(n) => mark(JOB_KEY, n)} />
         </div>
         <nav className="mt-16 border-t border-line pt-6">
-          <Link to="/" className="inline-flex min-h-11 items-center text-sm text-ink">
+          <Link to="/learn" className="inline-flex min-h-11 items-center text-sm text-ink">
             ← Back to the course
           </Link>
         </nav>

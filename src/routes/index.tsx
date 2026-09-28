@@ -27,8 +27,18 @@ function Bay() {
   return (
     <main className="forge min-h-dvh bg-hangar text-bone">
       <header className="border-b border-line-forge px-5 py-4">
-        <p className="font-forge text-sm tracking-wide text-brass">Hangar bay</p>
-        <h1 className="font-forge mt-1 text-4xl tracking-tight">Forge & Flight</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="font-forge text-sm tracking-wide text-brass">Hangar bay</p>
+            <h1 className="font-forge mt-1 text-4xl tracking-tight">Forge & Flight</h1>
+          </div>
+          <Link
+            to="/learn"
+            className="inline-flex min-h-11 shrink-0 items-center rounded-lg border border-line-forge px-4 text-sm text-bone"
+          >
+            Course
+          </Link>
+        </div>
       </header>
       <div className="mx-auto max-w-3xl px-5 py-8">
         <p className="max-w-prose text-sm leading-relaxed text-dust">

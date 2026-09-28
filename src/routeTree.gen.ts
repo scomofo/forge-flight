@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LearnIndexRouteImport } from './routes/learn/index'
 import { Route as LearnDiagnosticRouteImport } from './routes/learn/diagnostic'
 import { Route as LearnJobRouteImport } from './routes/learn/job'
 import { Route as MissionMissionIdRouteImport } from './routes/mission.$missionId'
@@ -19,6 +20,11 @@ import { Route as LearnTrackIdLessonIdRouteImport } from './routes/learn/$trackI
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnIndexRoute = LearnIndexRouteImport.update({
+  id: '/learn/',
+  path: '/learn/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnDiagnosticRoute = LearnDiagnosticRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/learn/diagnostic': typeof LearnDiagnosticRoute
   '/learn/job': typeof LearnJobRoute
   '/mission/$missionId': typeof MissionMissionIdRoute
+  '/learn/': typeof LearnIndexRoute
   '/learn/$trackId/$lessonId': typeof LearnTrackIdLessonIdRoute
   '/learn/$trackId/': typeof LearnTrackIdIndexRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/learn/diagnostic': typeof LearnDiagnosticRoute
   '/learn/job': typeof LearnJobRoute
   '/mission/$missionId': typeof MissionMissionIdRoute
+  '/learn': typeof LearnIndexRoute
   '/learn/$trackId/$lessonId': typeof LearnTrackIdLessonIdRoute
   '/learn/$trackId': typeof LearnTrackIdIndexRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/learn/diagnostic': typeof LearnDiagnosticRoute
   '/learn/job': typeof LearnJobRoute
   '/mission/$missionId': typeof MissionMissionIdRoute
+  '/learn/': typeof LearnIndexRoute
   '/learn/$trackId/$lessonId': typeof LearnTrackIdLessonIdRoute
   '/learn/$trackId/': typeof LearnTrackIdIndexRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/learn/diagnostic'
     | '/learn/job'
     | '/mission/$missionId'
+    | '/learn/'
     | '/learn/$trackId/$lessonId'
     | '/learn/$trackId/'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/learn/diagnostic'
     | '/learn/job'
     | '/mission/$missionId'
+    | '/learn'
     | '/learn/$trackId/$lessonId'
     | '/learn/$trackId'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/learn/diagnostic'
     | '/learn/job'
     | '/mission/$missionId'
+    | '/learn/'
     | '/learn/$trackId/$lessonId'
     | '/learn/$trackId/'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   LearnDiagnosticRoute: typeof LearnDiagnosticRoute
   LearnJobRoute: typeof LearnJobRoute
   MissionMissionIdRoute: typeof MissionMissionIdRoute
+  LearnIndexRoute: typeof LearnIndexRoute
   LearnTrackIdLessonIdRoute: typeof LearnTrackIdLessonIdRoute
   LearnTrackIdIndexRoute: typeof LearnTrackIdIndexRoute
 }
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/': {
+      id: '/learn/'
+      path: '/learn'
+      fullPath: '/learn/'
+      preLoaderRoute: typeof LearnIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/diagnostic': {
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   LearnDiagnosticRoute: LearnDiagnosticRoute,
   LearnJobRoute: LearnJobRoute,
   MissionMissionIdRoute: MissionMissionIdRoute,
+  LearnIndexRoute: LearnIndexRoute,
   LearnTrackIdLessonIdRoute: LearnTrackIdLessonIdRoute,
   LearnTrackIdIndexRoute: LearnTrackIdIndexRoute,
 }
