@@ -1,6 +1,7 @@
-import type { Lesson, Track, TrackId } from "./types";
-import { ladderLessons, ladderTracks } from "./ladder";
-import { manufacturingLessons, manufacturingTrack } from "./manufacturing";
+import type { Lesson, Track, TrackId } from "./types.ts";
+import { ladderLessons, ladderTracks } from "./ladder.ts";
+import { manufacturingLessons, manufacturingTrack } from "./manufacturing.ts";
+import { physicsW3Lessons } from "./physics-w3.ts";
 
 export const tracks: Track[] = [
   {
@@ -31,6 +32,7 @@ export const tracks: Track[] = [
 export const introTrackIds = ["physics", "materials", "engineering"] as const satisfies readonly TrackId[];
 
 export const lessons: Lesson[] = [
+  ...physicsW3Lessons,
   {
     id: "families",
     track: "materials",
@@ -1425,7 +1427,7 @@ export const lessons: Lesson[] = [
   {
     id: "measure",
     track: "physics",
-    index: 1,
+    index: 4,
     title: "Measure and vectors",
     minutes: 10,
     lede: "You will add vectors by their components, and refuse to add the magnitudes when the directions differ.",
@@ -1490,7 +1492,7 @@ export const lessons: Lesson[] = [
   {
     id: "kinematics",
     track: "physics",
-    index: 2,
+    index: 5,
     title: "Kinematics",
     minutes: 11,
     lede: "You will relate position, velocity, and acceleration, and read displacement as the area under the velocity graph.",
@@ -1562,7 +1564,7 @@ export const lessons: Lesson[] = [
   {
     id: "forces",
     track: "physics",
-    index: 3,
+    index: 6,
     title: "Forces",
     minutes: 12,
     lede: "You will say when a pushed block stays still, and the moment the push is large enough to accelerate it.",
@@ -1641,7 +1643,7 @@ export const lessons: Lesson[] = [
   {
     id: "energy",
     track: "physics",
-    index: 4,
+    index: 7,
     title: "Energy",
     minutes: 11,
     lede: "You will watch potential become kinetic, see friction divert some of it into heat, and check that mass does not change the speed.",
@@ -1720,7 +1722,7 @@ export const lessons: Lesson[] = [
   {
     id: "momentum",
     track: "physics",
-    index: 5,
+    index: 8,
     title: "Momentum",
     minutes: 11,
     lede: "You will show that an isolated collision keeps momentum, and that kinetic energy survives only when the collision is elastic.",
@@ -1804,7 +1806,7 @@ export const lessons: Lesson[] = [
   {
     id: "waves",
     track: "physics",
-    index: 6,
+    index: 9,
     title: "Waves",
     minutes: 10,
     lede: "You will show that wave speed equals frequency times wavelength, and that amplitude is not wavelength.",
