@@ -43,7 +43,14 @@ type SketchKind =
   | "shaft"
   | "bow"
   | "fibers"
-  | "offset";
+  | "offset"
+  | "hull"
+  | "front"
+  | "pin"
+  | "coil"
+  | "nest"
+  | "layers"
+  | "race";
 
 type LabSpec = {
   prompt: string;
@@ -72,9 +79,10 @@ function Sketch({ kind, t, aux }: { kind: SketchKind; t: number; aux: Record<str
     );
   }
   if (kind === "spin") {
+    const reach = aux.reach ?? 78;
     const ang = t * (aux.omega || 1);
-    const x2 = 160 + Math.cos(ang) * 78;
-    const y2 = 70 + Math.sin(ang) * 36;
+    const x2 = 160 + Math.cos(ang) * reach;
+    const y2 = 70 + Math.sin(ang) * reach * 0.46;
     return (
       <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
         <circle cx="160" cy="70" r="4" fill="currentColor" />
@@ -367,6 +375,97 @@ function Sketch({ kind, t, aux }: { kind: SketchKind; t: number; aux: Record<str
         <rect x="132" y="48" width="56" height="64" fill="none" stroke="currentColor" strokeWidth="2" />
         <line x1={x} y1="16" x2={x} y2="48" stroke="currentColor" strokeWidth="2" />
         <path d={`M${x - 5} 40 L${x} 48 L${x + 5} 40`} fill="none" stroke="currentColor" strokeWidth="2" />
+      </svg>
+    );
+  }
+  if (kind === "hull") {
+    const sub = Math.max(0, Math.min(1, aux.level ?? 0));
+    const sunk = (aux.sink ?? 0) > 0.5;
+    const top = 28;
+    const h = 64;
+    const waterY = sunk ? 16 : top + (1 - sub) * h;
+    return (
+      <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
+        <rect x="118" y={top} width="84" height={h} fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="36" y={waterY} width="248" height={Math.max(0, 128 - waterY)} fill="currentColor" opacity="0.22" />
+        <line x1="36" y1={waterY} x2="284" y2={waterY} stroke="currentColor" strokeWidth="2" />
+      </svg>
+    );
+  }
+  if (kind === "front") {
+    const level = Math.max(0.04, Math.min(1, aux.level || 0));
+    return (
+      <svg viewBox="0 0 320 140" className="h-28 w-full" aria-hidden>
+        <rect x="28" y="52" width="264" height="36" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="28" y="52" width={264 * level} height="36" fill="currentColor" opacity="0.8" />
+      </svg>
+    );
+  }
+  if (kind === "pin") {
+    const r = 6 + Math.max(0, Math.min(1, aux.level || 0)) * 16;
+    return (
+      <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
+        <rect x="48" y="40" width="78" height="60" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="194" y="40" width="78" height="60" fill="none" stroke="currentColor" strokeWidth="2" />
+        <circle cx="160" cy="70" r={r} fill="currentColor" />
+      </svg>
+    );
+  }
+  if (kind === "coil") {
+    const squash = Math.max(0, Math.min(1, aux.level || 0));
+    const span = 210 * (1 - 0.62 * squash);
+    const left = 160 - span / 2;
+    const turns = 8;
+    let d = `M${left.toFixed(1)} 70`;
+    for (let i = 0; i < turns; i++) {
+      const x = left + ((i + 0.5) * span) / turns;
+      const y = i % 2 === 0 ? 40 : 100;
+      const end = left + ((i + 1) * span) / turns;
+      d += ` Q${x.toFixed(1)} ${y} ${end.toFixed(1)} 70`;
+    }
+    return (
+      <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
+        <path d={d} fill="none" stroke="currentColor" strokeWidth="2" />
+      </svg>
+    );
+  }
+  if (kind === "nest") {
+    const base = Math.max(0, Math.round(aux.a || 0));
+    const side = Math.max(0, Math.round(aux.b || 0));
+    const end = Math.max(0, Math.round(aux.c || 0));
+    const dots: Array<[number, number]> = [];
+    for (let i = 0; i < base; i++) dots.push([108 + i * 26, 112]);
+    for (let i = 0; i < side; i++) dots.push([78, 46 + i * 24]);
+    for (let i = 0; i < end; i++) dots.push([248, 78]);
+    return (
+      <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
+        <rect x="96" y="36" width="128" height="68" fill="none" stroke="currentColor" strokeWidth="2" />
+        {dots.map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r="5" fill="currentColor" />
+        ))}
+      </svg>
+    );
+  }
+  if (kind === "layers") {
+    const gap = 3 + Math.min(3, Math.max(0, aux.gap || 0)) * 6;
+    return (
+      <svg viewBox="0 0 320 140" className="h-32 w-full" aria-hidden>
+        {[0, 1, 2].map((i) => (
+          <rect key={i} x="70" y={28 + i * (16 + gap)} width="180" height="14" fill="currentColor" opacity="0.85" />
+        ))}
+      </svg>
+    );
+  }
+  if (kind === "race") {
+    const takt = Math.max(0.2, aux.takt || 1);
+    const cycle = Math.max(0.2, aux.cycle || 1);
+    const max = Math.max(takt, cycle);
+    return (
+      <svg viewBox="0 0 320 140" className="h-28 w-full" aria-hidden>
+        <rect x="28" y="36" width="250" height="16" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="28" y="36" width={250 * (takt / max)} height="16" fill="currentColor" opacity="0.35" />
+        <rect x="28" y="78" width="250" height="16" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="28" y="78" width={250 * (cycle / max)} height="16" fill="currentColor" />
       </svg>
     );
   }
@@ -1784,6 +1883,240 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review">, LabSpec> = {
         ],
         sentence: `10 divided by ${fmt(n(v, "yield"), 2)} is ${fmt(each, 2)}. The bad parts were paid for. Their cost lands on the good ones.`,
         aux: { level: n(v, "yield") },
+      };
+    },
+  },
+  float: {
+    prompt:
+      "Set the density to 500, then to 1500. || At 500 the block floats with half its volume under. At 1500 it sinks. The water did not get stronger. The block got heavier than the water it can push aside.",
+    note: "Block volume is 0.002 m³. Fresh water is 1000 kg/m³. g is 9.81. A floating block sinks until the displaced water weighs as much as the block. A denser block is fully under and still short.",
+    animate: false,
+    sketch: "hull",
+    sliders: [{ key: "density", label: "Block density", min: 200, max: 2000, step: 50, digits: 0, suffix: " kg/m³" }],
+    initial: { density: 500 },
+    view: (v) => {
+      const density = n(v, "density");
+      const floats = density <= 1000;
+      const frac = floats ? density / 1000 : 1;
+      const weight = (density * 0.002 * 9.81);
+      const fb = 1000 * frac * 0.002 * 9.81;
+      return {
+        readouts: [
+          { label: floats ? "Under" : "State", value: floats ? `${fmt(frac * 100, 0)}%` : "Sinks" },
+          { label: "Buoyancy", value: `${fmt(fb, 2)} N` },
+          { label: "Weight", value: `${fmt(weight, 2)} N` },
+        ],
+        sentence: floats
+          ? `At ${fmt(density, 0)} kg/m³ the block floats with ${fmt(frac * 100, 0)}% of its volume under. That displaced water weighs the same as the block.`
+          : `At ${fmt(density, 0)} kg/m³ the block weighs ${fmt(weight, 2)} N and the full tank push is only ${fmt(fb, 2)} N. It sinks.`,
+        aux: { level: frac, sink: floats ? 0 : 1 },
+      };
+    },
+  },
+  pipe: {
+    prompt:
+      "Set the area to 0.010 m², then to 0.005 m². || Speed goes from 1 m/s to 2 m/s. The cubic meters per second did not change.",
+    note: "Q is 0.010 m³/s. Nothing is stored and nothing leaks. Speed is Q divided by area. Pressure is not on this page.",
+    animate: true,
+    sketch: "flow",
+    sliders: [{ key: "area", label: "Area", min: 0.004, max: 0.02, step: 0.001, digits: 3, suffix: " m²" }],
+    initial: { area: 0.01 },
+    view: (v) => {
+      const speed = 0.01 / n(v, "area");
+      return {
+        readouts: [
+          { label: "Speed", value: `${fmt(speed, 2)} m/s` },
+          { label: "Flow", value: "0.010 m³/s" },
+          { label: "Area", value: `${fmt(n(v, "area"), 3)} m²` },
+        ],
+        sentence: `0.010 divided by ${fmt(n(v, "area"), 3)} is ${fmt(speed, 2)} m/s. Halve the area and the speed doubles.`,
+        aux: { speed, level: Math.min(1, n(v, "area") / 0.02) },
+      };
+    },
+  },
+  turn: {
+    prompt:
+      "Set the radius to 2 m, then to 1 m. || Acceleration goes from 50 to 100 m/s². The speed stayed 10 m/s. The curve got tighter.",
+    note: "a = v² / r with v fixed at 10 m/s. The number is the inward acceleration. The arm length in the drawing is the radius.",
+    animate: true,
+    sketch: "spin",
+    sliders: [{ key: "radius", label: "Radius", min: 0.5, max: 4, step: 0.5, digits: 1, suffix: " m" }],
+    initial: { radius: 2 },
+    view: (v) => {
+      const a = 100 / n(v, "radius");
+      return {
+        readouts: [
+          { label: "Inward acceleration", value: `${fmt(a, 0)} m/s²` },
+          { label: "Speed", value: "10 m/s" },
+          { label: "Radius", value: `${fmt(n(v, "radius"), 1)} m` },
+        ],
+        sentence: `100 divided by ${fmt(n(v, "radius"), 1)} is ${fmt(a, 0)} m/s². Half the radius, same speed, double the acceleration.`,
+        aux: { omega: 2.2, reach: 28 + n(v, "radius") * 16 },
+      };
+    },
+  },
+  diffuse: {
+    prompt:
+      "Set the time to 4 hours, then to 16. || The front moves from 1 mm to 2 mm. Time was multiplied by four. Distance only doubled.",
+    note: "x = √(D t) with D fixed at 0.25 mm²/h. One dimension. Temperature is not a slider, so D cannot change.",
+    animate: false,
+    sketch: "front",
+    sliders: [{ key: "hours", label: "Time", min: 1, max: 36, step: 1, digits: 0, suffix: " h" }],
+    initial: { hours: 4 },
+    view: (v) => {
+      const x = Math.sqrt(0.25 * n(v, "hours"));
+      return {
+        readouts: [
+          { label: "Distance", value: `${fmt(x, 2)} mm` },
+          { label: "Time", value: `${fmt(n(v, "hours"), 0)} h` },
+          { label: "D", value: "0.25 mm²/h" },
+        ],
+        sentence: `The square root of 0.25 times ${fmt(n(v, "hours"), 0)} is ${fmt(x, 2)} mm. Four times the hours is twice the distance, not four times.`,
+        aux: { level: x / 3 },
+      };
+    },
+  },
+  mixture: {
+    prompt:
+      "Set the fiber fraction to 0, then to 0.60. || Modulus goes from 3.5 GPa to 139.4 GPa. That number is along the fibers. Across them it is not.",
+    note: "E = 230 Vf + 3.5 (1 − Vf), in GPa. Longitudinal rule of mixtures. The transverse modulus is not drawn and not reported.",
+    animate: false,
+    sketch: "fibers",
+    sliders: [{ key: "vf", label: "Fiber fraction", min: 0, max: 0.7, step: 0.05, digits: 2, suffix: "" }],
+    initial: { vf: 0 },
+    view: (v) => {
+      const vf = n(v, "vf");
+      const e = 230 * vf + 3.5 * (1 - vf);
+      return {
+        readouts: [
+          { label: "Along the fibers", value: `${fmt(e, 1)} GPa` },
+          { label: "Fiber term", value: `${fmt(230 * vf, 1)}` },
+          { label: "Epoxy term", value: `${fmt(3.5 * (1 - vf), 1)}` },
+        ],
+        sentence: `At a fiber fraction of ${fmt(vf, 2)} the modulus along the fibers is ${fmt(e, 1)} GPa. ${fmt(230 * vf, 1)} of that is the fiber and ${fmt(3.5 * (1 - vf), 1)} is the epoxy. Across the fibers, do not use this.`,
+        aux: { twist: 0 },
+      };
+    },
+  },
+  pinshear: {
+    prompt:
+      "Set the pin to 8 mm, then to 16 mm. || Shear stress falls from 79.6 MPa to 19.9 MPa. The 4000 N did not change. The area grew with the square of the diameter.",
+    note: "One shear plane. τ = 4000 / (π d² / 4). A pin through two lugs would be double shear and about half of this. Bending of the pin is left out.",
+    animate: false,
+    sketch: "pin",
+    sliders: [{ key: "d", label: "Diameter", min: 4, max: 20, step: 1, digits: 0, suffix: " mm" }],
+    initial: { d: 8 },
+    view: (v) => {
+      const d = n(v, "d") / 1000;
+      const tau = 4000 / ((Math.PI * d * d) / 4) / 1e6;
+      return {
+        readouts: [
+          { label: "Shear stress", value: `${fmt(tau, 1)} MPa` },
+          { label: "Load", value: "4000 N" },
+          { label: "Planes", value: "1" },
+        ],
+        sentence: `4000 N across one ${fmt(n(v, "d"), 0)} mm circle is ${fmt(tau, 1)} MPa. Double the diameter and the stress falls to a quarter.`,
+        aux: { level: n(v, "d") / 20 },
+      };
+    },
+  },
+  coilspring: {
+    prompt:
+      "Set the wire to 2 mm, then to 4 mm. || The rate goes from 2500 N/m to 40000 N/m. The wire only doubled. The fourth power made it sixteen times.",
+    note: "k = G d⁴ / (8 D³ N). G is 80 GPa. Mean diameter is 20 mm. Active coils are 8. This is rate, not the stress in the wire. The coil draws shorter as the rate rises, so the picture matches the stiffness, not a load.",
+    animate: false,
+    sketch: "coil",
+    sliders: [{ key: "wire", label: "Wire", min: 1, max: 5, step: 0.5, digits: 1, suffix: " mm" }],
+    initial: { wire: 2 },
+    view: (v) => {
+      const d = n(v, "wire") / 1000;
+      const k = (80e9 * d ** 4) / (8 * 0.02 ** 3 * 8);
+      return {
+        readouts: [
+          { label: "Rate", value: `${fmt(k, 0)} N/m` },
+          { label: "Wire", value: `${fmt(n(v, "wire"), 1)} mm` },
+          { label: "Coils", value: "8" },
+        ],
+        sentence: `With a ${fmt(n(v, "wire"), 1)} mm wire the rate is ${fmt(k, 0)} N/m. Doubling the wire multiplies the rate by 16, because diameter is to the fourth.`,
+        aux: { level: Math.min(1, k / 40000) },
+      };
+    },
+  },
+  locate: {
+    prompt:
+      "Set 3 on the base, 2 on the side, and 1 on the end. || No motion is left. Then set the base to 4. || Still none left. The extra contact did not remove a seventh motion.",
+    note: "A free part has 6 motions. The base caps at 3, the side at 2, the end at 1. Contacts past a cap are wasted. The picture shows every contact you placed, including the wasted ones.",
+    animate: false,
+    sketch: "nest",
+    sliders: [
+      { key: "base", label: "Base", min: 0, max: 4, step: 1, digits: 0, suffix: "" },
+      { key: "side", label: "Side", min: 0, max: 3, step: 1, digits: 0, suffix: "" },
+      { key: "end", label: "End", min: 0, max: 2, step: 1, digits: 0, suffix: "" },
+    ],
+    initial: { base: 3, side: 2, end: 1 },
+    view: (v) => {
+      const used = Math.min(n(v, "base"), 3) + Math.min(n(v, "side"), 2) + Math.min(n(v, "end"), 1);
+      const placed = n(v, "base") + n(v, "side") + n(v, "end");
+      const left = 6 - used;
+      return {
+        readouts: [
+          { label: "Motions left", value: fmt(left, 0) },
+          { label: "Contacts that count", value: fmt(used, 0) },
+          { label: "Wasted", value: fmt(placed - used, 0) },
+        ],
+        sentence:
+          left === 0
+            ? placed === used
+              ? "All 6 motions are taken. No contact is wasted."
+              : `${fmt(placed - used, 0)} contact${placed - used === 1 ? " is" : "s are"} past a cap. The part was already located.`
+            : `${fmt(left, 0)} motion${left === 1 ? " is" : "s are"} still free. A face only stops so many: 3 on the base, 2 on the side, 1 on the end.`,
+        aux: { a: n(v, "base"), b: n(v, "side"), c: n(v, "end") },
+      };
+    },
+  },
+  layers: {
+    prompt:
+      "Leave the knockdown at 2. || Between layers you have 20 MPa. Along the roads you still have 40. Then set the knockdown to 1 and put it back. || 1 is the claim that the bond equals the road.",
+    note: "Strength along a road is 40 MPa. Strength between layers is 40 divided by the knockdown. Voids beyond that ratio are not in the model. The gaps in the drawing grow with the knockdown. They are a picture, not a measured thickness.",
+    animate: false,
+    sketch: "layers",
+    sliders: [{ key: "knock", label: "Knockdown", min: 1, max: 5, step: 0.5, digits: 1, suffix: "" }],
+    initial: { knock: 2 },
+    view: (v) => {
+      const bond = 40 / n(v, "knock");
+      return {
+        readouts: [
+          { label: "Between layers", value: `${fmt(bond, 1)} MPa` },
+          { label: "Along the road", value: "40 MPa" },
+          { label: "Knockdown", value: fmt(n(v, "knock"), 1) },
+        ],
+        sentence: `40 divided by ${fmt(n(v, "knock"), 1)} is ${fmt(bond, 1)} MPa between layers. The road is still 40. A pull that peels the layers must use the smaller number.`,
+        aux: { gap: n(v, "knock") - 1 },
+      };
+    },
+  },
+  takt: {
+    prompt:
+      "Set demand to 50, then to 200. || Takt goes from 8 min to 2 min. The station still takes 4. At 50 you have slack. At 200 you are 2 minutes late on every part.",
+    note: "400 minutes available. One station takes 4 minutes. Takt is 400 divided by demand. No breaks and no scrap. The pale bar is takt. The solid bar is the station.",
+    animate: false,
+    sketch: "race",
+    sliders: [{ key: "demand", label: "Demand", min: 40, max: 200, step: 10, digits: 0, suffix: " parts" }],
+    initial: { demand: 50 },
+    view: (v) => {
+      const takt = 400 / n(v, "demand");
+      const late = 4 - takt;
+      return {
+        readouts: [
+          { label: "Takt", value: `${fmt(takt, 1)} min` },
+          { label: "Station", value: "4 min" },
+          { label: late > 0 ? "Late each part" : "Slack each part", value: `${fmt(Math.abs(late), 1)} min` },
+        ],
+        sentence:
+          late > 0
+            ? `Demand of ${fmt(n(v, "demand"), 0)} sets takt at ${fmt(takt, 1)} min. The station takes 4, so every part is ${fmt(late, 1)} min late.`
+            : `Demand of ${fmt(n(v, "demand"), 0)} sets takt at ${fmt(takt, 1)} min. The station's 4 min fits, with ${fmt(-late, 1)} min of slack.`,
+        aux: { takt, cycle: 4 },
       };
     },
   },

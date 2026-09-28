@@ -50,6 +50,7 @@ export const lessons: Lesson[] = [
       {
         heading: "A composite is a deal",
         body: "A composite is excellent in one direction and weaker in the others. Carbon fiber in epoxy can beat steel on strength per mass along the fiber. Across the fiber it is a different, lesser material. You pay in cost, in heat resistance, and in the difficulty of knowing which direction the load will come from. Choosing a composite is choosing a direction to be excellent in, and accepting the others.",
+        formula: "for a unidirectional composite, strength along the fiber is not the strength across it",
       },
     ],
     bench: "families",
@@ -128,6 +129,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Slip decides ductility",
         body: "A metal yields when planes of atoms slide. The electron sea still holds after the slide, so the piece bends and stays in one piece. Slide a plane in an ionic crystal and like charges are forced together, so it cracks instead. A molecular solid does not need to break strong bonds to melt: only the weak forces between molecules have to let go. That is why wax melts in the hand while the molecules themselves are intact.",
+        formula: "metal: the bond survives slip, so it bends. Ionic: slip cracks it",
       },
     ],
     bench: "bonding",
@@ -196,10 +198,12 @@ export const lessons: Lesson[] = [
       {
         heading: "Strength is a stress",
         body: "Yield strength is the stress where the piece stops springing all the way back. Ultimate strength is the highest stress on the curve. Both are forces per area. A ceramic can show a high stress at fracture and almost no plastic strain after the line. A mild steel yields, hardens, necks, and only then breaks. “Strong” without “yield or ultimate, tension or compression” is incomplete.",
+        formula: "yield and ultimate are both σ = F / A, at two different points on the curve",
       },
       {
         heading: "Toughness is the area",
         body: "Toughness is the area under the curve, the energy required to break the material. Ductility is how much plastic strain you get before fracture. A brittle ceramic can be strong and still be easy to shatter, because the area is a tall thin spike. A metal that yields and keeps stretching swallows energy. Impact, dropping, and crash structure care about area, not just the peak.",
+        formula: "toughness ≈ the area under the stress–strain curve",
       },
     ],
     bench: "curve",
@@ -280,6 +284,7 @@ export const lessons: Lesson[] = [
       {
         heading: "One column is a trap",
         body: "Do not pick a material from a single column. Pick the stiffest material in the table and you may have bought a brittle, heavy, or impossible-to-form solid. Pick the lightest and you may have a foam that sags under a book. Selection starts by throwing out whatever fails a hard constraint (must insulate, must survive 200°C, must not shatter), then ranking what remains.",
+        formula: "a material can lead in σ and lose in σ / ρ",
       },
     ],
     bench: "compare",
@@ -428,6 +433,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Screen, then rank",
         body: "First throw out materials that miss a hard limit. Then rank only what remains. Constraints throw materials out. “Strength at least this” and “density at most that” are screens. They do not crown a winner. Among whatever survives, you rank by an index that matches the goal: strength per density for a light tie-rod, modulus per density for a light stiff tie, or cost per unit of that index if money is the objective. Different indexes, different winners.",
+        formula: "keep if σ ≥ σ_min and ρ ≤ ρ_max, then rank the survivors by σ / ρ",
       },
       {
         heading: "The chart is not the shop",
@@ -575,6 +581,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Weights are decisions",
         body: "When requirements conflict, you are not discovering a hidden true winner. You are declaring that cold matters more than grams, or the reverse. Write the weights down. If the winner flips when you change your mind about priorities, that is the method working, not the method failing.",
+        formula: "score = Σ (weight × judgment) / Σ weight",
       },
     ],
     bench: "design",
@@ -647,6 +654,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Move the load, move the reactions",
         body: "On a simply supported beam, a downward load is shared by the two supports. Slide the load toward the left support and the left reaction grows; the right one shrinks. The share is a lever rule: each support takes the load in proportion to how close the load is to the other support. Moments make that inevitable. It is also why you do not stand on the weak end of a plank.",
+        formula: "R_A = P (L − a) / L    R_B = P a / L",
       },
     ],
     bench: "beam-reactions",
@@ -794,6 +802,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Serviceability",
         body: "A beam can pass the stress check and still be unacceptable because it sags. Strength asks “will it break?” Serviceability asks “will people trust it?” A common rule of thumb throws out beams that sag more than about the span over 250 under ordinary load. Floors that pass the stress check and fail this one feel wrong: dishes rattle, plaster cracks, users invent a complaint they cannot phrase. Both checks are the design.",
+        formula: "also require δ ≤ δ_allowed. Strength passing does not settle this",
       },
     ],
     bench: "deflection",
@@ -847,14 +856,17 @@ export const lessons: Lesson[] = [
       {
         heading: "Dominated options",
         body: "If concept B is worse than concept A on every criterion you actually care about, stop scoring B. It is dominated. No set of positive weights can save it. People keep dominated options in meetings because they were someone’s first sketch. Throw them out before the arithmetic, and the arithmetic gets shorter and harder to fudge.",
+        formula: "drop B when A ≥ B on every criterion and A > B on one",
       },
       {
         heading: "Weights are the design",
         body: "The weights are your priorities. They are not a measurement of the one true answer. A weighted sum looks like a machine that outputs truth. It outputs the consequence of the weights you typed. Raise “looks” and the handsome shelf wins. Raise “cost” and the plain one wins. That is not corruption of the method. The method’s whole job is to show that flip in daylight, where someone can disagree with the weight instead of arguing about a vibe.",
+        formula: "score = Σ (w × s) / Σ w",
       },
       {
         heading: "What the number hides",
         body: "A single score buries a fatal flaw if you let a high mark elsewhere compensate. Sometimes compensation is fine (a slightly uglier shelf). Sometimes it is not (a shelf that is cheap because it will come off the wall). Hard constraints — “must hold 30 kg”, “must not tip” — should have been screens before the weights. If a criterion can veto, do not average it.",
+        formula: "if a criterion can veto, screen with it. Do not put it in the weighted average",
       },
     ],
     bench: "tradeoffs",
@@ -923,10 +935,12 @@ export const lessons: Lesson[] = [
       {
         heading: "Fatigue is a slow argument",
         body: "A load that is safe once can still grow a crack if it repeats. The stress at the tip of a small flaw is higher than the average σ = F/A. Each cycle advances the crack a little. After enough cycles the remaining ligament fails, sometimes with no visible yield beforehand. Shafts, bridges, airplane skins, and the clip you bend back and forth all live in this regime. “Below yield” is not the same sentence as “safe forever.”",
+        formula: "the stress can sit under yield and still use up life, one cycle at a time",
       },
       {
         heading: "The section you used to have",
         body: "Corrosion and wear remove area. The force may be unchanged while the stress climbs, because the denominator shrank. A factor of safety computed on the new part does not apply to the part after ten winters. Failure analysis asks which mechanism is the impatient one: yield, fracture, buckling, fatigue, or section loss. The impatient one is the design.",
+        formula: "σ = F / A_remaining",
       },
     ],
     bench: "buckling",
@@ -1008,6 +1022,7 @@ export const lessons: Lesson[] = [
       {
         heading: "A hole in a wide plate is the textbook three",
         body: "A small circular hole in a wide plate in tension has Kt near 3, based on the net-section average. The bench is a shoulder fillet instead, so you can watch one radius. The lesson is the same one. The peak is a multiple of the average, and the multiple is geometry.",
+        formula: "Kt ≈ 3 for a small round hole in a wide plate",
       },
     ],
     bench: "notch",
@@ -1071,6 +1086,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Below yield is not forever",
         body: "A stress the bar survives once can still grow a crack if it keeps coming back. The crack starts at a notch, a scratch, or a fillet, where the local stress is the peak from the previous lesson. Each cycle adds a little length. The bar can finish as a fracture with almost no visible yield.",
+        formula: "a stress below yield can still finish the part, after enough cycles",
       },
       {
         heading: "Life is a line on log paper",
@@ -1221,10 +1237,12 @@ export const lessons: Lesson[] = [
       {
         heading: "Past friction, the bolt becomes a pin",
         body: "When the sideways load exceeds μ times the clamp, the plates slip. Now the shank has to carry shear. More clamp buys more friction, which is why a joint that 'just needs a bigger bolt' often needed a tighter one. The grade sets the tension the bolt can hold. It does not set μ.",
+        formula: "the joint slips when the shear load exceeds μ × clamp",
       },
       {
         heading: "Threads are the small section",
         body: "If the shear plane cuts through the threads, the area is the smaller thread area, not the shank. The load did not change. The stress did, because the denominator shrank. Put the shank, not the threads, in the plane where the plates meet.",
+        formula: "thread stress = force / tensile-stress area, and that area is smaller than the shank",
       },
     ],
     bench: "bolt",
@@ -1293,6 +1311,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Yield can still be first",
         body: "The top of the cycle is the mean plus the alternating stress. If that peak reaches yield, the bar has taken a permanent set on the first pull. The fatigue line is then the wrong failure to quote. Say which limit you actually hit.",
+        formula: "σ_max = σ_mean + σ_amplitude    and that peak still has to stay under yield",
       },
       {
         heading: "This line is the conservative one",
@@ -1422,6 +1441,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Velocity is the slope of position",
         body: "On a graph of position against time, the slope is velocity. Steep and upward means fast in the positive direction. Flat means sitting still. A downward slope means moving backward — negative velocity — not “negative speed.” Speed is the absolute value. You can be moving quickly and have a negative velocity if you chose the opposite direction to be positive.",
+        formula: "v = Δx / Δt",
       },
       {
         heading: "Acceleration is the slope of velocity",
@@ -1500,6 +1520,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Pairs, and friction’s budget",
         body: "A third-law pair is one interaction acting on two different objects. The third law: forces come in pairs, equal, opposite, and on different bodies. The book pushes on the table; the table pushes on the book. Those two are a pair. The book’s weight and the table’s normal force are not a pair — they both act on the book, which is why they can cancel in the book’s free-body diagram. Static friction, meanwhile, is not always μN. It is whatever value up to μN is needed to prevent slip. Only at the moment of slipping does it spend the whole budget.",
+        formula: "friction ≤ μ N, and it points against the slip",
       },
     ],
     bench: "newton",
@@ -1575,6 +1596,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Conservation has a clause",
         body: "If only conservative forces do work — gravity, an ideal spring — mechanical energy K + U stays constant. Friction and air drag are not in that club. They turn mechanical energy into thermal energy, which is still energy, just no longer useful as organized motion of the whole object. “Energy is always conserved” and “mechanical energy is conserved on this ramp” are different claims. The second one is the one you can spend on a homework problem, and only when the clause holds.",
+        formula: "K + U stays constant only when no energy leaves",
       },
     ],
     bench: "energy",
@@ -1645,10 +1667,12 @@ export const lessons: Lesson[] = [
       {
         heading: "Isolated means no outside push",
         body: "If the net external force on a system is zero, the total momentum of the system does not change. Internal forces — the two carts shoving each other — come in third-law pairs and cancel in the total. That is why a collision can be violent and still conserve momentum. Friction from the track, or a hand that grabs one cart, is an external force. Then the system you drew was not isolated, and the total inside it is allowed to change.",
+        formula: "Σ p before = Σ p after, when the outside force is zero",
       },
       {
         heading: "Elastic is a second rule",
         body: "Momentum conservation alone does not tell you the two velocities after a collision. You have one equation and two unknowns. “They stick” is an extra fact (perfectly inelastic) and it closes the problem. “Kinetic energy is also conserved” is a different extra fact (elastic) and it closes the problem another way. Real collisions sit between them: momentum conserved if isolated, kinetic energy partly turned into heat and deformation. Bouncy is not the same adjective as “momentum-conserving.” Everything isolated is momentum-conserving. Almost nothing is perfectly elastic.",
+        formula: "for a perfectly elastic hit, separation speed = approach speed",
       },
     ],
     bench: "collision",
@@ -1719,6 +1743,7 @@ export const lessons: Lesson[] = [
       {
         heading: "Amplitude is not wavelength",
         body: "Amplitude is how far a piece of the medium swings away from its rest position. It is a statement about energy and about loudness or brightness, depending on the wave. Wavelength is the distance from one crest to the next crest — a length along the direction the pattern travels. Turning the amplitude up does not stretch the wavelength. Students mix them because both can be “the height of the drawing” if the drawing was careless.",
+        formula: "amplitude is how far a point moves. Wavelength is the length of one repeat. v = f λ does not mix them",
       },
       {
         heading: "One relation",

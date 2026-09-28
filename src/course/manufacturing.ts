@@ -20,6 +20,7 @@ export const manufacturingLessons: Lesson[] = [
       {
         heading: "Name the act, not the brand",
         body: "A process makes shape by one physical act: freeze a liquid, deform a solid, cut a chip, join two pieces, or add material. A mill, a lathe, and a saw are the same act. Arguing about the brand before you name the act is how a simple bar becomes a five-axis story.",
+        formula: "the act is freeze, deform, cut, join, or add. The machine only carries out the act",
       },
       {
         heading: "The geometry votes first",

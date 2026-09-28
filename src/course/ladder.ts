@@ -6,35 +6,35 @@ export const ladderTracks: Track[] = [
     index: "201",
     title: "Physics",
     course: "Physics 201",
-    lede: "Rotation, then a mass on a spring. The laws are the ones you have. The geometry is new.",
+    lede: "Rotation, a mass on a spring, and whether a block floats.",
   },
   {
     id: "physics-301",
     index: "301",
     title: "Physics",
     course: "Physics 301",
-    lede: "Pressure, flow, drag, and a bar that is heated but not allowed to grow.",
+    lede: "Pressure, a pipe that narrows, drag, and a bar that is heated but not allowed to grow.",
   },
   {
     id: "physics-401",
     index: "401",
     title: "Physics",
     course: "Physics 401",
-    lede: "How fast a wave runs down a rod, how a beam wants to ring, and why a drop is not the static weight.",
+    lede: "How fast a wave runs down a rod, how a beam wants to ring, why a drop is not the static weight, and what a tight turn costs.",
   },
   {
     id: "materials-201",
     index: "201",
     title: "Materials",
     course: "Materials 201",
-    lede: "Time, a crack through a wall, a hardness guess, and metal that quietly disappears.",
+    lede: "Time, a crack through a wall, a hardness guess, metal that quietly disappears, and a front that moves with the square root of time.",
   },
   {
     id: "materials-301",
     index: "301",
     title: "Materials",
     course: "Materials 301",
-    lede: "The same chemistry, a different number. Work, a quench, a tie line, and a fiber with a direction.",
+    lede: "The same chemistry, a different number. Work, a quench, a tie line, a fiber's direction, and how much fiber you actually put in.",
   },
   {
     id: "materials-401",
@@ -48,14 +48,14 @@ export const ladderTracks: Track[] = [
     index: "201",
     title: "Engineering",
     course: "Engineering 201",
-    lede: "Stress that is not one tension. Yield under a combination, a shaft, a shell, and a load that misses the center.",
+    lede: "Stress that is not one tension. Yield under a combination, a shaft, a shell, a load that misses the center, and a pin in shear.",
   },
   {
     id: "engineering-301",
     index: "301",
     title: "Engineering",
     course: "Engineering 301",
-    lede: "A shaft's critical speed, a gear pair, a bearing's cube, and a bolt that only sees part of a new load.",
+    lede: "A shaft's critical speed, a gear pair, a bearing's cube, a bolt that only sees part of a new load, and a coil of wire.",
   },
   {
     id: "engineering-401",
@@ -69,21 +69,21 @@ export const ladderTracks: Track[] = [
     index: "201",
     title: "Manufacturing",
     course: "Manufacturing 201",
-    lede: "The force in a rolling gap, why a faster cut kills a tool, the extra metal a pattern needs, and why a weld bows.",
+    lede: "The force in a rolling gap, why a faster cut kills a tool, the extra metal a pattern needs, why a weld bows, and a fixture that stops six motions.",
   },
   {
     id: "manufacturing-301",
     index: "301",
     title: "Manufacturing",
     course: "Manufacturing 301",
-    lede: "A bonus on a hole, a surface that taxes fatigue, heat along a weld, and a yield that is a product.",
+    lede: "A bonus on a hole, a surface that taxes fatigue, heat along a weld, a yield that is a product, and a printed bond that is weaker than the road.",
   },
   {
     id: "manufacturing-401",
     index: "401",
     title: "Manufacturing",
     course: "Manufacturing 401",
-    lede: "The slow station, a tool paid for by the batch, parts you can delete, and scrap you already paid for.",
+    lede: "The slow station, a tool paid for by the batch, parts you can delete, scrap you already paid for, and the pace the customer already set.",
   },
 ];
 
@@ -178,6 +178,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "The axis has to be named",
         body: "A number for inertia without an axis is unfinished. About the center of a disk is not about a point on the rim. The parallel-axis idea adds Md² when you move the axis.",
+        formula: "I = I_cm + M d² when the axis is moved a distance d",
       },
     ],
     bench: "inertia",
@@ -335,6 +336,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "The surface is not zero absolute",
         body: "Gauge zero at the surface means the air's pressure is the starting point, not a vacuum. Absolute pressure is gauge plus that atmosphere. A reading that says 98 kPa gauge at 10 m is about two atmospheres absolute.",
+        formula: "P_absolute = P_atmosphere + ρ g h",
       },
       {
         heading: "Width does not appear",
@@ -387,6 +389,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Squared speed is the surprise",
         body: "Double the speed and the dynamic term grows by four. A gentle flow can become a large pressure drop without looking violent. 10 m/s in water is already 50 kPa.",
+        formula: "the speed term in the budget is ½ ρ v²",
       },
       {
         heading: "Friction is the term left out",
@@ -496,6 +499,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Most restraints are partial",
         body: "A real mount is neither rigid nor absent. The stress is some fraction of E α ΔT, and the growth is the rest. The bench shows the two ends of that line so you can see what each assumption claims.",
+        formula: "stress = (fraction held) × E α ΔT. Fully free is zero. Fully fixed is the whole term",
       },
     ],
     bench: "thermal",
@@ -811,6 +815,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "For steels, about three times",
         body: "A common shop estimate puts ultimate tensile strength in MPa near 3 times the Vickers hardness. 200 HV is about 600 MPa. It is a correlation for steels, not a derivation.",
+        formula: "σ_uts ≈ 3 × HV    in MPa, steels, mid-range",
       },
       {
         heading: "It does not know elongation",
@@ -914,10 +919,12 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Force over a shrinking area",
         body: "Stress is force over the area that is still there. A steady 8 kN on a bar that thins from 6 mm to 4 mm raises the stress from about 67 MPa to 100 MPa. The load cell would have looked calm.",
+        formula: "σ = F / (width × thickness left)",
       },
       {
         heading: "A rate is a clock",
         body: "0.10 mm per year times 20 years is 2 mm gone. The original safety factor was computed on 6 mm. It does not survive the subtraction unless you put the loss in the calculation.",
+        formula: "thickness left = thickness at the start − rate × time",
       },
       {
         heading: "Even loss is the kind version",
@@ -965,6 +972,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Dislocations are the obstacle",
         body: "Cold work multiplies dislocations. They tangle and make further slip harder, so the strength rises. The metal has also used up some of the stretch it had, so elongation falls.",
+        formula: "σ ≈ 250 + 6 × (% cold work) MPa    elongation ≈ 40% × e^(−% cold work / 18)",
       },
       {
         heading: "The chemistry line did not move",
@@ -1016,6 +1024,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "The surface meets the quenchant",
         body: "The outside of a hot bar loses heat first. Hardness there can be high even when the middle never cooled fast enough to transform the way you wanted.",
+        formula: "HV_surface = 550    HV_center = 200 + 350 / (1 + (t / 20 mm)²)",
       },
       {
         heading: "Thickness is the enemy of a through-harden",
@@ -1125,6 +1134,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "900 MPa is a direction, not a material",
         body: "Along the fiber this laminate is about 900 MPa. Across it, about 40. Quoting 900 without the angle is quoting a different part than the one you may have built.",
+        formula: "σ(θ) = 1 / (cos²θ / 900 + sin²θ / 40)",
       },
       {
         heading: "Thirty degrees is already another material",
@@ -1280,6 +1290,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "6061 is not a strength",
         body: "Annealed 6061 yields near 55 MPa and stretches about 25%. 6061-T6 yields near 275 MPa and stretches about 12%. A purchase order that says only 6061 has not chosen.",
+        formula: "6061-O: σ_y ≈ 55 MPa, elongation ≈ 25%. 6061-T6: σ_y ≈ 275 MPa, elongation ≈ 12%",
       },
       {
         heading: "You spend ductility to buy yield",
@@ -1331,6 +1342,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "The datasheet yield is not always first",
         body: "A hot bolt held for a thousand hours is a creep problem. A rotating shoulder is a fatigue problem. A scratched thin wall is a fracture problem. A bracket left outdoors is a corrosion problem. Yield can be true and still be the slow one.",
+        formula: "hot and held → creep. The stress returns → fatigue. A crack drives it → fracture. Otherwise, yield",
       },
       {
         heading: "Name the condition that cannot be ignored",
@@ -1434,7 +1446,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "J grows with radius to the fourth",
         body: "For a solid round shaft, J is πr⁴/2. Stress is torque times radius, over J, so the radius on top cancels one power and stress scales as 1/r³. Double the radius, eight times less stress.",
-        formula: "τ = T r / J",
+        formula: "τ = T r / J    and    J = π r⁴ / 2 for a solid round shaft",
       },
       {
         heading: "The outer fiber is the one that yields",
@@ -1491,6 +1503,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Along the axis it is half",
         body: "The longitudinal stress is pr/(2t). A seam that runs along the length of the vessel is cut by the hoop stress, the larger one. That is the seam to design first.",
+        formula: "σ_long = p r / (2 t) for a closed thin cylinder",
       },
       {
         heading: "Thin is an assumption",
@@ -1647,6 +1660,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Speed goes the other way",
         body: "The small gear turns faster. Speed ratio is the inverse of the torque ratio before efficiency. The clip shows that chase. It does not show the 2%.",
+        formula: "ω_out / ω_in = N_in / N_out",
       },
       {
         heading: "Power does not multiply",
@@ -1705,6 +1719,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Double the load, eight times less life",
         body: "The exponent is 3. From 4 kN to 8 kN on a 20 kN bearing, C/P goes from 5 to 2.5 and the cube of that ratio is 8. The life falls by 8, not by 2.",
+        formula: "L ∝ 1 / P³",
       },
       {
         heading: "L10 is a survival statistic",
@@ -1757,6 +1772,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Separation hands the bolt everything",
         body: "The clamp falls as the external load rises. When the clamp hits zero the joint opens and the bolt carries the whole external load. With this stiffness that happens at 1.25 times the preload.",
+        formula: "once the joint opens, the bolt force equals the full applied load",
       },
       {
         heading: "Preload is the design, not a leftover",
@@ -1960,6 +1976,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Strength is not the first question",
         body: "A slender strut can buckle far below yield. A rotating shoulder can fatigue far below yield. A cracked shell can fracture while the hoop stress looks moderate. A hot hanger can creep for a year. The review starts by naming which of those is impatient.",
+        formula: "slender and compressed → buckling. Stress returns → fatigue. A crack is present → fracture. Check yield after those",
       },
       {
         heading: "The condition picks the chapter",
@@ -2271,6 +2288,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "The plateau assumed a kind surface",
         body: "The 300 MPa fully reversed plateau was a polished story. A machined surface multiplies it by about 0.8 here. A forged surface multiplies it by 0.5. The alloy did not change.",
+        formula: "fatigue strength = 300 MPa × factor    polished 1, machined 0.8, forged 0.5",
       },
       {
         heading: "Roughness is a field of small notches",
@@ -2478,6 +2496,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Material and minutes are there at any quantity",
         body: "Four for material and 2.40 for the cycle are on every part. Tooling of 8000 is not. It is divided by how many parts share it. At 100 parts the tool adds 80. At 10000 it adds 0.80.",
+        formula: "unit cost = 6.40 + 8000 / N",
       },
       {
         heading: "Unit cost falls from 86.40 to 7.20",
@@ -2486,6 +2505,7 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "No learning, no scrap",
         body: "The bench does not make the hundredth part faster than the first, and it does not throw any away. Both of those move real cost. This page is only the division.",
+        formula: "this page does not change the minutes with quantity, and it does not divide by yield",
       },
     ],
     bench: "piececost",
@@ -2529,10 +2549,12 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "Every extra part costs a handling",
         body: "One essential part takes 20 s. Each additional part adds 8 s. Six parts take 60 s. Three parts take 36 s. The product's function did not appear in the formula. The count did.",
+        formula: "time = 20 s + 8 s × (parts − 1)",
       },
       {
         heading: "Delete only what the function does not need",
         body: "Combining three fasteners into one snap saves 16 s in this model and may ruin the joint. The bench prices handling. It does not check strength. That check is still yours.",
+        formula: "the time formula prices handling. It does not check whether the joint still holds",
       },
       {
         heading: "The token lingers where the count is large",
@@ -2585,10 +2607,12 @@ export const ladderLessons: Lesson[] = [
       {
         heading: "The bad ones land on the good ones",
         body: "Scrap is not free and it is not a discount. Its cost is spread over the parts you can sell. Raising yield from 80% to 95% saves less than a newcomer expects, because you were already shipping most of them.",
+        formula: "cost per good part = process cost / yield",
       },
       {
         heading: "Rework is a third path",
         body: "This bench throws the bad part away. A part you can rework costs something between zero and a full remake. If rework exists, do not use the pure division without saying so.",
+        formula: "10 / yield assumes you scrap the bad part. Rework is a different cost",
       },
     ],
     bench: "scrap",
@@ -2618,6 +2642,535 @@ export const ladderLessons: Lesson[] = [
         options: ["Still exact", "A bound that assumes you throw the part away", "Zero", "The hardness rule"],
         answer: 1,
         why: "A repaired part is neither a full loss nor free. Say which path you priced.",
+      },
+    ],
+  },
+  {
+    id: "float",
+    track: "physics-201",
+    index: 5,
+    title: "Whether it floats",
+    minutes: 8,
+    lede: "You will compare a block's density with the water and read how much of it has to be under.",
+    ideas: [
+      {
+        heading: "The water pushes with the weight of what was displaced",
+        body: "Buoyancy is the weight of the water the block pushes aside. It is not the weight of the block. A denser block weighs more. It does not earn a bigger push until it has sunk deeper.",
+        formula: "Fb = ρ_water × V_displaced × g",
+      },
+      {
+        heading: "Floating means the push matches the weight before the block is full under",
+        body: "Fresh water is 1000 kg/m³. A block at 500 kg/m³ floats with half of its volume under, because half of the water's density is enough to carry it. At 1500 kg/m³ the full push is still short, and the block sinks.",
+        formula: "fraction under = ρ_block / ρ_water, while it floats",
+      },
+      {
+        heading: "This tank is fresh water, and the block keeps its volume",
+        body: "Sea water is denser, so the same block would float higher. A block that soaks up water changes its own density. Neither of those is on this bench.",
+      },
+    ],
+    bench: "float",
+    prompt: "Set the density to 500, then to 1500.",
+    note: "Volume 0.002 m³. Fresh water at 1000 kg/m³.",
+    checks: [
+      {
+        prompt: "At 500 kg/m³ the block…",
+        options: ["Sinks", "Floats with half its volume under", "Floats fully out of the water", "Has zero buoyancy"],
+        answer: 1,
+        why: "500 / 1000 = 0.50. Half the volume of water weighs as much as the whole block.",
+      },
+      {
+        prompt: "At 1500 kg/m³ the block…",
+        options: ["Floats higher than at 500", "Sinks. The full push is still less than its weight", "Hovers fully under with no net force", "Displaces no water"],
+        answer: 1,
+        why: "Even fully under, buoyancy is the weight of 0.002 m³ of water. The block weighs 1.5 times that.",
+      },
+      {
+        prompt: "Buoyancy is the weight of…",
+        options: ["The block", "The water displaced", "The air above the tank", "The tank"],
+        answer: 1,
+        why: "The push depends on the water that had to move, not on what the block is made of.",
+      },
+      {
+        prompt: "This bench would be wrong for sea water because…",
+        options: ["Gravity changes at sea", "Sea water is denser than 1000 kg/m³", "Blocks cannot float in salt", "Volume stops mattering"],
+        answer: 1,
+        why: "The 1000 is fresh water. Salt water carries more per liter, so the same block rides higher.",
+      },
+    ],
+  },
+  {
+    id: "pipe",
+    track: "physics-301",
+    index: 5,
+    title: "A narrower pipe",
+    minutes: 8,
+    lede: "You will hold the volume per second fixed and watch the speed rise as the area falls.",
+    ideas: [
+      {
+        heading: "What enters must leave, if nothing is stored",
+        body: "The pipe does not fill up and it does not leak. The cubic meters per second in the wide part are the cubic meters per second in the throat. Speed is that quantity divided by area.",
+        formula: "v = Q / A",
+      },
+      {
+        heading: "Halve the area and the speed doubles",
+        body: "At 0.010 m² the speed is 1 m/s when Q is 0.010 m³/s. At 0.005 m² the speed is 2 m/s. The pump did not get stronger. The same stream was squeezed.",
+        formula: "v₂ / v₁ = A₁ / A₂",
+      },
+      {
+        heading: "This page is not the pressure",
+        body: "Bernoulli would spend that extra speed as a drop in pressure. This bench does not. If you need the pressure, you are on the wrong page.",
+      },
+    ],
+    bench: "pipe",
+    prompt: "Set the area to 0.010 m², then to 0.005 m².",
+    note: "Q is fixed at 0.010 m³/s. No leak, no storage.",
+    checks: [
+      {
+        prompt: "At 0.010 m² the speed is…",
+        options: ["0.5 m/s", "1 m/s", "2 m/s", "10 m/s"],
+        answer: 1,
+        why: "0.010 / 0.010 = 1.",
+      },
+      {
+        prompt: "At 0.005 m² the speed is…",
+        options: ["0.5 m/s", "1 m/s", "2 m/s", "Unchanged"],
+        answer: 2,
+        why: "The area halved. The volume per second did not. Speed doubles.",
+      },
+      {
+        prompt: "What was held constant?",
+        options: ["Speed", "Area", "Volume per second", "Pressure drop"],
+        answer: 2,
+        why: "Q is the given. Area is the slider. Speed is the result.",
+      },
+      {
+        prompt: "A pressure answer from this bench would be…",
+        options: ["Exact", "Not available. This page never used pressure", "Equal to the speed", "The area"],
+        answer: 1,
+        why: "Continuity only trades area and speed. Bernoulli is a later claim.",
+      },
+    ],
+  },
+  {
+    id: "turn",
+    track: "physics-401",
+    index: 5,
+    title: "The cost of a tight turn",
+    minutes: 8,
+    lede: "You will keep the speed and cut the radius, and read the acceleration toward the center.",
+    ideas: [
+      {
+        heading: "The same speed on a tighter curve needs more acceleration",
+        body: "Acceleration toward the center is speed squared over radius. The speed on this bench stays 10 m/s. At 2 m the acceleration is 50 m/s². At 1 m it is 100 m/s².",
+        formula: "a = v² / r",
+      },
+      {
+        heading: "The direction is inward, even when the speed is steady",
+        body: "A steady speed is not zero acceleration if the direction is changing. The number on the bench is the size of that inward acceleration. The drawing turns so you can see the radius, not the arrow.",
+      },
+      {
+        heading: "Speed was not the slider",
+        body: "Doubling the speed would multiply this acceleration by four, because speed is squared. This page refuses that lever so the radius stays the only change.",
+      },
+    ],
+    bench: "turn",
+    prompt: "Set the radius to 2 m, then to 1 m.",
+    note: "Speed fixed at 10 m/s. The number is the inward acceleration.",
+    checks: [
+      {
+        prompt: "At a radius of 2 m the acceleration is…",
+        options: ["10 m/s²", "20 m/s²", "50 m/s²", "100 m/s²"],
+        answer: 2,
+        why: "10² / 2 = 50.",
+      },
+      {
+        prompt: "At a radius of 1 m it is…",
+        options: ["25 m/s²", "50 m/s²", "100 m/s²", "200 m/s²"],
+        answer: 2,
+        why: "Half the radius, same speed, double the acceleration.",
+      },
+      {
+        prompt: "The acceleration points…",
+        options: ["Along the speed", "Toward the center", "Straight up", "Nowhere, because speed is constant"],
+        answer: 1,
+        why: "The speed's size is steady. Its direction is not. The change points inward.",
+      },
+      {
+        prompt: "Why is speed not a slider here?",
+        options: ["Speed does not appear in the formula", "So the radius is the only change you can credit", "Radius is squared", "10 m/s is a limit of the drawing"],
+        answer: 1,
+        why: "Speed squared would swamp the lesson. The page holds it and moves the radius.",
+      },
+    ],
+  },
+  {
+    id: "diffuse",
+    track: "materials-201",
+    index: 5,
+    title: "The front moves slowly",
+    minutes: 8,
+    lede: "You will give a diffusion front four times as long and watch it travel only twice as far.",
+    ideas: [
+      {
+        heading: "Distance grows with the square root of time",
+        body: "With D fixed at 0.25 mm²/h, four hours carry the front 1 mm. Sixteen hours carry it 2 mm. Time was multiplied by four. Distance was multiplied by two.",
+        formula: "x = √(D t)",
+      },
+      {
+        heading: "Waiting is a poor way to finish the job",
+        body: "The next millimeter costs more hours than the last one did. If a process needs the front at 2 mm, you do not double the time that got you to 1 mm. You multiply that time by four.",
+        formula: "time ∝ (distance)²",
+      },
+      {
+        heading: "D was not allowed to change",
+        body: "Heat, a different alloy, and a grain boundary all change D. This bench holds D so the square root is the only story. If the furnace changed, do not read the hours off this page.",
+      },
+    ],
+    bench: "diffuse",
+    prompt: "Set the time to 4 hours, then to 16.",
+    note: "D = 0.25 mm²/h, held fixed. One dimension.",
+    checks: [
+      {
+        prompt: "After 4 hours the front is at…",
+        options: ["0.25 mm", "1 mm", "2 mm", "4 mm"],
+        answer: 1,
+        why: "√(0.25 × 4) = √1 = 1 mm.",
+      },
+      {
+        prompt: "After 16 hours it is at…",
+        options: ["2 mm", "4 mm", "8 mm", "16 mm"],
+        answer: 0,
+        why: "√(0.25 × 16) = √4 = 2 mm.",
+      },
+      {
+        prompt: "To double the distance you multiply the time by…",
+        options: ["2", "4", "√2", "16"],
+        answer: 1,
+        why: "Distance follows the square root, so time follows the square.",
+      },
+      {
+        prompt: "Raising the furnace temperature would make this page…",
+        options: ["Still exact", "Wrong, because D was held fixed", "A hardness test", "Linear in time"],
+        answer: 1,
+        why: "Temperature changes D. The square root still applies, but not with 0.25.",
+      },
+    ],
+  },
+  {
+    id: "mixture",
+    track: "materials-301",
+    index: 5,
+    title: "How much fiber",
+    minutes: 9,
+    lede: "You will add fiber fraction and read the modulus along the fibers, not across them.",
+    ideas: [
+      {
+        heading: "Along the fibers, the two stiffnesses share the load by volume",
+        body: "The fiber is 230 GPa. The epoxy is 3.5 GPa. At 60% fiber the longitudinal modulus is 0.60×230 + 0.40×3.5 = 139.4 GPa. The epoxy is still in the sum. It is just the small term.",
+        formula: "E = Ef Vf + Em (1 − Vf)",
+      },
+      {
+        heading: "Zero fiber is just the epoxy",
+        body: "At a fiber fraction of zero the modulus is 3.5 GPa. The jump to 139 is not the epoxy getting better. It is the fibers taking almost all of a pull along their direction.",
+        formula: "V_f = 0  ⇒  E = E_epoxy",
+      },
+      {
+        heading: "Across the fibers this number is a lie",
+        body: "A pull across the fibers loads the epoxy in series with the fiber. That modulus stays near the epoxy. The bench refuses to print it. If the load is not along the fibers, do not use 139.",
+      },
+    ],
+    bench: "mixture",
+    prompt: "Set the fiber fraction to 0, then to 0.60.",
+    note: "Carbon 230 GPa, epoxy 3.5 GPa. Longitudinal only.",
+    checks: [
+      {
+        prompt: "At zero fiber the modulus is…",
+        options: ["0", "3.5 GPa", "230 GPa", "139 GPa"],
+        answer: 1,
+        why: "There is nothing in the sum but the epoxy.",
+      },
+      {
+        prompt: "At 0.60 fiber, along the fibers, it is…",
+        options: ["3.5 GPa", "69 GPa", "139.4 GPa", "230 GPa"],
+        answer: 2,
+        why: "0.60×230 + 0.40×3.5 = 138 + 1.4.",
+      },
+      {
+        prompt: "The 139.4 is valid…",
+        options: ["In every direction", "Along the fibers", "Only in the epoxy", "At any temperature"],
+        answer: 1,
+        why: "The rule of mixtures used here shares load side by side. Across the fibers the epoxy still governs.",
+      },
+      {
+        prompt: "Most of the 139.4 came from…",
+        options: ["The epoxy term", "The fiber term", "A heat treatment", "The density"],
+        answer: 1,
+        why: "138 of the 139.4 is 0.60×230. The epoxy adds 1.4.",
+      },
+    ],
+  },
+  {
+    id: "pinshear",
+    track: "engineering-201",
+    index: 5,
+    title: "A pin in one shear",
+    minutes: 8,
+    lede: "You will size a pin and watch the shear stress fall with the square of the diameter.",
+    ideas: [
+      {
+        heading: "One shear plane carries the whole load",
+        body: "The load is 4000 N. It crosses one circular face. Stress is that load divided by πd²/4. At 8 mm the area is small and the stress is 79.6 MPa. At 16 mm the stress is 19.9 MPa.",
+        formula: "τ = F / (π d² / 4)",
+      },
+      {
+        heading: "Diameter is squared, so doubling it quarters the stress",
+        body: "The load did not change. The area grew by four because both directions of the circle grew. A designer who expects the stress to halve has used the wrong power.",
+        formula: "area = π d² / 4, so shear stress ∝ 1 / d²",
+      },
+      {
+        heading: "Double shear is a different joint",
+        body: "A pin held by two lugs in line can share the load across two faces. That would cut these stresses in half. This bench is one face. If the hardware has two, say so before you use the number.",
+        formula: "two shear planes carry the load, so the stress is about half the single-shear number",
+      },
+    ],
+    bench: "pinshear",
+    prompt: "Set the pin to 8 mm, then to 16 mm.",
+    note: "4000 N, one shear plane. No bending of the pin.",
+    checks: [
+      {
+        prompt: "At 8 mm the shear stress is…",
+        options: ["19.9 MPa", "39.8 MPa", "79.6 MPa", "159 MPa"],
+        answer: 2,
+        why: "4000 divided by the area of an 8 mm circle.",
+      },
+      {
+        prompt: "At 16 mm it is…",
+        options: ["79.6 MPa", "39.8 MPa", "19.9 MPa", "4 MPa"],
+        answer: 2,
+        why: "Diameter doubled, area times four, stress divided by four.",
+      },
+      {
+        prompt: "The load between those two settings…",
+        options: ["Halved", "Doubled", "Stayed 4000 N", "Became a torque"],
+        answer: 2,
+        why: "Only the diameter moved. The 4000 N is the given.",
+      },
+      {
+        prompt: "A pin in double shear, same diameter and load, would see…",
+        options: ["This stress", "About half this stress", "Four times this stress", "No stress"],
+        answer: 1,
+        why: "Two faces share the load. This page drew one.",
+      },
+    ],
+  },
+  {
+    id: "coilspring",
+    track: "engineering-301",
+    index: 5,
+    title: "Wire to the fourth",
+    minutes: 9,
+    lede: "You will double a coil's wire and watch the spring rate grow by sixteen, not by two.",
+    ideas: [
+      {
+        heading: "Rate cares about the wire much more than about the coil count",
+        body: "Steel's shear modulus is held at 80 GPa. Eight active coils sit on a 20 mm mean diameter. At 2 mm wire the rate is 2500 N/m. At 4 mm wire it is 40000 N/m.",
+        formula: "k = G d⁴ / (8 D³ N)",
+      },
+      {
+        heading: "The fourth power is the surprise",
+        body: "Doubling the wire multiplies d⁴ by 16. The coil diameter and the number of coils did not move, so the rate multiplies by 16. A change that looks modest on a caliper is not modest in the spring.",
+        formula: "k ∝ d⁴, so doubling the wire multiplies the rate by 16",
+      },
+      {
+        heading: "Rate is not the stress",
+        body: "A stiffer spring under the same force deflects less, and the stress in the wire is a different formula. This page will not tell you if the wire yields. It only tells you how hard the spring pushes back per meter.",
+      },
+    ],
+    bench: "coilspring",
+    prompt: "Set the wire to 2 mm, then to 4 mm.",
+    note: "G = 80 GPa. Mean diameter 20 mm. 8 active coils.",
+    checks: [
+      {
+        prompt: "At 2 mm wire the rate is…",
+        options: ["250 N/m", "2500 N/m", "4000 N/m", "40000 N/m"],
+        answer: 1,
+        why: "G d⁴ / (8 D³ N) with d = 0.002 m, D = 0.020 m, N = 8.",
+      },
+      {
+        prompt: "At 4 mm wire the rate is…",
+        options: ["5000 N/m", "10000 N/m", "20000 N/m", "40000 N/m"],
+        answer: 3,
+        why: "The wire doubled. d⁴ grew by 16. 2500 × 16 = 40000.",
+      },
+      {
+        prompt: "What stayed fixed?",
+        options: ["Wire diameter", "Mean coil diameter and the active coils", "The rate", "The fourth power"],
+        answer: 1,
+        why: "D and N are the givens. Only d moved.",
+      },
+      {
+        prompt: "This number does not say…",
+        options: ["How hard the spring is", "Whether the wire yields", "That d is to the fourth", "The coil count"],
+        answer: 1,
+        why: "Rate and stress are different. A stiff spring can still be overstressed.",
+      },
+    ],
+  },
+  {
+    id: "locate",
+    track: "manufacturing-201",
+    index: 5,
+    title: "Six motions, then stop",
+    minutes: 8,
+    lede: "You will place contacts until a part has no motion left, and see a spare contact do nothing.",
+    ideas: [
+      {
+        heading: "A free part can move in six ways",
+        body: "Three slides and three turns. The base can take three of them, a side can take two, and an end can take one. Three, two, and one is a finished fixture. Nothing is left to rattle.",
+        formula: "motions left = 6 − min(base, 3) − min(side, 2) − min(end, 1)",
+      },
+      {
+        heading: "A fourth contact on the same face is not a seventh freedom",
+        body: "There were only six. Extra contacts on a face that is already full do not remove a motion. They argue with the contacts already there, and the part rocks on the high one.",
+      },
+      {
+        heading: "Two on the base is not three",
+        body: "Leave the base at two, with two on the side and one on the end, and one motion remains. The part is almost located and still free to tip. Almost is how a fixture scuffs a surface.",
+        formula: "2 on the base + 2 on the side + 1 on the end leaves 1 motion",
+      },
+    ],
+    bench: "locate",
+    prompt: "Set 3 on the base, 2 on the side, and 1 on the end. Then add a fourth on the base.",
+    note: "Each face has a cap: 3, 2, and 1. Contacts past the cap are wasted.",
+    checks: [
+      {
+        prompt: "3, 2, and 1 leaves…",
+        options: ["6 motions", "1 motion", "0 motions", "A wasted contact"],
+        answer: 2,
+        why: "3 + 2 + 1 = 6. The part is located.",
+      },
+      {
+        prompt: "A fourth contact on the base…",
+        options: ["Removes a seventh motion", "Removes nothing further. That face was full at three", "Locates the side", "Replaces the end pin"],
+        answer: 1,
+        why: "The base cap is 3. The extra dot is not a new direction.",
+      },
+      {
+        prompt: "2 on the base, 2 on the side, 1 on the end leaves…",
+        options: ["0 motions", "1 motion", "3 motions", "6 motions"],
+        answer: 1,
+        why: "Only 5 of the 6 were taken. The missing base contact is the leftover tip.",
+      },
+      {
+        prompt: "The caps exist because…",
+        options: ["Tools only come in those counts", "A face only stops so many motions", "Six is the hardness rule", "The end pin is optional decoration"],
+        answer: 1,
+        why: "More dots on one face repeat a direction. They do not invent a new one.",
+      },
+    ],
+  },
+  {
+    id: "layers",
+    track: "manufacturing-301",
+    index: 5,
+    title: "The bond between roads",
+    minutes: 8,
+    lede: "You will weaken only the joint between printed layers, and leave the road itself alone.",
+    ideas: [
+      {
+        heading: "Along a road and between roads are different materials in practice",
+        body: "The plastic in the road is 40 MPa in this model. The bond between layers is 40 divided by the knockdown. At a knockdown of 2 the bond is 20 MPa. The road is still 40.",
+        formula: "strength between layers = strength along / knockdown",
+      },
+      {
+        heading: "A knockdown of 1 is a claim, not a printer",
+        body: "Knockdown 1 says the bond equals the road. That is the hopeful case. Use it only if you measured it. The slider starts at 2 so the page does not pretend.",
+      },
+      {
+        heading: "The load's direction picks the number",
+        body: "A pull along the roads may use 40. A pull that peels layers apart must use the smaller number. Printing a bracket on its side can move the weak plane off the load. The bench will not choose the orientation for you.",
+      },
+    ],
+    bench: "layers",
+    prompt: "Leave the knockdown at 2. Then set it to 1, and put it back.",
+    note: "Along the road: 40 MPa. Between layers: 40 divided by the knockdown. No voids beyond that ratio.",
+    checks: [
+      {
+        prompt: "At a knockdown of 2, the bond between layers is…",
+        options: ["80 MPa", "40 MPa", "20 MPa", "2 MPa"],
+        answer: 2,
+        why: "40 / 2 = 20. The road stays 40.",
+      },
+      {
+        prompt: "At a knockdown of 2, the road itself is…",
+        options: ["20 MPa", "40 MPa", "80 MPa", "Unknown"],
+        answer: 1,
+        why: "The knockdown applies to the bond, not to the plastic in the road.",
+      },
+      {
+        prompt: "Knockdown 1 means…",
+        options: ["The bond equals the road, which you should have measured", "The part has no strength", "Layers are twice as strong", "The printer failed"],
+        answer: 0,
+        why: "It is the claim that orientation does not matter. It is not the usual print.",
+      },
+      {
+        prompt: "A pull that peels the layers should use…",
+        options: ["40 MPa", "The bond, 40 divided by the knockdown", "The average of the two", "Zero"],
+        answer: 1,
+        why: "The weak plane is the one the load opens. Direction chooses the number.",
+      },
+    ],
+  },
+  {
+    id: "takt",
+    track: "manufacturing-401",
+    index: 5,
+    title: "The pace already set",
+    minutes: 8,
+    lede: "You will divide the minutes you have by the parts you owe, and compare that with how long the station takes.",
+    ideas: [
+      {
+        heading: "Takt is the customer's pace, not the station's",
+        body: "Four hundred minutes are available. Demand is the slider. At 50 parts, takt is 8 minutes each. At 200 parts, takt is 2 minutes each. The station still takes 4. The customer did not ask what the station prefers.",
+        formula: "takt = available minutes / demand",
+      },
+      {
+        heading: "Late is cycle time above takt",
+        body: "At 50 parts you have 4 minutes of slack on every part. At 100 parts you are exactly on the pace. At 200 parts you are 2 minutes late on every part, and the lateness stacks.",
+        formula: "minutes late each part = cycle time − takt, when the cycle is longer",
+      },
+      {
+        heading: "Speeding a station that is already inside takt is a different project",
+        body: "This page only compares one cycle time with the pace. If you are inside takt, more speed does not serve the demand on this model. If you are outside it, nothing else on the line will hide it.",
+      },
+    ],
+    bench: "takt",
+    prompt: "Set demand to 50, then to 200.",
+    note: "400 minutes available. The station takes 4 minutes. No breaks, no scrap.",
+    checks: [
+      {
+        prompt: "At a demand of 50, takt is…",
+        options: ["2 min", "4 min", "8 min", "50 min"],
+        answer: 2,
+        why: "400 / 50 = 8. The station's 4 minutes fits, with slack.",
+      },
+      {
+        prompt: "At a demand of 200, you are…",
+        options: ["On pace", "2 minutes early", "2 minutes late on every part", "Unchanged, because the station did not change"],
+        answer: 2,
+        why: "Takt is 2 minutes. The station takes 4. The gap is 2 minutes, every part.",
+      },
+      {
+        prompt: "Takt comes from…",
+        options: ["The slowest motor", "Available time divided by demand", "The tool life", "The spring rate"],
+        answer: 1,
+        why: "The customer and the clock set it. The station only gets compared with it.",
+      },
+      {
+        prompt: "At a demand of 100…",
+        options: ["Takt is 4 min, matching the station", "Takt is 8 min", "The station must take 100 min", "Demand does not enter"],
+        answer: 0,
+        why: "400 / 100 = 4. You are exactly on the pace this model knows.",
       },
     ],
   },

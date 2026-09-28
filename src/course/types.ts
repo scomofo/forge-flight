@@ -64,7 +64,17 @@ export type LadderBenchId =
   | "bottleneck"
   | "piececost"
   | "dfa"
-  | "scrap";
+  | "scrap"
+  | "float"
+  | "pipe"
+  | "turn"
+  | "diffuse"
+  | "mixture"
+  | "pinshear"
+  | "coilspring"
+  | "locate"
+  | "layers"
+  | "takt";
 
 export type BenchId =
   | "families"
