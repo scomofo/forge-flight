@@ -1,4 +1,4 @@
-import type { Lesson, Track } from "./types";
+import type { Lesson, Track } from "./types.ts";
 
 export const ladderTracks: Track[] = [
   {
