@@ -104,6 +104,8 @@ export type BenchId =
   | "vectors"
   | "kinematics"
   | "newton"
+  | "incline"
+  | "fbdbuilder"
   | "energy"
   | "collision"
   | "wave"
