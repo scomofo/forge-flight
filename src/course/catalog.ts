@@ -1,9 +1,40 @@
 import type { Lesson, Track, TrackId } from "./types.ts";
 import { ladderLessons, ladderTracks } from "./ladder.ts";
 import { manufacturingLessons, manufacturingTrack } from "./manufacturing.ts";
+import { mathLessons, mathTrack } from "./math.ts";
+import { physicsW1Lessons } from "./physics-w1.ts";
+import { physicsW2Lessons } from "./physics-w2.ts";
 import { physicsW3Lessons } from "./physics-w3.ts";
+import { physicsW4Lessons } from "./physics-w4.ts";
+import { physicsW5Lessons } from "./physics-w5.ts";
+import { physicsW6Lessons } from "./physics-w6.ts";
+import { physicsW7Lessons } from "./physics-w7.ts";
+import { physicsW8Lessons } from "./physics-w8.ts";
+import { physicsW9Lessons } from "./physics-w9.ts";
+import { physicsW10Lessons } from "./physics-w10.ts";
+import { materialsW11Lessons } from "./materials-w11.ts";
+import { materialsW12Lessons } from "./materials-w12.ts";
+import { materialsW13Lessons } from "./materials-w13.ts";
+import { materialsW14Lessons } from "./materials-w14.ts";
+import { materialsW15Lessons } from "./materials-w15.ts";
+import { materialsW16Lessons } from "./materials-w16.ts";
+import { materialsW17Lessons } from "./materials-w17.ts";
+import { materialsW18Lessons } from "./materials-w18.ts";
+import { materialsW19Lessons } from "./materials-w19.ts";
+import { materialsW20Lessons } from "./materials-w20.ts";
+import { engineeringW21Lessons } from "./engineering-w21.ts";
+import { engineeringW22Lessons } from "./engineering-w22.ts";
+import { engineeringW23Lessons } from "./engineering-w23.ts";
+import { engineeringW24Lessons } from "./engineering-w24.ts";
+import { engineeringW25Lessons } from "./engineering-w25.ts";
+import { engineeringW26Lessons } from "./engineering-w26.ts";
+import { engineeringW27Lessons } from "./engineering-w27.ts";
+import { engineeringW28Lessons } from "./engineering-w28.ts";
+import { engineeringW29Lessons } from "./engineering-w29.ts";
+import { engineeringW30Lessons } from "./engineering-w30.ts";
 
 export const tracks: Track[] = [
+  mathTrack,
   {
     id: "physics",
     index: "01",
@@ -29,14 +60,487 @@ export const tracks: Track[] = [
   ...ladderTracks,
 ];
 
-export const introTrackIds = ["physics", "materials", "engineering"] as const satisfies readonly TrackId[];
+export const introTrackIds = ["math", "physics", "materials", "engineering"] as const satisfies readonly TrackId[];
 
 export const lessons: Lesson[] = [
+  ...mathLessons,
+  ...physicsW1Lessons,
+  ...physicsW2Lessons,
   ...physicsW3Lessons,
+  ...physicsW4Lessons,
+  ...physicsW5Lessons,
+  ...physicsW6Lessons,
+  ...physicsW7Lessons,
+  ...physicsW8Lessons,
+  ...physicsW9Lessons,
+  ...physicsW10Lessons,
+  {
+    id: "vectors",
+    track: "physics",
+    index: 31,
+    title: "Vectors",
+    minutes: 10,
+    lede: "You will add vectors by their components, and refuse to add the magnitudes when the directions differ.",
+    start: "Walk 3 blocks east and 4 blocks north. You are not 7 blocks from home. Diagonally, you are 5. || A vector has a size and a direction. You add the eastward parts into one eastward total, and the northward parts into one northward total. The straight-line result is the diagonal of those two totals. || You add sizes only when the arrows point the same way. Otherwise the diagonal is shorter than the sum of the sizes.",
+    use: "Two vectors do not point the same way. || Add the components, then take the length of that sum. || The resultant is shorter than the sum of the lengths, unless they point the same way. Do not add the magnitudes.",
+    example: "A wagon pulled with 3 N east and 4 N north. || The components add to 3 N and 4 N. The length of that sum is 5 N, not 7 N. || You add components. You only add the magnitudes when the two pulls point the same way.",
+    ideas: [
+      {
+        heading: "Pick a unit and stay there",
+        body: "Use one unit system for the whole calculation, and keep the unit attached to the number. SI is the dialect these benches speak: meters, kilograms, seconds, newtons. Mixing centimeters into a meter formula does not create a small, forgivable error. It creates a different problem. Convert first, then compute. A number without a unit is not a measurement. “The force was 10” is the start of an argument, not the end of one.",
+      },
+      {
+        heading: "Direction is not decoration",
+        body: "A vector has size and direction, and a scalar has only size. Distance is how much ground you covered. Displacement is where you ended relative to where you started, including the way. Speed is how fast. Velocity is how fast and which way. Mass, temperature, and energy do not point. Force, displacement, velocity, acceleration, and momentum do. If it points, you do not add it with ordinary arithmetic unless you already took components.",
+      },
+      {
+        heading: "Components, then Pythagoras",
+        body: "Break each vector into x and y. Add the x pieces to each other. Add the y pieces to each other. The resultant is a right triangle whose legs are those sums. Two forces of 3 N and 4 N only make 5 N if they are perpendicular. If they are parallel and opposed, they make 1 N or 7 N. The picture decides. The magnitudes alone do not.",
+        formula: "|R| = √(Rx² + Ry²)",
+      },
+    ],
+    bench: "vectors",
+    prompt: "Add two vectors by components. Try perpendicular, then try nearly opposite, and watch the resultant refuse to be a simple sum.",
+    note: "The angle is measured from the +x axis, counterclockwise, in the ordinary mathematical sense. Units are whatever you imagine, as long as both vectors share them.",
+    checks: [
+      {
+        prompt: "Which quantity is a scalar?",
+        options: ["Velocity", "Force", "Speed", "Displacement"],
+        answer: 2,
+        why: "Speed is the magnitude of velocity. It has no direction. Velocity, force, and displacement all point, so they are vectors.",
+      },
+      {
+        prompt: "A 3 N force east and a 4 N force north act together. The resultant magnitude is…",
+        options: ["7 N", "1 N", "5 N", "12 N"],
+        answer: 2,
+        why: "The components are perpendicular, so |R| = √(3² + 4²) = 5 N. Ordinary addition would be 7 N, which is what you get only if they point the same way.",
+      },
+      {
+        prompt: "Why convert everything to SI before combining terms?",
+        options: [
+          "SI units are more precise than other units",
+          "Terms can be added only when they are the same kind of quantity, in the same unit",
+          "Newton’s laws are false in centimeters",
+          "Conversion removes the need for vectors",
+        ],
+        answer: 1,
+        why: "Precision is a separate issue. A kilometer plus a meter is not 2 of anything until you express them alike. The laws don’t care which consistent system you use; they care that it is consistent.",
+      },
+      {
+        prompt: "Two equal magnitudes point in exactly opposite directions. Their vector sum…",
+        options: [
+          "Has magnitude twice either one",
+          "Is the zero vector",
+          "Is a scalar equal to their product",
+          "Points at 45 degrees",
+        ],
+        answer: 1,
+        why: "Components cancel: Rx = a − a = 0, Ry = 0. Equal and opposite vectors sum to nothing. That is the entire content of a balanced tug-of-war.",
+      },
+    ],
+  },
+  {
+    id: "kinematics",
+    track: "physics",
+    index: 32,
+    title: "Kinematics",
+    minutes: 11,
+    lede: "You will relate position, velocity, and acceleration, and read displacement as the area under the velocity graph.",
+    start: "A speedometer says how fast your position is changing. The push in the seat when you accelerate says how fast your speed is changing. How far you traveled is not the speed. It is the speed times how long you held it, including the moments you were going faster. || Velocity is the slope of position against time. Acceleration is the slope of velocity. The distance you gained is the area under the velocity graph. || A high speed for a short time can be a short trip. You do not read the speedometer as if it were the odometer.",
+    use: "You have a velocity that changes, and you need where the body ends up. || Velocity is the slope of position. Acceleration is the slope of velocity. The area under velocity is the change in position. || A negative area is a move backward. Do not treat a high speed as a large displacement.",
+    example: "A cart starts from rest and accelerates at 2 m/s² for 3 s. || Speed at the end is 6 m/s. The area under that velocity line is a triangle, 3 s by 6 m/s, so the cart moves 9 m. || A high speed is not, by itself, a long trip. The area is the trip.",
+    ideas: [
+      {
+        heading: "Velocity is the slope of position",
+        body: "On a graph of position against time, the slope is velocity. Steep and upward means fast in the positive direction. Flat means sitting still. A downward slope means moving backward — negative velocity — not “negative speed.” Speed is the absolute value. You can be moving quickly and have a negative velocity if you chose the opposite direction to be positive.",
+        formula: "v = Δx / Δt",
+      },
+      {
+        heading: "Acceleration is the slope of velocity",
+        body: "Acceleration says how fast velocity is changing, not how fast you are going. A car at 30 m/s with a = 0 keeps 30 m/s. A car at 2 m/s with a large acceleration will not be slow for long. Slowing down while moving in the positive direction means the acceleration points backward. “Deceleration” is just acceleration aimed against the velocity. The sign does that work if you let it.",
+        formula: "v = v0 + a t",
+      },
+      {
+        heading: "Area is the trip",
+        body: "The area under a velocity–time graph is the change in position. A rectangle of 4 m/s for 3 s is 12 m. If the velocity is negative, that area is negative displacement: you ended up behind where you started. The other useful companion, for constant acceleration, builds position out of the starting velocity and the extra triangle from acceleration.",
+        formula: "x = x0 + v0 t + ½ a t²",
+      },
+    ],
+    bench: "kinematics",
+    prompt: "Give a cart a starting velocity and an acceleration. Scrub time, or let it run. The shaded area under the velocity graph is the displacement.",
+    note: "Motion is along one line, acceleration is constant, and x starts at 0. The track drawing only marks a window; the numbers stay valid if the cart leaves it.",
+    checks: [
+      {
+        prompt: "An object moves at constant velocity. Its acceleration is…",
+        options: [
+          "Equal to its velocity",
+          "Zero",
+          "Increasing with time",
+          "Undefined, because velocity is constant",
+        ],
+        answer: 1,
+        why: "Acceleration is the rate of change of velocity. If velocity does not change, that rate is zero — whether the velocity itself is large or small.",
+      },
+      {
+        prompt: "The area under a velocity–time graph equals…",
+        options: [
+          "Acceleration",
+          "Mass",
+          "Displacement over that interval",
+          "Force",
+        ],
+        answer: 2,
+        why: "Velocity times time is a length. On a varying graph you add the thin slices. Negative velocity contributes negative area, meaning displacement the other way.",
+      },
+      {
+        prompt: "A cart moves to the right, which you called positive, and is slowing down. Its acceleration is…",
+        options: [
+          "Positive",
+          "Negative",
+          "Zero, because it is still moving",
+          "Equal to its speed",
+        ],
+        answer: 1,
+        why: "Velocity is positive and decreasing, so the slope of velocity is negative. Acceleration points against the motion. It is not zero just because the cart has not stopped yet.",
+      },
+      {
+        prompt: "From rest, a = 2 m/s² for 3 s. The velocity is then…",
+        options: ["2 m/s", "3 m/s", "5 m/s", "6 m/s"],
+        answer: 3,
+        why: "v = v0 + a t = 0 + 2 × 3 = 6 m/s. The ½ a t² formula is for position, which would be 9 m here, not velocity.",
+      },
+    ],
+  },
+  {
+    id: "forces",
+    track: "physics",
+    index: 33,
+    title: "Forces",
+    minutes: 12,
+    lede: "You will say when a pushed block stays still, and the moment the push is large enough to accelerate it.",
+    start: "Push a fridge gently. It does not move. The floor is pushing back exactly as hard as you are. Push harder than the floor will grip, and only then does it start to go. || If every push on an object cancels, its acceleration is zero. That can mean sitting still, or already coasting at a steady speed. Friction's budget is a grip coefficient times the weight. Under that budget, friction matches you. Over it, the leftover push equals mass times acceleration. || Not moving is not the same as no force. You spend the grip budget before anything speeds up.",
+    use: "A block is pushed and it has not moved yet. || Compare the push with friction's budget. Below that budget the acceleration is zero. Above it, the net force sets the acceleration. || At rest and zero force are different sentences. Do not start the acceleration before the budget is spent.",
+    example: "A 2 kg crate on a floor with μ of 0.30. || Its weight is about 20 N, so the friction budget is about 6 N. A 4 N push is matched by friction and the crate stays put. A 10 N push leaves about 4 N, and the crate accelerates at about 2 m/s². || At rest is not the same sentence as zero force. You do not start the acceleration before the budget is spent.",
+    ideas: [
+      {
+        heading: "Zero net force is not zero motion",
+        body: "Zero net force means the velocity stays constant, including a steady speed that is not zero. The first law: if the net force is zero, velocity does not change. That includes staying at rest, and it includes sliding forever in a straight line at constant speed. A hockey puck on imagined perfect ice does not need a forward force to keep its velocity. It needs a net force to change its velocity. People spend their lives pushing because the real world is full of friction, and then they mistake friction’s absence for a mystery.",
+        formula: "ΣF = 0  ⇒  velocity is constant",
+      },
+      {
+        heading: "Net force sets acceleration",
+        body: "Acceleration equals the net force divided by the mass. The second law is about the sum, not about one heroic force. Directions matter: a 10 N push and a 10 N opposing friction add to nothing, so a = 0. Mass is the reluctance of velocity to change. The same net force accelerates a light cart more than a heavy one. Weight is a force, mg, downward. It is not the same word as mass.",
+        formula: "ΣF = m a",
+      },
+      {
+        heading: "Pairs, and friction’s budget",
+        body: "A third-law pair is one interaction acting on two different objects. The third law: forces come in pairs, equal, opposite, and on different bodies. The book pushes on the table; the table pushes on the book. Those two are a pair. The book’s weight and the table’s normal force are not a pair — they both act on the book, which is why they can cancel in the book’s free-body diagram. Static friction, meanwhile, is not always μN. It is whatever value up to μN is needed to prevent slip. Only at the moment of slipping does it spend the whole budget.",
+        formula: "friction ≤ μ N, and it points against the slip",
+      },
+    ],
+    bench: "newton",
+    prompt: "Push a block from rest. Friction matches the push until the push exceeds μN — only then does the block accelerate.",
+    note: "Horizontal push, kinetic friction taken equal to μN once sliding starts, g = 9.81 m/s². The model starts from rest, so it does not cover a block already skidding the other way. Vertical forces cancel.",
+    clip: {
+      youtubeId: "F_UiBwTk9DM",
+      title: "Friction until the block slips",
+      channel: "Rhett Allain",
+      watch: "The block stays still while the push climbs. It moves only after the push passes a limit, and then the force drops.",
+      leave: "That drop is kinetic friction, which our bench does not model. The lesson is the wait before it moves.",
+    },
+    checks: [
+      {
+        prompt: "Net force on a body is zero. Which conclusion is justified?",
+        options: [
+          "The body must be at rest",
+          "Its velocity is constant — rest is only a special case",
+          "No forces act on it at all",
+          "Its mass is zero",
+        ],
+        answer: 1,
+        why: "The first law allows any constant velocity, including zero. Forces may still act; they have to cancel. Mass is not implied.",
+      },
+      {
+        prompt: "The third-law partner of “the book pushes down on the table” is…",
+        options: [
+          "Gravity pulling the book down",
+          "The table pushing up on the book",
+          "The table pushing down on the floor",
+          "Friction on the book",
+        ],
+        answer: 1,
+        why: "A pair is the same interaction on two different bodies. Gravity is a different interaction (book and Earth). The normal force from the table on the book closes the contact pair.",
+      },
+      {
+        prompt: "You increase mass and keep the net force the same. Acceleration…",
+        options: ["Increases", "Decreases", "Stays the same", "Becomes equal to g"],
+        answer: 1,
+        why: "a = Fnet / m. Larger mass, smaller acceleration. This is the content of inertia. Weight would also change if you moved to a new planet, but mass is the quantity in the law.",
+      },
+      {
+        prompt: "A crate is at rest and the push is smaller than μN. Static friction is…",
+        options: [
+          "Always exactly μN",
+          "Equal to the push, and opposite it",
+          "Zero, because the crate is heavy",
+          "Equal to the weight",
+        ],
+        answer: 1,
+        why: "From rest, friction spends only what it must to keep a = 0, up to a maximum of about μN. Below that maximum it matches the push. It is not obliged to sit at the maximum.",
+      },
+    ],
+  },
+  {
+    id: "energy",
+    track: "physics",
+    index: 34,
+    title: "Energy",
+    minutes: 11,
+    lede: "You will watch potential become kinetic, see friction divert some of it into heat, and check that mass does not change the speed.",
+    start: "A swing is high and slow at the end of its arc, and low and fast at the bottom. Drag your foot and it does not get as fast, and your shoe gets warm. || Height stores energy. Speed stores energy too, and speed is squared, so twice as fast is four times that store. Friction turns some of the height's energy into heat instead of speed. || With no friction, a heavier rider and a lighter one reach the same speed from the same height. Friction is what changes the speed. Mass is not.",
+    use: "A mass is about to drop and you need the speed at the bottom. || Turn the lost height into kinetic energy. If friction is present, subtract the work it stole. || Changing the mass does not change the speed, and friction does. Do not keep the mechanical energy after some of it became heat.",
+    example: "A 3 kg bag drops 2 m. Then you repeat it with friction that sends 30% of the lost height into heat, as on this page. || With no friction the speed at the bottom is about 6.3 m/s. The 3 kg did not matter. With 30% diverted, about 5.2 m/s remains. || Mass is not the lever. Friction is. You do not keep the mechanical energy after some of it became heat.",
+    ideas: [
+      {
+        heading: "Work is force along the motion",
+        body: "A constant force does work equal to the component along the displacement, times the distance. A force perpendicular to the motion — the normal force on a block sliding along a floor — does no work. Holding a heavy bag still also does no work in the physics sense, however tired your arm is. Muscles spend chemical energy to stay clenched; the bag’s mechanical energy is not increasing. The word “work” is narrower here than in conversation.",
+        formula: "W = F d cosθ",
+      },
+      {
+        heading: "Kinetic energy cares about speed squared",
+        body: "Doubling speed quadruples kinetic energy. That is why a modest change in driving speed is an immodest change in stopping distance, and why a falling object picks up the ability to dent things so late in the drop. Mass matters too, but only to the first power. Gravitational potential energy, near Earth’s surface, is mgh. Only the vertical gap counts. A gentle ramp and a steep ramp between the same two heights offer the same potential-energy change.",
+        formula: "K = ½ m v²     U = m g h",
+      },
+      {
+        heading: "Conservation has a clause",
+        body: "If only conservative forces do work — gravity, an ideal spring — mechanical energy K + U stays constant. Friction and air drag are not in that club. They turn mechanical energy into thermal energy, which is still energy, just no longer useful as organized motion of the whole object. “Energy is always conserved” and “mechanical energy is conserved on this ramp” are different claims. The second one is the one you can spend on a homework problem, and only when the clause holds.",
+        formula: "K + U stays constant only when no energy leaves",
+      },
+    ],
+    bench: "energy",
+    prompt: "Lower a mass down a ramp. Watch potential become kinetic. Turn friction on and see part of that trade diverted into heat. Mass changes the energies, not the speed.",
+    note: "g = 9.81 m/s². Height is measured from the bottom of the ramp. With friction on, 30% of the lost potential becomes thermal energy instead of kinetic — a teaching fraction, not a measured coefficient.",
+    clip: {
+      youtubeId: "yccxgkYFvoQ",
+      title: "Conservation of energy with a pendulum",
+      channel: "Science Explained",
+      watch: "He lets the weight go from rest at his chin. It comes back to that height and does not hit him.",
+      leave: "The clip has almost no friction, and it does not change the mass. Your bench is where friction takes energy, and where mass does not change the speed.",
+    },
+    checks: [
+      {
+        prompt: "A force points straight up. The object moves horizontally. The work done by that force is…",
+        options: [
+          "Equal to the weight times the distance",
+          "Zero, because the force is perpendicular to the displacement",
+          "Negative, always",
+          "Equal to the kinetic energy",
+        ],
+        answer: 1,
+        why: "cosθ is zero at 90°. No component lies along the motion, so that force transfers no mechanical energy. Other forces might.",
+      },
+      {
+        prompt: "You double an object’s speed. Its kinetic energy…",
+        options: ["Doubles", "Quadruples", "Is unchanged", "Halves"],
+        answer: 1,
+        why: "K depends on v². A factor of 2 in speed is a factor of 4 in kinetic energy. Mass was unchanged.",
+      },
+      {
+        prompt: "Gravitational potential energy near the ground depends on…",
+        options: [
+          "The path taken between two heights",
+          "The vertical height difference (and mass and g)",
+          "Only the horizontal distance traveled",
+          "The color of the ramp",
+        ],
+        answer: 1,
+        why: "U = mgh. A spiral ramp and a ladder between the same heights change U by the same amount. The path matters for friction, not for gravity’s potential.",
+      },
+      {
+        prompt: "Friction acts along a slide. Mechanical energy K + U…",
+        options: [
+          "Stays exactly constant, by Newton’s first law",
+          "Decreases; the difference shows up as thermal energy",
+          "Increases, because friction is a force",
+          "Becomes equal to the weight",
+        ],
+        answer: 1,
+        why: "Friction is nonconservative. It does negative work on the object and leaves energy as heat in the surfaces. Total energy, counting thermal, still balances. Organized mechanical energy does not.",
+      },
+    ],
+  },
+  {
+    id: "momentum",
+    track: "physics",
+    index: 35,
+    title: "Momentum",
+    minutes: 11,
+    lede: "You will show that an isolated collision keeps momentum, and that kinetic energy survives only when the collision is elastic.",
+    start: "A heavy bowling ball rolls into a lighter ball and they stick. They move off together, slower than the heavy ball was going. You also heard a thud. || Momentum is mass times velocity, the 'oomph.' If nothing outside shoves during the hit, the oomph afterward equals the oomph before. The energy of motion stays the same only when the hit is perfectly bouncy. A sticking hit spends some of that energy as noise and heat. || You can keep the oomph and still lose the energy of motion. Conserving one does not give you the other.",
+    use: "Two bodies hit, and nothing outside pushes during the hit. || Set the momentum after equal to the momentum before. If they stick, kinetic energy drops. If the hit is perfectly elastic, it does not. || You can say which quantity was conserved. Do not conserve kinetic energy just because you conserved momentum.",
+    example: "A 2 kg cart at 3 m/s hits a 1 kg cart at rest, and they stick. || Momentum before is 6 kg·m/s, so they leave together at 2 m/s. Kinetic energy falls from 9 J to 6 J. If the hit had been perfectly elastic, the 9 J would still be there. || Momentum survived the stick. Kinetic energy did not. You do not conserve both just because nothing outside pushed.",
+    ideas: [
+      {
+        heading: "Inertia, already moving",
+        body: "Momentum p = mv packages the two things that make an object hard to stop: it is heavy, or it is fast, or both. Because velocity is a vector, momentum points. Two equal momenta aimed at each other can add to zero even though both objects are decidedly in motion. The total is what the law cares about, not the drama of each piece.",
+        formula: "p = m v",
+      },
+      {
+        heading: "Isolated means no outside push",
+        body: "If the net external force on a system is zero, the total momentum of the system does not change. Internal forces — the two carts shoving each other — come in third-law pairs and cancel in the total. That is why a collision can be violent and still conserve momentum. Friction from the track, or a hand that grabs one cart, is an external force. Then the system you drew was not isolated, and the total inside it is allowed to change.",
+        formula: "Σ p before = Σ p after, when the outside force is zero",
+      },
+      {
+        heading: "Elastic is a second rule",
+        body: "Momentum conservation alone does not tell you the two velocities after a collision. You have one equation and two unknowns. “They stick” is an extra fact (perfectly inelastic) and it closes the problem. “Kinetic energy is also conserved” is a different extra fact (elastic) and it closes the problem another way. Real collisions sit between them: momentum conserved if isolated, kinetic energy partly turned into heat and deformation. Bouncy is not the same adjective as “momentum-conserving.” Everything isolated is momentum-conserving. Almost nothing is perfectly elastic.",
+        formula: "for a perfectly elastic hit, separation speed = approach speed",
+      },
+    ],
+    bench: "collision",
+    prompt: "Set two masses and two velocities. Compare a perfectly bouncy collision with one where they stick. Momentum should agree before and after; kinetic energy should not, once they stick.",
+    note: "One-dimensional collision, no external force during the impact. “Elastic” uses the standard two-body result. “Stick” means a perfectly inelastic collision: one shared velocity afterward.",
+    clip: {
+      youtubeId: "Qco-M6BajjA",
+      title: "Conservation of momentum on an air track",
+      channel: "Caltech's Feynman Lecture Hall",
+      watch: "Equal gliders. The moving one stops and the resting one leaves. Then a heavier one, which does not hand over all of its motion.",
+      leave: "He says the bounce is not perfect. That is real. Momentum still holds. Kinetic energy holds only for the elastic case, which is the split on the bench.",
+    },
+    checks: [
+      {
+        prompt: "Momentum is…",
+        options: [
+          "A scalar, because mass is a scalar",
+          "A vector, because velocity is a vector",
+          "The same quantity as kinetic energy",
+          "Always conserved for one object, even if a net force acts",
+        ],
+        answer: 1,
+        why: "p = mv inherits direction from v. Kinetic energy is a scalar and depends on speed squared. A single object’s momentum changes whenever a net force acts; conservation is a statement about an isolated system.",
+      },
+      {
+        prompt: "Two carts collide on a track you are treating as frictionless. During the collision…",
+        options: [
+          "Total momentum is conserved because the forces between them are internal",
+          "Total momentum falls to zero because the crash is inelastic-looking",
+          "Kinetic energy must be conserved, always",
+          "Mass is not conserved",
+        ],
+        answer: 0,
+        why: "Internal pairs cancel in the total momentum. Whether kinetic energy survives is a separate question about how bouncy the collision is. Isolation was the frictionless assumption.",
+      },
+      {
+        prompt: "A perfectly inelastic collision of an isolated pair…",
+        options: [
+          "Conserves kinetic energy and discards momentum",
+          "Conserves momentum; kinetic energy drops",
+          "Conserves both, always",
+          "Conserves neither",
+        ],
+        answer: 1,
+        why: "They share one velocity afterward, fixed by momentum. Deformation and heat take the kinetic-energy difference. “Inelastic” names that loss. It does not cancel the isolation argument.",
+      },
+      {
+        prompt: "Two equal masses collide head-on, elastically, with equal and opposite velocities. Afterward…",
+        options: [
+          "Both stop",
+          "They stick and drift",
+          "Each leaves with the other’s incoming velocity",
+          "Kinetic energy is zero and momentum is not",
+        ],
+        answer: 2,
+        why: "Equal masses in a one-dimensional elastic collision exchange velocities. Each reverses. Total momentum was already zero and stays zero. Kinetic energy is unchanged. Sticking would have left them both at rest — that is the inelastic version.",
+      },
+    ],
+  },
+  {
+    id: "waves",
+    track: "physics",
+    index: 36,
+    title: "Waves",
+    minutes: 10,
+    lede: "You will show that wave speed equals frequency times wavelength, and that amplitude is not wavelength.",
+    start: "Watch a jump rope. How fast you flick your wrist is one thing. The distance from crest to crest is another. How high the rope swings is a third. The wave runs along the rope, while a knot in the rope only goes up and down. || Frequency is the flicks per second. Wavelength is crest to crest. Amplitude is the height of the swing. The speed of the wave is frequency times wavelength. Amplitude is not in that product. || A taller wave is not a faster wave. The knot's up-and-down is not the wave traveling down the rope.",
+    use: "A wave has a frequency and a wavelength. || Multiply them to get the speed. Amplitude does not enter. || A taller wave is not a faster wave. Do not mix amplitude into the speed.",
+    example: "A jump rope flicked at 2 Hz, with 0.5 m between crests, and the hand moving 3 cm up and down. || Speed is 2 × 0.5 = 1 m/s. The 3 cm is the amplitude and does not enter. || A taller wave is not a faster wave. You multiply frequency by wavelength and stop.",
+    ideas: [
+      {
+        heading: "Amplitude is not wavelength",
+        body: "Amplitude is how far a piece of the medium swings away from its rest position. It is a statement about energy and about loudness or brightness, depending on the wave. Wavelength is the distance from one crest to the next crest — a length along the direction the pattern travels. Turning the amplitude up does not stretch the wavelength. Students mix them because both can be “the height of the drawing” if the drawing was careless.",
+        formula: "amplitude is how far a point moves. Wavelength is the length of one repeat. v = f λ does not mix them",
+      },
+      {
+        heading: "One relation",
+        body: "Wave speed equals frequency times wavelength. Frequency is how many crests pass a point each second. Wavelength is the spacing of those crests. Their product is how fast the pattern runs. Shake a rope faster without changing the wave speed, and the crests pack closer. The same relation covers sound, light, and the ripple in a tray, with very different speeds behind it.",
+        formula: "v = f λ",
+      },
+      {
+        heading: "The medium is not the message",
+        body: "The pattern and the energy travel. The material mostly wiggles in place. Sound needs a material; the air oscillates and the pattern travels. Light does not need a material. In both cases the thing that arrives across the room is energy and information, not a lump of the source. Superposition is the next surprise: two waves in the same place add their displacements. They can cancel at a point without either wave being destroyed. Earplugs and noise-cancelling headphones are applied superposition. So are thin-film colors.",
+      },
+    ],
+    bench: "wave",
+    prompt: "Change amplitude, frequency, and wavelength on a fixed window of rope. Check that the speed you read equals frequency times wavelength.",
+    note: "The drawing shows a fixed 4 m of a transverse wave, y = A sin(2πx/λ − 2πft). The medium moves up and down; the pattern moves along the rope. This bench does not model what sets the speed — tension and mass per length would, for a real rope.",
+    clip: {
+      youtubeId: "-gr7KmTOrx0",
+      title: "Standing waves, demonstration",
+      channel: "James Dann",
+      end: 140,
+      watch: "The string. When he raises the frequency, more waves fit on the same length. That is a shorter wavelength.",
+      leave: "He names harmonics. You do not need those names. Speed equals frequency times wavelength is the relation on the bench.",
+    },
+    checks: [
+      {
+        prompt: "Wave speed, frequency, and wavelength are related by…",
+        options: ["v = f / λ", "v = f λ", "v = f + λ", "v = A λ"],
+        answer: 1,
+        why: "Each second, f crests pass, spaced λ apart, so the pattern covers fλ meters per second. Amplitude is not in the speed.",
+      },
+      {
+        prompt: "Amplitude is…",
+        options: [
+          "The distance from one crest to the next",
+          "The maximum displacement from equilibrium",
+          "The number of crests per second",
+          "Always equal to the wavelength",
+        ],
+        answer: 1,
+        why: "Crest-to-crest is the wavelength. Crests per second is the frequency. Amplitude is how large the wiggle is, measured from the middle.",
+      },
+      {
+        prompt: "Frequency doubles and wave speed stays the same. Wavelength…",
+        options: ["Doubles", "Halves", "Stays the same", "Becomes equal to the amplitude"],
+        answer: 1,
+        why: "λ = v/f. Same v, twice f, half λ. On the bench, that is more crests inside the same window.",
+      },
+      {
+        prompt: "Which statement is sound?",
+        options: [
+          "A sound wave carries a chunk of the source’s material to your ear",
+          "Air particles oscillate locally; the pattern and the energy travel",
+          "Sound does not need a medium",
+          "Wavelength is the loudness",
+        ],
+        answer: 1,
+        why: "The air does not stream from the speaker to you as a wind of signal. Each bit of air jiggles about its rest position. Light is the wave that needs no medium. Loudness tracks amplitude, not wavelength.",
+      },
+    ],
+  },
+  ...materialsW11Lessons,
+  ...materialsW12Lessons,
+  ...materialsW13Lessons,
+  ...materialsW14Lessons,
+  ...materialsW15Lessons,
+  ...materialsW16Lessons,
+  ...materialsW17Lessons,
+  ...materialsW18Lessons,
+  ...materialsW19Lessons,
+  ...materialsW20Lessons,
   {
     id: "families",
     track: "materials",
-    index: 1,
+    index: 31,
     title: "The four families",
     minutes: 9,
     lede: "You will name the right material family for a job, and say which requirement forced that choice.",
@@ -118,7 +622,7 @@ export const lessons: Lesson[] = [
   {
     id: "bonding",
     track: "materials",
-    index: 2,
+    index: 32,
     title: "Bonding",
     minutes: 10,
     lede: "You will connect the bond type to conductivity, melting temperature, and whether the solid bends or snaps.",
@@ -193,7 +697,7 @@ export const lessons: Lesson[] = [
   {
     id: "curve",
     track: "materials",
-    index: 3,
+    index: 33,
     title: "The stress–strain curve",
     minutes: 12,
     lede: "You will read stiffness, strength, ductility, and toughness as four different features of one curve.",
@@ -278,7 +782,7 @@ export const lessons: Lesson[] = [
   {
     id: "compare",
     track: "materials",
-    index: 4,
+    index: 34,
     title: "Side by side",
     minutes: 10,
     lede: "You will compare materials using the column the job needs, including strength divided by density.",
@@ -354,7 +858,7 @@ export const lessons: Lesson[] = [
   {
     id: "grains",
     track: "materials",
-    index: 5,
+    index: 35,
     title: "Grains and processing",
     minutes: 10,
     lede: "You will predict how grain size and a hot anneal change the yield strength of the same alloy.",
@@ -438,7 +942,7 @@ export const lessons: Lesson[] = [
   {
     id: "selection",
     track: "materials",
-    index: 6,
+    index: 36,
     title: "Choosing",
     minutes: 11,
     lede: "You will screen materials with a strength floor and a density ceiling, then rank whoever is left.",
@@ -513,7 +1017,7 @@ export const lessons: Lesson[] = [
   {
     id: "birth",
     track: "materials",
-    index: 7,
+    index: 37,
     title: "Where a crack is born",
     minutes: 10,
     lede: "You will say where a fatigue crack starts in a smooth metal, and which property lasts longer when the strain is large.",
@@ -585,10 +1089,20 @@ export const lessons: Lesson[] = [
       },
     ],
   },
+  ...engineeringW21Lessons,
+  ...engineeringW22Lessons,
+  ...engineeringW23Lessons,
+  ...engineeringW24Lessons,
+  ...engineeringW25Lessons,
+  ...engineeringW26Lessons,
+  ...engineeringW27Lessons,
+  ...engineeringW28Lessons,
+  ...engineeringW29Lessons,
+  ...engineeringW30Lessons,
   {
     id: "design",
     track: "engineering",
-    index: 1,
+    index: 31,
     title: "The design loop",
     minutes: 9,
     lede: "You will write requirements as weights and watch the winning concept change when the weights change.",
@@ -663,7 +1177,7 @@ export const lessons: Lesson[] = [
   {
     id: "equilibrium",
     track: "engineering",
-    index: 2,
+    index: 32,
     title: "Equilibrium",
     minutes: 11,
     lede: "You will find both support forces on a beam and check that they add up to the load.",
@@ -739,7 +1253,7 @@ export const lessons: Lesson[] = [
   {
     id: "stress",
     track: "engineering",
-    index: 3,
+    index: 33,
     title: "Stress and safety",
     minutes: 11,
     lede: "You will compute stress, stretch, and factor of safety, and say when the bar yields.",
@@ -816,7 +1330,7 @@ export const lessons: Lesson[] = [
   {
     id: "beams",
     track: "engineering",
-    index: 4,
+    index: 34,
     title: "Beams and stiffness",
     minutes: 11,
     lede: "You will separate “will it break?” from “is it too saggy?”, and see how span and depth change the sag.",
@@ -883,7 +1397,7 @@ export const lessons: Lesson[] = [
   {
     id: "tradeoffs",
     track: "engineering",
-    index: 5,
+    index: 35,
     title: "Tradeoffs",
     minutes: 9,
     lede: "You will throw out an option that loses on every criterion, then let your weights choose among the rest.",
@@ -960,7 +1474,7 @@ export const lessons: Lesson[] = [
   {
     id: "failure",
     track: "engineering",
-    index: 6,
+    index: 36,
     title: "How things fail",
     minutes: 12,
     lede: "You will tell buckling apart from yield, and name fatigue and corrosion as two other ways a part can fail.",
@@ -1046,7 +1560,7 @@ export const lessons: Lesson[] = [
   {
     id: "notch",
     track: "engineering",
-    index: 7,
+    index: 37,
     title: "The notch",
     minutes: 9,
     lede: "You will separate the average stress from the peak at a fillet, and refuse to trust the average alone.",
@@ -1122,7 +1636,7 @@ export const lessons: Lesson[] = [
   {
     id: "fatigue",
     track: "engineering",
-    index: 8,
+    index: 38,
     title: "A load that returns",
     minutes: 10,
     lede: "You will read a life off a repeating stress that is still below yield.",
@@ -1198,7 +1712,7 @@ export const lessons: Lesson[] = [
   {
     id: "crack",
     track: "engineering",
-    index: 9,
+    index: 39,
     title: "The crack grows",
     minutes: 11,
     lede: "You will take a crack that already exists and see why it crawls, then runs.",
@@ -1274,7 +1788,7 @@ export const lessons: Lesson[] = [
   {
     id: "bolt",
     track: "engineering",
-    index: 10,
+    index: 40,
     title: "The bolt",
     minutes: 9,
     lede: "You will tell a clamping bolt from a pin, and keep the threads out of the shear plane.",
@@ -1351,7 +1865,7 @@ export const lessons: Lesson[] = [
   {
     id: "mean",
     track: "engineering",
-    index: 11,
+    index: 41,
     title: "A tensile mean",
     minutes: 9,
     lede: "You will put a steady tension under a wiggle and watch a runout leave the safe side of the Goodman line.",
@@ -1424,464 +1938,11 @@ export const lessons: Lesson[] = [
       },
     ],
   },
-  {
-    id: "measure",
-    track: "physics",
-    index: 4,
-    title: "Measure and vectors",
-    minutes: 10,
-    lede: "You will add vectors by their components, and refuse to add the magnitudes when the directions differ.",
-    start: "Walk 3 blocks east and 4 blocks north. You are not 7 blocks from home. Diagonally, you are 5. || A vector has a size and a direction. You add the eastward parts into one eastward total, and the northward parts into one northward total. The straight-line result is the diagonal of those two totals. || You add sizes only when the arrows point the same way. Otherwise the diagonal is shorter than the sum of the sizes.",
-    use: "Two vectors do not point the same way. || Add the components, then take the length of that sum. || The resultant is shorter than the sum of the lengths, unless they point the same way. Do not add the magnitudes.",
-    example: "A wagon pulled with 3 N east and 4 N north. || The components add to 3 N and 4 N. The length of that sum is 5 N, not 7 N. || You add components. You only add the magnitudes when the two pulls point the same way.",
-    ideas: [
-      {
-        heading: "Pick a unit and stay there",
-        body: "Use one unit system for the whole calculation, and keep the unit attached to the number. SI is the dialect these benches speak: meters, kilograms, seconds, newtons. Mixing centimeters into a meter formula does not create a small, forgivable error. It creates a different problem. Convert first, then compute. A number without a unit is not a measurement. “The force was 10” is the start of an argument, not the end of one.",
-      },
-      {
-        heading: "Direction is not decoration",
-        body: "A vector has size and direction, and a scalar has only size. Distance is how much ground you covered. Displacement is where you ended relative to where you started, including the way. Speed is how fast. Velocity is how fast and which way. Mass, temperature, and energy do not point. Force, displacement, velocity, acceleration, and momentum do. If it points, you do not add it with ordinary arithmetic unless you already took components.",
-      },
-      {
-        heading: "Components, then Pythagoras",
-        body: "Break each vector into x and y. Add the x pieces to each other. Add the y pieces to each other. The resultant is a right triangle whose legs are those sums. Two forces of 3 N and 4 N only make 5 N if they are perpendicular. If they are parallel and opposed, they make 1 N or 7 N. The picture decides. The magnitudes alone do not.",
-        formula: "|R| = √(Rx² + Ry²)",
-      },
-    ],
-    bench: "vectors",
-    prompt: "Add two vectors by components. Try perpendicular, then try nearly opposite, and watch the resultant refuse to be a simple sum.",
-    note: "The angle is measured from the +x axis, counterclockwise, in the ordinary mathematical sense. Units are whatever you imagine, as long as both vectors share them.",
-    checks: [
-      {
-        prompt: "Which quantity is a scalar?",
-        options: ["Velocity", "Force", "Speed", "Displacement"],
-        answer: 2,
-        why: "Speed is the magnitude of velocity. It has no direction. Velocity, force, and displacement all point, so they are vectors.",
-      },
-      {
-        prompt: "A 3 N force east and a 4 N force north act together. The resultant magnitude is…",
-        options: ["7 N", "1 N", "5 N", "12 N"],
-        answer: 2,
-        why: "The components are perpendicular, so |R| = √(3² + 4²) = 5 N. Ordinary addition would be 7 N, which is what you get only if they point the same way.",
-      },
-      {
-        prompt: "Why convert everything to SI before combining terms?",
-        options: [
-          "SI units are more precise than other units",
-          "Terms can be added only when they are the same kind of quantity, in the same unit",
-          "Newton’s laws are false in centimeters",
-          "Conversion removes the need for vectors",
-        ],
-        answer: 1,
-        why: "Precision is a separate issue. A kilometer plus a meter is not 2 of anything until you express them alike. The laws don’t care which consistent system you use; they care that it is consistent.",
-      },
-      {
-        prompt: "Two equal magnitudes point in exactly opposite directions. Their vector sum…",
-        options: [
-          "Has magnitude twice either one",
-          "Is the zero vector",
-          "Is a scalar equal to their product",
-          "Points at 45 degrees",
-        ],
-        answer: 1,
-        why: "Components cancel: Rx = a − a = 0, Ry = 0. Equal and opposite vectors sum to nothing. That is the entire content of a balanced tug-of-war.",
-      },
-    ],
-  },
-  {
-    id: "kinematics",
-    track: "physics",
-    index: 5,
-    title: "Kinematics",
-    minutes: 11,
-    lede: "You will relate position, velocity, and acceleration, and read displacement as the area under the velocity graph.",
-    start: "A speedometer says how fast your position is changing. The push in the seat when you accelerate says how fast your speed is changing. How far you traveled is not the speed. It is the speed times how long you held it, including the moments you were going faster. || Velocity is the slope of position against time. Acceleration is the slope of velocity. The distance you gained is the area under the velocity graph. || A high speed for a short time can be a short trip. You do not read the speedometer as if it were the odometer.",
-    use: "You have a velocity that changes, and you need where the body ends up. || Velocity is the slope of position. Acceleration is the slope of velocity. The area under velocity is the change in position. || A negative area is a move backward. Do not treat a high speed as a large displacement.",
-    example: "A cart starts from rest and accelerates at 2 m/s² for 3 s. || Speed at the end is 6 m/s. The area under that velocity line is a triangle, 3 s by 6 m/s, so the cart moves 9 m. || A high speed is not, by itself, a long trip. The area is the trip.",
-    ideas: [
-      {
-        heading: "Velocity is the slope of position",
-        body: "On a graph of position against time, the slope is velocity. Steep and upward means fast in the positive direction. Flat means sitting still. A downward slope means moving backward — negative velocity — not “negative speed.” Speed is the absolute value. You can be moving quickly and have a negative velocity if you chose the opposite direction to be positive.",
-        formula: "v = Δx / Δt",
-      },
-      {
-        heading: "Acceleration is the slope of velocity",
-        body: "Acceleration says how fast velocity is changing, not how fast you are going. A car at 30 m/s with a = 0 keeps 30 m/s. A car at 2 m/s with a large acceleration will not be slow for long. Slowing down while moving in the positive direction means the acceleration points backward. “Deceleration” is just acceleration aimed against the velocity. The sign does that work if you let it.",
-        formula: "v = v0 + a t",
-      },
-      {
-        heading: "Area is the trip",
-        body: "The area under a velocity–time graph is the change in position. A rectangle of 4 m/s for 3 s is 12 m. If the velocity is negative, that area is negative displacement: you ended up behind where you started. The other useful companion, for constant acceleration, builds position out of the starting velocity and the extra triangle from acceleration.",
-        formula: "x = x0 + v0 t + ½ a t²",
-      },
-    ],
-    bench: "kinematics",
-    prompt: "Give a cart a starting velocity and an acceleration. Scrub time, or let it run. The shaded area under the velocity graph is the displacement.",
-    note: "Motion is along one line, acceleration is constant, and x starts at 0. The track drawing only marks a window; the numbers stay valid if the cart leaves it.",
-    checks: [
-      {
-        prompt: "An object moves at constant velocity. Its acceleration is…",
-        options: [
-          "Equal to its velocity",
-          "Zero",
-          "Increasing with time",
-          "Undefined, because velocity is constant",
-        ],
-        answer: 1,
-        why: "Acceleration is the rate of change of velocity. If velocity does not change, that rate is zero — whether the velocity itself is large or small.",
-      },
-      {
-        prompt: "The area under a velocity–time graph equals…",
-        options: [
-          "Acceleration",
-          "Mass",
-          "Displacement over that interval",
-          "Force",
-        ],
-        answer: 2,
-        why: "Velocity times time is a length. On a varying graph you add the thin slices. Negative velocity contributes negative area, meaning displacement the other way.",
-      },
-      {
-        prompt: "A cart moves to the right, which you called positive, and is slowing down. Its acceleration is…",
-        options: [
-          "Positive",
-          "Negative",
-          "Zero, because it is still moving",
-          "Equal to its speed",
-        ],
-        answer: 1,
-        why: "Velocity is positive and decreasing, so the slope of velocity is negative. Acceleration points against the motion. It is not zero just because the cart has not stopped yet.",
-      },
-      {
-        prompt: "From rest, a = 2 m/s² for 3 s. The velocity is then…",
-        options: ["2 m/s", "3 m/s", "5 m/s", "6 m/s"],
-        answer: 3,
-        why: "v = v0 + a t = 0 + 2 × 3 = 6 m/s. The ½ a t² formula is for position, which would be 9 m here, not velocity.",
-      },
-    ],
-  },
-  {
-    id: "forces",
-    track: "physics",
-    index: 6,
-    title: "Forces",
-    minutes: 12,
-    lede: "You will say when a pushed block stays still, and the moment the push is large enough to accelerate it.",
-    start: "Push a fridge gently. It does not move. The floor is pushing back exactly as hard as you are. Push harder than the floor will grip, and only then does it start to go. || If every push on an object cancels, its acceleration is zero. That can mean sitting still, or already coasting at a steady speed. Friction's budget is a grip coefficient times the weight. Under that budget, friction matches you. Over it, the leftover push equals mass times acceleration. || Not moving is not the same as no force. You spend the grip budget before anything speeds up.",
-    use: "A block is pushed and it has not moved yet. || Compare the push with friction's budget. Below that budget the acceleration is zero. Above it, the net force sets the acceleration. || At rest and zero force are different sentences. Do not start the acceleration before the budget is spent.",
-    example: "A 2 kg crate on a floor with μ of 0.30. || Its weight is about 20 N, so the friction budget is about 6 N. A 4 N push is matched by friction and the crate stays put. A 10 N push leaves about 4 N, and the crate accelerates at about 2 m/s². || At rest is not the same sentence as zero force. You do not start the acceleration before the budget is spent.",
-    ideas: [
-      {
-        heading: "Zero net force is not zero motion",
-        body: "Zero net force means the velocity stays constant, including a steady speed that is not zero. The first law: if the net force is zero, velocity does not change. That includes staying at rest, and it includes sliding forever in a straight line at constant speed. A hockey puck on imagined perfect ice does not need a forward force to keep its velocity. It needs a net force to change its velocity. People spend their lives pushing because the real world is full of friction, and then they mistake friction’s absence for a mystery.",
-        formula: "ΣF = 0  ⇒  velocity is constant",
-      },
-      {
-        heading: "Net force sets acceleration",
-        body: "Acceleration equals the net force divided by the mass. The second law is about the sum, not about one heroic force. Directions matter: a 10 N push and a 10 N opposing friction add to nothing, so a = 0. Mass is the reluctance of velocity to change. The same net force accelerates a light cart more than a heavy one. Weight is a force, mg, downward. It is not the same word as mass.",
-        formula: "ΣF = m a",
-      },
-      {
-        heading: "Pairs, and friction’s budget",
-        body: "A third-law pair is one interaction acting on two different objects. The third law: forces come in pairs, equal, opposite, and on different bodies. The book pushes on the table; the table pushes on the book. Those two are a pair. The book’s weight and the table’s normal force are not a pair — they both act on the book, which is why they can cancel in the book’s free-body diagram. Static friction, meanwhile, is not always μN. It is whatever value up to μN is needed to prevent slip. Only at the moment of slipping does it spend the whole budget.",
-        formula: "friction ≤ μ N, and it points against the slip",
-      },
-    ],
-    bench: "newton",
-    prompt: "Push a block from rest. Friction matches the push until the push exceeds μN — only then does the block accelerate.",
-    note: "Horizontal push, kinetic friction taken equal to μN once sliding starts, g = 9.81 m/s². The model starts from rest, so it does not cover a block already skidding the other way. Vertical forces cancel.",
-    clip: {
-      youtubeId: "F_UiBwTk9DM",
-      title: "Friction until the block slips",
-      channel: "Rhett Allain",
-      watch: "The block stays still while the push climbs. It moves only after the push passes a limit, and then the force drops.",
-      leave: "That drop is kinetic friction, which our bench does not model. The lesson is the wait before it moves.",
-    },
-    checks: [
-      {
-        prompt: "Net force on a body is zero. Which conclusion is justified?",
-        options: [
-          "The body must be at rest",
-          "Its velocity is constant — rest is only a special case",
-          "No forces act on it at all",
-          "Its mass is zero",
-        ],
-        answer: 1,
-        why: "The first law allows any constant velocity, including zero. Forces may still act; they have to cancel. Mass is not implied.",
-      },
-      {
-        prompt: "The third-law partner of “the book pushes down on the table” is…",
-        options: [
-          "Gravity pulling the book down",
-          "The table pushing up on the book",
-          "The table pushing down on the floor",
-          "Friction on the book",
-        ],
-        answer: 1,
-        why: "A pair is the same interaction on two different bodies. Gravity is a different interaction (book and Earth). The normal force from the table on the book closes the contact pair.",
-      },
-      {
-        prompt: "You increase mass and keep the net force the same. Acceleration…",
-        options: ["Increases", "Decreases", "Stays the same", "Becomes equal to g"],
-        answer: 1,
-        why: "a = Fnet / m. Larger mass, smaller acceleration. This is the content of inertia. Weight would also change if you moved to a new planet, but mass is the quantity in the law.",
-      },
-      {
-        prompt: "A crate is at rest and the push is smaller than μN. Static friction is…",
-        options: [
-          "Always exactly μN",
-          "Equal to the push, and opposite it",
-          "Zero, because the crate is heavy",
-          "Equal to the weight",
-        ],
-        answer: 1,
-        why: "From rest, friction spends only what it must to keep a = 0, up to a maximum of about μN. Below that maximum it matches the push. It is not obliged to sit at the maximum.",
-      },
-    ],
-  },
-  {
-    id: "energy",
-    track: "physics",
-    index: 7,
-    title: "Energy",
-    minutes: 11,
-    lede: "You will watch potential become kinetic, see friction divert some of it into heat, and check that mass does not change the speed.",
-    start: "A swing is high and slow at the end of its arc, and low and fast at the bottom. Drag your foot and it does not get as fast, and your shoe gets warm. || Height stores energy. Speed stores energy too, and speed is squared, so twice as fast is four times that store. Friction turns some of the height's energy into heat instead of speed. || With no friction, a heavier rider and a lighter one reach the same speed from the same height. Friction is what changes the speed. Mass is not.",
-    use: "A mass is about to drop and you need the speed at the bottom. || Turn the lost height into kinetic energy. If friction is present, subtract the work it stole. || Changing the mass does not change the speed, and friction does. Do not keep the mechanical energy after some of it became heat.",
-    example: "A 3 kg bag drops 2 m. Then you repeat it with friction that sends 30% of the lost height into heat, as on this page. || With no friction the speed at the bottom is about 6.3 m/s. The 3 kg did not matter. With 30% diverted, about 5.2 m/s remains. || Mass is not the lever. Friction is. You do not keep the mechanical energy after some of it became heat.",
-    ideas: [
-      {
-        heading: "Work is force along the motion",
-        body: "A constant force does work equal to the component along the displacement, times the distance. A force perpendicular to the motion — the normal force on a block sliding along a floor — does no work. Holding a heavy bag still also does no work in the physics sense, however tired your arm is. Muscles spend chemical energy to stay clenched; the bag’s mechanical energy is not increasing. The word “work” is narrower here than in conversation.",
-        formula: "W = F d cosθ",
-      },
-      {
-        heading: "Kinetic energy cares about speed squared",
-        body: "Doubling speed quadruples kinetic energy. That is why a modest change in driving speed is an immodest change in stopping distance, and why a falling object picks up the ability to dent things so late in the drop. Mass matters too, but only to the first power. Gravitational potential energy, near Earth’s surface, is mgh. Only the vertical gap counts. A gentle ramp and a steep ramp between the same two heights offer the same potential-energy change.",
-        formula: "K = ½ m v²     U = m g h",
-      },
-      {
-        heading: "Conservation has a clause",
-        body: "If only conservative forces do work — gravity, an ideal spring — mechanical energy K + U stays constant. Friction and air drag are not in that club. They turn mechanical energy into thermal energy, which is still energy, just no longer useful as organized motion of the whole object. “Energy is always conserved” and “mechanical energy is conserved on this ramp” are different claims. The second one is the one you can spend on a homework problem, and only when the clause holds.",
-        formula: "K + U stays constant only when no energy leaves",
-      },
-    ],
-    bench: "energy",
-    prompt: "Lower a mass down a ramp. Watch potential become kinetic. Turn friction on and see part of that trade diverted into heat. Mass changes the energies, not the speed.",
-    note: "g = 9.81 m/s². Height is measured from the bottom of the ramp. With friction on, 30% of the lost potential becomes thermal energy instead of kinetic — a teaching fraction, not a measured coefficient.",
-    clip: {
-      youtubeId: "yccxgkYFvoQ",
-      title: "Conservation of energy with a pendulum",
-      channel: "Science Explained",
-      watch: "He lets the weight go from rest at his chin. It comes back to that height and does not hit him.",
-      leave: "The clip has almost no friction, and it does not change the mass. Your bench is where friction takes energy, and where mass does not change the speed.",
-    },
-    checks: [
-      {
-        prompt: "A force points straight up. The object moves horizontally. The work done by that force is…",
-        options: [
-          "Equal to the weight times the distance",
-          "Zero, because the force is perpendicular to the displacement",
-          "Negative, always",
-          "Equal to the kinetic energy",
-        ],
-        answer: 1,
-        why: "cosθ is zero at 90°. No component lies along the motion, so that force transfers no mechanical energy. Other forces might.",
-      },
-      {
-        prompt: "You double an object’s speed. Its kinetic energy…",
-        options: ["Doubles", "Quadruples", "Is unchanged", "Halves"],
-        answer: 1,
-        why: "K depends on v². A factor of 2 in speed is a factor of 4 in kinetic energy. Mass was unchanged.",
-      },
-      {
-        prompt: "Gravitational potential energy near the ground depends on…",
-        options: [
-          "The path taken between two heights",
-          "The vertical height difference (and mass and g)",
-          "Only the horizontal distance traveled",
-          "The color of the ramp",
-        ],
-        answer: 1,
-        why: "U = mgh. A spiral ramp and a ladder between the same heights change U by the same amount. The path matters for friction, not for gravity’s potential.",
-      },
-      {
-        prompt: "Friction acts along a slide. Mechanical energy K + U…",
-        options: [
-          "Stays exactly constant, by Newton’s first law",
-          "Decreases; the difference shows up as thermal energy",
-          "Increases, because friction is a force",
-          "Becomes equal to the weight",
-        ],
-        answer: 1,
-        why: "Friction is nonconservative. It does negative work on the object and leaves energy as heat in the surfaces. Total energy, counting thermal, still balances. Organized mechanical energy does not.",
-      },
-    ],
-  },
-  {
-    id: "momentum",
-    track: "physics",
-    index: 8,
-    title: "Momentum",
-    minutes: 11,
-    lede: "You will show that an isolated collision keeps momentum, and that kinetic energy survives only when the collision is elastic.",
-    start: "A heavy bowling ball rolls into a lighter ball and they stick. They move off together, slower than the heavy ball was going. You also heard a thud. || Momentum is mass times velocity, the 'oomph.' If nothing outside shoves during the hit, the oomph afterward equals the oomph before. The energy of motion stays the same only when the hit is perfectly bouncy. A sticking hit spends some of that energy as noise and heat. || You can keep the oomph and still lose the energy of motion. Conserving one does not give you the other.",
-    use: "Two bodies hit, and nothing outside pushes during the hit. || Set the momentum after equal to the momentum before. If they stick, kinetic energy drops. If the hit is perfectly elastic, it does not. || You can say which quantity was conserved. Do not conserve kinetic energy just because you conserved momentum.",
-    example: "A 2 kg cart at 3 m/s hits a 1 kg cart at rest, and they stick. || Momentum before is 6 kg·m/s, so they leave together at 2 m/s. Kinetic energy falls from 9 J to 6 J. If the hit had been perfectly elastic, the 9 J would still be there. || Momentum survived the stick. Kinetic energy did not. You do not conserve both just because nothing outside pushed.",
-    ideas: [
-      {
-        heading: "Inertia, already moving",
-        body: "Momentum p = mv packages the two things that make an object hard to stop: it is heavy, or it is fast, or both. Because velocity is a vector, momentum points. Two equal momenta aimed at each other can add to zero even though both objects are decidedly in motion. The total is what the law cares about, not the drama of each piece.",
-        formula: "p = m v",
-      },
-      {
-        heading: "Isolated means no outside push",
-        body: "If the net external force on a system is zero, the total momentum of the system does not change. Internal forces — the two carts shoving each other — come in third-law pairs and cancel in the total. That is why a collision can be violent and still conserve momentum. Friction from the track, or a hand that grabs one cart, is an external force. Then the system you drew was not isolated, and the total inside it is allowed to change.",
-        formula: "Σ p before = Σ p after, when the outside force is zero",
-      },
-      {
-        heading: "Elastic is a second rule",
-        body: "Momentum conservation alone does not tell you the two velocities after a collision. You have one equation and two unknowns. “They stick” is an extra fact (perfectly inelastic) and it closes the problem. “Kinetic energy is also conserved” is a different extra fact (elastic) and it closes the problem another way. Real collisions sit between them: momentum conserved if isolated, kinetic energy partly turned into heat and deformation. Bouncy is not the same adjective as “momentum-conserving.” Everything isolated is momentum-conserving. Almost nothing is perfectly elastic.",
-        formula: "for a perfectly elastic hit, separation speed = approach speed",
-      },
-    ],
-    bench: "collision",
-    prompt: "Set two masses and two velocities. Compare a perfectly bouncy collision with one where they stick. Momentum should agree before and after; kinetic energy should not, once they stick.",
-    note: "One-dimensional collision, no external force during the impact. “Elastic” uses the standard two-body result. “Stick” means a perfectly inelastic collision: one shared velocity afterward.",
-    clip: {
-      youtubeId: "Qco-M6BajjA",
-      title: "Conservation of momentum on an air track",
-      channel: "Caltech's Feynman Lecture Hall",
-      watch: "Equal gliders. The moving one stops and the resting one leaves. Then a heavier one, which does not hand over all of its motion.",
-      leave: "He says the bounce is not perfect. That is real. Momentum still holds. Kinetic energy holds only for the elastic case, which is the split on the bench.",
-    },
-    checks: [
-      {
-        prompt: "Momentum is…",
-        options: [
-          "A scalar, because mass is a scalar",
-          "A vector, because velocity is a vector",
-          "The same quantity as kinetic energy",
-          "Always conserved for one object, even if a net force acts",
-        ],
-        answer: 1,
-        why: "p = mv inherits direction from v. Kinetic energy is a scalar and depends on speed squared. A single object’s momentum changes whenever a net force acts; conservation is a statement about an isolated system.",
-      },
-      {
-        prompt: "Two carts collide on a track you are treating as frictionless. During the collision…",
-        options: [
-          "Total momentum is conserved because the forces between them are internal",
-          "Total momentum falls to zero because the crash is inelastic-looking",
-          "Kinetic energy must be conserved, always",
-          "Mass is not conserved",
-        ],
-        answer: 0,
-        why: "Internal pairs cancel in the total momentum. Whether kinetic energy survives is a separate question about how bouncy the collision is. Isolation was the frictionless assumption.",
-      },
-      {
-        prompt: "A perfectly inelastic collision of an isolated pair…",
-        options: [
-          "Conserves kinetic energy and discards momentum",
-          "Conserves momentum; kinetic energy drops",
-          "Conserves both, always",
-          "Conserves neither",
-        ],
-        answer: 1,
-        why: "They share one velocity afterward, fixed by momentum. Deformation and heat take the kinetic-energy difference. “Inelastic” names that loss. It does not cancel the isolation argument.",
-      },
-      {
-        prompt: "Two equal masses collide head-on, elastically, with equal and opposite velocities. Afterward…",
-        options: [
-          "Both stop",
-          "They stick and drift",
-          "Each leaves with the other’s incoming velocity",
-          "Kinetic energy is zero and momentum is not",
-        ],
-        answer: 2,
-        why: "Equal masses in a one-dimensional elastic collision exchange velocities. Each reverses. Total momentum was already zero and stays zero. Kinetic energy is unchanged. Sticking would have left them both at rest — that is the inelastic version.",
-      },
-    ],
-  },
-  {
-    id: "waves",
-    track: "physics",
-    index: 9,
-    title: "Waves",
-    minutes: 10,
-    lede: "You will show that wave speed equals frequency times wavelength, and that amplitude is not wavelength.",
-    start: "Watch a jump rope. How fast you flick your wrist is one thing. The distance from crest to crest is another. How high the rope swings is a third. The wave runs along the rope, while a knot in the rope only goes up and down. || Frequency is the flicks per second. Wavelength is crest to crest. Amplitude is the height of the swing. The speed of the wave is frequency times wavelength. Amplitude is not in that product. || A taller wave is not a faster wave. The knot's up-and-down is not the wave traveling down the rope.",
-    use: "A wave has a frequency and a wavelength. || Multiply them to get the speed. Amplitude does not enter. || A taller wave is not a faster wave. Do not mix amplitude into the speed.",
-    example: "A jump rope flicked at 2 Hz, with 0.5 m between crests, and the hand moving 3 cm up and down. || Speed is 2 × 0.5 = 1 m/s. The 3 cm is the amplitude and does not enter. || A taller wave is not a faster wave. You multiply frequency by wavelength and stop.",
-    ideas: [
-      {
-        heading: "Amplitude is not wavelength",
-        body: "Amplitude is how far a piece of the medium swings away from its rest position. It is a statement about energy and about loudness or brightness, depending on the wave. Wavelength is the distance from one crest to the next crest — a length along the direction the pattern travels. Turning the amplitude up does not stretch the wavelength. Students mix them because both can be “the height of the drawing” if the drawing was careless.",
-        formula: "amplitude is how far a point moves. Wavelength is the length of one repeat. v = f λ does not mix them",
-      },
-      {
-        heading: "One relation",
-        body: "Wave speed equals frequency times wavelength. Frequency is how many crests pass a point each second. Wavelength is the spacing of those crests. Their product is how fast the pattern runs. Shake a rope faster without changing the wave speed, and the crests pack closer. The same relation covers sound, light, and the ripple in a tray, with very different speeds behind it.",
-        formula: "v = f λ",
-      },
-      {
-        heading: "The medium is not the message",
-        body: "The pattern and the energy travel. The material mostly wiggles in place. Sound needs a material; the air oscillates and the pattern travels. Light does not need a material. In both cases the thing that arrives across the room is energy and information, not a lump of the source. Superposition is the next surprise: two waves in the same place add their displacements. They can cancel at a point without either wave being destroyed. Earplugs and noise-cancelling headphones are applied superposition. So are thin-film colors.",
-      },
-    ],
-    bench: "wave",
-    prompt: "Change amplitude, frequency, and wavelength on a fixed window of rope. Check that the speed you read equals frequency times wavelength.",
-    note: "The drawing shows a fixed 4 m of a transverse wave, y = A sin(2πx/λ − 2πft). The medium moves up and down; the pattern moves along the rope. This bench does not model what sets the speed — tension and mass per length would, for a real rope.",
-    clip: {
-      youtubeId: "-gr7KmTOrx0",
-      title: "Standing waves, demonstration",
-      channel: "James Dann",
-      end: 140,
-      watch: "The string. When he raises the frequency, more waves fit on the same length. That is a shorter wavelength.",
-      leave: "He names harmonics. You do not need those names. Speed equals frequency times wavelength is the relation on the bench.",
-    },
-    checks: [
-      {
-        prompt: "Wave speed, frequency, and wavelength are related by…",
-        options: ["v = f / λ", "v = f λ", "v = f + λ", "v = A λ"],
-        answer: 1,
-        why: "Each second, f crests pass, spaced λ apart, so the pattern covers fλ meters per second. Amplitude is not in the speed.",
-      },
-      {
-        prompt: "Amplitude is…",
-        options: [
-          "The distance from one crest to the next",
-          "The maximum displacement from equilibrium",
-          "The number of crests per second",
-          "Always equal to the wavelength",
-        ],
-        answer: 1,
-        why: "Crest-to-crest is the wavelength. Crests per second is the frequency. Amplitude is how large the wiggle is, measured from the middle.",
-      },
-      {
-        prompt: "Frequency doubles and wave speed stays the same. Wavelength…",
-        options: ["Doubles", "Halves", "Stays the same", "Becomes equal to the amplitude"],
-        answer: 1,
-        why: "λ = v/f. Same v, twice f, half λ. On the bench, that is more crests inside the same window.",
-      },
-      {
-        prompt: "Which statement is sound?",
-        options: [
-          "A sound wave carries a chunk of the source’s material to your ear",
-          "Air particles oscillate locally; the pattern and the energy travel",
-          "Sound does not need a medium",
-          "Wavelength is the loudness",
-        ],
-        answer: 1,
-        why: "The air does not stream from the speaker to you as a wind of signal. Each bit of air jiggles about its rest position. Light is the wave that needs no medium. Loudness tracks amplitude, not wavelength.",
-      },
-    ],
-  },
   ...manufacturingLessons,
   ...ladderLessons,
 ];
 
-const coreOrder: TrackId[] = ["physics", "materials", "engineering"];
+const coreOrder: TrackId[] = ["math", "physics", "materials", "engineering"];
 
 export function isIntroTrack(track: string) {
   return (introTrackIds as readonly string[]).includes(track);

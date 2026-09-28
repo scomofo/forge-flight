@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LearnDiagnosticRouteImport } from './routes/learn/diagnostic'
 import { Route as LearnJobRouteImport } from './routes/learn/job'
 import { Route as MissionMissionIdRouteImport } from './routes/mission.$missionId'
 import { Route as LearnTrackIdIndexRouteImport } from './routes/learn/$trackId/index'
@@ -18,6 +19,11 @@ import { Route as LearnTrackIdLessonIdRouteImport } from './routes/learn/$trackI
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnDiagnosticRoute = LearnDiagnosticRouteImport.update({
+  id: '/learn/diagnostic',
+  path: '/learn/diagnostic',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnJobRoute = LearnJobRouteImport.update({
@@ -43,6 +49,7 @@ const LearnTrackIdLessonIdRoute = LearnTrackIdLessonIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/learn/diagnostic': typeof LearnDiagnosticRoute
   '/learn/job': typeof LearnJobRoute
   '/mission/$missionId': typeof MissionMissionIdRoute
   '/learn/$trackId/$lessonId': typeof LearnTrackIdLessonIdRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/learn/diagnostic': typeof LearnDiagnosticRoute
   '/learn/job': typeof LearnJobRoute
   '/mission/$missionId': typeof MissionMissionIdRoute
   '/learn/$trackId/$lessonId': typeof LearnTrackIdLessonIdRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/learn/diagnostic': typeof LearnDiagnosticRoute
   '/learn/job': typeof LearnJobRoute
   '/mission/$missionId': typeof MissionMissionIdRoute
   '/learn/$trackId/$lessonId': typeof LearnTrackIdLessonIdRoute
@@ -67,6 +76,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/learn/diagnostic'
     | '/learn/job'
     | '/mission/$missionId'
     | '/learn/$trackId/$lessonId'
@@ -74,6 +84,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/learn/diagnostic'
     | '/learn/job'
     | '/mission/$missionId'
     | '/learn/$trackId/$lessonId'
@@ -81,6 +92,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/learn/diagnostic'
     | '/learn/job'
     | '/mission/$missionId'
     | '/learn/$trackId/$lessonId'
@@ -89,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LearnDiagnosticRoute: typeof LearnDiagnosticRoute
   LearnJobRoute: typeof LearnJobRoute
   MissionMissionIdRoute: typeof MissionMissionIdRoute
   LearnTrackIdLessonIdRoute: typeof LearnTrackIdLessonIdRoute
@@ -102,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/diagnostic': {
+      id: '/learn/diagnostic'
+      path: '/learn/diagnostic'
+      fullPath: '/learn/diagnostic'
+      preLoaderRoute: typeof LearnDiagnosticRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/job': {
@@ -137,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LearnDiagnosticRoute: LearnDiagnosticRoute,
   LearnJobRoute: LearnJobRoute,
   MissionMissionIdRoute: MissionMissionIdRoute,
   LearnTrackIdLessonIdRoute: LearnTrackIdLessonIdRoute,

@@ -35,18 +35,55 @@ test("week 3 opens the physics track in syllabus order", () => {
   );
   assert.deepEqual(
     physicsW3Lessons.map((l) => l.index),
-    [1, 2, 3],
+    [7, 8, 9],
   );
   for (const l of physicsW3Lessons) assert.equal(l.track, "physics");
   const physics = lessonsFor("physics");
-  assert.equal(physics.length, 9, "physics track must hold week 3 plus the six legacy lessons");
+  assert.equal(physics.length, 36, "physics track must hold weeks 1-10 plus the 6 legacy lessons");
   assert.deepEqual(
     physics.map((l) => l.id),
-    ["newton", "contact", "fbd", "measure", "kinematics", "forces", "energy", "momentum", "waves"],
+    [
+      "measure",
+      "sigfigs",
+      "fermi",
+      "veccomp",
+      "kingraphs",
+      "projectiles",
+      "newton",
+      "contact",
+      "fbd",
+      "work",
+      "potential",
+      "power",
+      "impulse",
+      "conserve",
+      "collisions",
+      "torque",
+      "rotation",
+      "equilibrium",
+      "elastic",
+      "bending",
+      "fos",
+      "pressure",
+      "movingfluids",
+      "lift",
+      "shm",
+      "reswaves",
+      "thermal",
+      "synthmethod",
+      "towlaunch",
+      "masterycheck",
+      "vectors",
+      "kinematics",
+      "forces",
+      "energy",
+      "momentum",
+      "waves",
+    ],
   );
   assert.deepEqual(
     physics.map((l) => l.index),
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36],
   );
   for (const l of physicsW3Lessons) {
     assert.ok(lessons.includes(l), `week-3 lesson ${l.id} must be in lessons`);

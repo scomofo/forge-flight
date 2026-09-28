@@ -1,6 +1,44 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
-import { BenchShell, fmt, Readouts, Slider, useReducedMotion, useTicker, WellButton } from "./ui";
+import { BenchShell, fmt, Readouts, Slider, useReducedMotion, useTicker, WellButton, Segmented } from "./ui";
+import {
+  chains,
+  dominantIndex,
+  monteCarloStd,
+  normalizedSensitivities,
+  rss,
+  sensFunctions,
+  varianceShares,
+  worstCase,
+  type Chain,
+  type Uncertain,
+} from "@/course/uncertainty";
+import {
+  bendingStress,
+  effectiveLength,
+  eulerLoad,
+  marginOfSafety,
+  sectionProps,
+  shaftVonMises,
+  torsionalShear,
+  twistAngle,
+  type EndCondition,
+  type Section,
+} from "@/course/mechanics";
+import {
+  BEAM_CASE,
+  beamDeflectionM,
+  beamMassKg,
+  BRACKET_ALTERNATIVES,
+  BRACKET_CRITERIA,
+  dominatedAlternatives,
+  firstPassingIndex,
+  hasConverged,
+  normalizeScores,
+  rankAlternatives,
+  sweep,
+  weightFlipMargin,
+} from "@/course/optimization";
 
 const criteria = [
   { id: "light", label: "Light to carry" },
@@ -986,6 +1024,1063 @@ export function MeanBench() {
             ? `Sum ${fmt(goodman, 2)} is on or under 1. Fully reversed, this alternating stress can sit on the plateau. A tensile mean spends some of the ${ultimate} MPa ultimate.`
             : `Sum ${fmt(goodman, 2)} is over 1. The wiggle did not grow. The mean moved the point off the plateau the other bench allowed.`}
       </p>
+    </BenchShell>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Week 22 — Models, assumptions & uncertainty                         */
+/* ------------------------------------------------------------------ */
+
+function chainUncertains(chain: Chain, uncs: number[]): Uncertain[] {
+  return chain.links.map((link, i) => ({ nominal: link.nominal, unc: uncs[i] }));
+}
+
+function chainOf(chain: Chain) {
+  return (vals: number[]) => chain.evaluate(vals);
+}
+
+export function ErrorBudgetBench() {
+  const [chainId, setChainId] = useState<string>("thrust");
+  const chain = chains.find((c) => c.id === chainId) ?? chains[0];
+  const [uncs, setUncs] = useState<number[]>(() => chains[0].links.map((l) => l.defaultUnc));
+  const [upgrade, setUpgrade] = useState<string>("none");
+  const [grade, setGrade] = useState<{ q: number; ok: boolean; msg: string }[]>([]);
+  const [numeric, setNumeric] = useState("");
+
+  useEffect(() => {
+    setUncs(chain.links.map((l) => l.defaultUnc));
+    setUpgrade("none");
+    setGrade([]);
+    setNumeric("");
+  }, [chain]);
+
+  const f = chainOf(chain);
+  const xs = chainUncertains(chain, uncs);
+  const nominal = chain.evaluate(chain.links.map((l) => l.nominal));
+  const wc = worstCase(f, xs);
+  const total = rss(f, xs);
+  const shares = varianceShares(f, xs);
+  const dom = dominantIndex(f, xs);
+
+  const upIdx = chain.links.findIndex((l) => l.id === upgrade);
+  const upXs: Uncertain[] =
+    upIdx >= 0 ? xs.map((x, i) => (i === upIdx ? { ...x, unc: x.unc / 2 } : x)) : xs;
+  const upTotal = upIdx >= 0 ? rss(f, upXs) : total;
+
+  const pct = (u: number) => `${fmt((u / nominal) * 100, 2)}%`;
+  const val = (u: number) => `${fmt(u, chain.resultDecimals)} ${chain.resultUnit}`;
+
+  const mark = (q: number, ok: boolean, msg: string) =>
+    setGrade((g) => [...g.filter((r) => r.q !== q), { q, ok, msg }]);
+  const score = grade.filter((r) => r.ok).length;
+
+  const answerDominant = (i: number) =>
+    mark(
+      1,
+      i === dom,
+      i === dom
+        ? `Correct — ${chain.links[dom].label} owns ${fmt(shares[dom] * 100, 0)}% of the variance.`
+        : `Not quite — ${chain.links[dom].label} owns ${fmt(shares[dom] * 100, 0)}% of the variance. Follow the shares, not the leverage.`,
+    );
+  const answerMethod = (method: "rss" | "worst") =>
+    mark(
+      2,
+      method === "rss",
+      method === "rss"
+        ? "Correct — independent random errors get the RSS discount; worst case is the signable guarantee."
+        : "Worst case assumes conspiracy. For independent random errors, RSS is the honest expectation.",
+    );
+  const answerNumeric = () => {
+    const guess = Number(numeric);
+    if (!Number.isFinite(guess) || guess <= 0) {
+      mark(3, false, "Enter a positive number first.");
+      return;
+    }
+    const expected = upIdx >= 0 ? upTotal : total;
+    const err = Math.abs(guess - expected) / expected;
+    mark(
+      3,
+      err <= 0.1,
+      err <= 0.1
+        ? `Within 10% — the upgraded RSS is ${val(expected)}.`
+        : `Off by ${fmt(err * 100, 0)}% — the upgraded RSS is ${val(expected)}. Halving the dominant link does not halve the total; the other links are still there.`,
+    );
+  };
+
+  return (
+    <BenchShell
+      prompt="Pick a measurement chain and set each link's ± with the sliders. || The budget shows the nominal result with worst-case and RSS totals, and names the link owning the largest variance share. || Answer the three graded questions, then halve the dominant link's uncertainty and read what the upgrade actually buys."
+      note="Uncertainties are stated as ± bounds at the same confidence; RSS treats them as independent and random. If two links share an instrument or a temperature drift, they are correlated and the RSS total understates the risk — say so in the budget."
+      controls={
+        <>
+          <Segmented<string>
+            label="Measurement chain"
+            value={chainId}
+            onChange={setChainId}
+            options={chains.map((c) => ({ value: c.id, label: c.name }))}
+          />
+          {chain.links.map((link, i) => (
+            <Slider
+              key={link.id}
+              label={`± ${link.label} (${link.unit})`}
+              min={link.minUnc}
+              max={link.maxUnc}
+              step={link.step}
+              value={uncs[i]}
+              display={`±${fmt(uncs[i], link.decimals)} ${link.unit}`}
+              onChange={(v) => setUncs((prev) => prev.map((u, j) => (j === i ? v : u)))}
+            />
+          ))}
+          <Segmented<string>
+            label="Proposed upgrade: halve one link's uncertainty"
+            value={upgrade}
+            onChange={(v) => {
+              setUpgrade(v);
+              setNumeric("");
+              setGrade((g) => g.filter((r) => r.q !== 3));
+            }}
+            options={[
+              { value: "none", label: "No upgrade" },
+              ...chain.links.map((l) => ({ value: l.id, label: `Halve ± ${l.label}` })),
+            ]}
+          />
+        </>
+      }
+    >
+      <p className="text-sm text-well-dim">{chain.blurb}</p>
+      <div className="mt-3">
+        <Readouts
+          items={[
+            { label: "Nominal result", value: `${fmt(nominal, chain.resultDecimals)} ${chain.resultUnit}` },
+            { label: "Worst case ±", value: `${val(wc)} (${pct(wc)})` },
+            { label: "RSS ±", value: `${val(total)} (${pct(total)})` },
+            ...(upIdx >= 0
+              ? [{ label: "RSS after upgrade", value: `${val(upTotal)} (${pct(upTotal)})` }]
+              : []),
+          ]}
+        />
+      </div>
+      <p className="font-serif text-2xl leading-snug">
+        {chain.links[dom].label} dominates — {fmt(shares[dom] * 100, 0)}% of the variance.
+      </p>
+      <div className="mt-5 flex flex-col gap-3">
+        {chain.links.map((link, i) => (
+          <div key={link.id}>
+            <div className="flex items-baseline justify-between gap-3 text-sm">
+              <span>
+                {i === dom ? "Dominant · " : ""}
+                {link.label} ±{fmt(uncs[i], link.decimals)} {link.unit}
+              </span>
+              <span className="tabular-nums">{fmt(shares[i] * 100, 1)}%</span>
+            </div>
+            <div className="mt-1 h-1.5 rounded-full bg-white/15">
+              <div className="h-1.5 rounded-full bg-well-fg" style={{ width: `${shares[i] * 100}%` }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 border-t border-white/15 pt-5">
+        <p className="text-sm font-medium text-accent">Graded — {score}/3</p>
+        <div className="mt-3">
+          <p className="text-sm">1. Which link dominates this chain's uncertainty?</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {chain.links.map((link, i) => (
+              <WellButton key={link.id} onClick={() => answerDominant(i)}>
+                {link.label}
+              </WellButton>
+            ))}
+          </div>
+        </div>
+        <div className="mt-4">
+          <p className="text-sm">2. The errors are independent and random. Which total is the honest expectation?</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <WellButton onClick={() => answerMethod("rss")}>RSS — {val(total)}</WellButton>
+            <WellButton onClick={() => answerMethod("worst")}>Worst case — {val(wc)}</WellButton>
+          </div>
+        </div>
+        <div className="mt-4">
+          <p className="text-sm">
+            3. With {upIdx >= 0 ? `± ${chain.links[upIdx].label} halved` : "no upgrade chosen"} the RSS total is
+            about… ({chain.resultUnit})
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <input
+              type="number"
+              min={0}
+              value={numeric}
+              onChange={(e) => setNumeric(e.target.value)}
+              aria-label="Upgraded RSS total"
+              className="min-h-11 w-32 rounded-lg bg-white/10 px-3 text-sm tabular-nums text-well-fg ring-1 ring-white/25"
+            />
+            <WellButton onClick={answerNumeric}>Check</WellButton>
+          </div>
+        </div>
+        {grade.length > 0 && (
+          <ul className="mt-4 flex flex-col gap-2">
+            {grade
+              .slice()
+              .sort((a, b) => a.q - b.q)
+              .map((r) => (
+                <li key={r.q} className="text-sm leading-relaxed text-well-dim">
+                  <span className={r.ok ? "text-well-fg" : ""}>{r.ok ? "✓" : "✗"} Q{r.q}:</span> {r.msg}
+                </li>
+              ))}
+          </ul>
+        )}
+      </div>
+    </BenchShell>
+  );
+}
+
+export function SensitivityBench() {
+  const [fnId, setFnId] = useState<string>("thrust");
+  const fn = sensFunctions.find((s) => s.id === fnId) ?? sensFunctions[0];
+  const [relUnc, setRelUnc] = useState<number[]>(() => sensFunctions[0].inputs.map(() => 1));
+  const [pick, setPick] = useState<string | null>(null);
+
+  useEffect(() => {
+    setRelUnc(fn.inputs.map(() => 1));
+    setPick(null);
+  }, [fn]);
+
+  const nominals = fn.inputs.map(() => 1);
+  const sens = normalizedSensitivities(fn.evaluate, nominals);
+  const xs: Uncertain[] = nominals.map((n, i) => ({ nominal: n, unc: (relUnc[i] / 100) * n }));
+  const shares = varianceShares(fn.evaluate, xs);
+  const dom = dominantIndex(fn.evaluate, xs);
+  const mc = monteCarloStd(fn.evaluate, xs, 20000, 22);
+  const rssTotal = rss(fn.evaluate, xs);
+  const mcRatio = mc / (rssTotal / Math.sqrt(3));
+
+  const answerPick = (id: string) => setPick(id);
+  const correct = pick !== null && fn.inputs[dom].id === pick;
+
+  return (
+    <BenchShell
+      prompt="Pick a formula and set each input's relative uncertainty. || The bars show each input's normalized sensitivity — percent the output moves per percent the input moves — and its share of the output's scatter. || Find which input the beam-deflection formula is most tender to, and say why the exponent 3 is the reason."
+      note="Sensitivities are first-order and scale-invariant: they describe the formula's shape, not your numbers. A Monte Carlo check runs alongside the RSS total — if the two ever disagree badly, the linear approximation is breaking, not the arithmetic."
+      controls={
+        <>
+          <Segmented<string>
+            label="Formula"
+            value={fnId}
+            onChange={setFnId}
+            options={sensFunctions.map((s) => ({ value: s.id, label: `${s.name} — ${s.formula}` }))}
+          />
+          {fn.inputs.map((input, i) => (
+            <Slider
+              key={input.id}
+              label={`Relative ± on ${input.label}`}
+              min={0.1}
+              max={5}
+              step={0.1}
+              value={relUnc[i]}
+              display={`${fmt(relUnc[i], 1)}%`}
+              onChange={(v) => setRelUnc((prev) => prev.map((u, j) => (j === i ? v : u)))}
+            />
+          ))}
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "RSS total (relative)", value: `${fmt((rssTotal / fn.evaluate(nominals)) * 100, 2)}%` },
+          { label: "Monte Carlo / (RSS/√3)", value: fmt(mcRatio, 2) },
+        ]}
+      />
+      <div className="mt-2 flex flex-col gap-4">
+        {fn.inputs.map((input, i) => (
+          <div key={input.id}>
+            <div className="flex items-baseline justify-between gap-3 text-sm">
+              <span>
+                {i === dom ? "Dominant · " : ""}
+                {input.label} — S = {fmt(sens[i], 2)}
+              </span>
+              <span className="tabular-nums">{fmt(shares[i] * 100, 1)}% of variance</span>
+            </div>
+            <div className="mt-1 h-1.5 rounded-full bg-white/15">
+              <div className="h-1.5 rounded-full bg-well-fg" style={{ width: `${shares[i] * 100}%` }} />
+            </div>
+            <p className="mt-1 text-sm text-well-dim">
+              {sens[i] < 0
+                ? `Negative leverage: more ${input.label.split(" ").pop()} means less output — the share still counts.`
+                : `A 1% move here moves the output ${fmt(Math.abs(sens[i]), 2)}%.`}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 border-t border-white/15 pt-5">
+        <p className="text-sm font-medium text-accent">Graded — which input deserves the better instrument?</p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {fn.inputs.map((input) => (
+            <WellButton key={input.id} onClick={() => answerPick(input.id)}>
+              {input.label}
+            </WellButton>
+          ))}
+        </div>
+        {pick !== null && (
+          <p className="mt-3 text-sm leading-relaxed text-well-dim">
+            {correct ? (
+              <>
+                <span className="text-well-fg">✓ Correct.</span> {fn.inputs[dom].label} owns{" "}
+                {fmt(shares[dom] * 100, 0)}% of the variance — leverage times sloppiness, not leverage alone.
+              </>
+            ) : (
+              <>
+                <span className="text-well-fg">✗ Not quite.</span> {fn.inputs[dom].label} owns{" "}
+                {fmt(shares[dom] * 100, 0)}% of the variance. The most leveraged input is not always the
+                sloppiest — follow the shares.
+              </>
+            )}
+          </p>
+        )}
+      </div>
+    </BenchShell>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Week 24 benches: sections explorer + component sizing               */
+/* ------------------------------------------------------------------ */
+
+const RHO_AL = 2700; // kg/m^3, 6061 aluminum — stated in the note
+
+type SecKind = "rect-tube" | "rectangle" | "round-tube" | "solid-round" | "i-beam";
+
+const SEC_LABELS: { value: SecKind; label: string }[] = [
+  { value: "rect-tube", label: "Square tube" },
+  { value: "rectangle", label: "Solid rectangle" },
+  { value: "round-tube", label: "Round tube" },
+  { value: "solid-round", label: "Solid round" },
+  { value: "i-beam", label: "I-beam" },
+];
+
+function buildSection(kind: SecKind, a: number, b: number): Section {
+  const m = (mm: number) => mm / 1000;
+  switch (kind) {
+    case "rect-tube":
+      return { kind, b: m(a), h: m(a), t: m(b) };
+    case "rectangle":
+      return { kind, b: m(a), h: m(b) };
+    case "round-tube":
+      return { kind, d: m(a), t: m(b) };
+    case "solid-round":
+      return { kind, d: m(a) };
+    case "i-beam": {
+      const H = m(a);
+      return { kind, bf: 0.5 * H, tf: 0.05 * H, hw: 0.9 * H, tw: 0.04 * H };
+    }
+  }
+}
+
+export function SectionExplorerBench() {
+  const [kind, setKind] = useState<SecKind>("rect-tube");
+  const [a, setA] = useState(40);
+  const [b, setB] = useState(3);
+  const [sAnswer, setSAnswer] = useState("");
+  const [sResult, setSResult] = useState<"idle" | "right" | "wrong">("idle");
+  const [depthPick, setDepthPick] = useState<string | null>(null);
+
+  const section = buildSection(kind, a, b);
+  const p = sectionProps(section);
+  const massPerM = RHO_AL * p.A;
+  const sPerKg = p.S / massPerM;
+
+  const sliderSpec =
+    kind === "rect-tube"
+      ? [
+          { label: "Outer size", value: a, min: 20, max: 80, step: 1, set: setA, unit: "mm" },
+          { label: "Wall", value: b, min: 1, max: 8, step: 0.5, set: setB, unit: "mm" },
+        ]
+      : kind === "rectangle"
+        ? [
+            { label: "Width", value: a, min: 10, max: 60, step: 1, set: setA, unit: "mm" },
+            { label: "Depth", value: b, min: 10, max: 120, step: 1, set: setB, unit: "mm" },
+          ]
+        : kind === "round-tube"
+          ? [
+              { label: "Diameter", value: a, min: 10, max: 80, step: 1, set: setA, unit: "mm" },
+              { label: "Wall", value: b, min: 1, max: 8, step: 0.5, set: setB, unit: "mm" },
+            ]
+          : kind === "solid-round"
+            ? [{ label: "Diameter", value: a, min: 10, max: 60, step: 1, set: setA, unit: "mm" }]
+            : [{ label: "Depth", value: a, min: 100, max: 300, step: 5, set: setA, unit: "mm" }];
+
+  const checkS = () => {
+    const v = Number(sAnswer);
+    if (!Number.isFinite(v)) return;
+    const truth = p.S * 1e6;
+    setSResult(Math.abs(v - truth) / truth <= 0.05 ? "right" : "wrong");
+  };
+
+  return (
+    <BenchShell
+      prompt="Pick the square tube and set 40 mm outer, 3 mm wall. || Read S and the mass per meter, then switch to the solid rectangle at 40×40 and compare S per kilogram. || Answer the two checks: the hollow section wins per kilogram because its material sits far from the neutral axis."
+      note="Properties are computed from closed-form geometry (mechanics.ts), not catalog tables. Density is 6061 aluminum, 2700 kg/m³. The I-beam uses fixed proportions scaled by depth — a teaching section, not a rolled shape."
+      controls={
+        <>
+          <Segmented label="Section" value={kind} onChange={(v) => { setKind(v); setSResult("idle"); }} options={SEC_LABELS} />
+          {sliderSpec.map((s) => (
+            <Slider
+              key={s.label}
+              label={s.label}
+              min={s.min}
+              max={s.max}
+              step={s.step}
+              value={s.value}
+              display={`${fmt(s.value, 1)} ${s.unit}`}
+              onChange={s.set}
+            />
+          ))}
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "S", value: `${fmt(p.S * 1e6, 2)} ×10⁻⁶ m³` },
+          { label: "Mass / m", value: `${fmt(massPerM, 2)} kg` },
+          { label: "S per kg", value: `${fmt(sPerKg * 1e6, 2)} ×10⁻⁶ m³/kg` },
+          { label: "I", value: `${fmt(p.I * 1e12, 2)} ×10⁻¹² m⁴` },
+          { label: "J", value: `${fmt(p.J * 1e12, 2)} ×10⁻¹² m⁴` },
+        ]}
+      />
+      <div className="mt-2 rounded-lg border border-white/15 p-4">
+        <p className="text-sm font-medium text-accent">Check 1 — read the section modulus</p>
+        <p className="mt-1 text-sm text-well-dim">
+          With the 40×40×3 mm square tube, enter S in units of 10⁻⁶ m³ (within 5%).
+        </p>
+        <div className="mt-2 flex items-center gap-2">
+          <input
+            className="w-28 rounded-md bg-white/10 px-2 py-1.5 text-sm tabular-nums"
+            value={sAnswer}
+            onChange={(e) => { setSAnswer(e.target.value); setSResult("idle"); }}
+            inputMode="decimal"
+            aria-label="Section modulus in 1e-6 m^3"
+          />
+          <WellButton onClick={checkS}>Check</WellButton>
+          {sResult === "right" && <span className="text-sm text-emerald-300">Correct — 5.10 ×10⁻⁶ m³.</span>}
+          {sResult === "wrong" && <span className="text-sm text-amber-300">Not quite — read S from the readout above.</span>}
+        </div>
+      </div>
+      <div className="mt-3 rounded-lg border border-white/15 p-4">
+        <p className="text-sm font-medium text-accent">Check 2 — what quadruples S?</p>
+        <p className="mt-1 text-sm text-well-dim">For a solid rectangle, which change multiplies the section modulus by 4?</p>
+        <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {["Double the width", "Double the depth", "Double both", "Halve the width"].map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => setDepthPick(opt)}
+              className={cn(
+                "min-h-11 rounded-lg px-3 py-2 text-left text-sm transition-transform active:scale-[0.96]",
+                depthPick === opt
+                  ? opt === "Double the depth"
+                    ? "bg-emerald-400/20 text-emerald-200 ring-1 ring-emerald-300/40"
+                    : "bg-red-400/20 text-red-200 ring-1 ring-red-300/40"
+                  : "text-well-fg ring-1 ring-white/25",
+              )}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+        {depthPick === "Double the depth" && (
+          <p className="mt-2 text-sm text-emerald-300">Right — S = b·h²/6 goes as depth squared.</p>
+        )}
+        {depthPick !== null && depthPick !== "Double the depth" && (
+          <p className="mt-2 text-sm text-amber-300">No — S = b·h²/6. Width is linear, depth is squared.</p>
+        )}
+      </div>
+    </BenchShell>
+  );
+}
+
+type SizeCase = "beam" | "column" | "shaft";
+
+const END_LABELS: { value: EndCondition; label: string }[] = [
+  { value: "pinned-pinned", label: "Pinned–pinned (K=1)" },
+  { value: "fixed-free", label: "Fixed–free (K=2)" },
+  { value: "fixed-fixed", label: "Fixed–fixed (K=0.5)" },
+  { value: "fixed-pinned", label: "Fixed–pinned (K=0.7)" },
+];
+
+const ALLOW_AL = 276e6; // Pa, 6061-T6 yield used as the design allowable in this bench
+const ALLOW_SHAFT = 150e6; // Pa
+const E_AL = 69e9;
+const G_STEEL = 79e9;
+
+export function ComponentSizingBench() {
+  const [mode, setMode] = useState<SizeCase>("beam");
+  // beam
+  const [P, setP] = useState(500);
+  const [Lb, setLb] = useState(1.2);
+  const [outer, setOuter] = useState(40);
+  const [wall, setWall] = useState(3);
+  // column
+  const [Dc, setDc] = useState(25);
+  const [wallc, setWallc] = useState(2);
+  const [Lc, setLc] = useState(1.5);
+  const [ends, setEnds] = useState<EndCondition>("pinned-pinned");
+  // shaft
+  const [M, setM] = useState(200);
+  const [T, setT] = useState(300);
+  const [Ds, setDs] = useState(30);
+  // graded tasks
+  const [t1, setT1] = useState("");
+  const [t2, setT2] = useState("");
+  const [t3, setT3] = useState("");
+  const [graded, setGraded] = useState<boolean[]>([false, false, false]);
+
+  const beamSec = sectionProps({ kind: "rect-tube", b: outer / 1000, h: outer / 1000, t: wall / 1000 });
+  const beamMoment = P * Lb;
+  const beamSigma = bendingStress(beamMoment, beamSec.S);
+  const beamMS = marginOfSafety(ALLOW_AL, beamSigma);
+
+  const colSec = sectionProps({ kind: "round-tube", d: Dc / 1000, t: wallc / 1000 });
+  const le = effectiveLength(Lc, ends);
+  const pcr = eulerLoad(E_AL, colSec.I, le);
+  const crush = colSec.A * ALLOW_AL;
+  const govern = Math.min(pcr, crush);
+
+  const dM = Ds / 1000;
+  const sigmaS = (32 * M) / (Math.PI * dM ** 3);
+  const tauS = torsionalShear(T, dM / 2, (Math.PI * dM ** 4) / 32);
+  const vmS = shaftVonMises(M, T, dM);
+  const msS = marginOfSafety(ALLOW_SHAFT, vmS);
+  const twistDeg = (twistAngle(T, 1.0, G_STEEL, (Math.PI * dM ** 4) / 32) * 180) / Math.PI;
+
+  const mark = (i: number, ok: boolean) => setGraded((g) => g.map((v, j) => (j === i ? ok : v)));
+  const score = graded.filter(Boolean).length;
+
+  return (
+    <BenchShell
+      prompt="Pick a case — beam, column, or shaft — and move the sliders. || Watch the margin of safety: it must stay positive, and for the column the governing load is the lower of buckling and crush. || Then do the three sizing tasks: each asks for the smallest whole-millimeter size that passes."
+      note="Euler is an upper bound for perfect columns; real codes knock it down for crookedness. Shaft twist is shown per meter of length. Allowables are stated in each case — 6061-T6 at 276 MPa for beam/column, 150 MPa for the shaft."
+      controls={
+        <>
+          <Segmented
+            label="Component"
+            value={mode}
+            onChange={setMode}
+            options={[
+              { value: "beam", label: "Cantilever beam" },
+              { value: "column", label: "Column" },
+              { value: "shaft", label: "Shaft" },
+            ]}
+          />
+          {mode === "beam" && (
+            <>
+              <Slider label="Tip load" min={100} max={1000} step={10} value={P} display={`${fmt(P, 0)} N`} onChange={setP} />
+              <Slider label="Length" min={0.5} max={2} step={0.1} value={Lb} display={`${fmt(Lb, 1)} m`} onChange={setLb} />
+              <Slider label="Tube outer" min={20} max={80} step={1} value={outer} display={`${fmt(outer, 0)} mm`} onChange={setOuter} />
+              <Slider label="Wall" min={1} max={8} step={0.5} value={wall} display={`${fmt(wall, 1)} mm`} onChange={setWall} />
+            </>
+          )}
+          {mode === "column" && (
+            <>
+              <Slider label="Diameter" min={15} max={50} step={1} value={Dc} display={`${fmt(Dc, 0)} mm`} onChange={setDc} />
+              <Slider label="Wall" min={1} max={5} step={0.5} value={wallc} display={`${fmt(wallc, 1)} mm`} onChange={setWallc} />
+              <Slider label="Length" min={0.5} max={3} step={0.1} value={Lc} display={`${fmt(Lc, 1)} m`} onChange={setLc} />
+              <Segmented label="End conditions" value={ends} onChange={setEnds} options={END_LABELS} />
+            </>
+          )}
+          {mode === "shaft" && (
+            <>
+              <Slider label="Bending moment" min={50} max={500} step={10} value={M} display={`${fmt(M, 0)} N·m`} onChange={setM} />
+              <Slider label="Torque" min={50} max={500} step={10} value={T} display={`${fmt(T, 0)} N·m`} onChange={setT} />
+              <Slider label="Diameter" min={15} max={50} step={1} value={Ds} display={`${fmt(Ds, 0)} mm`} onChange={setDs} />
+            </>
+          )}
+        </>
+      }
+    >
+      {mode === "beam" && (
+        <Readouts
+          items={[
+            { label: "Moment", value: `${fmt(beamMoment, 0)} N·m` },
+            { label: "Stress", value: `${fmt(beamSigma / 1e6, 1)} MPa` },
+            { label: "Margin", value: fmt(beamMS, 2) },
+            { label: "Verdict", value: beamMS > 0 ? "PASSES" : "FAILS" },
+          ]}
+        />
+      )}
+      {mode === "column" && (
+        <>
+          <Readouts
+            items={[
+              { label: "Buckling load", value: `${fmt(pcr / 1000, 2)} kN` },
+              { label: "Buckling stress", value: `${fmt(pcr / colSec.A / 1e6, 1)} MPa` },
+              { label: "Crush load", value: `${fmt(crush / 1000, 1)} kN` },
+              { label: "Governs", value: pcr < crush ? "Buckling" : "Crush" },
+            ]}
+          />
+          <p className="text-sm text-well-dim">
+            Effective length {fmt(le, 2)} m. Against a 2 kN service load the factor is {fmt(govern / 2000, 2)} —{" "}
+            {govern >= 2000 ? "it stands." : "it fails."}
+          </p>
+        </>
+      )}
+      {mode === "shaft" && (
+        <>
+          <Readouts
+            items={[
+              { label: "Bending σ", value: `${fmt(sigmaS / 1e6, 1)} MPa` },
+              { label: "Torsion τ", value: `${fmt(tauS / 1e6, 1)} MPa` },
+              { label: "Von Mises", value: `${fmt(vmS / 1e6, 1)} MPa` },
+              { label: "Margin", value: fmt(msS, 2) },
+              { label: "Twist / m", value: `${fmt(twistDeg, 2)}°` },
+            ]}
+          />
+          <p className="text-sm text-well-dim">
+            {msS > 0 ? "Von Mises clears the 150 MPa allowable." : "Von Mises exceeds the allowable — grow the diameter."}{" "}
+            Twist is shown per meter of shaft; long shafts need a twist check too.
+          </p>
+        </>
+      )}
+
+      <div className="mt-4 rounded-lg border border-white/15 p-4">
+        <p className="text-sm font-medium text-accent">
+          Sizing tasks — {score}/3 correct
+        </p>
+        <div className="mt-3 flex flex-col gap-4 text-sm">
+          <div>
+            <p className="text-well-dim">
+              1. Beam: 500 N at 1.2 m on a 40 mm square tube. Smallest whole-mm wall that keeps the margin
+              positive?
+            </p>
+            <div className="mt-1 flex items-center gap-2">
+              <input className="w-24 rounded-md bg-white/10 px-2 py-1.5 tabular-nums" value={t1}
+                onChange={(e) => setT1(e.target.value)} inputMode="numeric" aria-label="Wall thickness in mm" />
+              <WellButton onClick={() => mark(0, Number(t1) === 2)}>Check</WellButton>
+              {graded[0] && <span className="text-emerald-300">Correct — 2 mm (σ = 164 MPa).</span>}
+            </div>
+          </div>
+          <div>
+            <p className="text-well-dim">
+              2. Column: 25 mm OD, 2 mm wall, 1.5 m, pinned–pinned. Euler buckling load in kN (±10%)?
+            </p>
+            <div className="mt-1 flex items-center gap-2">
+              <input className="w-24 rounded-md bg-white/10 px-2 py-1.5 tabular-nums" value={t2}
+                onChange={(e) => setT2(e.target.value)} inputMode="decimal" aria-label="Buckling load in kN" />
+              <WellButton onClick={() => {
+                const v = Number(t2);
+                mark(1, Number.isFinite(v) && Math.abs(v - 2.914) / 2.914 <= 0.1);
+              }}>Check</WellButton>
+              {graded[1] && <span className="text-emerald-300">Correct — 2.91 kN, buckling stress 20.2 MPa.</span>}
+            </div>
+          </div>
+          <div>
+            <p className="text-well-dim">
+              3. Shaft: M = 200 N·m, T = 300 N·m, allowable 150 MPa. Smallest whole-mm diameter with
+              von Mises under the allowable?
+            </p>
+            <div className="mt-1 flex items-center gap-2">
+              <input className="w-24 rounded-md bg-white/10 px-2 py-1.5 tabular-nums" value={t3}
+                onChange={(e) => setT3(e.target.value)} inputMode="numeric" aria-label="Shaft diameter in mm" />
+              <WellButton onClick={() => mark(2, Number(t3) === 29)}>Check</WellButton>
+              {graded[2] && <span className="text-emerald-300">Correct — 29 mm (28.1 mm exact, rounded up).</span>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </BenchShell>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Week 28 — Iteration & optimization
+// ---------------------------------------------------------------------------
+
+const TRADE_RECORD_KEY = "ff:tradestudy-w28";
+const SWEEP_RECORD_KEY = "ff:sweepconv-w28";
+
+const TRADE_RUBRIC = [
+  "Every alternative is scored on the same criteria and the same scale",
+  "Scores are normalized 0..1 before weighting — no raw units were summed",
+  "Dominated alternatives are named and rejected without touching the weights",
+  "The winner's margin and the weight that would flip it are stated",
+  "The baseline (incumbent) earned its scores honestly, with no protected row",
+];
+
+const SWEEP_RUBRIC = [
+  "The sweep covers the full plausible range, not just the interesting end",
+  "Refinement was spent near the pass/fail boundary and the knee",
+  "The stopping rule (tolerance + consecutive iterations) was written before iterating",
+  "The declaration names what dominates further precision (shop tolerance, budget, physics)",
+];
+
+function usePersisted(key: string, initial: string) {
+  const [value, setValue] = useState(() => {
+    try {
+      return localStorage.getItem(key) ?? initial;
+    } catch {
+      return initial;
+    }
+  });
+  const save = (v: string) => {
+    setValue(v);
+    try {
+      localStorage.setItem(key, v);
+    } catch {
+      /* storage unavailable; the record stays in memory */
+    }
+  };
+  return [value, save] as const;
+}
+
+export function TradeStudyBench() {
+  const [weights, setWeights] = useState<Record<string, number>>(() =>
+    Object.fromEntries(BRACKET_CRITERIA.map((c) => [c.id, Math.round(c.weight * 100)])),
+  );
+  const [grade, setGrade] = useState<{ q: number; ok: boolean; msg: string }[]>([]);
+  const [record, setRecord] = usePersisted(TRADE_RECORD_KEY, "");
+  const [rubric, setRubric] = useState<boolean[]>(() => TRADE_RUBRIC.map(() => false));
+
+  const criteria = BRACKET_CRITERIA.map((c) => ({ ...c, weight: weights[c.id] ?? 0 }));
+  const ranked = rankAlternatives(BRACKET_ALTERNATIVES, criteria);
+  const norm = normalizeScores(BRACKET_ALTERNATIVES, criteria);
+  const dominated = dominatedAlternatives(BRACKET_ALTERNATIVES, criteria);
+  const winner = ranked[0];
+  const runnerUp = ranked[1];
+  const margins = BRACKET_CRITERIA.map((c) => ({
+    id: c.id,
+    name: c.name,
+    ...weightFlipMargin(BRACKET_ALTERNATIVES, criteria, c.id),
+  }));
+
+  const gradeAll = () => {
+    const results: { q: number; ok: boolean; msg: string }[] = [];
+    results.push({
+      q: 0,
+      ok: winner.id === "nylon",
+      msg:
+        winner.id === "nylon"
+          ? "Correct — at the syllabus weights, printed nylon's cheap/fast/light mix wins."
+          : `At the syllabus weights the winner is printed nylon, not ${winner.name}. Reset the sliders and recheck the totals.`,
+    });
+    const massBest = Object.entries(norm)
+      .map(([id, n]) => ({ id, v: n.mass }))
+      .sort((a, b) => b.v - a.v)[0];
+    results.push({
+      q: 1,
+      ok: massBest.id === "cfrp" && massBest.v === 1,
+      msg:
+        massBest.id === "cfrp"
+          ? "Correct — CFRP's 45 g is the lightest observed, so it normalizes to 1 on mass."
+          : "Recheck: on a minimize criterion, the lowest raw score normalizes to 1.",
+    });
+    results.push({
+      q: 2,
+      ok: dominated.length === 0,
+      msg:
+        dominated.length === 0
+          ? "Correct — no alternative dominates another here; the ranking genuinely depends on the weights."
+          : "Recheck the dominance definition: every alternative here is best at something.",
+    });
+    setGrade(results);
+  };
+
+  return (
+    <BenchShell
+      prompt="Set the five criterion weights with the sliders. || The table normalizes every score 0..1, ranks the four bracket concepts, names any dominated options, and shows how far each weight can move before the winner flips. || Answer the three graded checks, then write the decision record: winner, rejects, and the weight that would flip it."
+      note="Scores in this study are honest estimates, not certified data — garbage scores in, garbage ranking out. The bench checks the machinery of the comparison, not the honesty of the inputs."
+      controls={
+        <>
+          {BRACKET_CRITERIA.map((c) => (
+            <Slider
+              key={c.id}
+              label={`${c.name} weight`}
+              min={0}
+              max={60}
+              step={1}
+              value={weights[c.id] ?? 0}
+              display={`${weights[c.id] ?? 0} pts`}
+              onChange={(v) => setWeights((w) => ({ ...w, [c.id]: v }))}
+            />
+          ))}
+          <div className="sm:col-span-2">
+            <WellButton onClick={gradeAll}>Grade the three checks</WellButton>
+          </div>
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "Winner", value: winner.name },
+          {
+            label: "Margin over runner-up",
+            value: runnerUp ? fmt(winner.total - runnerUp.total, 3) : "—",
+          },
+          {
+            label: "Dominated",
+            value: dominated.length === 0 ? "none" : dominated.join(", "),
+          },
+        ]}
+      />
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[520px] text-sm tabular-nums">
+          <thead>
+            <tr className="text-left text-well-dim">
+              <th className="py-1 pr-3 font-medium">Concept</th>
+              {BRACKET_CRITERIA.map((c) => (
+                <th key={c.id} className="py-1 pr-3 font-medium">
+                  {c.name}
+                </th>
+              ))}
+              <th className="py-1 font-medium">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ranked.map((r, i) => (
+              <tr key={r.id} className={cn(i === 0 && "text-accent")}>
+                <td className="py-1 pr-3">
+                  {i + 1}. {r.name}
+                </td>
+                {BRACKET_CRITERIA.map((c) => {
+                  const alt = BRACKET_ALTERNATIVES.find((a) => a.id === r.id)!;
+                  return (
+                    <td key={c.id} className="py-1 pr-3 text-well-dim">
+                      {alt.scores[c.id]} {c.unit} → {fmt(r.normalized[c.id], 2)}
+                    </td>
+                  );
+                })}
+                <td className="py-1 font-medium">{fmt(r.total, 3)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-4 text-sm font-medium text-well-fg">Weight robustness — flip margins (pts)</p>
+      <div className="mt-1 grid gap-2 sm:grid-cols-2">
+        {margins.map((m) => (
+          <div key={m.id} className="text-sm text-well-dim">
+            {m.name}: up {m.up === Infinity ? "∞" : `+${m.up}`}, down{" "}
+            {m.down === Infinity ? "∞" : `−${m.down}`} before the winner changes
+          </div>
+        ))}
+      </div>
+      {grade.length > 0 && (
+        <div className="mt-4 space-y-2">
+          {grade.map((g) => (
+            <p key={g.q} className={cn("text-sm leading-relaxed", g.ok ? "text-accent" : "text-well-dim")}>
+              {g.ok ? "✓" : "✗"} {g.msg}
+            </p>
+          ))}
+        </div>
+      )}
+      <div className="mt-5">
+        <p className="text-sm font-medium text-well-fg">Decision record (persisted)</p>
+        <textarea
+          value={record}
+          onChange={(e) => setRecord(e.target.value)}
+          rows={4}
+          placeholder="Winner, rejects with causes, the weight that would flip it…"
+          className="mt-2 w-full rounded-lg bg-black/20 p-3 text-sm text-well-fg ring-1 ring-white/15 placeholder:text-well-dim"
+        />
+        <div className="mt-3 space-y-1">
+          {TRADE_RUBRIC.map((item, i) => (
+            <label key={item} className="flex items-start gap-2 text-sm text-well-dim">
+              <input
+                type="checkbox"
+                checked={rubric[i]}
+                onChange={() => setRubric((r) => r.map((v, j) => (j === i ? !v : v)))}
+                className="mt-1"
+              />
+              {item}
+            </label>
+          ))}
+        </div>
+        <p className="mt-2 text-sm text-well-dim">
+          Rubric: {rubric.filter(Boolean).length}/{TRADE_RUBRIC.length} self-checked
+        </p>
+      </div>
+    </BenchShell>
+  );
+}
+
+type SweepRun = { step: number; minPass: number; points: number };
+
+export function SweepBench() {
+  const [step, setStep] = useState<number>(10);
+  const [runs, setRuns] = useState<SweepRun[]>([]);
+  const [tol, setTol] = useState(5);
+  const [answer, setAnswer] = useState("");
+  const [graded, setGraded] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [record, setRecord] = usePersisted(SWEEP_RECORD_KEY, "");
+  const [rubric, setRubric] = useState<boolean[]>(() => SWEEP_RUBRIC.map(() => false));
+
+  const n = Math.round((80 - 20) / step);
+  const pts = sweep(beamDeflectionM, 20, 80, n);
+  const passIdx = firstPassingIndex(pts, (p) => p.y <= BEAM_CASE.deflectionLimitM);
+  const minPass = passIdx >= 0 ? pts[passIdx].x : NaN;
+
+  const runSweep = () => {
+    if (passIdx < 0) return;
+    setRuns((r) => [...r, { step, minPass, points: pts.length }]);
+  };
+
+  const history = runs.map((r) => r.minPass);
+  const converged = hasConverged(history, tol / 100, 2);
+
+  const gradeAnswer = () => {
+    const v = Number(answer);
+    const ok = Number.isFinite(v) && Math.abs(v - BEAM_CASE.answerDepthMm) <= 0.5;
+    setGraded({
+      ok,
+      msg: ok
+        ? "Correct — 53 mm is the minimal whole-mm depth under the 2 mm limit; 52 mm deflects 2.03 mm."
+        : `Not quite — refine around the boundary: 52 mm gives 2.03 mm (fail), 53 mm gives 1.92 mm (pass).`,
+    });
+  };
+
+  const w = 320;
+  const h = 130;
+  const pad = 26;
+  const xOf = (x: number) => pad + ((x - 20) / 60) * (w - pad * 2);
+  const maxY = 40;
+  const yOf = (yMm: number) => h - pad - (Math.min(yMm, maxY) / maxY) * (h - pad * 2);
+  const line = pts.map((p) => `${xOf(p.x)},${yOf(p.y * 1000)}`).join(" ");
+
+  return (
+    <BenchShell
+      prompt="Pick a step size and run the depth sweep from 20 to 80 mm. || The curve shows deflection against the 2 mm limit; each run logs the minimal passing depth into the iteration history, and the convergence test checks your written tolerance against it. || Enter the minimal passing whole-mm depth, then write the stopping declaration: converged or budget-stopped, with the evidence."
+      note="Euler-Bernoulli bending only: shear deflection, self-weight, and buckling are ignored, the width is frozen at 40 mm, and the load is a single 200 N tip force. The stopping-rule machinery is the point; the beam is the vehicle."
+      controls={
+        <>
+          <Segmented
+            label="Sweep step"
+            value={String(step)}
+            onChange={(v) => setStep(Number(v))}
+            options={[
+              { value: "10", label: "10 mm" },
+              { value: "5", label: "5 mm" },
+              { value: "2", label: "2 mm" },
+              { value: "1", label: "1 mm" },
+            ]}
+          />
+          <Slider
+            label="Convergence tolerance"
+            min={1}
+            max={20}
+            step={1}
+            value={tol}
+            display={`${tol}%`}
+            onChange={setTol}
+          />
+          <div className="sm:col-span-2 flex flex-wrap gap-3">
+            <WellButton onClick={runSweep}>Run sweep & log iteration</WellButton>
+            <WellButton
+              onClick={() => {
+                setRuns([]);
+                setGraded(null);
+              }}
+            >
+              Clear history
+            </WellButton>
+          </div>
+        </>
+      }
+    >
+      <Readouts
+        items={[
+          { label: "This sweep's min passing depth", value: Number.isFinite(minPass) ? `${fmt(minPass, 0)} mm` : "—" },
+          {
+            label: "Deflection there",
+            value: Number.isFinite(minPass) ? `${fmt(beamDeflectionM(minPass) * 1000, 2)} mm` : "—",
+          },
+          {
+            label: "Mass there",
+            value: Number.isFinite(minPass) ? `${fmt(beamMassKg(minPass), 2)} kg` : "—",
+          },
+          {
+            label: "Converged (±tol, 2 iters)",
+            value: runs.length < 3 ? "need 3 runs" : converged ? "yes" : "not yet",
+          },
+        ]}
+      />
+      <svg viewBox={`0 0 ${w} ${h}`} className="h-40 w-full" role="img" aria-label="Deflection versus depth sweep">
+        <line
+          x1={xOf(20)}
+          y1={yOf(BEAM_CASE.deflectionLimitM * 1000)}
+          x2={xOf(80)}
+          y2={yOf(BEAM_CASE.deflectionLimitM * 1000)}
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeDasharray="4 3"
+          opacity="0.6"
+        />
+        <polyline points={line} fill="none" stroke="currentColor" strokeWidth="2" />
+        {Number.isFinite(minPass) && (
+          <circle cx={xOf(minPass)} cy={yOf(beamDeflectionM(minPass) * 1000)} r="4" fill="currentColor" />
+        )}
+      </svg>
+      <p className="mt-2 text-sm text-well-dim">
+        Dashed line: the 2 mm requirement. The curve is a 1/h³ hyperbola — each added millimeter buys
+        less than the last. The dot marks this sweep's first passing depth.
+      </p>
+      {runs.length > 0 && (
+        <div className="mt-4">
+          <p className="text-sm font-medium text-well-fg">Iteration history</p>
+          <div className="mt-1 space-y-1 text-sm tabular-nums text-well-dim">
+            {runs.map((r, i) => {
+              const prev = i > 0 ? runs[i - 1].minPass : null;
+              const change = prev !== null ? Math.abs((r.minPass - prev) / r.minPass) * 100 : null;
+              return (
+                <div key={i}>
+                  Run {i + 1}: {r.step} mm step, {r.points} points → min passing {fmt(r.minPass, 0)} mm
+                  {change !== null && ` (Δ ${fmt(change, 1)}%)`}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+      <div className="mt-4 flex flex-wrap items-end gap-3">
+        <label className="flex flex-col text-sm text-well-dim">
+          Minimal passing whole-mm depth
+          <input
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            inputMode="decimal"
+            placeholder="mm"
+            className="mt-1 w-28 rounded-lg bg-black/20 p-2 text-sm text-well-fg ring-1 ring-white/15 placeholder:text-well-dim"
+          />
+        </label>
+        <WellButton onClick={gradeAnswer}>Check</WellButton>
+        {graded && (
+          <p className={graded.ok ? "text-sm text-accent" : "text-sm text-well-dim"}>
+            {graded.ok ? "✓" : "✗"} {graded.msg}
+          </p>
+        )}
+      </div>
+      <div className="mt-5">
+        <p className="text-sm font-medium text-well-fg">Stopping declaration (persisted)</p>
+        <textarea
+          value={record}
+          onChange={(e) => setRecord(e.target.value)}
+          rows={4}
+          placeholder="Converged or budget-stopped? Evidence, and what dominates further precision…"
+          className="mt-2 w-full rounded-lg bg-black/20 p-3 text-sm text-well-fg ring-1 ring-white/15 placeholder:text-well-dim"
+        />
+        <div className="mt-3 space-y-1">
+          {SWEEP_RUBRIC.map((item, i) => (
+            <label key={item} className="flex items-start gap-2 text-sm text-well-dim">
+              <input
+                type="checkbox"
+                checked={rubric[i]}
+                onChange={() => setRubric((r) => r.map((v, j) => (j === i ? !v : v)))}
+                className="mt-1"
+              />
+              {item}
+            </label>
+          ))}
+        </div>
+        <p className="mt-2 text-sm text-well-dim">
+          Rubric: {rubric.filter(Boolean).length}/{SWEEP_RUBRIC.length} self-checked
+        </p>
+      </div>
     </BenchShell>
   );
 }

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { getTrack, lessonsFor } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
-import { isPassed, lessonKey, type TrackId } from "@/course/types";
+import { isPassed, lessonKey, PASS_AT, type TrackId } from "@/course/types";
 
 export const Route = createFileRoute("/learn/$trackId/")({
   component: TrackPage,
@@ -46,10 +46,22 @@ function TrackPage() {
         </p>
         <h1 className="mt-3 font-serif text-4xl leading-tight sm:text-5xl">{track.course}</h1>
         <p className="mt-4 max-w-prose text-lg leading-relaxed text-muted">{track.lede}</p>
+        {track.id === "math" ? (
+          <Link
+            to="/learn/diagnostic"
+            className="mt-6 block rounded-lg border border-line bg-surface px-4 py-4 sm:px-5"
+          >
+            <p className="text-sm font-medium text-accent">Start here: the placement diagnostic</p>
+            <p className="mt-1 max-w-prose leading-relaxed text-ink">
+              45 minutes, open-resource, 24 questions across six topics. It assigns only the modules
+              you need — test out of the rest. It never assigns a pass/fail label.
+            </p>
+          </Link>
+        ) : null}
         <ol className="mt-10 border-t border-line">
           {lessons.map((lesson) => {
             const score = completed[lessonKey(track.id as TrackId, lesson.id)];
-            const passed = isPassed(score);
+            const passed = isPassed(score, lesson.passAt ?? PASS_AT);
             return (
               <li key={lesson.id} className="border-b border-line">
                 <Link

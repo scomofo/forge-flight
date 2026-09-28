@@ -10,7 +10,7 @@ export const physicsW3Lessons: Lesson[] = [
   {
     id: "newton",
     track: "physics",
-    index: 1,
+    index: 7,
     title: "Newton's laws and the models they live in",
     minutes: 35,
     lede: "You will state the three laws as a working contract, compute motion from net force, and name the boundaries where the contract expires.",
@@ -90,7 +90,7 @@ export const physicsW3Lessons: Lesson[] = [
   {
     id: "contact",
     track: "physics",
-    index: 2,
+    index: 8,
     title: "Contact forces: normal, friction, tension, springs",
     minutes: 35,
     lede: "You will compute the normal force from the constraint it enforces, apply the two-regime friction model, and treat tension and spring force as force transmitters.",
@@ -170,7 +170,7 @@ export const physicsW3Lessons: Lesson[] = [
   {
     id: "fbd",
     track: "physics",
-    index: 3,
+    index: 9,
     title: "Free-body diagrams: the discipline",
     minutes: 35,
     lede: "You will isolate a body, enumerate every force on it and none that are not, and resolve the diagram into solvable equations.",
