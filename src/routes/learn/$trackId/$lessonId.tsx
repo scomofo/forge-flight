@@ -22,7 +22,7 @@ function LessonPage() {
         <SiteHeader />
         <main className="mx-auto max-w-3xl px-5 py-16">
           <h1 className="font-serif text-4xl">That lesson isn’t on the bench.</h1>
-          <Link to="/" className="mt-6 inline-flex min-h-11 items-center text-accent">
+          <Link to="/learn" className="mt-6 inline-flex min-h-11 items-center text-accent">
             Back to Axiom
           </Link>
         </main>

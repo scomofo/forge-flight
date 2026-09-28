@@ -38,7 +38,7 @@ function TrackPage() {
     <div className="min-h-screen bg-bg text-ink">
       <SiteHeader />
       <main className="mx-auto max-w-3xl px-5 pb-24 pt-8 sm:px-8">
-        <Link to="/" className="inline-flex min-h-11 items-center text-sm text-muted">
+        <Link to="/learn" className="inline-flex min-h-11 items-center text-sm text-muted">
           All courses
         </Link>
         <p className="mt-6 font-serif text-sm text-accent">
