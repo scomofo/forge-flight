@@ -1,0 +1,4 @@
+# Check out text files with LF on every OS. Git for Windows defaults to CRLF
+# checkouts, but the TanStack Router generator and Prettier write LF, so each
+# dev-server start left src/routeTree.gen.ts "modified" and blocked git pull.
+* text=auto eol=lf
