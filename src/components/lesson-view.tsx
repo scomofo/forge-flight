@@ -5,7 +5,7 @@ import { LessonClip } from "@/components/lesson-clip";
 import { Quiz } from "@/components/quiz";
 import { isIntroTrack, lessonNeighbors } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
-import { isPassed, lessonKey, type Lesson } from "@/course/types";
+import { isPassed, lessonKey, PASS_AT, type Lesson } from "@/course/types";
 import { cn } from "@/lib/cn";
 
 const steps = [
@@ -19,7 +19,8 @@ const steps = [
   },
   {
     label: "Check",
-    guide: "Four questions. Pick one answer, read why it is right or wrong, then continue. Three correct is a pass. You can retry.",
+    guide:
+      "Four questions. Pick one answer, read why it is right or wrong, then continue. Hit this lesson's pass mark to move on. You can retry.",
   },
 ] as const;
 
@@ -101,6 +102,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
   const mark = useProgress((s) => s.mark);
   const visit = useProgress((s) => s.visit);
   const score = useProgress((s) => s.completed[key]);
+  const need = lesson.passAt ?? PASS_AT;
   const { prev, next } = lessonNeighbors(lesson.track, lesson.id);
 
   useEffect(() => {
@@ -111,7 +113,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
     <article className="mx-auto max-w-3xl px-5 pb-24 pt-8 sm:px-8">
       <p className="font-serif text-sm text-accent">
         Lesson {String(lesson.index).padStart(2, "0")} · {lesson.minutes} min
-        {isPassed(score) ? " · Passed" : ""}
+        {isPassed(score, need) ? " · Passed" : ""}
       </p>
       <h1 className="mt-3 font-serif text-4xl leading-tight text-ink sm:text-5xl">{lesson.title}</h1>
       <div className="mt-8">

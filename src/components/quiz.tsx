@@ -18,9 +18,10 @@ export function Quiz({
   const [correct, setCorrect] = useState(0);
   const [done, setDone] = useState(false);
   const question = lesson.checks[index];
+  const need = lesson.passAt ?? PASS_AT;
 
   if (done) {
-    const passed = correct >= PASS_AT;
+    const passed = correct >= need;
     return (
       <div className="border-t border-line pt-8">
         <p className="font-serif text-3xl text-ink">
@@ -28,8 +29,8 @@ export function Quiz({
         </p>
         <p className="mt-3 max-w-prose leading-relaxed text-ink">
           {passed
-            ? "Pass. Three or more correct. You can go to the next lesson. The bench stays available if you want another look."
-            : "Not a pass. You need 3 of 4. Go back to Try, do the task again, then retake this check. Your best score is the one that is saved."}
+            ? `Pass. ${need} or more correct. You can go to the next lesson. The bench stays available if you want another look.`
+            : `Not a pass. You need ${need} of ${lesson.checks.length}. Go back to Try, do the task again, then retake this check. Your best score is the one that is saved.`}
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Button

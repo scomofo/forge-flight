@@ -1,4 +1,5 @@
 export type TrackId =
+  | "math"
   | "materials"
   | "engineering"
   | "physics"
@@ -89,8 +90,29 @@ export type BenchId =
   | "compare"
   | "grains"
   | "ashby"
+  | "shortlist"
+  | "corrocheck"
   | "strain"
+  | "matledger"
+  | "sparlab"
+  | "matcheck"
+  | "curveread"
+  | "propcompare"
+  | "allowable"
+  | "bondenergy"
+  | "bondpredict"
   | "design"
+  | "designreview"
+  | "standards"
+  | "jointrecord"
+  | "jointstrength"
+  | "reqpacket"
+  | "ledger"
+  | "units"
+  | "rearrange"
+  | "powers"
+  | "slope"
+  | "trig"
   | "beam-reactions"
   | "axial"
   | "deflection"
@@ -101,19 +123,75 @@ export type BenchId =
   | "crack"
   | "bolt"
   | "mean"
+  | "doe"
+  | "labreport"
+  | "tolstack"
+  | "procchoice"
+  | "loadpath"
+  | "fmea"
+  | "errbudget"
+  | "sensbench"
   | "vectors"
   | "kinematics"
   | "newton"
+  | "incline"
+  | "fbdbuilder"
   | "energy"
+  | "energyaudit"
+  | "dropspeed"
   | "collision"
   | "wave"
+  | "hydro"
+  | "venturi"
+  | "gliderprelab"
+  | "beamdefl"
+  | "stressstrain"
+  | "impactlab"
+  | "cmexplore"
+  | "restitute"
   | "mechanism"
   | "chip"
+  | "shmlab"
+  | "resonancesweep"
+  | "thermalstress"
   | "springback"
   | "freeze"
   | "haz"
   | "spread"
   | "stack"
+  | "cappackage"
+  | "cappredict"
+  | "capreview"
+  | "tradestudy"
+  | "sweepconv"
+  | "sections"
+  | "sizebeam"
+  | "famcompare"
+  | "templim"
+  | "famdecision"
+  | "phaseset"
+  | "solidify"
+  | "forensics"
+  | "snlife"
+  | "creeplife"
+  | "strengthlab"
+  | "processmemo"
+  | "defects"
+  | "diffprofile"
+  | "unitcell"
+  | "microinterp"
+  | "glassform"
+  | "synthledger"
+  | "gliderlab"
+  | "mastery"
+  | "torquebal"
+  | "rotinertia"
+  | "beamrxn"
+  | "motionrecon"
+  | "projrange"
+  | "dimcheck"
+  | "fermi"
+  | "memo"
   | LadderBenchId;
 
 export type Idea = {
@@ -159,6 +237,12 @@ export type Lesson = {
   note: string;
   clip?: Clip;
   checks: [Check, Check, Check, Check];
+  /**
+   * Correct answers required to pass this lesson's check. Defaults to
+   * PASS_AT (3 of 4). The math runway sets 4, which is the 80% mastery gate
+   * on a four-question check.
+   */
+  passAt?: number;
 };
 
 export type Track = {
@@ -175,6 +259,6 @@ export function lessonKey(track: TrackId, id: string) {
   return `${track}/${id}`;
 }
 
-export function isPassed(score: number | undefined) {
-  return score !== undefined && score >= PASS_AT;
+export function isPassed(score: number | undefined, passAt: number = PASS_AT) {
+  return score !== undefined && score >= passAt;
 }
