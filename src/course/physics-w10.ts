@@ -20,21 +20,21 @@ export const physicsW10Lessons: Lesson[] = [
     minutes: 40,
     lede: "Write the assumption ledger before you compute, chain models across the whole block, and trust a limiting case over a finished number.",
     start:
-      "Two engineers predict a glider's range. The first hands you 261 m. The second hands you 210 to 345 m, a list of six things she assumed, and the two assumptions most likely to be wrong. || Synthesis is the second engineer: the deliverable is the number plus its boundaries, not the number alone. Every formula from Weeks 1 through 9 arrived with an expiry date — inertial frames, small angles, negligible drag, linear elasticity. Synthesis is the discipline of carrying those dates into the calculation instead of leaving them in the chapter. || An assumption you never wrote down is one you never inspected. When a prediction meets reality and they disagree, the arithmetic is the last place to look; the ledger is the first.",
+      "A useful engineering prediction includes more than a single number. It also states the assumptions behind the model and the conditions where the result should be trusted. || Every formula in the course came with assumptions: constant acceleration, negligible drag, linear elasticity, small deflections, and so on. Synthesis means carrying those limits into a multi-step calculation instead of forgetting them once the formula is familiar. || Write the assumptions down before you calculate. When prediction and measurement disagree, those assumptions are often the first place to look.",
     use: "Any problem that needs more than one week's machinery — which is every real problem. || Open the ledger first: for each assumption write what you assume, what breaks if it is false, and which limiting case would expose it. Then chain: each step's output is the next step's input, and you check dimensions at every joint — Week 1 never retires. Then test limits: drive parameters to zero, to infinity, to equality, and demand the answer behave sanely. When prediction and measurement disagree, autopsy the ledger before the arithmetic. || Stop when every joint has a unit check, every extreme has a limit test, and you can point to the assumption most likely to be wrong and say what would prove it.",
     example:
       "Predict how long a 20 m drop takes: t = √(2h/g) = 2.02 s. || Limit tests: g → 0 gives t → ∞ (no gravity, never lands — sane); h → 0 gives t → 0 (no drop, no time — sane). The formula survives its extremes. || The measured time is 2.3 s. The arithmetic is not wrong — the ledger is: 'air drag negligible' fails for a light crate near 20 m/s, where ½ρv²A is a real force. The disagreement was never in the algebra; it was in the assumption nobody wrote down. Next time, it goes in the ledger.",
     ideas: [
       {
-        heading: "Assumptions are load-bearing",
+        heading: "Write down the assumptions before you compute",
         body: "Every model stands on statements you chose not to prove. An assumption ledger makes them visible: the assumption, what breaks if it is false, which limit exposes it. The Mars Climate Orbiter's ledger had a blank line where 'both teams use newtons' should have been. Blanks are the most dangerous entries — audit for the things you never thought to assume, not just the ones you did.",
       },
       {
-        heading: "Chain at the joints",
+        heading: "Check each handoff between models",
         body: "A multi-step solution is a supply chain: each step's output is the next step's input, and a defect anywhere ships downstream. Check dimensions at every joint — MLT⁻² in, MLT⁻² out. When a chain crosses weeks (energy → forces → fluids), restate each handoff in words: 'the tow line's work becomes the release kinetic energy.' If you cannot say the handoff in a sentence, you do not own the chain.",
       },
       {
-        heading: "Limits are the cheapest experiment",
+        heading: "Use limiting cases as a quick model check",
         body: "Before computing a single number, push the parameters to extremes and demand sane behavior: θ → 0, m → ∞, v → 0. A formula that misbehaves at the limit will not redeem itself at the nominal point — it is the same formula. Limit tests cost seconds and catch the errors that survive every other review, because they test the model's shape instead of its arithmetic.",
       },
     ],
@@ -97,23 +97,23 @@ export const physicsW10Lessons: Lesson[] = [
     minutes: 45,
     lede: "Take one glider from the winch to the landing field, chaining tow energy, force balance, the drag polar, and kinematics — and mark exactly where the model's authority ends.",
     start:
-      "A winch tow: the glider climbs the line, the line goes slack at 30 m, and the glider is on its own at 8 m/s. How far does it go? || No single week answers that. The tow is Week 4 (work becomes energy), the release is Week 3 (force balance), the glide is Week 8 (the drag polar), the range is Week 2 (kinematics), and the honest digits are Week 1. Synthesis is refusing to leave any of them out. || Real systems do not respect chapter boundaries. The tow line does not know it is 'an energy problem' — it is just 32.6 joules looking for somewhere to go.",
+      "A tow-launched glider combines several pieces of physics at once. The tow sets the energy state, the release condition sets the initial motion, the aerodynamic model sets lift and drag, and the glide geometry sets the range. || No single lesson solves the whole problem. The point of this worked example is to connect the models in the right order and check the units and assumptions at each handoff. || Treat each intermediate result as an input to the next model. If a handoff is unclear in words or units, stop there before carrying the error downstream.",
     use: "When the question spans the block: state the chain up front, then work it link by link. || 1. Tow (Week 4): the line's work becomes KE + PE at release — open the energy account. 2. Release (Week 3): steady glide means forces balance along and across the flight path; the path angle is set by D/L. 3. Polar (Week 8): CL from the wing slope at 4°, CD from parasite plus induced drag, L/D = CL/CD. 4. Range (Week 2): in still air, range = altitude × L/D. 5. Honest digits (Week 1): the least certain input rules the reported precision. || Stop when every joint carries a unit check, the energy account balances, and the final number wears only the digits its weakest input earned.",
     example:
       "The reference glider: 0.10 kg, wing 500 × 90 mm, released at 8 m/s from 30 m. || Tow: KE = ½(0.10)(8²) = 3.2 J, PE = (0.10)(9.81)(30) = 29.4 J — the line did 32.6 J of work. Polar: aspect ratio AR = span/chord = 5.56, lift slope a = 2π·AR/(AR+2) = 4.62 per radian, so at α = 4° (0.0698 rad) CL = 0.323. Drag uses the reference glider's constants, parasite cd0 = 0.030 (an estimate) and span efficiency e = 0.85: induced CDi = CL²/(π·AR·e) = 0.0070, so CD = 0.030 + 0.0070 = 0.0370; L/D = 8.71. Trim: v = √(2·0.981/(1.225·0.045·0.323)) = 10.5 m/s. Glide: γ = atan(1/8.71) = 6.5°, D = 0.112 N, L = 0.975 N. Range: 30 × 8.71 = 261 m. Stability: neutral point 135 mm and CG 120 mm from the same datum, on the 90 mm chord, so static margin = (135 − 120)/90 = 16.7%. || Report roughly 210–345 m: cd0 is a ±30% estimate, and 0.021 to 0.039 swings the range by +85/−50 m, so the parasite drag owns the error budget. Note the release at 8 m/s sits below the 10.5 m/s trim — the glider spends about 2.4 m of altitude buying the missing speed on the way down. The model's authority ends at the first gust.",
     ideas: [
       {
-        heading: "Energy opens the account",
+        heading: "Start with the energy state at release",
         body: "The tow line does 32.6 J of work and every later step spends from that account: 3.2 J sits in speed, 29.4 J in altitude. Nothing in the glide creates energy — the polar only decides how fast the account drains. When a multi-week problem confuses you, find the account first: who deposited, who withdraws.",
         formula: "W_tow = ½mv² + mgh = 32.6 J",
       },
       {
-        heading: "Steady flight is a free-body diagram",
+        heading: "Steady glide still requires force balance",
         body: "Unaccelerated glide means ΣF = 0 along and across the flight path: drag = W·sin γ, lift = W·cos γ. The flight-path angle is not chosen — it is set by D/L, which is set by the polar. Week 3's discipline (isolate, enumerate, draw, resolve) works at 10 m/s exactly as it worked on the block.",
         formula: "tan γ = D/L = 1/(L/D)",
       },
       {
-        heading: "The polar sets the terms",
+        heading: "The drag polar sets the lift-to-drag ratio",
         body: "CL comes from the wing's lift slope at the trim angle; CD is parasite drag plus the induced price of making lift. Best L/D is where the two drags trade evenly. Fly faster or slower than the polar's sweet spot and the energy account drains faster — 261 m is what this trim buys; flown at best L/D (CL ≈ 0.67, L/D ≈ 11.1) the same wing could reach ≈ 330 m.",
         formula: "CD = cd0 + CL²/(π·AR·e)",
       },
@@ -177,21 +177,21 @@ export const physicsW10Lessons: Lesson[] = [
     minutes: 60,
     lede: "Sit a closed-book check over the whole block, clear 70%, and repair every missed conservation-law or free-body-diagram item before Materials 101 opens.",
     start:
-      "The check is closed-book because the job site is: nobody on a flight line lets you look up whether momentum is conserved — either the instinct is in you or it isn't. || Twelve questions, one sitting, no references: four on conservation laws, four on free-body diagrams — those two because they are the load-bearing skills of the entire course — and four cross-cutting the rest of the block. 70% clears the gate. Every missed conservation or FBD item gets a written corrected solution — not a retake, a repair. || The gate is not there to keep you out of Materials 101. It is there to keep a wrong conservation instinct from following you in.",
+      "The mastery check is closed-book so you have to reconstruct the reasoning rather than search for a familiar formula. || It has twelve questions: conservation laws, free-body diagrams, and cross-cutting problems from the rest of the Physics block. A score of at least 70% clears the score requirement. Missed conservation or FBD items also require a written correction. || The correction is part of the assessment. The goal is to identify the reasoning error and repair it before moving into the next course.",
     use: "When you have finished Weeks 1–9 and the synthesis lessons. || Run the check in one sitting, closed book — derive, don't recall. Score it: 9 of 12 clears 70%. For every missed conservation or FBD item, write the correction: state the error, re-derive the right answer, name the instinct that failed. File each correction in the bench. || Stop when the score clears 70% AND every missed conservation/FBD item has a filed correction. Both conditions — a high score with unrepaired FBD errors still holds the gate.",
     example:
       "You miss the incline item, answering a = g·cos30°. The correction: || Error: resolved the wrong component — cosine is the into-the-plane component, which sets the normal force, not the acceleration. Re-derivation: axes along the plane, downslope weight component mg·sin30°, so a = g·sin30° ≈ 4.9 m/s². Failed instinct: reaching for the familiar cosine without drawing the FBD. || The correction is the learning. A filed correction means the next incline gets the FBD first — which is the habit the gate is actually testing.",
     ideas: [
       {
-        heading: "Closed book, open reasoning",
+        heading: "Closed book means derive, not guess",
         body: "Formulas you can re-derive are yours; formulas you can only recite are rented. The check rewards derivation: the kinematic equations fall out of a v–t graph, the Atwood tension falls out of two FBDs. If your preparation is 'memorize twelve formulas,' you are preparing for the wrong test.",
       },
       {
-        heading: "The gate is weighted on purpose",
+        heading: "The check emphasizes conservation and free-body diagrams",
         body: "Eight of twelve items probe conservation laws and free-body diagrams because those two skills carry every later block: Materials 101's stress analysis is FBDs plus constitutive laws, and energy methods never leave. The weighting is the syllabus telling you where the load-bearing walls are.",
       },
       {
-        heading: "Corrections, not retakes",
+        heading: "Repair the reasoning behind missed items",
         body: "A missed item is a named error with a repaired derivation, filed in your notebook — not a failure to hide or a score to grind. You enter Materials 101 with the repairs, not just the grade. Engineers don't get retakes on flown hardware; they get failure reviews. This is the small version.",
       },
     ],
