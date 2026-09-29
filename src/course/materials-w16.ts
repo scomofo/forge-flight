@@ -18,6 +18,14 @@ export const materialsW16Lessons: Lesson[] = [
     title: "Fracture: why cracks run",
     minutes: 35,
     lede: "How cracks concentrate stress, when a crack goes critical, and why a running crack keeps running.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "Cracks change the local stress field dramatically, which is why a structure can fail even when the nominal stress looks acceptable. || For blunt geometric features, a stress-concentration factor is often enough. For an actual crack, fracture mechanics uses the stress-intensity factor K, which grows with applied stress and crack size. || Failure occurs when K reaches the material's fracture toughness K_IC. Crack size therefore matters directly: a defect that was harmless earlier can become critical as it grows."
     use: "Whenever a part carries load and might contain a flaw — which is every part. And at every hole, fillet, keyway, and weld toe, where the nominal stress is not the stress the material actually feels. || Multiply the nominal stress by K_t — 3 for a circular hole, worse for sharp notches. For a crack of half-length a, compute K = Yσ√(πa) and compare it against the material's K_IC. Solve for the critical crack size a_c, then ask whether your inspection can reliably find anything near it. || Stop calculating when K sits below K_IC with margin and a_c is comfortably above your detection limit. If a_c is smaller than what you can reliably find, the design has to change — detection alone will not keep the part safe.",
@@ -88,6 +96,14 @@ export const materialsW16Lessons: Lesson[] = [
     title: "Fatigue: death by a thousand cycles",
     minutes: 35,
     lede: "Reading an S-N curve, estimating life with Basquin's law, combining load blocks with Miner's rule — and what the Comet taught us about square windows.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "A component can fail after many repeated loads even when each individual load is below the static yield strength. That is fatigue. || Repeated stress cycles can initiate and grow cracks. Stress concentrations accelerate the process, which is why geometry, surface condition, and small defects matter so much. || Use an S-N curve when the design question is stress level versus number of cycles, and use crack-growth methods when a crack is already present."
     use: "For any part that sees repeated loading: read the S-N curve at your stress amplitude, or compute N = ½(σ_a/σ_f′)¹⸍ᵇ. For mixed loading, add damage fractions with Miner's rule. For the remaining life of a known crack, integrate the Paris law. || Steels show an endurance limit near half the ultimate strength — below it, life is effectively infinite. Aluminum and most non-ferrous metals show none: every cycle costs something, so you design to a finite life and inspect on schedule. || Stop when the Miner sum sits comfortably below 1 with margin for scatter — fatigue data scatters by factors, not percents — and when the inspection interval is a fraction of the crack-growth life from detectable to critical.",
@@ -159,6 +175,14 @@ export const materialsW16Lessons: Lesson[] = [
     title: "Creep: failure on a slow clock",
     minutes: 35,
     lede: "The three stages of a creep curve, why a fifty-degree rise can erase decades of life, and how Larson-Miller trades time for temperature.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "At elevated temperature, a material can continue to deform slowly under a constant load even when the stress is below the room-temperature yield strength. That is creep. || Diffusion, dislocation climb, and grain-boundary processes become more active as temperature rises. The result is time-dependent strain under sustained stress. || Creep design therefore depends on stress, temperature, and exposure time together. Temperature is especially important because many creep rates depend exponentially on it."
     use: "For any part that lives hot under load: get the secondary (steady-state) creep rate — that is the design number. Use Larson-Miller to map a short hot test onto a long cooler service life. Size the part so the predicted strain stays acceptable for the required life. || P = T(20 + log₁₀ t_r), with T in kelvin and t_r in hours: one parameter collapses time and temperature into a single number. Test hot and short; serve cooler and long. || Stop extrapolating when the time ratio passes about an order of magnitude — deformation mechanisms change, and the parameter interpolates far better than it extrapolates. And remember the grain-size reversal: fine grains are wonderful for room-temperature strength and worse for creep, because boundaries slide.",
