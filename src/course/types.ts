@@ -208,11 +208,20 @@ export type ConceptHelp = {
   caution?: string;
 };
 
+export type ConceptHelpRef = {
+  concept: string;
+  trigger?: string;
+  addSections?: ConceptHelpSection[];
+  addCaution?: string;
+};
+
+export type IdeaHelp = ConceptHelp | ConceptHelpRef;
+
 export type Idea = {
   heading: string;
   body: string;
   formula?: string;
-  help?: ConceptHelp[];
+  help?: IdeaHelp[];
 };
 
 export type LessonOpening = {
