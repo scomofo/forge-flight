@@ -18,6 +18,14 @@ export const physicsW8Lessons: Lesson[] = [
     title: "Pressure and buoyancy",
     minutes: 35,
     lede: "Compute pressure as force per unit area, find the pressure at any depth in a fluid at rest, and say exactly why a steel ship floats.",
+    opening: { mode: "prose", heading: "Pressure is distributed force" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Pressure" },
+      { kind: "example", heading: "Ten metres down" },
+      { kind: "idea", idea: 1, label: "Depth" },
+      { kind: "idea", idea: 2, label: "Buoyancy" },
+      { kind: "move", heading: "Separate gauge pressure from absolute pressure" },
+    ],
     start:
       "The same force can create very different pressure depending on the area carrying it. || Pressure is force per unit area, p = F/A. In a fluid at rest, pressure acts normal to surfaces and increases with depth according to p = p₀ + ρgh. || The ρgh term comes from the weight of the fluid above the point you are considering. Deeper points support a taller fluid column, so the pressure is higher.",
     use: "Whenever you need the force on a submerged surface, the load on a dam face, a manometer reading, or whether an object floats. || Compute ρgh for the gauge pressure — gauge, because the atmosphere pushes on both sides of most real problems and cancels. Add atmospheric pressure only when absolute pressure is actually asked for. Multiply by area when you need force. For floating: compare average density to fluid density, not material to fluid. || Stop when you can state gauge versus absolute without hesitation, and point to the weight that a given pressure is supporting.",
@@ -88,6 +96,15 @@ export const physicsW8Lessons: Lesson[] = [
     title: "Moving fluids: continuity and Bernoulli",
     minutes: 35,
     lede: "Use continuity to find speeds in a constriction, apply Bernoulli where its assumptions hold, and name the places where the textbook story breaks down.",
+    opening: { mode: "steps", heading: "Check the flow assumptions first", labels: ["Continuity", "Bernoulli", "Where it fails"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Mass conservation" },
+      { kind: "example", heading: "Venturi calculation" },
+      { kind: "idea", idea: 1, label: "Energy relation" },
+      { kind: "aside", heading: "Do not overextend it", body: "Bernoulli relates pressure and speed under its assumptions. It is not a universal explanation for why every fast flow has low pressure." },
+      { kind: "idea", idea: 2, label: "Lift misconception" },
+      { kind: "move", heading: "Use Bernoulli only inside its domain" },
+    ],
     start:
       "Narrowing a pipe changes the flow speed because the same mass flow has to pass through a smaller area. || For steady incompressible flow, continuity gives A₁v₁ = A₂v₂. Bernoulli's equation relates pressure, speed, and elevation along a streamline when the flow is steady, incompressible, and effectively inviscid. || In a horizontal constriction, the speed rises and the static pressure falls. Use Bernoulli only after checking its assumptions rather than treating that pressure-speed relation as universal.",
     use: "Venturi meters, pitot tubes, carburetors, any steady flow that changes section. || First check the four assumptions: steady, incompressible, inviscid, and all on one streamline. Then write the constant: p₁ + ½ρv₁² + ρgh₁ = p₂ + ½ρv₂² + ρgh₂. Solve for the unknown — usually a pressure from two speeds. || Stop when you can recite the four assumptions and name one real situation where each fails: a pump (not the same streamline energy — work is added), honey (viscous), a transonic wing (compressible), gusty flow (unsteady).",
@@ -162,6 +179,14 @@ export const physicsW8Lessons: Lesson[] = [
     title: "Lift, drag, stall, static margin",
     minutes: 40,
     lede: "Predict a glider's stall speed from its wing loading, read a lift curve up to and past stall, and compute the static margin that decides whether the glider flies itself.",
+    opening: { mode: "prose", heading: "Lift is not enough; the glider must also be stable" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Dynamic pressure" },
+      { kind: "example", heading: "Check stall speed and margin" },
+      { kind: "idea", idea: 2, label: "Stability" },
+      { kind: "idea", idea: 1, label: "Lift, induced drag, stall" },
+      { kind: "move", heading: "Check lift capability and stability separately" },
+    ],
     start:
       "A glider can have enough wing area to make lift and still be unpleasant or impossible to fly if its center of gravity is in the wrong place. || Lift and drag scale with dynamic pressure q = ½ρv², wing area S, and the coefficients C_L and C_D. C_L increases with angle of attack until stall, after which lift falls and drag rises. || Static margin compares the center of gravity with the neutral point. A positive margin gives a restoring tendency after a small pitch disturbance; a negative margin is statically unstable.",
     use: "Sizing a wing, checking a design's stability number, reading Glider Lab's verdicts instead of taking them on faith. || Compute wing loading W/S — the single number that sets stall speed. Compute v_stall = √(2W/(ρS·C_Lmax)): below this speed, level flight is impossible at any angle of attack. Compute the static margin and demand roughly 0.05–0.25: below 0.05 the glider is twitchy, negative is unflyable, far above 0.25 it is nose-heavy and mushy. || Stop when you can predict the stall speed from wing loading alone and call stable/marginal/unstable from the margin without touching a simulator.",
