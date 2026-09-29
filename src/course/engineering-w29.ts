@@ -14,6 +14,14 @@ export const engineeringW29Lessons: Lesson[] = [
     title: "Safety factors are ethics",
     minutes: 35,
     lede: "Read a factor of safety as a priced statement about uncertainty and consequence — not as a property of the steel — and choose one you can defend.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A factor of safety is not a universal material constant. It is part of the design basis. || Choose it from the applicable standard, uncertainty in loads and strength, inspection and maintenance assumptions, and the consequence of failure. FoS = capability / demand only has meaning when both terms are clearly defined. || Record where the chosen factor came from. An unexplained safety factor is difficult to review and easy to misuse."
     use: "When you are about to size a part and the spreadsheet is asking for an allowable stress, or when a review asks why this number and not a smaller one. || Name the consequence class: low (property only), moderate (minor injury), high (serious injury), catastrophic (loss of life). Read the factor of safety off that class, adjusted for how well you know the loads and how often the part is inspected. Write the consequence class next to the number, every time. || Stop when the factor of safety, the consequence, and the inspection plan all appear on the same page. A bare number with no consequence attached is a guess, and no reviewer can check a guess.",
@@ -94,6 +102,14 @@ export const engineeringW29Lessons: Lesson[] = [
     title: "Codes, standards, and the paper trail",
     minutes: 35,
     lede: "Read a standard the way a reviewer does — scope, shall-statements, and evidence — and keep a paper trail that outlives your memory of the project.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Codes and standards convert accumulated experience into explicit design and verification requirements. || Start with scope and applicability, then identify the normative requirements and referenced documents. In standards language, words such as shall, should, and may have different force, so read them carefully. || For every applicable requirement, identify the evidence that will show compliance. A clause without a verification plan is not yet integrated into the design."
     use: "When a project says 'comply with' anything, or when you inherit a design and need to know what it was promised. || Read scope first — if your part is outside it, the standard does not apply and citing it is theater. Then list every shall that touches your part. For each shall, write the evidence: the test, the calculation, the inspection. || Stop when every shall has an evidence entry or an explicit waiver with a signature. A shall with no evidence is an unkept promise; the review in lesson 3 treats it as a finding.",
@@ -174,6 +190,14 @@ export const engineeringW29Lessons: Lesson[] = [
     title: "The review and the signature",
     minutes: 40,
     lede: "Run a design review like an institution: find the findings, grade their severity, issue a verdict the findings support — and sign it.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "A design review is a structured attempt to find problems while they are still cheap to fix. || The presenter brings the evidence, reviewers challenge the design and assumptions, and the scribe records actionable findings. Grade findings by consequence and by whether they block release. || The final review verdict should follow from the unresolved findings, and the record should show who accepted that disposition."
     use: "When a design is about to be built, bought, or flown — any point of no return. || The presenter walks the package: requirements, calculations, drawings, assumption ledger. Reviewers file findings against requirements and shalls, each with a severity and a location. The scribe keeps the list. The chair issues the verdict the open findings demand: any open critical is a rejection, any open major is conditional approval at best. || Stop when every finding is addressed or explicitly accepted as a risk with a signature, and the memo — what was reviewed, what was found, why this verdict — is written while the memory is fresh. A review with no written memo did not happen.",
