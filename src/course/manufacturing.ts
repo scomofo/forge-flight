@@ -16,14 +16,6 @@ export const manufacturingLessons: Lesson[] = [
     title: "The act",
     minutes: 9,
     lede: "Pick the physical act that makes a shape, and name the constraint that ruled the others out.",
-    opening: { mode: "prose", heading: "Start with the physical situation" },
-    readFlow: [
-      { kind: "example", heading: "Work one case" },
-      { kind: "idea", idea: 0, label: "First idea" },
-      { kind: "idea", idea: 1, label: "Second idea" },
-      { kind: "idea", idea: 2, label: "Third idea" },
-      { kind: "move", heading: "When to use it" },
-    ],
     opening: { mode: "prose", heading: "Start with what must happen to the material" },
     readFlow: [
       { kind: "example", heading: "Geometry first" },

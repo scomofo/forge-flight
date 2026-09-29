@@ -22,14 +22,6 @@ export const mathLessons: Lesson[] = [
     title: "Ratios, units, and the factor-label method",
     minutes: 35,
     lede: "Convert units without dropping factors of ten, scale quantities by ratio, and use the units to check your own work.",
-    opening: { mode: "prose", heading: "Start with the physical situation" },
-    readFlow: [
-      { kind: "example", heading: "Work one case" },
-      { kind: "idea", idea: 0, label: "First idea" },
-      { kind: "idea", idea: 1, label: "Second idea" },
-      { kind: "idea", idea: 2, label: "Third idea" },
-      { kind: "move", heading: "When to use it" },
-    ],
     opening: { mode: "prose", heading: "Before the calculator" },
     readFlow: [
       { kind: "example", heading: "Work one first" },
