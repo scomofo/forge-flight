@@ -26,17 +26,17 @@ export const materialsW14Lessons: Lesson[] = [
       "A 1020 steel bar, 12.5 mm diameter, pulled in tension. The load–extension record bends away from the straight line at 42.9 kN, and the load peaks at 51.5 kN before the bar necks and breaks. || Area A₀ = π/4 × (12.5 mm)² = 122.7 mm². Yield: σy = 42,900 N / 122.7 mm² = 350 MPa. Ultimate: σuts = 51,500 / 122.7 = 420 MPa. The initial slope of the σ–ε plot is 200 GPa — the stiffness, E. || The numbers are 350, 420, 200 GPa: three different quantities, three different landmarks. The 350 is where it stopped springing back. The 420 is the most it ever carried. The 200 GPa is how little it stretched getting there.",
     ideas: [
       {
-        heading: "The 0.2% offset is a convention with a reason",
+        heading: "The 0.2% offset gives a repeatable yield definition",
         body: "Many engineering alloys have no sharp yield point — the curve bends gradually, so 'where it leaves the line' is a matter of eyesight. The convention: draw a line parallel to the elastic slope starting at ε = 0.002, and take the intersection as σy. It is arbitrary the way a speed limit is arbitrary: the value matters less than the fact that everyone measures the same thing. On a curve with a sharp yield drop (mild steel), the offset lands within a few percent of the visible knee.",
         formula: "σy = σ at the intersection with σ = E(ε − 0.002)",
       },
       {
-        heading: "Stiffness, strength, hardness: three words",
+        heading: "Keep stiffness, strength, and hardness separate",
         body: "Stiffness (E) is resistance to elastic stretch — the slope. Strength (σy, σuts) is stress at two landmarks — heights on the curve. Hardness is resistance to surface indentation, a different test entirely; it correlates with strength for steels and not much else. Glass is stiff (E ≈ 70 GPa) and can be strong in the right test, yet it is the opposite of tough. Say which one you mean, every time.",
         formula: "E = σ/ε (elastic) · σy, σuts are stresses · hardness is a surface test",
       },
       {
-        heading: "The axes are doing quiet work",
+        heading: "Read the axis scales before interpreting the curve",
         body: "Strain is dimensionless, so the horizontal axis is pure number — but its scale decides what you see. A ceramic's whole curve lives below ε = 0.002; a polymer's runs past ε = 2. Plot them on shared axes and one of them is invisible. Engineers rescale per material, which is honest as long as you notice. Always read the axis limits before you read the curve.",
         formula: "ε = ΔL/L₀ (dimensionless) — check the axis before trusting the shape",
       },
@@ -112,7 +112,7 @@ export const materialsW14Lessons: Lesson[] = [
         formula: "%EL = (Lf − L₀)/L₀ · 100%    %RA = (A₀ − Af)/A₀ · 100%",
       },
       {
-        heading: "The tradeoff is structural, not accidental",
+        heading: "Strengthening often reduces ductility",
         body: "The mechanisms that raise strength — cold work, precipitation, solid solution — all do it by obstructing dislocation motion. But plastic flow IS dislocation motion. Hindering dislocations raises the stress needed to move them and simultaneously reduces how far they can go. You cannot buy strength with these mechanisms without spending ductility. (Grain refinement is the notable exception — it raises strength and usually toughness.)",
         formula: "strength ↑ via dislocation obstruction ⇒ ductility ↓ (same mechanism)",
       },
@@ -182,12 +182,12 @@ export const materialsW14Lessons: Lesson[] = [
       "Ti-6Al-4V, three specimens: yield readings 872, 885, 879 MPa. || Mean 879, standard deviation ≈ 6.5 MPa — tight, as befits a controlled alloy. Take a quick low-tail characteristic two standard deviations below the mean, 879 − 2 × 6.5 = 866 MPa, and a factor of safety of 1.5 for a static-strength check: allowable = 866 / 1.5 ≈ 577 MPa (real A/B-basis values need many more specimens and statistical tolerance factors). || The curve said ~880. The design uses 577. The gap between them is scatter, uncertainty, and consequence — and none of those are on the curve.",
     ideas: [
       {
-        heading: "Extraction is fitting, not reading",
+        heading: "Extract noisy properties with a defined method",
         body: "On noisy data you do not eyeball the slope — you fit it: least-squares through the origin on the initial linear prefix, stopping where points systematically leave the line. The 0.2% offset then finds its own crossing. Done this way, E lands within ~1% and yield within a few percent of the book values even with 1% measurement noise. The residual error is the method's honesty, not your failure.",
         formula: "E = Σ(εσ)/Σ(ε²) over the linear prefix; σy from σ = E(ε − 0.002)",
       },
       {
-        heading: "Engineering stress lies after necking — usefully",
+        heading: "Engineering and true stress diverge after necking",
         body: "Engineering stress uses the original area A₀, so after necking begins the curve falls: the load drops even as the true stress in the neck keeps rising. True stress (F/A_actual) and true strain (ln(L/L₀)) keep climbing. For design, engineering stress is the honest choice — your part's cross-section is the original one — but when you read 'strain hardening' in a paper, check which stress they mean. The post-necking fall is bookkeeping: the load drops because the neck's area shrinks faster than the metal hardens. Worked: just before necking at σ_eng = 400 MPa and ε_eng = 0.20, the true stress is 400 × 1.20 = 480 MPa and the true strain ln(1.20) ≈ 0.18.",
         formula: "σ_true = σ_eng(1 + ε_eng),  ε_true = ln(1 + ε_eng)  (to necking)",
       },
