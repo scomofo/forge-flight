@@ -41,6 +41,32 @@ export const mathLessons: Lesson[] = [
         heading: "Keep the unit attached",
         body: "A number without a unit is incomplete. 9.4 inches and 9.4 millimetres are not close to the same thing. Carry the unit through the working so it can act as a check on the setup. In the factor-label method, the unwanted units should cancel and the target unit should be left behind.",
         formula: "240 mm × (1 in / 25.4 mm) = 9.4 in",
+        help: [
+          {
+            trigger: "Why do the units cancel?",
+            title: "The factor-label method",
+            intro: "Treat units like algebraic factors. A conversion factor is equal to 1, so it can change the label without changing the physical quantity.",
+            sections: [
+              {
+                heading: "What the setup is doing",
+                body: "In 240 mm × (1 in / 25.4 mm), millimetres appear once on top and once on the bottom, so they cancel. Inches are left as the answer unit.",
+              },
+              {
+                heading: "Why the direction matters",
+                body: "The unwanted unit must appear on the opposite side of the fraction from where it started. If mm remains after the multiplication, flip or rebuild the factor before calculating.",
+              },
+              {
+                heading: "Quick check",
+                items: [
+                  "240 mm is about a quarter of a metre.",
+                  "A metre is about 40 inches.",
+                  "So an answer near 10 inches is plausible.",
+                ],
+              },
+            ],
+            caution: "Never strip the units off and convert only the number. The units are part of the error check.",
+          },
+        ],
       },
       {
         heading: "Ratios preserve shape",
@@ -114,6 +140,44 @@ export const mathLessons: Lesson[] = [
         heading: "Treat both sides the same",
         body: "Whatever operation you apply to one side of an equation, apply to the other side as well. That is the whole rule. If a rearrangement goes wrong, check whether one side received an operation the other did not.",
         formula: "a = b  ⇒  a + c = b + c",
+        help: [
+          {
+            trigger: "Explain this",
+            title: "Addition property of equality",
+            intro: "If two expressions are equal, adding the same amount to both sides keeps them equal. This is one of the basic rules that lets you solve equations.",
+            sections: [
+              {
+                heading: "What the symbols mean",
+                body: "a = b says the two sides have the same value. The ⇒ symbol means “implies”: if the statement on the left is true, the statement on the right must also be true.",
+              },
+              {
+                heading: "Why it works",
+                body: "Picture a balanced scale. If both pans weigh the same, adding the same 5 lb weight to each pan keeps the scale balanced. It only tips if you change one side and not the other.",
+              },
+              {
+                heading: "Solve a simple equation",
+                items: [
+                  "x − 7 = 12",
+                  "Add 7 to both sides: x − 7 + 7 = 12 + 7",
+                  "Result: x = 19",
+                ],
+              },
+              {
+                heading: "Shop example",
+                items: [
+                  "A 3.25 in part needs a shim to sit flush with a 4.00 in surface.",
+                  "3.25 + s = 4.00",
+                  "Add −3.25 to both sides: s = 0.75 in",
+                ],
+              },
+              {
+                heading: "The larger rule",
+                body: "Subtracting is adding a negative. There are matching equality rules for multiplying and dividing both sides by the same nonzero number.",
+              },
+            ],
+            caution: "Division by zero is not allowed. And whatever operation you use, apply it to the entire left and right sides—not just the convenient-looking term.",
+          },
+        ],
       },
       {
         heading: "Undo the operations in reverse",
@@ -192,6 +256,28 @@ export const mathLessons: Lesson[] = [
         heading: "Exponents add under multiplication",
         body: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ. Division subtracts. This is why the bracket's volume needed care: mm³ to m³ is not 10³, it is (10³)³ = 10⁹. The exponent triples because the unit is cubed — the most common prefix slip in the shop.",
         formula: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ",
+        help: [
+          {
+            trigger: "Why add the exponents?",
+            title: "Multiplying powers of ten",
+            intro: "Powers tell you how many factors of ten are present. When you multiply, you combine those factors, so the exponents add.",
+            sections: [
+              {
+                heading: "Small example",
+                body: "10³ × 10² means (10×10×10) × (10×10). That is five factors of ten: 10⁵.",
+              },
+              {
+                heading: "With coefficients",
+                body: "(3 × 10⁴)(2 × 10⁻³) = 6 × 10¹ = 60. Multiply the ordinary numbers, then add the exponents.",
+              },
+              {
+                heading: "Units raised to powers",
+                body: "If 1 m = 10³ mm, then 1 m⁴ = (10³)⁴ mm⁴ = 10¹² mm⁴. The unit's exponent applies to the conversion factor too.",
+              },
+            ],
+            caution: "A very common mistake is changing m⁴ to mm⁴ but applying only one factor of 10³.",
+          },
+        ],
       },
       {
         heading: "Scaling changes area and volume faster",
@@ -256,6 +342,33 @@ export const mathLessons: Lesson[] = [
         heading: "Slope tells you the rate of change",
         body: "The units of slope are y-units per x-unit. Here that is millivolts per kilogram, so a slope of 0.21 mV/kg means each additional kilogram changes the signal by 0.21 mV. A negative slope simply means y decreases as x increases.",
         formula: "m = Δy/Δx,   y = mx + b",
+        help: [
+          {
+            trigger: "Slope and intercept?",
+            title: "Reading y = mx + b",
+            intro: "The equation describes a straight line. m tells you how fast y changes as x changes, and b tells you the y-value when x is zero.",
+            sections: [
+              {
+                heading: "Slope m",
+                body: "m = Δy/Δx is rise over run. Its units are y-units per x-unit, such as millivolts per kilogram.",
+              },
+              {
+                heading: "Intercept b",
+                body: "b is where the line crosses the y-axis. In a sensor calibration, a nonzero intercept can represent an offset that exists even when the true input is zero.",
+              },
+              {
+                heading: "Example",
+                items: [
+                  "Points (0, 3) and (4, 11)",
+                  "m = (11 − 3)/(4 − 0) = 2",
+                  "Because x = 0 gives y = 3, b = 3",
+                  "The line is y = 2x + 3",
+                ],
+              },
+            ],
+            caution: "Two points always define a line; they do not prove the real system is linear. Check additional data when that assumption matters.",
+          },
+        ],
       },
       {
         heading: "Direct versus inverse",
@@ -334,6 +447,28 @@ export const mathLessons: Lesson[] = [
         heading: "Degrees and radians",
         body: "A full circle is 360° or 2π radians — two labels for the same turn. Convert with rad = deg × π/180. Physics formulas (arc length, angular velocity) want radians; shop drawings speak degrees. And before any trig on a calculator, check its mode: 35 in radian mode is a different triangle.",
         formula: "π rad = 180°,   s = rθ (θ in radians)",
+        help: [
+          {
+            trigger: "Why radians?",
+            title: "Radians are the natural angle unit",
+            intro: "A radian measures angle using the circle itself: angle = arc length divided by radius. That is why rotational formulas become clean when θ is in radians.",
+            sections: [
+              {
+                heading: "Definition",
+                body: "θ = s/r. If the arc length equals the radius, the angle is 1 radian.",
+              },
+              {
+                heading: "Conversion",
+                body: "A full turn is 2π radians = 360°, so π radians = 180°. Convert degrees with radians = degrees × π/180.",
+              },
+              {
+                heading: "Why s = rθ works",
+                body: "Because θ was defined as s/r. Rearranging immediately gives s = rθ, with no extra conversion constant.",
+              },
+            ],
+            caution: "Check calculator mode before using sine or cosine. 35° entered while the calculator is in radian mode is a completely different angle.",
+          },
+        ],
       },
       {
         heading: "Add components, then rebuild the vector",
