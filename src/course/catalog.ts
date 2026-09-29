@@ -103,9 +103,9 @@ export type CourseTerm = { term: string; body: string };
 export const courseIntro: { heading: string; approach: string[]; terms: CourseTerm[] } = {
   heading: "How this course works",
   approach: [
-    "The course is built around concrete engineering situations: drawings, shop measurements, structures, gliders, joints, tests, and design decisions. The examples usually start with the physical picture and introduce the formula after the problem is clear. Each lesson includes a worked example, key ideas, an interactive bench, and four checks. Most lessons pass at three out of four; the Math Runway requires four out of four."
-    "The Math Runway comes first because later lessons assume you can convert units, rearrange formulas, work with powers, read graphs, and resolve simple vectors. You do not have to take every module. The diagnostic assigns only the topics that need review."
-    "Two habits run through the whole course. Keep units attached to quantities throughout the calculation, and do a rough estimate before trusting the exact arithmetic. Those two checks catch a surprising number of mistakes early."
+    "The course is built around concrete engineering situations: drawings, shop measurements, structures, gliders, joints, tests, and design decisions. The examples usually start with the physical picture and introduce the formula after the problem is clear. Each lesson includes a worked example, key ideas, an interactive bench, and four checks. Most lessons pass at three out of four; the Math Runway requires four out of four.",
+    "The Math Runway comes first because later lessons assume you can convert units, rearrange formulas, work with powers, read graphs, and resolve simple vectors. You do not have to take every module. The diagnostic assigns only the topics that need review.",
+    "Two habits run through the whole course. Keep units attached to quantities throughout the calculation, and do a rough estimate before trusting the exact arithmetic. Those two checks catch a surprising number of mistakes early.",
     "After the runway, the core sequence is Physics, Materials, Engineering, and Manufacturing. The 201, 301, and 401 tracks are shorter applied extensions for topics you want to take further."
   ],
   terms: [
