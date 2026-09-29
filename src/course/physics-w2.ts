@@ -33,6 +33,7 @@ export const physicsW2Lessons: Lesson[] = [
         heading: "Choose axes that make the problem easier",
         body: "The same vector can have different components in different coordinate systems. That is expected. Its magnitude and the angles between vectors do not change. If a ramp or cable suggests a more convenient axis direction, use it. A good coordinate choice can remove half the algebra.",
         formula: "Ax = |A|cosθ,  Ay = |A|sinθ",
+        help: [{ concept: "component-resolution" }],
       },
       {
         heading: "Add components, not magnitudes",
@@ -43,6 +44,7 @@ export const physicsW2Lessons: Lesson[] = [
         heading: "The dot product measures alignment",
         body: "The dot product tells you how strongly two vectors line up. If they are parallel, the value is largest; if they are perpendicular, it is zero. In work, F·d keeps only the part of the force along the displacement, which is exactly the component that can change the object's kinetic energy.",
         formula: "A·B = AxBx + AyBy = |A||B|cosφ",
+        help: [{ concept: "dot-product" }],
       },
     ],
     bench: "vectors",
@@ -107,6 +109,7 @@ export const physicsW2Lessons: Lesson[] = [
         heading: "Read the axes before reading the slope",
         body: "Slope means change in the vertical quantity per change in the horizontal quantity. On x–t that is velocity; on v–t it is acceleration. A flat position-time line means the object is at rest. A flat velocity-time line means constant velocity.",
         formula: "v = dx/dt,   a = dv/dt",
+        help: [{ concept: "delta-symbol", trigger: "What does Δ mean in the finite differences?" }],
       },
       {
         heading: "Area under v–t gives displacement",
@@ -180,6 +183,7 @@ export const physicsW2Lessons: Lesson[] = [
         heading: "Treat horizontal and vertical motion separately",
         body: "Without air resistance, gravity acts vertically, so the horizontal velocity stays constant while the vertical velocity changes. Solve the two directions separately and connect them with the same time variable. Air resistance breaks this clean separation because the drag depends on the total velocity.",
         formula: "x = v₀cosθ·t,   y = v₀sinθ·t − ½gt²",
+        help: [{ concept: "component-resolution", trigger: "Why split launch speed into components?" }],
       },
       {
         heading: "Check the assumptions behind the 45° rule",
