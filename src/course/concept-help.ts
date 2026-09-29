@@ -209,6 +209,167 @@ export const conceptHelpRegistry: Record<string, RegistryEntry> = {
     ],
     caution: "If the rough estimate and detailed calculation differ by orders of magnitude, investigate before trusting the detailed result.",
   },
+  "youngs-modulus": {
+    trigger: "What is Young's modulus?",
+    title: "Young's modulus measures elastic stiffness",
+    intro: "Young's modulus E tells you how much stress is needed to produce a given elastic strain.",
+    sections: [
+      { heading: "Hooke's law", body: "In the linear elastic range, σ = Eε." },
+      { heading: "High E", body: "A high modulus means the material strains less under the same stress." },
+      { heading: "Not strength", body: "A material can be stiff but weak, or flexible but strong. Modulus and yield strength answer different questions." },
+    ],
+  },
+  "stress-strain": {
+    trigger: "Stress vs strain?",
+    title: "Stress and strain are different quantities",
+    intro: "Stress describes the internal load intensity; strain describes the relative deformation.",
+    sections: [
+      { heading: "Stress", body: "σ = F/A. Units are pascals, usually MPa in structural work." },
+      { heading: "Strain", body: "ε = ΔL/L. It is dimensionless because it is a length divided by a length." },
+      { heading: "Together", body: "The stress-strain curve shows how the material responds as load increases." },
+    ],
+  },
+  "second-moment-area": {
+    trigger: "What is I doing?",
+    title: "Second moment of area controls bending stiffness",
+    intro: "The second moment of area I measures how far cross-sectional area is distributed from the neutral axis.",
+    sections: [
+      { heading: "Why distance matters", body: "Area farther from the neutral axis contributes with distance squared, so moving material outward is very effective." },
+      { heading: "Rectangle", body: "For a rectangle about its centroidal axis, I = bh³/12. Depth is cubed." },
+      { heading: "Design consequence", body: "This is why I-beams and tubes put material away from the middle." },
+    ],
+    caution: "I is a geometric property in units of length to the fourth power. Do not confuse it with mass moment of inertia.",
+  },
+  "neutral-axis": {
+    trigger: "Where is the neutral axis?",
+    title: "The neutral axis is the zero-bending-strain line",
+    intro: "In pure bending, one side of the beam stretches and the other compresses. Between them is a line where longitudinal bending strain is zero.",
+    sections: [
+      { heading: "Stress pattern", body: "Bending stress varies linearly with distance y from the neutral axis through σ = My/I." },
+      { heading: "Maximum stress", body: "The largest bending stresses occur at the outer fibers, farthest from the neutral axis." },
+    ],
+  },
+  "factor-of-safety": {
+    trigger: "What does factor of safety mean?",
+    title: "Factor of safety compares capability with demand",
+    intro: "A factor of safety is a ratio between a failure or allowable capacity and the working demand.",
+    sections: [
+      { heading: "Basic ratio", body: "FoS = capability / demand." },
+      { heading: "Allowable form", body: "An allowable can be created by dividing a strength value by the chosen safety factor." },
+      { heading: "What it covers", body: "It provides margin for uncertainty in loads, properties, models, and consequences within the failure mode being checked." },
+    ],
+    caution: "A factor of safety does not automatically cover a different failure mode such as buckling, fatigue, fracture, or corrosion.",
+  },
+  bernoulli: {
+    trigger: "What does Bernoulli really say?",
+    title: "Bernoulli relates pressure, speed, and elevation",
+    intro: "Along a streamline in steady, incompressible, inviscid flow, pressure, kinetic, and gravitational energy per unit volume trade with each other.",
+    sections: [
+      { heading: "Equation", body: "p + ½ρv² + ρgh = constant." },
+      { heading: "Constriction", body: "If a horizontal flow speeds up through a smaller area, the pressure term must fall in the ideal model." },
+      { heading: "Assumptions", body: "Steady, incompressible, negligible viscosity, and no added or removed shaft work along the streamline." },
+    ],
+    caution: "Do not apply the simple Bernoulli constant across pumps, turbines, large viscous losses, or strongly compressible flow.",
+  },
+  "phase-diagram": {
+    trigger: "How do I read this diagram?",
+    title: "A binary phase diagram maps equilibrium phases",
+    intro: "Composition is usually on the horizontal axis and temperature on the vertical axis. A point on the map tells you which phases are stable at equilibrium.",
+    sections: [
+      { heading: "Single-phase field", body: "Inside a single-phase region, only that phase is stable." },
+      { heading: "Two-phase field", body: "Use a horizontal tie line to find the compositions of the two coexisting phases." },
+      { heading: "What it does not tell you", body: "A phase diagram gives equilibrium, not transformation speed. Cooling rate and diffusion determine whether the structure actually reaches equilibrium." },
+    ],
+  },
+  "lever-rule": {
+    trigger: "Why the opposite arm?",
+    title: "The lever rule is a mass balance",
+    intro: "In a two-phase region, the overall composition is the weighted average of the two phase compositions.",
+    sections: [
+      { heading: "Method", body: "Draw the tie line. The fraction of one phase is the length of the segment on the opposite side divided by the whole tie line." },
+      { heading: "Why", body: "The rule is just the weighted-average composition equation rearranged." },
+    ],
+    caution: "Do not use the distance to the phase you are solving for. Use the opposite segment.",
+  },
+  "hall-petch": {
+    trigger: "Why do smaller grains strengthen metal?",
+    title: "Hall-Petch strengthening",
+    intro: "Grain boundaries impede dislocation motion, so reducing grain size often raises yield strength.",
+    sections: [
+      { heading: "Mechanism", body: "A moving dislocation has to transmit through or around a grain boundary where the lattice orientation changes." },
+      { heading: "Tradeoff", body: "More boundaries can help strength but may hurt high-temperature creep or corrosion resistance." },
+    ],
+  },
+  "von-mises": {
+    trigger: "What is von Mises doing?",
+    title: "Von Mises combines a multiaxial stress state into one yield measure",
+    intro: "Ductile metals can yield under combinations of normal and shear stresses even when no single component reaches the uniaxial yield value.",
+    sections: [
+      { heading: "Purpose", body: "The von Mises equivalent stress converts the combined state into one scalar to compare with a tensile yield allowable." },
+      { heading: "Pure tension check", body: "If shear and the other normal stresses are zero, von Mises reduces to the ordinary tensile stress." },
+    ],
+    caution: "Von Mises is a ductile-yield criterion. It is not a universal fracture or brittle-failure rule.",
+  },
+  fmea: {
+    trigger: "What is FMEA for?",
+    title: "FMEA structures failure-risk thinking before release",
+    intro: "Failure Modes and Effects Analysis lists ways the design can fail, what each failure causes, why it may occur, and how it might be detected.",
+    sections: [
+      { heading: "Ratings", body: "Severity, occurrence, and detection are scored to help prioritize attention." },
+      { heading: "RPN", body: "A common risk-priority number is S × O × D." },
+      { heading: "Real output", body: "The most useful result is the mitigation record: what change reduces the risk and how the ratings change afterward." },
+    ],
+    caution: "Do not let a moderate RPN hide a catastrophic-severity item. Review severity separately.",
+  },
+  "cp-cpk": {
+    trigger: "Cp vs Cpk?",
+    title: "Cp measures spread; Cpk also measures centering",
+    intro: "Capability indices compare a process distribution with the specification window.",
+    sections: [
+      { heading: "Cp", body: "Cp compares specification width with process spread. It assumes the process is centered." },
+      { heading: "Cpk", body: "Cpk uses the distance from the mean to the nearer specification limit, so it falls when the process shifts off-center." },
+    ],
+    caution: "A high Cp does not prove the process is making conforming parts if the mean is badly shifted.",
+  },
+  "tolerance-stack": {
+    trigger: "Worst case or RSS?",
+    title: "Two common ways to combine tolerances",
+    intro: "Worst-case and root-sum-square tolerance stacks make different promises.",
+    sections: [
+      { heading: "Worst case", body: "Add the full unfavorable tolerance contribution from every dimension. This protects against all allowed parts landing at their extremes together." },
+      { heading: "RSS", body: "Combine independent random tolerances in quadrature. The statistical stack is smaller because random variations are unlikely to align perfectly." },
+    ],
+    caution: "Use RSS only when the variations are reasonably independent and a statistical assurance level is acceptable.",
+  },
+  "coefficient-restitution": {
+    trigger: "What does e mean?",
+    title: "Coefficient of restitution measures rebound",
+    intro: "The coefficient of restitution compares relative separation speed after impact with relative approach speed before impact.",
+    sections: [
+      { heading: "Range", body: "e = 1 is perfectly elastic along the impact line; e = 0 means no rebound along that line." },
+      { heading: "Drop test", body: "For a vertical bounce on the same surface, e ≈ √(h_bounce/h_drop)." },
+    ],
+  },
+  "natural-frequency": {
+    trigger: "What sets the natural frequency?",
+    title: "Natural frequency comes from stiffness and inertia",
+    intro: "A system has frequencies at which it prefers to oscillate even without continuous forcing.",
+    sections: [
+      { heading: "Spring-mass system", body: "ω = √(k/m). More stiffness raises the frequency; more mass lowers it." },
+      { heading: "Why it matters", body: "Periodic forcing near a natural frequency can cause resonance." },
+    ],
+  },
+  "thermal-expansion": {
+    trigger: "Free growth or thermal stress?",
+    title: "Thermal expansion depends on restraint",
+    intro: "A temperature change first creates a free thermal strain αΔT. What happens next depends on whether the part is allowed to move.",
+    sections: [
+      { heading: "Free", body: "ΔL = αLΔT." },
+      { heading: "Fully restrained bar", body: "The prevented strain becomes stress with magnitude σ = EαΔT in the simple one-dimensional model." },
+    ],
+    caution: "Do not add full free expansion and full restraint stress at the same time. They represent different boundary conditions.",
+  },
+
 };
 
 export function getConceptHelp(id: string) {
