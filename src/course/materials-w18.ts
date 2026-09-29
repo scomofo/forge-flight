@@ -19,23 +19,23 @@ export const materialsW18Lessons: Lesson[] = [
     minutes: 35,
     lede: "Comparing metals, ceramics, polymers, and composites as property packs — not brand names — and which demand forces each choice, and what it costs.",
     start:
-      "A kiln shelf sits at 1400°C and is allowed to crack. A wing spar must be stiff for its mass and the load runs one way. A grocery bag must stretch, weigh nothing, and cost a cent. || Those are three jobs, and each one belongs to a different family before any alloy or grade is named: ceramic, composite, polymer. A family is a way the atoms hold together — metallic, ionic/covalent network, long chains, fiber in matrix — and that bonding arrives as a pack: stiffness, density, temperature ceiling, and failure mode travel together. || Processing moves you inside the pack but never out of it. Heat treatment can double a steel's strength; it cannot make steel light, or make it survive 1400°C. So selection happens in the right order: the job's non-negotiable demand picks the family, and only then does the grade get chosen.",
+      "Material families come with characteristic combinations of stiffness, density, temperature capability, and failure mode. || Metals, ceramics, polymers, and composites occupy different parts of that property space because their bonding and structure differ. Processing can move a material within its family's range, but it cannot erase the family's basic limits. || Start selection with the job's non-negotiable requirements. Those usually narrow the family before you ever choose a specific grade."
     use: "When a job names its demands — conduct, stay hot, take a hit, be light, be stiff in one direction. || Read each family's envelope at its best edge, and ask which demand kills which family. The survivor is your starting point, not your answer. || Stop when you can name the winner and its price in one sentence: the family, the demand that forced it, and the property you sacrificed. If every family fails a demand, the demand itself is what needs renegotiating.",
     example:
       "A tie rod must be stiff in tension, and mass is the budget. Candidates: steel, aluminum, carbon-fiber composite. || Specific stiffness E/ρ: steel 200/7.85 ≈ 25.5, aluminum 69/2.7 ≈ 25.6, CFRP along the fiber 140/1.55 ≈ 90 GPa per g/cm³. || The two metals tie — aluminum is not stiffer per mass than steel, which surprises everyone once — and the composite wins by 3.5×, but only along the fiber and only if the temperature stays below the matrix's ceiling.",
     ideas: [
       {
-        heading: "Bonding writes the pack",
+        heading: "Bonding helps define each material family's property range",
         body: "Metallic bonding gives mobile electrons and slip planes: conduction plus ductility, in one deal. Ionic and covalent networks give hardness and heat resistance with almost no plasticity: the kiln shelf and the shattered plate are the same physics. Long polymer chains, held to each other by weak secondary bonds, give lightness and stretch at the cost of an early softening temperature. Fiber plus matrix gives a designed direction — strength aimed where the load goes, weakness everywhere else.",
         formula: "metal: ductile + conductive; ceramic: hard + hot + brittle; polymer: light + soft; composite: directional",
       },
       {
-        heading: "No virtue travels alone",
+        heading: "Improving one property usually affects others",
         body: "Selection errors almost always come from shopping for one property. The stiffness you wanted arrives with the density you didn't; the temperature ceiling arrives with the brittleness. Read the envelope as a bundle — density, modulus, strength, service temperature, failure mode — and distrust any comparison that quotes a single number. A strength quoted without a temperature and a direction is a rumor, not a datum.",
         formula: "specific stiffness E/ρ decides a mass-limited tie; a beam uses E^(1/2)/ρ; never E alone",
       },
       {
-        heading: "Processing picks the point, not the pack",
+        heading: "Processing moves properties within a family",
         body: "Quenching and tempering, cold work, drawing, sintering, layup schedule — processing moves a material around inside its family's envelope, sometimes by factors of two or three. It never moves the envelope itself. That is why the selection order matters: family first (the envelope), processing second (the point). Choosing a grade before the family is choosing a point on the wrong chart.",
         formula: "selection: family → grade → processing; never the reverse",
       },
@@ -94,18 +94,18 @@ export const materialsW18Lessons: Lesson[] = [
     minutes: 35,
     lede: "Quantifying anisotropy with the rule of mixtures, the three mechanisms by which temperature kills a material, and designing to the weak direction and the hot limit.",
     start:
-      "A carbon-fiber tube is a hero along its axis and a disappointment across it. A kiln shelf shrugs at 1400°C, then cracks when a cold tool touches it. || Directionality and temperature are the two ways a brochure number lies to you. The rule of mixtures bounds the directional lie: load parallel to continuous fibers and the fiber dominates (Voigt); load across them and the soft matrix dominates (Reuss). Temperature kills by mechanism: polymers soften through their glass transition, metals creep above ~0.4 of their melting point in kelvin, ceramics survive the heat and die from its sudden change. || Design to the weak direction and the hot limit. The headline number was measured along the fiber, at room temperature — conditions your part may not enjoy.",
+      "A material property quoted in a datasheet is only meaningful for the direction and temperature at which it applies. || Composites can be very stiff along the fibers and much less stiff across them. Temperature changes can soften polymers, accelerate creep in metals, or create thermal-shock problems in ceramics. || Check the weak direction and the actual service temperature before using a headline property value."
     use: "When a part carries load in a known direction or sees sustained heat. || Compute the mixture bounds for the direction you actually load; compare the service temperature against the family's killing mechanism — Tg for polymers, 0.4·Tm for metals under load, thermal shock for ceramics. || Stop when the weak-direction stiffness and the hot-limit strength both clear the demand with margin. If only the brochure direction clears it, you do not have a design.",
     example:
       "A unidirectional CFRP, 60% carbon fiber (Ef = 230 GPa) in epoxy (Em = 3 GPa). It will also see a sudden 500 K temperature drop in service; the backup ceramic option is alumina (E = 300 GPa, α = 8×10⁻⁶/K, tensile strength ≈ 300 MPa). || Voigt: 0.6×230 + 0.4×3 = 139.2 GPa along the fiber. Reuss: 1/(0.6/230 + 0.4/3) ≈ 7.4 GPa across it — a 19:1 ratio. Thermal shock on the alumina, as the one-axis constrained estimate: σ ≈ E·α·ΔT = 300×10³×8×10⁻⁶×500 = 1200 MPa, four times its tensile strength. || The composite is superb in exactly one direction and must never see that drop across its matrix; the ceramic survives steady heat and would not survive the shock at all. Each family names its killing condition.",
     ideas: [
       {
-        heading: "The mixture has two bounds",
+        heading: "Rule-of-mixtures bounds depend on loading direction",
         body: "Voigt (parallel): both phases share the same strain, so the stiff phase carries most of the load and the composite approaches the fiber. Reuss (series): the soft phase takes the strain, so the composite approaches the matrix. Real layups live between the bounds, and the ratio between them — 19:1 in the example — is the honest measure of anisotropy. Wood, drawn wire, rolled sheet, and every composite share this structure: processing aims the strong direction, and the weak direction is the design value.",
         formula: "E∥ = Vf·Ef + Vm·Em;  1/E⊥ = Vf/Ef + Vm/Em",
       },
       {
-        heading: "Temperature kills by mechanism",
+        heading: "Different families lose performance by different high-temperature mechanisms",
         body: "Polymers: past the glass transition the chains unlock and the modulus collapses — that is the service ceiling, not the melting point. Metals: sustained load above ~0.4·Tm (kelvin) brings creep, slow permanent flow — aluminum sags near 150°C, steels near 450°C. Ceramics: the network holds to white heat, but E·α·ΔT from a sudden temperature change exceeds the flaw-limited strength and the part cracks. Three families, three different ways to die of temperature.",
         formula: "σ_thermal ≈ E·α·ΔT (one-axis constrained estimate);  T_creep ≈ 0.4·T_melt (K)",
       },
@@ -168,17 +168,17 @@ export const materialsW18Lessons: Lesson[] = [
     minutes: 35,
     lede: "Separating hard screens from soft tradeoffs, killing families against the screens, ranking the survivors — and stating the price of the winner out loud.",
     start:
-      "In January 1986 the Challenger's booster O-rings were asked to seal in cold they were never chosen for. The elastomer lost its resilience, hot gas blew past, and seven people died. || It was a selection failure rather than a strength failure: the service temperature fell outside the family's envelope, and the engineers' temperature screen was written down and overridden. A screen only works if nobody can waive it quietly. Selection is a discipline for exactly this: write the constraints down, apply the hard ones as screens that kill families outright, and rank the survivors on the soft ones — cost, mass, makeability. || A decision is finished only when the winner's price is stated. 'Ceramic, because 900°C killed everything but a superalloy we cannot afford; we accept brittleness and will design thick sections with no stress concentrations.' Constraints you can negotiate are tradeoffs. Constraints you cannot are screens. Confusing the two is how O-rings end up in the cold.",
+      "Material selection works best when hard constraints are separated from preferences. || A hard constraint is a requirement the material must meet: service temperature, minimum stiffness, corrosion resistance, or some other non-negotiable limit. Materials that fail a hard screen are removed before ranking. || After screening, rank the survivors on softer tradeoffs such as mass, cost, manufacturability, or repairability, and state the downside of the final choice."
     use: "When a part needs a family. || List every constraint — temperature, load, environment, shape, volume, cost. Mark each as screen (violating it kills the part) or tradeoff (it ranks survivors). Apply screens at the families' best envelope edges, so a kill is honest. || Stop when one family stands and you can state its price. If none stand, a constraint must move — and relaxing a screen is a decision someone signs off on, with the consequences named.",
     example:
       "A bracket must hold 50 MPa at 900°C continuous, in air, bolted to a steel frame. || Screens: service temperature ≥ 900°C kills polymers (done by ~250°C), composites (matrix done by ~250°C), and ordinary steels and aluminum (creep by ~450°C) — at their best edges, honestly dead. Strength ≥ 50 MPa at temperature and air-oxidation resistance leave two standing: nickel superalloys and the ceramics, alumina or silicon carbide. || The superalloy survives but costs ~20× steel; ceramic wins on cost and oxidation. Winner: ceramic — and the stated price is brittleness plus thermal-expansion mismatch with the steel frame, so the bracket gets compliant mounts and generous radii. The temperature did the deciding; the design pays the price the family charges.",
     ideas: [
       {
-        heading: "Screens kill, tradeoffs rank",
+        heading: "Use hard screens before soft tradeoffs",
         body: "A screen is a constraint whose violation is failure: service temperature, a corrosion environment with no coating allowed, a hard mass cap. A tradeoff is a preference among survivors: cost, machinability, supplier base. Apply screens first and tradeoffs second — ranking families before screening them is how a cheap, familiar, wrong material wins. And judge each family at its best envelope edge: if its champion cannot clear the bar, the kill is honest.",
       },
       {
-        heading: "Every winner has a price",
+        heading: "State the compromise that comes with the selected material",
         body: "Ceramic buys temperature with brittleness. Composite buys specific stiffness with directionality and a matrix temperature ceiling. Polymer buys cheapness and corrosion resistance with softness and creep. Metal buys ductility and familiarity with mass. The decision document is not finished at the winner's name — it is finished at the sentence that names what was sacrificed and how the design compensates.",
         formula: "decision = winner + the demand that forced it + the price, stated",
       },

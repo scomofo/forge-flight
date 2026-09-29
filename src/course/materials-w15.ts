@@ -15,22 +15,22 @@ export const materialsW15Lessons: Lesson[] = [
     minutes: 35,
     lede: "Name the four strengthening mechanisms, say which dislocation obstacle each one installs, and price each one in ductility, cost, and complexity.",
     start:
-      "Take a steel paperclip and bend it back and forth. The first bend is easy. The second is harder. By the fourth the metal fights you — and then it snaps with almost no stretch left. You did not change the alloy. You changed something inside it, and that something made it stronger and then killed it. || A metal deforms permanently when planes of atoms slip past each other, and that slip is carried by dislocations — line defects that move far more easily than whole planes. Strength is therefore not a property of the atoms; it is friction against dislocation motion. Every strengthening mechanism is a way of installing obstacles in the dislocations' path. || There are four obstacles worth knowing: grain boundaries, tangled dislocations, dissolved solute atoms, and grown precipitates. Each one blocks slip by a different trick, and each one charges a different price. The rest of the week is learning to pick the right obstacle for the job.",
+      "Repeatedly bending a metal can make further plastic deformation harder, even though the alloy chemistry has not changed. || Plastic deformation in metals is carried largely by dislocation motion. Strengthening methods work by making that motion more difficult. || The four mechanisms to know here are grain refinement, work hardening, solid-solution strengthening, and precipitation strengthening. Each raises strength in a different way and comes with tradeoffs."
     use: "A part needs more yield strength than its alloy delivers in the soft condition. || Pick the mechanism whose obstacle fits the alloy and the shop: grain refinement when you control the thermomechanical schedule, work hardening when the part is formed anyway, solid solution when the alloy already carries solutes, precipitation when the alloy has a phase to grow and you can hold a furnace schedule. Name the obstacle, name the price. || Stop when you can say which mechanism is doing the work in a given part and what was traded to buy it. If two mechanisms are active, say which one dominates — they rarely split the credit evenly.",
     example:
       "A 1045 steel bar with 20 μm grains: σ₀ = 110 MPa, k = 0.65 MPa·m^1/2. || σ = 110 + 0.65 / √(20×10⁻⁶) = 110 + 0.65 × 223.6 = 255 MPa. Now refine the grains to 5 μm by controlled rolling: 0.65 / √(5×10⁻⁶) = 0.65 × 447.2 = 291 MPa on top of the 110, for σ = 401 MPa. || Same chemistry, 57% more yield — because a slip plane now runs into a grain boundary every 5 μm instead of every 20. Note what Hall-Petch cannot do: it says nothing about ductility, and below a few tens of nanometres the grains start sliding instead of blocking.",
     ideas: [
       {
-        heading: "Strength is friction against dislocations",
+        heading: "Strengthening makes dislocation motion harder",
         body: "A perfect crystal would be enormously strong — every bond across a slip plane would have to break at once. Real metals are ten to a thousand times weaker because dislocations let the slip propagate one atomic row at a time, like moving a rug by pushing a wrinkle across it. So the yield strength of a metal measures how hard it is to move its dislocations, and every strengthening mechanism makes that journey harder.",
       },
       {
-        heading: "Hall-Petch: boundaries are walls",
+        heading: "Grain boundaries impede dislocation motion",
         body: "A grain boundary is a wall where the crystal orientation changes: a dislocation arriving there has no slip plane to continue on. Finer grains mean shorter pile-ups of dislocations at each wall, and the pile-up stress concentration is what gives the one-over-root-d law. It is the only mechanism that raises strength while barely touching ductility — and its gain survives an anneal only as long as grain growth is held off.",
         formula: "σ_y = σ₀ + k·d^(−1/2)",
       },
       {
-        heading: "The other three obstacles",
+        heading: "Work hardening, solute atoms, and precipitates add obstacles",
         body: "Work hardening tangles dislocations into a forest where they block each other — strong, but ductility collapses and the metal goes anisotropic. Solid-solution atoms distort the lattice and snag passing dislocations — a moderate gain for a small ductility cost, paid in alloying money, with diminishing returns: the gain goes as √c, so doubling the solute from 1% to 2% buys only √2 ≈ 1.41 times the gain, not twice. Precipitates force dislocations to bow between them like a rope around posts — the biggest gain of all, priced in furnace schedule discipline and the danger of overaging past the peak.",
         formula: "Δσ_ss ∝ √c (solute fraction c)",
       },
@@ -96,11 +96,11 @@ export const materialsW15Lessons: Lesson[] = [
       "A 4140 shaft, oil-quenched from 850°C, measures about 58 HRC — and a sharp blow can crack it. || Temper at 400°C for one hour: carbon diffuses just enough to relax the martensite's distortion, fine carbides precipitate, and the hardness settles near 42 HRC with yield around 1300 MPa and 11% elongation. || The temper bought back toughness at a known price in hardness. Untempered martensite rarely survives real service; tempered martensite is what ships. The schedule — temperature and time — is the design variable, and it is chosen, not inherited.",
     ideas: [
       {
-        heading: "Annealing happens in three acts",
+        heading: "Annealing progresses through recovery, recrystallization, and grain growth",
         body: "Recovery first: dislocations rearrange and annihilate, residual stress falls, strength barely moves. Recrystallization second: brand-new strain-free grains nucleate and eat the deformed ones — this is where the strength collapses and ductility returns. Grain growth third: big grains eat small ones to reduce boundary area, and the yield drifts down with the square root of the growing diameter. Hold too long at too high a temperature and act three undoes the point of the whole exercise.",
       },
       {
-        heading: "Martensite is trapped carbon",
+        heading: "Quenching can form hard martensite",
         body: "Cool austenite slowly and carbon diffuses out into soft ferrite and cementite. Cool it fast — past the nose of the TTT diagram before diffusion can act — and the carbon is trapped inside a body-centered-tetragonal lattice it does not fit in. The distortion blocks every dislocation in sight: hardness soars, toughness craters. Tempering lets a little carbon move, a little carbide precipitate, and the lattice relax just enough. The TTT diagram is a map of this race: miss the nose and you get martensite; cross the curves above the nose and you get pearlite; hold below the nose but above Ms and you get bainite.",
         formula: "TTT nose: cool faster than the critical rate → martensite",
       },
@@ -175,7 +175,7 @@ export const materialsW15Lessons: Lesson[] = [
       "The bolt: 800 MPa yield, 10% elongation. Cold-worked 1045 gives 560 MPa — out at the screen, no matter how cheap. || Solution-aged 2024 gives 345 MPa — not in the same league. Quenched-and-tempered 1045 gives 850 MPa and 12% at 1.9× base cost, but a 1.06 margin is thin. Q&T 4140 gives 1300 MPa and 11% (margin 1.6) at 2.3× base cost (1.6× material plus heat treatment). || The call: pay for 4140's margin and hardenability through the bolt section — oil quench from 850°C, temper near 400°C. The mechanism is tempered martensite; the trade is cost and a heat-treatment schedule the shop must actually hold. Structure (trapped carbon, fine carbides) → processing (quench + temper) → properties (1300 MPa, 11%) → performance (the bolt holds).",
     ideas: [
       {
-        heading: "The triangle: strength, ductility, cost",
+        heading: "Process selection balances strength, ductility, and cost",
         body: "Every mechanism buys strength with something. Work hardening spends ductility. Precipitation spends process control and money. Grain refinement is the cheapest strength there is, but thermomechanical schedules are not free. Draw the triangle for the part in front of you and mark which corner the job actually pays for — then distrust any option that claims all three.",
         formula: "No free strength: Δσ always has a price",
       },

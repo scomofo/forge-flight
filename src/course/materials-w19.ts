@@ -19,17 +19,17 @@ export const materialsW19Lessons: Lesson[] = [
     minutes: 35,
     lede: "Screening a material set on hard constraints, ranking the survivors by the property index the job actually needs, and writing the trade study that names what you rejected and why.",
     start:
-      "In the 1990s the bicycle industry fought a material war: steel loyalists, aluminum upstarts, titanium boutiques, carbon fiber racers. Every camp had a brochure with one winning column. || The way out of the camp war is to write down what the part must not fail — a minimum strength, a maximum mass, a maximum price — throw out everything that violates any one of them, and only then ask which survivor is best at the job. Screening is binary: a material either clears the bar or it does not. No partial credit. || Ranking then needs one number per material, and that number must come from the job. A tie rod limited by stiffness ranks on E/ρ. A beam limited by strength ranks on σ^(2/3)/ρ. The index is the job, compressed into a ratio. Pick the wrong index and you optimize the wrong part.",
+      "Material comparisons become much clearer when you separate screening from ranking. || First remove every option that violates a hard requirement such as strength, mass, temperature, or cost. Then rank only the survivors. || The ranking metric has to come from the actual design objective. Different jobs lead to different material indices, so choosing the index is part of the engineering."
     use: "Whenever you choose a material before you know the answer. || List the non-negotiables first — strength floor, density ceiling, temperature, corrosion, cost — and delete every candidate that fails any one of them. Then derive the index from the objective and the constraint: write mass as a function of the free variable, eliminate the free variable with the constraint, and read off the material group. || Stop when two or three survivors remain and the ranking is close. Close rankings are decided by the columns the index ignored: cost, corrosion, embodied energy, fatigue. That decision, written down with the rejects named, is the trade study.",
     example:
       "A 1 m tie rod must hit a stiffness target; cost ceiling $10/kg; outdoor, uncoated. || M = E/ρ: steel 200/7.85 = 25.5, aluminum 69/2.7 = 25.6, carbon fiber 140/1.55 = 90.3. For fixed stiffness, mass scales as 1/M — steel and aluminum land within 1% of each other, carbon far ahead. || The cost screen kills carbon at $80/kg against a $10 ceiling. The corrosion screen kills bare steel outdoors. The shortlist is one name: 6061 aluminum. The index said steel; the screens said otherwise — which is why you screen first.",
     ideas: [
       {
-        heading: "Screens are binary",
+        heading: "Hard screens remove nonviable materials",
         body: "A constraint is a pass/fail gate, not a suggestion. Relaxing one is a design decision with a named cost — a coating budget, a maintenance schedule, a heavier section — never a quiet fudge to keep a favorite candidate alive. The shortlist is only as honest as the screens behind it.",
       },
       {
-        heading: "The index is derived, not chosen",
+        heading: "Derive the ranking index from the design objective",
         body: "Write the objective (minimize mass) with the constraint (fixed stiffness or strength), eliminate the free geometric variable, and the material group left standing is the index. A tie in tension gives E/ρ for stiffness and σ/ρ for strength; bending changes the exponents because the section shape enters — a beam sized for stiffness ranks on E^(1/2)/ρ. Memorizing the table works until the loading changes; the derivation works always.",
         formula: "tie (stiff): M = E/ρ; beam (stiff): M = E^(1/2)/ρ; beam (strong): M = σ^(2/3)/ρ; panel (stiff): M = E^(1/3)/ρ",
       },
@@ -88,22 +88,22 @@ export const materialsW19Lessons: Lesson[] = [
     minutes: 35,
     lede: "Reading a corrosion failure from its morphology, naming the mechanism, and choosing the protection that actually interrupts it.",
     start:
-      "On December 15, 1967, the Silver Bridge over the Ohio River collapsed at rush hour. Forty-six people died. The failure started in a single steel eyebar at a pin connection. || The steel met its strength spec. It was also stressed, wet, and corroding: a crack grew by stress corrosion at the pin hole, hidden inside the joint, until the crack, only ~2.5 mm deep, reached the critical size for that low-toughness steel in the cold — K met K_IC, and the eyebar snapped. Structure (high-strength steel), processing (the pin-and-hanger joint trapped water), properties (that steel in that environment cracks under sustained tension), performance (a bridge falls in under a minute). || Corrosion is an electrochemical cell: an anode dissolving, a cathode consuming the electrons, an electrolyte connecting them. Rust on the surface is just the visible version. Wherever those three meet under stress or in a crevice, you have a design load your stress calculation never included.",
+      "Corrosion requires an electrochemical path: anodic dissolution, a cathodic reaction, and an electrolyte connecting them. Geometry and environment can make that process highly localized. || A material that passes a static strength check can still fail if corrosion, sustained stress, and cracking interact. Stress-corrosion cracking is one example where environment becomes part of the load case. || Include corrosion exposure and joint geometry in the design assumptions rather than treating them as maintenance details added later."
     use: "Whenever metal meets environment — which is every part that leaves the building. || Identify the cell: the anode (the metal that dissolves — the more negative one in the galvanic series), the electrolyte (seawater, road salt, condensate), and the amplifier (small anode area, a crevice starved of oxygen, sustained tensile stress). Match the morphology to the mechanism: pits, crevice attack at joints, branched cracks under stress. || Stop treating when you have broken the cell — drained the electrolyte, isolated the couple, or removed the tensile stress — and named the inspection that watches the spot you could not protect.",
     example:
       "A steel bolt fastens an aluminum cleat on a boat. Salt spray is a given. || In the galvanic series for seawater, aluminum sits near −0.75 V and carbon steel near −0.60 V: aluminum is the anode by 0.15 V, and it will dissolve to protect the bolt. Here the area ratio helps: a small steel cathode on a large aluminum anode spreads the attack. Flip it (aluminum rivets in steel plate) and the rivets die fast. The crevice is the real threat: the bolt head forms one, and chloride pits aluminum's passive film where it cannot heal. || A stronger bolt would not help. Isolate the couple with a nylon washer and sleeve, or bed the joint in sealant so the electrolyte never arrives — or accept the maintenance and inspect the cleat every season. The cheapest fix is the one drawn before the parts exist.",
     ideas: [
       {
-        heading: "The galvanic series ranks eagerness to dissolve",
+        heading: "The galvanic series helps predict which metal becomes anodic",
         body: "The more negative metal is the anode: it dissolves so the cathode does not have to. The potential difference sets the driving force, but the area ratio sets the speed — a small anode feeding a large cathode concentrates the current into fast, localized death. Same ΔV, opposite area ratios, completely different outcomes.",
         formula: "anode = more negative potential; small anode + large cathode = fast local death",
       },
       {
-        heading: "Geometry makes cells",
+        heading: "Crevices and joints can create aggressive local corrosion cells",
         body: "You do not need two metals to get a cell. A crevice starves the gap of oxygen, and differential aeration turns the hidden metal into the anode — which is why attack hides under washers and gaskets. Chloride breaks passive films locally and they do not heal, which is pitting. The joint you drew for strength is also the joint that corrodes.",
       },
       {
-        heading: "SCC needs all three",
+        heading: "Stress-corrosion cracking needs stress, material susceptibility, and environment",
         body: "Stress-corrosion cracking demands tensile stress, a specific environment, and a susceptible alloy — simultaneously. Remove any one and the cracks stop. That is why the defenses are plural: lower the stress (shot peening, annealing), change the alloy, or remove the environment. Branched cracks with little visible metal loss are the signature; by the time you see them, the design already failed.",
         formula: "SCC ⟺ tensile stress ∧ specific environment ∧ susceptible alloy",
       },
@@ -167,22 +167,22 @@ export const materialsW19Lessons: Lesson[] = [
     minutes: 35,
     lede: "Putting embodied energy and CO₂ on the selection table next to stiffness and cost, and arguing repair against replace with numbers.",
     start:
-      "Making a kilogram of aluminum from bauxite costs roughly 200 MJ — smelting alumina is an electrochemical marathon. Remelting a kilogram of scrap costs about 10 MJ: five percent. || That twenty-to-one ratio is why the material choice and the end-of-life plan are the same decision. A part designed to be recovered is a part whose embodied energy gets amortized over two lives instead of one. Structure (the alloy), processing (primary versus secondary route), properties (embodied energy per kilo), performance (the product's lifetime carbon). || Embodied impacts deserve a column in the selection table, not a footnote. But the biggest number in the carbon ledger is usually not the material — it is whether the thing can be opened, fixed, and kept in service.",
+      "Primary production and recycled production can have very different energy and emissions burdens. Those differences belong in the same selection table as cost and mechanical properties. || End-of-life design also matters. A recyclable material is only useful if the product can actually be separated and recovered. || In many products, extending service life through repair or replacement of subcomponents can save more impact than optimizing the material alone."
     use: "Whenever the brief mentions lifetime cost, carbon, or “sustainable” — and defensively, whenever it does not. || Add embodied energy and CO₂ per kilogram to the candidate table, multiply by the part mass, and compare against the use phase: a lighter part that saves fuel for ten years can repay a heavy embodied debt, and a disposable part never does. Then ask the repair questions: can it be disassembled, are the wear parts separable, does the joint outlive the product? || Stop when the recommendation names the end of life — recycle stream, remanufacture path, or landfill — and the design feature that makes that path real.",
     example:
       "A 2 kg aluminum bracket versus a 3 kg steel bracket for the same job. || Embodied: aluminum 2 × 200 = 400 MJ; steel 3 × 30 = 90 MJ. At the factory gate, aluminum is more than four times worse — and it is also the lighter part. Make it from recycled aluminum, 2 × 10 = 20 MJ, and it beats the steel's 90 MJ before it moves at all. || If the primary-aluminum bracket rides in a vehicle for 200,000 km, at roughly 1.5 MJ per kg per 1,000 km the 1 kg saved returns ~300 MJ against the 310 MJ debt — about break-even, which is why the use phase has to be computed, not assumed. If it sits in a warehouse rack, steel wins and it is not close. Sustainability is not a material property. It is a material property times a life.",
     ideas: [
       {
-        heading: "Embodied energy is a property column",
+        heading: "Include embodied energy and emissions in the selection table",
         body: "MJ/kg and kg CO₂/kg sit in the table next to modulus and strength, and they screen and rank like anything else: a CO₂ ceiling is a hard screen, a carbon weight is a trade-study column. Primary aluminum's ~200 MJ/kg versus recycled's ~10 is a 20:1 spread — larger than almost any property gap between competing candidates, so it moves decisions.",
         formula: "impact = mass × embodied intensity; recycled Al ≈ 5% of primary",
       },
       {
-        heading: "Recyclability is a system property",
+        heading: "Recyclability depends on the whole product system",
         body: "Thermoplastics remelt; thermosets and most composites do not — they downcycle into filler if they are lucky. Alloys contaminate: tramp copper in steel scrap caps how much can be recycled into high-grade product. The material's recyclability is set as much by the collection stream and the alloy chemistry as by the part.",
       },
       {
-        heading: "Design for repair beats design for recycling",
+        heading: "Repairability can reduce lifetime impact substantially",
         body: "The longest life is the one already built. Fasteners come apart; welds and structural adhesives mostly do not. Separable wear parts, accessible joints, and documented disassembly keep a product in service past its first failure — and every extra year divides the embodied debt by a larger number.",
       },
     ],

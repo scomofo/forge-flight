@@ -15,23 +15,23 @@ export const physicsW9Lessons: Lesson[] = [
     minutes: 35,
     lede: "Find a system's natural frequency from its stiffness and mass, predict its motion from any release point, and account for where the energy sits at every instant.",
     start:
-      "A car crosses a speed bump and keeps bouncing — three, four diminishing hops — before it settles. A tuning fork struck once rings at a single pitch for seconds. Neither motion is random: each system has a frequency it prefers, and it returns to that frequency no matter how you disturb it. || A restoring force pulls the system back toward equilibrium with a strength proportional to the displacement: F = −kx. The minus sign is the entire physics — the force always opposes the displacement. Newton's second law then reads m·x¨ = −kx, and its solution is sinusoidal motion at one angular frequency: ω = √(k/m). Stiffness sets the pull, mass sets the reluctance, and the square root of their ratio is the only combination of the two with dimensions of 1/time. || This is why the fork's pitch and the car's bounce are set by the system, not by you. Change how hard you strike the fork and you change the loudness, never the note: the initial conditions choose amplitude and phase, and the system chooses the frequency.",
+      "A spring-mass system and a tuning fork both tend to oscillate at a characteristic frequency set by the system itself. || For a simple spring, the restoring force is F = −kx. The minus sign tells you the force points back toward equilibrium. Combining that with Newton's second law gives m x¨ = −kx and the natural angular frequency ω = √(k/m). || Stiffness and mass set the frequency. The initial displacement and velocity set the amplitude and phase.",
     use: "Whenever something is displaced from a stable equilibrium and released — suspensions, buildings in wind, atoms in a crystal, the balance wheel in a watch. Small oscillations about any stable equilibrium look like F = −kx, which is why this one equation covers so much ground. || Write m·x¨ = −kx. Read ω = √(k/m), then f = ω/2π and T = 1/f. Get amplitude and phase from the initial conditions: x(t) = A·cos(ωt + φ). Track the energy: E = ½kA² total, sloshing between KE = ½k(A² − x²) and PE = ½kx². || Stop when you can state the period, the frequency, and the energy — and check the ledger: for undamped motion the total never changes, kinetic peaks at equilibrium, potential peaks at the extremes.",
     example:
       "A 0.50 kg mass hangs on a spring of stiffness 20 N/m, pulled 0.10 m down and released from rest. || ω = √(20/0.50) = √40 ≈ 6.32 rad/s. The cyclic frequency f = 6.32/2π ≈ 1.01 Hz, so the period T ≈ 0.99 s — about one bounce per second. Energy: E = ½·20·(0.10)² = 0.10 J. At the equilibrium crossing all of it is kinetic: ½·0.50·v² = 0.10 gives v_max = √(0.40) ≈ 0.63 m/s. || One second per bounce, 0.63 m/s through the middle, and all of it came from two numbers — the stiffness and the mass. Double the amplitude to 0.20 m and the frequency would not move: only the energy would, quadrupling to 0.40 J.",
     ideas: [
       {
-        heading: "The minus sign is the physics",
+        heading: "The restoring force points back toward equilibrium",
         body: "F = −kx says the force fights the displacement, always. That opposition is what turns a push into an oscillation instead of a runaway: displaced right, pulled left; displaced left, pulled right. Any stable equilibrium behaves this way for small disturbances — a pendulum at small angles, a molecule vibrating in a solid — which is why the harmonic oscillator is the most reused model in physics.",
         formula: "m·x¨ + kx = 0",
       },
       {
-        heading: "Frequency is fixed by the system",
+        heading: "Natural frequency depends on stiffness and mass",
         body: "ω = √(k/m) is fixed by the system before you touch it. Stiffen the spring and it hurries; add mass and it dawdles. Your release chooses only how far it swings (amplitude) and where in the cycle it starts (phase). This separation — system sets the rate, you set the swing — is what makes the tuning fork reliable and the car predictable.",
         formula: "ω = √(k/m), f = ω/2π, T = 2π√(m/k)",
       },
       {
-        heading: "Energy sloshes; the total sits still",
+        heading: "Energy shifts between kinetic and potential",
         body: "At the extremes the mass is instantaneously at rest and all energy is elastic potential, ½kA². At equilibrium the spring is relaxed and all of it is kinetic, ½mv_max². Between the two the energy pours back and forth, and the total never changes — until damping opens a drain. Follow the energy and you can solve oscillation problems without ever writing the differential equation.",
         formula: "E = ½kA² = ½mv_max²",
       },
@@ -90,23 +90,23 @@ export const physicsW9Lessons: Lesson[] = [
     minutes: 35,
     lede: "Find where a driven system amplifies the drive instead of following it, and read any wave's speed from its frequency and wavelength.",
     start:
-      "A singer holds a note and a wine glass shatters. A modest periodic push met a system at its own frequency, and the response grew far beyond the push. (The 1940 Tacoma Narrows Bridge collapse is often told this way; it was actually flutter — a steady wind fed energy in at the bridge's own motion.) || A driven oscillator answers with amplitude X = (F₀/k) / √((1−r²)² + (2ζr)²), where r = ω_drive/ω_n is the frequency ratio and ζ the damping ratio. At r ≈ 1 the denominator collapses to 2ζ, so the response is 1/(2ζ) times the static deflection — with 5% damping, ten times. || Resonance is matched timing: each push adds to the last, where off-rhythm pushes cancel. That is why it is dangerous and useful in equal measure — dangerous in bridges, useful in radios, musical instruments, and every tuned circuit you own.",
+      "A periodically forced system can respond much more strongly when the drive frequency approaches its natural frequency. || The steady-state response depends on the frequency ratio r = ω_drive/ω_n and the damping ratio ζ. Near resonance, light damping can produce a large amplification compared with the static deflection. || The two main design levers are straightforward: move the natural frequency away from the forcing frequency, or add damping to reduce the peak response.",
     use: "Whenever a periodic force meets an oscillator — wind on a bridge, an unbalanced rotor, a circuit driven at line frequency. || Compute the ratio r = ω_drive/ω_n and read the magnification off the response curve: near r = 1 with light damping, expect a large multiple of the static response. Fix it by moving ω_n away from the drive (change stiffness or mass) or by adding damping — the only thing standing between the system and a large motion. || Stop when you can name the peak's location and height — and check the flanks: as r → 0 the response tends to the static deflection F₀/k, and as r → ∞ the mass cannot keep up and the response falls.",
     example:
       "A machine with 5% damping (ζ = 0.05) is driven at its natural frequency. || At r = 1 the magnification is 1/(2·0.05) = 10: a 1 mm static deflection becomes 10 mm of motion. Detune the drive to r = 0.8 and the denominator becomes √((1−0.64)² + (2·0.05·0.8)²) = √(0.1296 + 0.0064) ≈ 0.369, so the magnification falls to ≈ 2.7. || A 20% move off the natural frequency cut the response nearly fourfold — which is why staying off resonance is one of the first rules you learn for any structure, and why adding damping is often cheaper than retuning it.",
     ideas: [
       {
-        heading: "Resonance is frequency matching",
+        heading: "Resonance occurs near the natural frequency",
         body: "The response peaks where the drive's rhythm matches the system's own: r* = √(1−2ζ²), which is essentially 1 for light damping. Below it the system follows the push; above it the system's inertia wins and the response collapses. The curve's shape is universal — bridges, RLC circuits, and atoms absorbing light all trace the same peak.",
         formula: "X/(F₀/k) = 1/√((1−r²)² + (2ζr)²)",
       },
       {
-        heading: "Damping sets the ceiling",
+        heading: "Damping reduces the resonance peak",
         body: "At the peak the response is Q = 1/(2ζ) times the static deflection. Halve the damping and you double the worst case — which is why a lightly damped structure is a liability and why tuned mass dampers hang inside skyscrapers. When you cannot move the frequencies apart, add damping: it is the only term in the denominator that helps exactly where it hurts.",
         formula: "Q = 1/(2ζ)",
       },
       {
-        heading: "Waves move the disturbance, not the medium",
+        heading: "Wave speed links frequency and wavelength",
         body: "A wave moves a disturbance through a medium while the medium itself only oscillates in place — the rope goes up and down, the pulse travels along. Speed, frequency, and wavelength are locked by v = fλ: raise the frequency at fixed speed and the wavelength must shrink. Pin a string at both ends and only the standing waves fit: f_n = n·v/(2L), the physics of every stringed instrument.",
         formula: "v = fλ,  f_n = n·v/(2L)",
       },
@@ -155,23 +155,23 @@ export const physicsW9Lessons: Lesson[] = [
     minutes: 35,
     lede: "Size the expansion a temperature swing demands, compute the stress when something refuses to expand, and name the three ways heat moves before you calculate any of them.",
     start:
-      "On a hot July afternoon, continuously welded rails buckle sideways into the ballast — sun kinks, the industry calls them. In January the finger joints of a bridge gape open like a mouth. Same physics both seasons: materials change length with temperature, and structures must either accommodate the change or fight it. || Left free, a bar grows by ΔL = αL₀ΔT. Bolt it down at both ends and the growth that cannot happen becomes stress instead: σ = EαΔT for a bar held along its one axis — the would-be strain, multiplied by the stiffness. Heat itself moves three ways: conduction through material, convection carried by moving fluid, radiation across empty space needing no medium at all. || The catch is that α looks harmless — 12 parts per million per degree for steel — while E is enormous. Their product turns an ordinary 40-degree swing into 96 MPa of compressive stress, spending over a third of the yield margin before any load is applied.",
+      "Temperature changes make materials expand or contract. If a part is free to move, the result is a change in length. If the movement is restrained, the result can be a large thermal stress. || Free expansion is ΔL = αL₀ΔT. For a fully restrained bar in one dimension, the corresponding stress magnitude is σ = EαΔT. || Heat can also move by conduction, convection, or radiation. Identify the dominant mode before choosing an equation.",
     use: "Whenever temperature changes on a structure or a part — rails, piping runs, engine components, electronics packaging. || Compute the free expansion ΔL = αL₀ΔT and ask where it goes: joints, bends, bellows. If it has nowhere to go, compute σ = EαΔT and compare against yield — heating a constrained bar puts it in compression, cooling in tension. For heat flow, name the dominant mode first (conduction, convection, radiation), then calculate. || Stop when you can state the gap the joint needs and the stress if the gap were missing — and check the sign: constrained heating compresses, constrained cooling stretches.",
     example:
       "A 10 m steel rail sees a 40 °C summer swing: α = 12×10⁻⁶/°C, E = 200 GPa. || Free, it would grow ΔL = 12×10⁻⁶ × 10 × 40 = 4.8 mm — small enough to ignore on a drawing, large enough to buckle a track that has nowhere to put it. Welded continuously (constrained), the stress is σ = 200×10⁹ × 12×10⁻⁶ × 40 = 96 MPa, compressive. || Against a 250 MPa yield, the weather just consumed 38% of the margin before any train arrived. That is the calculation behind every expansion joint you have ever stepped over.",
     ideas: [
       {
-        heading: "Small α, huge E",
+        heading: "Thermal expansion can become significant over long lengths",
         body: "Thermal expansion is millimeters per meter per tens of degrees — easy to dismiss, impossible to ignore at structural scale. α is a material constant (12×10⁻⁶/°C for steel, 23×10⁻⁶ for aluminum), and the expansion is strictly proportional to length and temperature change. Bigger structure, bigger swing, bigger movement: always compute it before deciding it is negligible.",
         formula: "ΔL = αL₀ΔT",
       },
       {
-        heading: "Constrained heat becomes stress",
+        heading: "Restraining thermal expansion creates stress",
         body: "Prevent the expansion along a bar's axis and the strain αΔT still exists — as stress, σ = EαΔT. That is the one-axis (bar) case; a plate held in both directions sees more, EαΔT/(1−ν). Note what is missing from the formula: length. A 10 cm bolt and a 10 m rail feel the same stress for the same temperature change; only the free movement scales with size. Heating compresses a constrained part, cooling stretches it, and both directions can fail you.",
         formula: "σ = EαΔT (bar, one axis; heating → compression)",
       },
       {
-        heading: "Heat moves three ways",
+        heading: "Heat transfers by conduction, convection, and radiation",
         body: "Conduction carries heat through material down a temperature gradient — Fourier's law, the reason a metal spoon handle gets hot. Convection carries it with moving fluid — the reason a fan cools you. Radiation needs no medium at all and grows as T⁴ — the reason the sun warms you through vacuum. Name the dominant mode before you reach for an equation; misidentifying the mode is the usual failure, not the arithmetic.",
         formula: "conduction: q = −k∇T; radiation: q = εσT⁴",
       },
