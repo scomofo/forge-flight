@@ -200,6 +200,19 @@ export type Idea = {
   formula?: string;
 };
 
+export type LessonOpening = {
+  /** "steps" keeps labeled chunks; "prose" reads as a short instructor introduction. */
+  mode: "steps" | "prose";
+  heading?: string;
+  labels?: [string, string, string];
+};
+
+export type LessonReadBlock =
+  | { kind: "idea"; idea: 0 | 1 | 2; label?: string }
+  | { kind: "example"; heading?: string }
+  | { kind: "move"; heading?: string }
+  | { kind: "aside"; heading: string; body: string };
+
 export type Check = {
   prompt: string;
   options: [string, string, string, string];
@@ -225,13 +238,21 @@ export type Lesson = {
   title: string;
   minutes: number;
   lede: string;
-  /** Taught from a familiar picture. Three parts separated by " || ": the picture, the word, why the rule has that shape. */
+  /** Legacy source text. Three parts separated by " || ". Presentation can vary through opening. */
   start: string;
+  /** Optional presentation treatment for the same start text. */
+  opening?: LessonOpening;
   /** When you are here, what you do, and when you stop. Three parts separated by " || ". */
   use: string;
   /** One worked case. Three parts separated by " || ": the object, the arithmetic, the call. */
   example: string;
   ideas: [Idea, Idea, Idea];
+  /**
+   * Optional read-tab sequence. When omitted, lessons keep the legacy order:
+   * ideas 1–3, worked example, then move. Blocks reuse the canonical fields
+   * above so presentation can vary without duplicating curriculum text.
+   */
+  readFlow?: LessonReadBlock[];
   bench: BenchId;
   prompt: string;
   note: string;

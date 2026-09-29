@@ -22,6 +22,15 @@ export const mathLessons: Lesson[] = [
     title: "Ratios, units, and the factor-label method",
     minutes: 35,
     lede: "Convert units without dropping factors of ten, scale quantities by ratio, and use the units to check your own work.",
+    opening: { mode: "prose", heading: "Before the calculator" },
+    readFlow: [
+      { kind: "example", heading: "Work one first" },
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "aside", heading: "Common mistake", body: "If the unit you meant to remove is still present after multiplying by a conversion factor, stop. The factor is upside down or incomplete." },
+      { kind: "idea", idea: 2, label: "Sanity check" },
+      { kind: "idea", idea: 1, label: "Scaling" },
+      { kind: "move", heading: "Use it this way" },
+    ],
     start:
       "The drawing says 240 mm. The stock list is in inches. This is the kind of conversion that seems trivial right up until a factor gets flipped. || Write the conversion as a fraction: 1 in / 25.4 mm. The numerator and denominator represent the same length, so multiplying by the fraction changes the unit without changing the quantity. || Keep the units on the page and cancel them just like algebraic factors. If the unit you are trying to remove is still there at the end, the setup is wrong. Fix that before you calculate.",
     use: "Use this whenever you convert units or scale a quantity by a ratio. || Start with the number and its unit. Multiply by conversion factors arranged so the unwanted units cancel. Keep the units visible on every line. || When only the target unit remains, do a rough size check. For 240 mm, something near 10 inches makes sense. Something near 100 or 6000 does not.",

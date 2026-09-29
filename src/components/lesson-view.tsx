@@ -6,13 +6,13 @@ import { lessonFigures } from "@/components/figures";
 import { Quiz } from "@/components/quiz";
 import { isIntroTrack, lessonNeighbors } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
-import { isPassed, lessonKey, PASS_AT, type Lesson } from "@/course/types";
+import { isPassed, lessonKey, PASS_AT, type Lesson, type LessonReadBlock } from "@/course/types";
 import { cn } from "@/lib/cn";
 
 const steps = [
   {
     label: "Read",
-    guide: "Read top to bottom. Each lesson starts with something you can picture, then names the idea, then gives the rule.",
+    guide: "Read the lesson in the order it is presented. Some start from a problem, some from an example, and some go straight to the rule.",
   },
   {
     label: "Try",
@@ -31,22 +31,38 @@ function splitPoint(body: string) {
   return { point: body.slice(0, cut + 1), rest: body.slice(cut + 2) };
 }
 
-function StartHere({ text, figure }: { text: string; figure?: ReactNode }) {
-  const parts = text.split(" || ");
-  const rows = [
-    ["Picture this", parts[0]],
-    ["The word", parts[1]],
-    ["Why the rule looks like that", parts[2]],
-  ].filter((row): row is [string, string] => Boolean(row[1]));
+function StartHere({ lesson, figure }: { lesson: Lesson; figure?: ReactNode }) {
+  const parts = lesson.start.split(" || ");
+  const opening = lesson.opening;
+  if (opening?.mode === "prose") {
+    return (
+      <section>
+        <h2 className="font-serif text-sm text-accent">{opening.heading ?? "Start here"}</h2>
+        <div className="mt-4 flex flex-col gap-4">
+          {parts.filter(Boolean).map((line, i) => (
+            <div key={i}>
+              <p className={cn("max-w-prose leading-relaxed text-ink", i === 0 ? "text-lg" : "")}>{line}</p>
+              {i === 0 && figure ? figure : null}
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  const labels = opening?.labels ?? ["Picture this", "The word", "Why the rule looks like that"];
+  const rows = parts
+    .map((line, i) => [labels[i] ?? `Part ${i + 1}`, line] as [string, string])
+    .filter((row) => Boolean(row[1]));
   return (
     <section>
-      <h2 className="font-serif text-sm text-accent">Start here</h2>
+      <h2 className="font-serif text-sm text-accent">{opening?.heading ?? "Start here"}</h2>
       <ol className="mt-4 flex flex-col gap-6">
-        {rows.map(([label, line]) => (
-          <li key={label}>
+        {rows.map(([label, line], i) => (
+          <li key={`${label}-${i}`}>
             <p className="text-sm font-medium text-accent">{label}</p>
             <p className="mt-1 max-w-prose text-lg leading-relaxed text-ink">{line}</p>
-            {label === "Picture this" && figure ? figure : null}
+            {i === 0 && figure ? figure : null}
           </li>
         ))}
       </ol>
@@ -54,7 +70,7 @@ function StartHere({ text, figure }: { text: string; figure?: ReactNode }) {
   );
 }
 
-function Example({ text }: { text: string }) {
+function Example({ text, heading = "For example" }: { text: string; heading?: string }) {
   const parts = text.split(" || ");
   const rows = [
     ["The case", parts[0]],
@@ -63,7 +79,7 @@ function Example({ text }: { text: string }) {
   ].filter((row): row is [string, string] => Boolean(row[1]));
   return (
     <section className="rounded-lg border border-line bg-surface px-4 py-4 sm:px-5">
-      <h2 className="font-serif text-sm text-accent">For example</h2>
+      <h2 className="font-serif text-sm text-accent">{heading}</h2>
       <ol className="mt-3 flex flex-col gap-4">
         {rows.map(([label, line]) => (
           <li key={label}>
@@ -76,7 +92,7 @@ function Example({ text }: { text: string }) {
   );
 }
 
-function Move({ text }: { text: string }) {
+function Move({ text, heading = "The move" }: { text: string; heading?: string }) {
   const parts = text.split(" || ");
   const rows = [
     ["When", parts[0]],
@@ -85,7 +101,7 @@ function Move({ text }: { text: string }) {
   ].filter((row): row is [string, string] => Boolean(row[1]));
   return (
     <section className="rounded-lg border border-line px-4 py-4 sm:px-5">
-      <h2 className="font-serif text-sm text-accent">The move</h2>
+      <h2 className="font-serif text-sm text-accent">{heading}</h2>
       <ol className="mt-3 flex flex-col gap-4">
         {rows.map(([label, line]) => (
           <li key={label}>
@@ -95,6 +111,59 @@ function Move({ text }: { text: string }) {
         ))}
       </ol>
     </section>
+  );
+}
+
+function legacyReadFlow(): LessonReadBlock[] {
+  return [
+    { kind: "idea", idea: 0 },
+    { kind: "idea", idea: 1 },
+    { kind: "idea", idea: 2 },
+    { kind: "example" },
+    { kind: "move" },
+  ];
+}
+
+function ReadFlow({ lesson }: { lesson: Lesson }) {
+  const flow = lesson.readFlow ?? legacyReadFlow();
+  return (
+    <div>
+      {flow.map((block, i) => {
+        if (block.kind === "idea") {
+          const idea = lesson.ideas[block.idea];
+          const { point, rest } = splitPoint(idea.body);
+          return (
+            <section key={`idea-${block.idea}-${i}`} className="border-b border-line py-8">
+              <p className="font-serif text-sm text-accent">{block.label ?? `Point 0${block.idea + 1}`}</p>
+              <h2 className="mt-2 font-serif text-2xl text-ink">{idea.heading}</h2>
+              <p className="mt-3 max-w-prose text-lg leading-relaxed text-ink">{point}</p>
+              {rest ? <p className="mt-3 max-w-prose leading-relaxed text-muted">{rest}</p> : null}
+              {idea.formula ? <p className="mt-4 font-serif text-xl text-accent">{idea.formula}</p> : null}
+            </section>
+          );
+        }
+        if (block.kind === "example") {
+          return (
+            <div key={`example-${i}`} className="mt-8">
+              <Example text={lesson.example} heading={block.heading} />
+            </div>
+          );
+        }
+        if (block.kind === "move") {
+          return (
+            <div key={`move-${i}`} className="mt-4">
+              <Move text={lesson.use} heading={block.heading} />
+            </div>
+          );
+        }
+        return (
+          <aside key={`aside-${i}`} className="my-8 border-l-2 border-accent pl-4">
+            <p className="text-sm font-medium text-accent">{block.heading}</p>
+            <p className="mt-2 max-w-prose leading-relaxed text-ink">{block.body}</p>
+          </aside>
+        );
+      })}
+    </div>
   );
 }
 
@@ -120,7 +189,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
       </p>
       <h1 className="mt-3 font-serif text-4xl leading-tight text-ink sm:text-5xl">{lesson.title}</h1>
       <div className="mt-8">
-        <StartHere text={lesson.start} figure={Figure ? <Figure /> : undefined} />
+        <StartHere lesson={lesson} figure={Figure ? <Figure /> : undefined} />
       </div>
       <p className="mt-10 max-w-prose text-sm font-medium text-accent">What you will be able to do</p>
       <p className="mt-1 max-w-prose text-lg leading-relaxed text-ink">{lesson.lede}</p>
@@ -155,27 +224,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
 
       {step === 0 ? (
         <div>
-          <h2 className="mt-10 font-serif text-sm text-accent">Now the rule</h2>
-          <ol>
-            {lesson.ideas.map((idea, i) => {
-              const { point, rest } = splitPoint(idea.body);
-              return (
-              <li key={idea.heading} className="border-b border-line py-8">
-                <p className="font-serif text-sm text-accent">Point 0{i + 1}</p>
-                <h2 className="mt-2 font-serif text-2xl text-ink">{idea.heading}</h2>
-                <p className="mt-3 max-w-prose text-lg leading-relaxed text-ink">{point}</p>
-                {rest ? <p className="mt-3 max-w-prose leading-relaxed text-muted">{rest}</p> : null}
-                {idea.formula ? (
-                  <p className="mt-4 font-serif text-xl text-accent">{idea.formula}</p>
-                ) : null}
-              </li>
-              );
-            })}
-          </ol>
-          <div className="mt-10 flex flex-col gap-4">
-            <Example text={lesson.example} />
-            <Move text={lesson.use} />
-          </div>
+          <ReadFlow lesson={lesson} />
           <button
             type="button"
             onClick={() => setStep(1)}

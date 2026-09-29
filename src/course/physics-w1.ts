@@ -14,6 +14,15 @@ export const physicsW1Lessons: Lesson[] = [
     title: "SI units and dimensions",
     minutes: 35,
     lede: "Use units as an error check: reduce mechanical quantities to M, L, and T, and spot formulas that cannot possibly be right.",
+    opening: { mode: "prose", heading: "Start with the failure" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "First habit" },
+      { kind: "example", heading: "Try it before memorizing" },
+      { kind: "idea", idea: 1, label: "What the check catches" },
+      { kind: "aside", heading: "Important limit", body: "Dimensional consistency is necessary, not sufficient. A dimensionally correct equation can still have the wrong constant, sign, or physics." },
+      { kind: "idea", idea: 2, label: "One more pattern" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "In 1999, the Mars Climate Orbiter was lost after one part of the navigation chain used pound-force seconds and another expected newton-seconds. That is an expensive reminder that units are not clerical details. || Here is the distinction we need. A dimension tells you what kind of quantity you have: mass, length, time, or some combination of them. A unit tells you how you measured it: kilograms or slugs, metres or feet. In mechanics, we can reduce everything to M, L, and T. Force, for example, is MLT⁻² no matter which unit system you use. || Before you touch the calculator, check the dimensions. If one side of an equation is a length and the other is a time, you are done: something upstream is wrong. If you have a programming background, dimensions behave a bit like types. That analogy is useful, but the practical rule is simpler: mismatched dimensions mean a broken equation.",
     use: "Use this whenever you are about to trust a formula: one you derived, one from a datasheet, or one you only half remember. It is especially useful before a long calculation. || Rewrite each quantity in M, L, and T. When you multiply, add exponents; when you divide, subtract them. Both sides of the equation must match, and anything inside sin, exp, or log must be dimensionless. || Once both sides match, the formula has passed this check. That does not prove it is correct. It only means the units have stopped objecting.",
