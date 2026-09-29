@@ -19,23 +19,23 @@ export const materialsW16Lessons: Lesson[] = [
     minutes: 35,
     lede: "How cracks concentrate stress, when a crack goes critical, and why a running crack keeps running.",
     start:
-      "In January 1943 the Liberty ship Schenectady sat at a fitting-out dock in Portland, Oregon — and broke in two. No storm, no collision. A crack started at a sharp hatch corner and ran the length of the welded hull in minutes. The steel met its specification. || What changed was the processing: rivets had been replaced by welding, so the hull was one continuous plate and a crack no longer stopped at a plate edge — and a cold January night at the dock pushed the steel below its ductile-to-brittle transition. Structure (BCC iron), processing (welded continuous hull), properties (toughness collapses in the cold), performance (the ship breaks at the dock). || A crack is a stress concentrator with no radius. Every sharp corner multiplies the local stress — and once a crack exists, the stress field at its tip is described not by a multiplier but by the stress intensity K. K grows as the crack grows, which is the feedback loop that keeps a running crack going.",
+      "Cracks change the local stress field dramatically, which is why a structure can fail even when the nominal stress looks acceptable. || For blunt geometric features, a stress-concentration factor is often enough. For an actual crack, fracture mechanics uses the stress-intensity factor K, which grows with applied stress and crack size. || Failure occurs when K reaches the material's fracture toughness K_IC. Crack size therefore matters directly: a defect that was harmless earlier can become critical as it grows."
     use: "Whenever a part carries load and might contain a flaw — which is every part. And at every hole, fillet, keyway, and weld toe, where the nominal stress is not the stress the material actually feels. || Multiply the nominal stress by K_t — 3 for a circular hole, worse for sharp notches. For a crack of half-length a, compute K = Yσ√(πa) and compare it against the material's K_IC. Solve for the critical crack size a_c, then ask whether your inspection can reliably find anything near it. || Stop calculating when K sits below K_IC with margin and a_c is comfortably above your detection limit. If a_c is smaller than what you can reliably find, the design has to change — detection alone will not keep the part safe.",
     example:
       "A steel plate carries 200 MPa. Its fracture toughness K_IC is 50 MPa√m, and a crack of 5 mm half-length is found. Acceptable? || K = 1 × 200 × √(π × 0.005) = 200 × 0.1253 = 25.1 MPa√m — half of K_IC, so the crack sits still today. The critical size: a_c = (50/200)²/π = 0.0625/π = 0.0199 m, about 20 mm. || A 5 mm crack leaves a factor of four on size at this stress. But a_c falls as 1/σ², so doubling the stress quarters it to 5 mm. Whatever crack size you are comfortable with has to be recomputed whenever the stress changes.",
     ideas: [
       {
-        heading: "K_t: the nominal stress is a fiction",
+        heading: "Stress concentrations raise the local stress",
         body: "Holes, shoulders, keyways, and weld toes multiply the stress the material feels. A small circular hole in tension carries a stress concentration factor of 3 — the edge of the hole sees three times the nominal stress, by geometry alone, regardless of alloy. Cracks are worse: Inglis's ellipse with the tip radius driven to zero sends K_t toward infinity, which is exactly why the multiplier picture gives way to the stress-intensity picture once a real crack exists.",
         formula: "σ_local = K_t · σ_nominal; K_t ≈ 3 for a circular hole",
       },
       {
-        heading: "Griffith: cracks run on an energy budget",
+        heading: "Crack growth requires enough energy release",
         body: "A crack extends when the elastic strain energy released by its growth exceeds the energy cost of the new surface. That budget gives Griffith's fracture stress, and it falls as the crack lengthens — the theoretical strength of glass is gigapascals, while a scratched window breaks at a sneeze. Worked for glass, E = 70 GPa and γ ≈ 1 J/m²: a 1 μm flaw gives √(2 × 70×10⁹ × 1 / (π × 10⁻⁶)) ≈ 211 MPa; a 1 mm scratch drops it to about 6.7 MPa. The strength of a brittle solid is set by its largest flaw, not by its bonds.",
         formula: "σ_f = √(2Eγ / πa)",
       },
       {
-        heading: "K_IC: toughness as a material property",
+        heading: "Fracture toughness sets the critical crack condition",
         body: "Plane-strain fracture toughness K_IC is the material's resistance to a running crack, measured per ASTM E399. Thin sections show a higher apparent toughness K_c; K_IC is the thickness-independent, conservative value. It does depend on temperature — BCC steels cross a ductile-to-brittle transition where K_IC collapses, which is what broke the Schenectady's hull at the dock. A toughness number without a temperature is a rumor.",
         formula: "K = Yσ√(πa) must stay below K_IC",
       },
@@ -89,23 +89,23 @@ export const materialsW16Lessons: Lesson[] = [
     minutes: 35,
     lede: "Reading an S-N curve, estimating life with Basquin's law, combining load blocks with Miner's rule — and what the Comet taught us about square windows.",
     start:
-      "In 1954 two de Havilland Comets — the world's first jet airliners — broke up in flight within months of each other. The wreckage showed cracks starting at the corners of the square cabin windows. The structure had passed every static proof test; the loads that killed it were far below yield. || Each pressurization was a load cycle: the fuselage inflated and deflated like a balloon, and every cycle grew the cracks a little. Below a threshold the damage per cycle is microscopic — but cycles are counted in the thousands, and damage accumulates. And the windows were square: a square corner is a stress concentrator, K_t again, the same villain as the first lesson. || Fatigue is why parts die below their rated strength. Being under yield is not enough; you need to know how many cycles the part gets at that stress, and that is what the S-N curve says.",
+      "A component can fail after many repeated loads even when each individual load is below the static yield strength. That is fatigue. || Repeated stress cycles can initiate and grow cracks. Stress concentrations accelerate the process, which is why geometry, surface condition, and small defects matter so much. || Use an S-N curve when the design question is stress level versus number of cycles, and use crack-growth methods when a crack is already present."
     use: "For any part that sees repeated loading: read the S-N curve at your stress amplitude, or compute N = ½(σ_a/σ_f′)¹⸍ᵇ. For mixed loading, add damage fractions with Miner's rule. For the remaining life of a known crack, integrate the Paris law. || Steels show an endurance limit near half the ultimate strength — below it, life is effectively infinite. Aluminum and most non-ferrous metals show none: every cycle costs something, so you design to a finite life and inspect on schedule. || Stop when the Miner sum sits comfortably below 1 with margin for scatter — fatigue data scatters by factors, not percents — and when the inspection interval is a fraction of the crack-growth life from detectable to critical.",
     example:
       "A steel shaft sees fully reversed bending at σ_a = 300 MPa. The material's σ_f′ = 900 MPa and b = −0.1. How long does it live? || N = ½(300/900)^(1/−0.1) = ½(1/3)^(−10) = ½·3^10 = ½·59049 ≈ 29,500 cycles. || Thirty thousand cycles: at 10 Hz that is under an hour; at one pressurization per flight, it is years of service. Same number, different clock — which is why the usage spectrum, not just the stress, decides the design.",
     ideas: [
       {
-        heading: "S-N and the endurance limit",
+        heading: "S-N curves relate stress amplitude to fatigue life",
         body: "Wöhler's S-N curves plot stress amplitude against cycles to failure on log-log axes, where Basquin's power law is a straight line. Steels flatten near half the ultimate strength — the endurance limit, below which the curve runs effectively forever. Aluminum keeps falling: no plateau, so every cycle does some damage and you design for a finite life.",
         formula: "σ_a = σ_f′(2N)^b",
       },
       {
-        heading: "Paris: most of life is crack growth",
+        heading: "Paris law models stable fatigue crack growth",
         body: "The Paris law says a crack's growth per cycle goes as the stress-intensity range raised to m — about 3 for metals. Doubling ΔK multiplies the growth rate by eight. Worked: with C = 1×10⁻¹¹ m/cycle (ΔK in MPa√m) and m = 3, a crack at ΔK = 20 MPa√m grows 10⁻¹¹ × 20³ = 8×10⁻⁸ m — 0.08 μm per cycle; at 40 MPa√m, 0.64 μm. The corollary that matters: a crack spends most of its life short, then sprints. Inspection intervals are sized from that sprint — the growth life from a detectable crack to a critical one.",
         formula: "da/dN = C(ΔK)^m",
       },
       {
-        heading: "Miner's rule and honest scatter",
+        heading: "Miner's rule combines damage from different cycle levels",
         body: "Real loading is a spectrum, not a single amplitude. Miner's rule adds up the damage fractions — cycles spent over life available, block by block — and predicts failure at a sum of 1. Spend 100,000 cycles of a 200,000-cycle life and 100,000 of a 400,000-cycle life: 0.5 + 0.25 = 0.75, a quarter of the life left. It ignores sequence effects, and fatigue life scatters by factors of three to ten, so design factors on life that look cowardly are actually calibrated.",
         formula: "Σ(n_i / N_i) = 1 at failure",
       },
@@ -160,18 +160,18 @@ export const materialsW16Lessons: Lesson[] = [
     minutes: 35,
     lede: "The three stages of a creep curve, why a fifty-degree rise can erase decades of life, and how Larson-Miller trades time for temperature.",
     start:
-      "A turbine blade in a jet engine spins at ten thousand rpm in gas at 900°C. It does not melt — its melting point is far higher — and the centrifugal stress sits well below yield. Yet over thousands of hours the blade lengthens, millimeter by millimeter, until it rubs the casing. || At high temperature the atoms are mobile enough that the crystal flows under stresses that would be perfectly elastic at room temperature. Vacancies diffuse, dislocations climb, grain boundaries slide. The blade fails the way warm glass sags — on a clock measured in years. || Creep is failure with a time axis, so the design question takes stress, temperature, and time together: which combination of the three breaks the part? Temperature enters exponentially, which makes it the variable to watch most closely.",
+      "At elevated temperature, a material can continue to deform slowly under a constant load even when the stress is below the room-temperature yield strength. That is creep. || Diffusion, dislocation climb, and grain-boundary processes become more active as temperature rises. The result is time-dependent strain under sustained stress. || Creep design therefore depends on stress, temperature, and exposure time together. Temperature is especially important because many creep rates depend exponentially on it."
     use: "For any part that lives hot under load: get the secondary (steady-state) creep rate — that is the design number. Use Larson-Miller to map a short hot test onto a long cooler service life. Size the part so the predicted strain stays acceptable for the required life. || P = T(20 + log₁₀ t_r), with T in kelvin and t_r in hours: one parameter collapses time and temperature into a single number. Test hot and short; serve cooler and long. || Stop extrapolating when the time ratio passes about an order of magnitude — deformation mechanisms change, and the parameter interpolates far better than it extrapolates. And remember the grain-size reversal: fine grains are wonderful for room-temperature strength and worse for creep, because boundaries slide.",
     example:
       "A superalloy ruptures after 1,000 h at 800°C. What life does Larson-Miller predict at 700°C? || P = 1073 × (20 + log₁₀ 1000) = 1073 × 23 = 24,679. At 973 K: 20 + log₁₀ t = 24,679/973 = 25.36, so log₁₀ t = 5.36 and t ≈ 2.3 × 10⁵ h — about 26 years. || A hundred-degree drop bought a factor of 230 in life. That is the exponential at work: in creep, temperature moves the answer more than stress does. But it is a 230:1 extrapolation, far past the one-decade rule, so treat 26 years as a hypothesis to confirm with longer tests.",
     ideas: [
       {
-        heading: "The creep curve's three acts",
+        heading: "Creep usually passes through primary, secondary, and tertiary stages",
         body: "Primary creep decelerates as the material strain-hardens; secondary creep settles to a steady rate — the design number, the rate you size against; tertiary creep accelerates as voids and necking take over, ending in rupture. Designing on the secondary rate with a strain budget is the whole discipline, and the curve's horizontal axis is time.",
         formula: "design on ε̇_secondary, the steady-state rate",
       },
       {
-        heading: "Diffusion sets the clock",
+        heading: "Diffusion strongly controls high-temperature creep rates",
         body: "Creep is thermally activated: Norton's power law pairs a stress exponent n (typically 3–8) with an Arrhenius term in temperature. With n = 5, 20% more stress multiplies the rate by 1.2⁵ ≈ 2.5. The activation energy Q is large, so modest temperature changes swing the rate by orders of magnitude. This is why a hot spot, not the nominal temperature, usually decides a hot part's life.",
         formula: "ε̇ = Aσⁿe^(−Q/RT)",
       },
