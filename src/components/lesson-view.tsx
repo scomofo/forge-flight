@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bench } from "@/components/bench";
 import { LessonClip } from "@/components/lesson-clip";
+import { lessonFigures } from "@/components/figures";
 import { Quiz } from "@/components/quiz";
 import { isIntroTrack, lessonNeighbors } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
@@ -30,7 +31,7 @@ function splitPoint(body: string) {
   return { point: body.slice(0, cut + 1), rest: body.slice(cut + 2) };
 }
 
-function StartHere({ text }: { text: string }) {
+function StartHere({ text, figure }: { text: string; figure?: ReactNode }) {
   const parts = text.split(" || ");
   const rows = [
     ["Picture this", parts[0]],
@@ -45,6 +46,7 @@ function StartHere({ text }: { text: string }) {
           <li key={label}>
             <p className="text-sm font-medium text-accent">{label}</p>
             <p className="mt-1 max-w-prose text-lg leading-relaxed text-ink">{line}</p>
+            {label === "Picture this" && figure ? figure : null}
           </li>
         ))}
       </ol>
@@ -104,6 +106,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
   const score = useProgress((s) => s.completed[key]);
   const need = lesson.passAt ?? PASS_AT;
   const { prev, next } = lessonNeighbors(lesson.track, lesson.id);
+  const Figure = lessonFigures[key];
 
   useEffect(() => {
     visit(key);
@@ -117,7 +120,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
       </p>
       <h1 className="mt-3 font-serif text-4xl leading-tight text-ink sm:text-5xl">{lesson.title}</h1>
       <div className="mt-8">
-        <StartHere text={lesson.start} />
+        <StartHere text={lesson.start} figure={Figure ? <Figure /> : undefined} />
       </div>
       <p className="mt-10 max-w-prose text-sm font-medium text-accent">What you will be able to do</p>
       <p className="mt-1 max-w-prose text-lg leading-relaxed text-ink">{lesson.lede}</p>
