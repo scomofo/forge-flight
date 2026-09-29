@@ -13,6 +13,14 @@ export const engineeringW26Lessons: Lesson[] = [
     title: "How things get made",
     minutes: 35,
     lede: "Screen manufacturing processes by tolerance capability first, volume economics second, and material compatibility third — and be able to name the price of the winner.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "Different manufacturing processes offer different combinations of tolerance capability, tooling cost, cycle time, material compatibility, and surface finish. || A process that cannot reliably meet a functional tolerance is not a valid choice unless a secondary operation is added. Production volume then determines whether tooling-intensive or slower low-tooling processes make economic sense. || Choose the process while the part is still being designed. Waiting until the drawing is finished often turns ordinary features into expensive special operations."
     use: "When you must choose how a part gets made, or when a shop returns your drawing with 'cannot hold that.' || List the part's material, planned volume, and tightest tolerance. Screen every candidate process: typical tolerance ≤ required tolerance, else it needs a named secondary op with its own cost; then volume — is this the process's sweet spot or are you fighting its economics; then material compatibility. || Stop when one process clears all three screens and you can state its price per part at your volume, tooling amortized, with the rejected processes named and their cause of death written down.",
@@ -93,6 +101,14 @@ export const engineeringW26Lessons: Lesson[] = [
     title: "Tolerances and stacks",
     minutes: 40,
     lede: "Compute worst-case and RSS tolerance stacks, classify fits from limit dimensions, and choose the stack method by the consequence of being wrong.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Tolerances define the allowed variation around nominal dimensions so parts can be manufactured and still assemble and function. || When dimensions stack in the same functional direction, their variation stacks too. Worst-case analysis assumes every part reaches the unfavorable limit at the same time. RSS is appropriate for independent random variation when a statistical result is acceptable. || Choose the method based on the consequence of failure and the validity of the independence assumption, then document that choice."
     use: "When parts must assemble, or when a drawing's tolerances look tight and someone must say whether the assembly works. || List every contributor in the stack direction. Compute worst-case = Σ|tᵢ| and RSS = √(Σtᵢ²). Compare each against the available clearance. || Stop when you can name which method your verdict rests on, what happens if you are wrong, and which single tolerance dominates the stack — that is the one to attack first.",
@@ -168,6 +184,14 @@ export const engineeringW26Lessons: Lesson[] = [
     title: "Design for making",
     minutes: 35,
     lede: "Put tight tolerances only where a named function lives, minimize setups and operations, and defend the process choice in a written memo.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "A tolerance should be tight because the function requires it, not because tighter looks more professional on a drawing. || Match tolerances and features to the chosen manufacturing process. Use standard stock and tooling where possible, minimize setups, and reserve expensive precision for fits, seals, alignments, and other genuinely functional features. || Record which tolerances are function-driven and which were relaxed. That makes later design changes less likely to reintroduce unnecessary cost."
     use: "When finalizing a drawing, or when a quote comes back shocking and someone must find the money in the design. || For each tolerance on the drawing, ask what function it serves — stack, fit, seal, alignment — and name it. If it serves none, loosen it. Count setups and operations; prefer standard sizes and tools. || Stop when every remaining tight tolerance traces to a named function, the process choice is written down with rejects and reasons, and the quote no longer contains operations that buy nothing.",
