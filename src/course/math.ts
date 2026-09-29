@@ -183,10 +183,74 @@ export const mathLessons: Lesson[] = [
         heading: "Undo the operations in reverse",
         body: "If the unknown has several operations wrapped around it, remove them in reverse order. Undo addition or subtraction, then multiplication or division, then powers or roots as needed. Work one step at a time so you can see exactly what changed.",
         formula: "y = kx² + c  ⇒  x = ±√((y − c)/k)",
+        help: [
+          {
+            trigger: "Run a formula backward",
+            title: "Rearranging a formula for the quantity you need",
+            intro: "In design, you often know the result you need and have to solve backward for the missing input. The safe way is to isolate the unknown symbolically first, then substitute numbers.",
+            sections: [
+              {
+                heading: "Core idea",
+                body: "Stress is σ = F/A. If force F and area A are known, you can calculate stress. But if the load and allowable stress are known, the design question is reversed: what area A is required?",
+              },
+              {
+                heading: "Step 1 — do the same thing to both sides",
+                items: [
+                  "Start with σ = F/A.",
+                  "Multiply both sides by A: σA = F.",
+                  "Divide both sides by σ: A = F/σ.",
+                ],
+              },
+              {
+                heading: "Step 2 — undo operations in reverse",
+                body: "If the unknown is buried under several operations, remove the outer operations first. For y = kx² + c, subtract c, divide by k, then take the square root: x = ±√((y − c)/k).",
+              },
+              {
+                heading: "Step 3 — put the numbers in last",
+                body: "Keeping the symbols until the unknown is alone reduces repeated rounding and leaves you with a formula you can reuse for another load case.",
+              },
+              {
+                heading: "Worked design example",
+                items: [
+                  "Required load: F = 12,000 N.",
+                  "Allowable stress: σ = 150 MPa = 150 N/mm².",
+                  "A = F/σ = 12,000 / 150 = 80 mm².",
+                  "A 10 × 8 mm bar is exactly 80 mm², so it sits right at the limit. In a real design you would normally choose the next suitable size up to provide margin.",
+                ],
+              },
+              {
+                heading: "Check the answer",
+                body: "Put 80 mm² back into the original formula: 12,000 N / 80 mm² = 150 N/mm² = 150 MPa. The original relationship is satisfied.",
+              },
+            ],
+            caution: "Do not move a term across the equals sign by changing its sign as a memorized trick. Perform the actual inverse operation on both sides; that method still works when the equation gets more complicated.",
+          },
+        ],
       },
       {
         heading: "Put the numbers in last",
         body: "Keeping the formula symbolic until the unknown is isolated reduces rounding and leaves you with a reusable relationship. A = F/σ is useful for every load case, not only the one in the example.",
+        help: [
+          {
+            trigger: "Why symbols first?",
+            title: "Why substitute numbers at the end",
+            intro: "Solving symbolically keeps the reasoning visible and makes the result reusable.",
+            sections: [
+              {
+                heading: "Less rounding",
+                body: "If you substitute decimal values early, each intermediate step can introduce rounding. Keeping symbols until the last line usually means one numerical calculation and one final rounding step.",
+              },
+              {
+                heading: "Reusable result",
+                body: "A = F/σ is not just the answer to one problem. It is a design relationship you can reuse for any load and allowable stress.",
+              },
+              {
+                heading: "Easier checking",
+                body: "A symbolic result makes unit and dependency checks easier. From A = F/σ you can immediately see that more force requires more area and a higher allowable stress requires less area.",
+              },
+            ],
+          },
+        ],
       },
     ],
     bench: "rearrange",
