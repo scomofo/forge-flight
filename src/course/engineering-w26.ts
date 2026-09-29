@@ -14,23 +14,23 @@ export const engineeringW26Lessons: Lesson[] = [
     minutes: 35,
     lede: "Screen manufacturing processes by tolerance capability first, volume economics second, and material compatibility third — and be able to name the price of the winner.",
     start:
-      "Send the same bracket drawing to three shops. The machine shop quotes $42 a part and holds ±0.025 mm without thinking. The die caster quotes $8 a part — at ten thousand units, after $12,000 of tooling — and holds ±0.1 mm if you are lucky. The print farm quotes $15 overnight with no tooling and hands you ±0.2 mm of layer lines. The drawing never changed. What the drawing means changed, because each process reads a tolerance as a different promise. || Manufacturing splits into four families: subtractive (milling, turning — cut away what you do not want), casting and molding (pour or press into a cavity), forming (bend and stamp sheet), and additive (grow it layer by layer). Each family has a tolerance it can hold as a matter of routine, a volume where its economics work, and materials it likes. A process that cannot hold your tightest tolerance is out of the running — unless you price in the secondary operation that gets you there. || You screen by tolerance first because tolerance is the one screen that is physics, not negotiation. Volume economics can be argued with — amortize tooling, accept a slower cycle. A process holding ±0.1 mm cannot be argued into ±0.05. That is why the process choice is a design input, not a purchasing decision made after the drawing is done.",
+      "Different manufacturing processes offer different combinations of tolerance capability, tooling cost, cycle time, material compatibility, and surface finish. || A process that cannot reliably meet a functional tolerance is not a valid choice unless a secondary operation is added. Production volume then determines whether tooling-intensive or slower low-tooling processes make economic sense. || Choose the process while the part is still being designed. Waiting until the drawing is finished often turns ordinary features into expensive special operations."
     use: "When you must choose how a part gets made, or when a shop returns your drawing with 'cannot hold that.' || List the part's material, planned volume, and tightest tolerance. Screen every candidate process: typical tolerance ≤ required tolerance, else it needs a named secondary op with its own cost; then volume — is this the process's sweet spot or are you fighting its economics; then material compatibility. || Stop when one process clears all three screens and you can state its price per part at your volume, tooling amortized, with the rejected processes named and their cause of death written down.",
     example:
       "A 60 mm 6061 aluminum bracket, 500 units, two hole positions at ±0.05 mm, one cosmetic face. || CNC milling holds ±0.025 mm as routine — clears the ±0.05 screen with margin; 500 units sits comfortably in its low-volume sweet spot; aluminum machines beautifully. Die casting holds ±0.1 mm — fails the tolerance screen outright unless you add a ream operation for the holes. FDM printing holds ±0.2 mm — disqualified four times over. || CNC milling wins at roughly $42 a part. The memo records the price honestly: you are paying for cycle time, and the rejects are die casting (tolerance, and $12,000 of tooling over 500 parts) and FDM (tolerance, surface, strength). No surprises at the quote stage, because the screens were the quote stage.",
     ideas: [
       {
-        heading: "Tolerance capability is the first screen",
+        heading: "Screen processes against functional tolerance capability",
         body: "Every process has a tolerance it holds as a matter of routine — CNC milling ±0.025 mm, die casting ±0.1 mm, sand casting ±0.5 mm, FDM ±0.2 mm, grinding ±0.005 mm. If the process's typical tolerance is coarser than your tightest requirement, the process is out — or it needs a secondary operation, priced and scheduled like any other step. That screen is a fact about the process; the rest is economics.",
         formula: "viable ⇒ process_tol ≤ required_tol (else secondary op)",
       },
       {
-        heading: "Volume decides the economics",
+        heading: "Production volume changes the process economics",
         body: "Tooling-heavy processes (die casting, injection molding) are ruinous for ten parts and unbeatable for ten thousand; tooling-free processes (CNC, printing) cost nearly the same per part at any volume once setup is spread. The unit cost is tooling divided by volume plus cycle cost — find the crossover and you know which side of it you live on before anyone quotes.",
         formula: "unit cost = tooling / volume + cycle cost",
       },
       {
-        heading: "Every process leaves fingerprints",
+        heading: "Each process leaves characteristic geometry and surface limits",
         body: "Castings need draft angles and leave parting lines; sheet metal has bend radii and springback; printed parts are anisotropic — strong along the layers, weak across them; machined parts carry residual stress and need tool access. Design with the fingerprints, not against them: put the critical faces where the process is strongest and keep the process's weaknesses out of the load path.",
         formula: "design rules = f(chosen process), not the reverse",
       },
@@ -94,18 +94,18 @@ export const engineeringW26Lessons: Lesson[] = [
     minutes: 40,
     lede: "Compute worst-case and RSS tolerance stacks, classify fits from limit dimensions, and choose the stack method by the consequence of being wrong.",
     start:
-      "In 1908 three Cadillacs were disassembled in England, their parts scrambled in a pile, and reassembled into three cars that then drove 500 miles. Cadillac won the Dewar Trophy not for speed but for interchangeability: parts made to a tolerance band, not a number, fit together no matter which bin they came from. Before that, every machine was hand-fitted — parts were filed until they mated, and no two assemblies were alike. || A tolerance is the allowed band around a nominal dimension: 50 ± 0.1 mm means every part between 49.9 and 50.1 ships. GD&T — geometric dimensioning and tolerancing — is the language that says which variations matter: the position of two holes that must align gets a tight tolerance, the thickness of a cosmetic flange gets a loose one. And variations add: when parts stack in one direction, their tolerances stack with them. || Two ways to add them. Worst-case adds absolutely — every part at its extreme in the same direction — which is Murphy's law as arithmetic. RSS adds in quadrature — the square root of the sum of squares — which is statistics as mercy: independent random variations mostly cancel. Worst-case is the honest answer when failure is expensive; RSS is the honest answer when variations are truly independent and the consequence is a nuisance. Choosing between them is choosing which risk you accept, and the drawing should say which you chose.",
+      "Tolerances define the allowed variation around nominal dimensions so parts can be manufactured and still assemble and function. || When dimensions stack in the same functional direction, their variation stacks too. Worst-case analysis assumes every part reaches the unfavorable limit at the same time. RSS is appropriate for independent random variation when a statistical result is acceptable. || Choose the method based on the consequence of failure and the validity of the independence assumption, then document that choice."
     use: "When parts must assemble, or when a drawing's tolerances look tight and someone must say whether the assembly works. || List every contributor in the stack direction. Compute worst-case = Σ|tᵢ| and RSS = √(Σtᵢ²). Compare each against the available clearance. || Stop when you can name which method your verdict rests on, what happens if you are wrong, and which single tolerance dominates the stack — that is the one to attack first.",
     example:
       "A bracket flange 50 ± 0.10 mm, a spacer 30 ± 0.05 mm, and a cover 20 ± 0.10 mm stack into a 100.20 mm cavity. || Nominal total is 100.00 mm. Worst-case = 0.10 + 0.05 + 0.10 = 0.25 mm, so the stack can reach 100.25 mm — beyond the 100.20 cavity: fails worst-case. RSS = √(0.10² + 0.05² + 0.10²) = √(0.0225) = 0.15 mm, so the statistical stack reaches 100.15 mm — inside the cavity: passes RSS. || If a jammed cover is a shop nuisance, ship on RSS and write that decision down. If the cover is a safety interlock, redesign — loosen nothing, tighten the bracket tolerance or deepen the cavity. The arithmetic is neutral; the consequence picks the method.",
     ideas: [
       {
-        heading: "Worst-case is Murphy's law as arithmetic",
+        heading: "Worst-case stacking assumes all tolerances align unfavorably",
         body: "Add every tolerance at its absolute extreme, all in the same direction: T = Σ|tᵢ|. It answers 'what is the worst assembly that can legally ship?' Use it when the consequence of interference is scrap, rework you cannot afford, or a safety function. It is conservative by construction — that is the point.",
         formula: "T_worst = Σ |tᵢ|",
       },
       {
-        heading: "RSS is statistics as mercy",
+        heading: "RSS estimates independent random stack variation",
         body: "When variations are independent and centered, they add in quadrature: T = √(Σtᵢ²). Three ±0.1 contributors stack to ±0.17, not ±0.3 — the extremes rarely coincide. But RSS is a loan against statistics: it assumes independence, centered processes, and enough parts for the law of large numbers to show up. Two parts from the same shifted batch are not independent.",
         formula: "T_rss = √(Σ tᵢ²)  — independence required",
       },
@@ -169,13 +169,13 @@ export const engineeringW26Lessons: Lesson[] = [
     minutes: 35,
     lede: "Put tight tolerances only where a named function lives, minimize setups and operations, and defend the process choice in a written memo.",
     start:
-      "A drawing crossed a shop floor with ±0.01 mm on a face nobody would ever touch, mate, or seal against. The shop could mill the part in one setup — but not to ±0.01. So they milled it, then ground that one face, then inspected it on the CMM, and the part cost twice what it should have. The tolerance bought nothing; it was vanity with a price tag. Every shop has a drawer of such drawings. || Design for manufacturing means the drawing respects the process: tight tolerances only where a function lives — a stack, a fit, a seal — and generous tolerances everywhere else; standard stock sizes instead of custom; features a standard tool can reach in one setup; uniform wall thickness for molded parts; bend radii the press brake already owns. The cost of a tolerance is nonlinear: halving a tolerance roughly doubles the cost of that feature, because it moves you across a process boundary — from milling to grinding, from one setup to two, from in-process checking to 100% inspection. || That is why the process-choice memo exists. It lists the winner, the rejects with their causes of death, and — crucially — which tolerances are functional and which were relaxed. A year later, when someone asks why the bracket costs what it costs, the memo answers. Without it, the vanity tolerances creep back in one engineering change at a time.",
+      "A tolerance should be tight because the function requires it, not because tighter looks more professional on a drawing. || Match tolerances and features to the chosen manufacturing process. Use standard stock and tooling where possible, minimize setups, and reserve expensive precision for fits, seals, alignments, and other genuinely functional features. || Record which tolerances are function-driven and which were relaxed. That makes later design changes less likely to reintroduce unnecessary cost."
     use: "When finalizing a drawing, or when a quote comes back shocking and someone must find the money in the design. || For each tolerance on the drawing, ask what function it serves — stack, fit, seal, alignment — and name it. If it serves none, loosen it. Count setups and operations; prefer standard sizes and tools. || Stop when every remaining tight tolerance traces to a named function, the process choice is written down with rejects and reasons, and the quote no longer contains operations that buy nothing.",
     example:
       "The 60 mm 6061 bracket again: the first drawing carried ±0.01 mm on the cosmetic face. || Nothing assembles against the face, seals against it, or aligns to it — its function is looks, and as-milled aluminum looks fine. Loosen the face to ±0.25 mm; keep ±0.05 on the two hole positions that locate the mating part, because those sit in a real stack. || The re-quote drops about 30%: one setup, no grinding, no CMM time on the face. The memo records the functional tolerances (the holes) and the relaxed one (the face), so the next engineer knows which is which.",
     ideas: [
       {
-        heading: "Every tolerance is a purchase",
+        heading: "Every tight tolerance has a manufacturing cost",
         body: "Tightening a tolerance roughly doubles the cost of the feature it touches — new process, new setup, new inspection. Spend tolerance where it buys function: the hole positions that locate a mating part, the bore that carries a bearing. Everywhere else, the cheapest tolerance that does the job is the right tolerance. Vanity tolerances are the most expensive lines on the drawing.",
         formula: "feature cost ∝ 1 / tolerance  (across process boundaries)",
       },
@@ -185,7 +185,7 @@ export const engineeringW26Lessons: Lesson[] = [
         formula: "geometry must satisfy process rules, not just function",
       },
       {
-        heading: "The memo is the design",
+        heading: "Document why the process and tolerances were chosen",
         body: "The process-choice memo names the winner, every reject with its cause of death, the functional tolerances and why each is tight, and the relaxed ones and why each is loose. It is the only thing standing between your cost-optimized drawing and the slow creep of vanity tolerances through future revisions. Write it before the first quote, not after.",
         formula: "memo = winner + rejects + functional tolerances + relaxed tolerances",
       },
