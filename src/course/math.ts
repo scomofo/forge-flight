@@ -23,24 +23,24 @@ export const mathLessons: Lesson[] = [
     minutes: 35,
     lede: "Convert units without dropping factors of ten, scale quantities by ratio, and use the units to check your own work.",
     start:
-      "The drawing says 240 mm. The stock list prices by the inch, and the mill's DRO reads in inches. Somewhere between the drawing and the invoice, millimeters have to become inches — in the right direction. || A unit factor is a conversion written as a fraction: 25.4 mm / 1 in. Top and bottom are the same length, so the fraction equals one — multiplying by it changes the unit, not the quantity. || Units multiply and cancel the same way numbers do. If the old unit is still in your setup at the end, the setup is wrong. Fix it before you trust the number.",
-    use: "Any time a quantity has to change units — or a recipe, a drawing, or a load has to scale by a ratio. || Write the starting quantity with its unit attached. Choose factors that cancel each unit you don't want. Do it on every line, not just the first — most mistakes creep in on the lines people skip. || Stop when the only unit left is the one you asked for, then check the size roughly. 9.4 inches is the neighborhood. If you get 94, you divided the wrong way.",
+      "The drawing says 240 mm. The stock list prices by the inch, and the mill's digital readout (DRO) shows inches. Somewhere between the drawing and the invoice, millimeters have to become inches — in the right direction. || A unit factor is a conversion written as a fraction: 25.4 mm / 1 in. Top and bottom are the same length, so the fraction equals one — multiplying by it changes the unit, not the quantity. (25.4 is exact: the inch is defined that way. Most other factors, like 2.20462 lb per kg, are rounded.) || Units multiply and cancel the same way numbers do. If the old unit is still in your setup at the end, the setup is wrong. Fix it before you trust the number.",
+    use: "Any time a quantity has to change units — or a recipe, a drawing, or a load has to scale by a ratio. || Write the starting quantity with its unit attached. Choose factors that cancel each unit you don't want. Do it on every line, not just the first — most mistakes creep in on the lines people skip. || Stop when the only unit left is the one you asked for, then check the size roughly. 9.4 inches is the neighborhood. If you get about 6100, you went the wrong way through the factor. If you get 94, you slipped a decimal.",
     example:
-      "Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.45 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.05 lb, so 7.05 × $4.10 = $28.9. || Call it 9.4 in and $29. In both lines the starting unit cancelled and the target unit survived. Multiply by 25.4 instead of dividing and the units come out as mm·in, which is meaningless — you'll spot the mistake before any money is involved.",
+      "Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.449 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.055 lb, so 7.055 lb × ($4.10 / 1 lb) = $28.92. Keep the extra digits until the last line; round only the answer. || Call it 9.4 in and $29. The 3.2 kg only has two digits, so two or three digits is all any answer can honestly claim. In every line the starting unit cancelled and the target unit survived. Flip the factor to (25.4 mm / 1 in) and you get 6096 mm²/in, which is meaningless — you'll spot the mistake before any money is involved.",
     ideas: [
       {
         heading: "Units are part of the number",
         body: "A bare number is a rumor. “9.4” could be inches or millimeters, and those differ by a factor of 25. So every quantity in this course carries its unit from the first line to the last. The unit is what tells you the setup is pointed the right way. The factor-label method is just that discipline written out: arrange the multiplications so the unwanted units cancel, and whatever unit is left is your answer's unit.",
-        formula: "240 mm × (1 in / 25.4 mm) = 9.45 in",
+        formula: "240 mm × (1 in / 25.4 mm) = 9.4 in",
       },
       {
         heading: "Ratios preserve shape",
-        body: "A scale ratio multiplies every length by the same factor k, and that's all it touches directly. Area is length times length, so it picks up k². Volume picks up k³. A 1:8 glider isn't “eight times smaller” in any single sense: its span is 1/8, its wing area 1/64, its mass at the same density 1/512. Forget the exponent and the model comes out impossibly heavy or impossibly fragile.",
+        body: "A scale ratio multiplies every length by the same factor k, and that's all it touches directly. Area is length times length, so it picks up k². Volume picks up k³. A 1:8 glider isn't “eight times smaller” in any single sense: its span is 1/8, its wing area 1/64, its mass at the same density 1/512. If the full-size wing is 1.6 m², the model's is 1.6 m² × (1/8)² = 1.6 / 64 = 0.025 m². Forget the exponent and the model comes out impossibly heavy or impossibly fragile.",
         formula: "lengths ×k ⇒ areas ×k² ⇒ volumes ×k³",
       },
       {
         heading: "Estimate before you compute",
-        body: "A calculator will happily give you six digits of a wrong answer. Before you trust it, round everything to one digit and do it in your head. 240 mm is about a quarter of a meter, a meter is about 39 inches, so the answer should land near 10 inches. 9.45 passes. 94.5 doesn't. Estimation is the cheapest error detector you have, and it works on every formula in this course.",
+        body: "A calculator will happily give you six digits of a wrong answer. Before you trust it, round everything to one digit and do it in your head. 240 mm is about a quarter of a meter, a meter is about 40 inches, so the answer should land near 10 inches. 9.4 passes. 94 doesn't, and neither does 6100. Estimation is the cheapest error detector you have, and it works on every formula in this course.",
       },
     ],
     bench: "units",
@@ -52,7 +52,7 @@ export const mathLessons: Lesson[] = [
         prompt: "240 mm is how many inches?",
         options: ["9.45 in", "94.5 in", "0.945 in", "6100 in"],
         answer: 0,
-        why: "240 / 25.4 = 9.45. The wrong answers are the same digits with the decimal moved — the classic sign you divided the wrong way or dropped a factor. A rough estimate (a quarter meter is about 10 inches) rules them out.",
+        why: "240 / 25.4 = 9.45. 6100 in is what you get if you multiply by 25.4 instead of dividing — the factor was flipped. 94.5 and 0.945 are the right digits with the decimal moved, a dropped factor of ten. A rough estimate (a quarter meter is about 10 inches) rules all three out.",
       },
       {
         prompt: "Which setup correctly converts 5 ft to meters?",

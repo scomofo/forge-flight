@@ -11,11 +11,11 @@ import { cn } from "@/lib/cn";
 const steps = [
   {
     label: "Read",
-    guide: "Start here is the lesson. It begins with a thing you can picture, then names the word. The rule comes after the word means something.",
+    guide: "Read top to bottom. Each lesson starts with something you can picture, then names the idea, then gives the rule.",
   },
   {
     label: "Try",
-    guide: "The picture and the word stay on this page. The bench only lets you watch the rule. It does not introduce a new idea.",
+    guide: "Use the bench to watch the rule work. Nothing new here — just the same rule with numbers you can change.",
   },
   {
     label: "Check",
