@@ -14,9 +14,9 @@ export const materialsW13Lessons: Lesson[] = [
     index: 7,
     title: "Defects are the material",
     minutes: 35,
-    lede: "You will explain why a perfect crystal should be a hundred times stronger than any real metal, and name the three defect families that do the actual work.",
+    lede: "Explain why a perfect crystal should be a hundred times stronger than any real metal, and name the three defect families that do the actual work.",
     start:
-      "In 1926 Frenkel estimated the shear strength of a perfect crystal: slide one atomic plane over another, and the stress needed is roughly G/30, where G is the shear modulus. For iron that predicts about 2.5 GPa. Real iron yields at a few hundred MPa — wrong by an order of magnitude or more. || The word: a dislocation is a line defect — an extra half-plane of atoms wedged into the crystal. Moving a dislocation is a small local shuffle, not a whole-plane slide, so the stress it needs is a hundred times smaller. In 1934 Taylor, Orowan, and Polanyi proposed this independently to close exactly Frenkel's gap. || Why the rule has that shape: defects are not damage to an otherwise perfect material. They are the mechanism through which every useful property — strength, hardening, diffusion itself — actually operates. A perfect crystal would be a curiosity, not an engineering material.",
+      "In 1926 Frenkel estimated the shear strength of a perfect crystal: slide one atomic plane over another, and the stress needed is roughly G/30, where G is the shear modulus. For iron that predicts about 2.5 GPa. Real iron yields at a few hundred MPa — wrong by an order of magnitude or more. || The word: a dislocation is a line defect — an extra half-plane of atoms wedged into the crystal. Moving a dislocation is a small local shuffle, not a whole-plane slide, so the stress it needs is a hundred times smaller. In 1934 Taylor, Orowan, and Polanyi proposed this independently to close exactly Frenkel's gap. || Why the rule has that shape: calling defects 'damage' gets it backwards. They are the machinery that every useful property runs on — strength, hardening, diffusion itself. A perfect crystal would be a curiosity, not an engineering material.",
     use: "Whenever you ask why a metal is soft or strong: check the defect population, not the composition. || Classify by dimension: 0D point defects (vacancies, interstitials), 1D line defects (dislocations), 2D planar defects (grain boundaries, stacking faults). Vacancy site fraction obeys Boltzmann, n/N = exp(−Qv/kT). Dislocation motion is slip; blocked dislocations are strength. || Stop when you can point at a processing step and name the defect it targets — quenching freezes vacancies in, cold work multiplies dislocations, annealing sweeps both out.",
     example:
       "Copper, vacancy formation energy Qv ≈ 0.9 eV. What fraction of sites are empty at 1000 K — and at room temperature? || n/N = exp(−0.9 / (8.617×10⁻⁵ × 1000)) = exp(−10.44) ≈ 2.9×10⁻⁵ at 1000 K. At 300 K: exp(−34.8) ≈ 7.6×10⁻¹⁶. || Heating from room temperature to 1000 K multiplies the equilibrium vacancy population by roughly 4×10¹⁰. Quench from high temperature and you freeze that far-from-equilibrium population into the metal — and it drives diffusion, aging, and precipitation from the inside.",
@@ -33,7 +33,7 @@ export const materialsW13Lessons: Lesson[] = [
       },
       {
         heading: "Boundaries pin dislocations",
-        body: "A grain boundary is a wall that a gliding dislocation cannot cross without help, so fine grains mean short slip distances and higher strength: Hall–Petch, σy = σ0 + k/√d. Cold work raises strength the other way — by multiplying dislocations until they tangle and block each other. Both are the same sentence: strength is controlled by how hard it is for dislocations to move.",
+        body: "A grain boundary is a wall that a gliding dislocation cannot cross without help, so fine grains mean short slip distances and higher strength: Hall–Petch, σy = σ0 + k/√d. Cold work raises strength the other way — by multiplying dislocations until they tangle and block each other. Both come down to the same thing: strength is controlled by how hard it is for dislocations to move.",
         formula: "σy = σ0 + k/√d",
       },
     ],
@@ -94,7 +94,7 @@ export const materialsW13Lessons: Lesson[] = [
     index: 8,
     title: "Atoms move downhill",
     minutes: 35,
-    lede: "You will state Fick's laws, read diffusion distance as √(Dt), and price a heat treatment in hours.",
+    lede: "State Fick's laws, read diffusion distance as √(Dt), and price a heat treatment in hours.",
     start:
       "Carburize a gear: hang steel in a carbon-rich atmosphere at 950 °C, and carbon atoms walk into the surface. After four hours the hard case is about 0.7 mm deep. Nobody placed those atoms; they diffused. || The word: Fick's first law, J = −D ∂C/∂x — flux runs down the concentration gradient, and the minus sign is the whole content. Fick's second, ∂C/∂t = D ∂²C/∂x². For a constant surface concentration the solution is an error function: (Cs − C)/(Cs − C0) = erf(x / (2√(Dt))). || Why the rule has that shape: distance goes as the square root of time, so the economics are brutal — doubling case depth costs four times the hours. Every carburizing schedule ever written is a negotiation with that square root.",
     use: "Whenever atoms must get somewhere on a schedule: case hardening, homogenization, sintering, dopant drives. || Compute D from Arrhenius, D = D0 exp(−Q/RT); form the length 2√(Dt); read the profile. Check units first: D is m²/s, so √(Dt) is meters — a dimensional check that catches most setup errors. || Stop when you can say 'a 50 K drop costs roughly double the time' and back it with a number, not a feeling.",
@@ -103,7 +103,7 @@ export const materialsW13Lessons: Lesson[] = [
     ideas: [
       {
         heading: "Flux runs downhill",
-        body: "J = −D ∂C/∂x. No gradient, no flux — no matter how high the concentration is. Atoms do not care about absolute concentration, only about which way is down. The minus sign is not bookkeeping; it is the second law of thermodynamics wearing a work coat, and every diffusion profile in this course is its consequence.",
+        body: "J = −D ∂C/∂x. No gradient, no flux — no matter how high the concentration is. Atoms do not care about absolute concentration, only about which way is down. The minus sign is the second law of thermodynamics showing up in a materials equation, and every diffusion profile in this course is its consequence.",
         formula: "J = −D ∂C/∂x",
       },
       {
@@ -113,7 +113,7 @@ export const materialsW13Lessons: Lesson[] = [
       },
       {
         heading: "Temperature buys time",
-        body: "D = D0 exp(−Q/RT) is Arrhenius: a 50 K rise near 950 °C nearly doubles D for carbon in austenite. Time–temperature equivalence follows — hold Dt constant and trade furnace temperature against hours. When the furnace is the bottleneck, this is the equation that gets the schedule out the door.",
+        body: "D = D0 exp(−Q/RT) is Arrhenius: a 50 K rise near 950 °C nearly doubles D for carbon in austenite. Time–temperature equivalence follows — hold Dt constant and trade furnace temperature against hours.",
         formula: "D = D0 exp(−Q/RT)",
       },
     ],
@@ -164,9 +164,9 @@ export const materialsW13Lessons: Lesson[] = [
     index: 9,
     title: "Processing is defect engineering",
     minutes: 35,
-    lede: "You will describe annealing, quenching, and case hardening as deliberate moves in defect populations — and predict which property moves.",
+    lede: "Describe annealing, quenching, and case hardening as deliberate moves in defect populations — and predict which property moves.",
     start:
-      "Same steel bar, two histories. One quenched from 850 °C rings hard and snaps; one annealed bends. Composition identical, properties unrecognizable. || The word: annealing heals — recovery, then recrystallization, then grain growth sweep out dislocations and coarsen grains. Quenching freezes — cool so fast that diffusion cannot happen and carbon is trapped in martensite: very hard, very brittle. Tempering reheats gently to trade some of that hardness for toughness. || Why the rule has that shape: structure → processing → properties → performance. The heat treatment never touches composition — it only rearranges defects, and the properties follow. This is the block's through-line in a single bar of steel.",
+      "Same steel bar, two histories. One quenched from 850 °C rings hard and snaps; one annealed bends. Composition identical, properties unrecognizable. || The word: annealing heals — recovery, then recrystallization, then grain growth sweep out dislocations and coarsen grains. Quenching freezes — cool so fast that diffusion cannot happen and carbon is trapped in martensite: very hard, very brittle. Tempering reheats gently to trade some of that hardness for toughness. || Why the rule has that shape: structure → processing → properties → performance. A heat treatment never touches composition; it only rearranges defects, and the properties follow.",
     use: "When you choose or diagnose a heat treatment: ask which defect population it targets. || Anneal to soften and relieve stress; quench to harden; temper to toughen. Case-harden (carburize, nitride) for a hard skin on a tough core. Read a TTT diagram's nose: diffusion-controlled transformations at high temperature, suppressed by speed at low. || Stop when you can look at any process step and name the defect move — 'this dissolves precipitates', 'this traps carbon', 'this grows grains' — and say which property pays for it.",
     example:
       "4140 steel, three thermal histories. || Annealed: ~200 HB — soft, machinable, the baseline. Quenched from 850 °C: ~55 HRC — hard enough to scratch glass, brittle enough to fear. Quenched and tempered at 400 °C: ~45 HRC with real toughness — the working compromise. || Same chemistry, three different materials. The performance gap between a gear that lasts and one that spalls is not composition; it is the thermal history written into the defect structure.",
@@ -183,7 +183,7 @@ export const materialsW13Lessons: Lesson[] = [
       },
       {
         heading: "Case hardening is controlled diffusion",
-        body: "Carburizing writes lesson 2's error-function profile into a gear tooth: carbon in from the surface, hard martensitic case after quench, tough low-carbon core untouched. Nitriding does the same job with nitrogen at lower temperature and no quench. The case depth on the drawing is a diffusion length wearing a tolerance.",
+        body: "Carburizing writes lesson 2's error-function profile into a gear tooth: carbon in from the surface, hard martensitic case after quench, tough low-carbon core untouched. Nitriding does the same job with nitrogen at lower temperature and no quench. The case depth on the drawing is a diffusion length with a tolerance on it.",
         formula: "case depth ≈ 2√(Dt)",
       },
     ],

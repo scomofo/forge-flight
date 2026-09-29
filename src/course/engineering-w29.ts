@@ -14,10 +14,10 @@ export const engineeringW29Lessons: Lesson[] = [
     index: 25,
     title: "Safety factors are ethics",
     minutes: 35,
-    lede: "You will read a factor of safety as a priced statement about uncertainty and consequence — not as a property of the steel — and choose one you can defend.",
+    lede: "Read a factor of safety as a priced statement about uncertainty and consequence — not as a property of the steel — and choose one you can defend.",
     start:
       "A crane hook the size of your fist is rated for five times the load it will ever see. An airliner wing is built to 1.5 times its worst expected load. Same steel, same physics, wildly different numbers. || The factor of safety is not in the material. It is the engineer's answer to two questions: how much of this do I not know, and who gets hurt if I am wrong? FoS = capability ÷ demand. A crane's loads are sloppy and its inspections are rare, so the number is 5. An airliner's loads are measured to the newton and the wing is inspected on a schedule, so 1.5 is honest. || You choose the number before you choose the section. And the number you choose says, in public, how much uncertainty you are willing to bet someone else's safety on.",
-    use: "When you are about to size a part and the spreadsheet is asking for an allowable stress, or when a review asks why this number and not a smaller one. || Name the consequence class: low (property only), moderate (minor injury), high (serious injury), catastrophic (loss of life). Read the factor of safety off that class, adjusted for how well you know the loads and how often the part is inspected. Write the consequence class next to the number, every time. || Stop when the factor of safety, the consequence, and the inspection plan all appear on the same page. A bare number with no consequence attached is not a safety factor — it is a guess wearing a costume.",
+    use: "When you are about to size a part and the spreadsheet is asking for an allowable stress, or when a review asks why this number and not a smaller one. || Name the consequence class: low (property only), moderate (minor injury), high (serious injury), catastrophic (loss of life). Read the factor of safety off that class, adjusted for how well you know the loads and how often the part is inspected. Write the consequence class next to the number, every time. || Stop when the factor of safety, the consequence, and the inspection plan all appear on the same page. A bare number with no consequence attached is a guess, and no reviewer can check a guess.",
     example:
       "A tow-bar lug for a light trailer, demand 12 kN, material yield 250 MPa. || The consequence is moderate — a failed tow bar at speed can kill, but the loads are ordinary highway loads. The class says FoS 2.0. Allowable stress = 250 ÷ 2.0 = 125 MPa. Required area = 12,000 N ÷ 125 MPa = 96 mm². The designer picks 100 mm² and writes 'FoS 2.0, consequence moderate, inspected at each service' on the drawing. || The area is arithmetic. The 2.0 is the ethics: it says 'I do not trust my knowledge of pothole loads enough to bet a highway on 1.4.'",
     ideas: [
@@ -62,7 +62,7 @@ export const engineeringW29Lessons: Lesson[] = [
           "Ignore it — numbers are the reviewer's job",
         ],
         answer: 0,
-        why: "A factor of safety is number + consequence + watch plan. 2.0 with no stated reasoning is a guess wearing a costume, and no reviewer can check a guess.",
+        why: "A factor of safety is number + consequence + watch plan. 2.0 with no stated reasoning is a guess, and no reviewer can check a guess.",
       },
       {
         prompt: "Which change honestly earns a smaller factor of safety?",
@@ -94,9 +94,9 @@ export const engineeringW29Lessons: Lesson[] = [
     index: 26,
     title: "Codes, standards, and the paper trail",
     minutes: 35,
-    lede: "You will read a standard the way a reviewer does — scope, shall-statements, and evidence — and keep a paper trail that outlives your memory of the project.",
+    lede: "Read a standard the way a reviewer does — scope, shall-statements, and evidence — and keep a paper trail that outlives your memory of the project.",
     start:
-      "In 1908 Cadillac won the Dewar Trophy by disassembling three cars, scrambling the parts, and reassembling three working cars from the pile. Interchangeability — the idea that a part made in Detroit fits a car in London — was a standard before it was a slogan. || A standard is the memory of every failure before you, written down so you do not have to repeat it. It says: scope (what this covers), normative references (what it stands on), and shall-statements — the demands. Everything else is commentary. A 'shall' is a requirement with the force of the code behind it; a 'should' is advice; an appendix is guidance. || You read a standard by hunting shalls and asking, for each one: what evidence would prove this? If you cannot name the evidence, you have not read the clause — you have admired it.",
+      "In 1908 Cadillac won the Dewar Trophy by disassembling three cars, scrambling the parts, and reassembling three working cars from the pile. Interchangeability — the idea that a part made in Detroit fits a car in London — was a standard before it was a slogan. || A standard is the memory of every failure before you, written down so you do not have to repeat it. It says: scope (what this covers), normative references (what it stands on), and shall-statements — the demands. Everything else is commentary. A 'shall' is a requirement with the force of the code behind it; a 'should' is advice; an appendix is guidance. || You read a standard by hunting shalls and asking, for each one: what evidence would prove this? If you cannot name the evidence, you haven't really read the clause yet.",
     use: "When a project says 'comply with' anything, or when you inherit a design and need to know what it was promised. || Read scope first — if your part is outside it, the standard does not apply and citing it is theater. Then list every shall that touches your part. For each shall, write the evidence: the test, the calculation, the inspection. || Stop when every shall has an evidence entry or an explicit waiver with a signature. A shall with no evidence is an unkept promise; the review in lesson 3 treats it as a finding.",
     example:
       "Tow-bar standard §4.2: 'The tow bar shall withstand three times the rated tow load without permanent deformation.' || That is one shall. The evidence: a pull test at 3× rated load, measured for permanent set — or a calculation traceable to a validated model, if the code allows analysis. The 'should be tested at room temperature' in the same paragraph is a should: advice, not a demand. Appendix A's fixture guidance is informative. || The compliance table has one row for the shall with the test report number, and nothing for the shoulds. Mixing them up — treating guidance as demand, or a shall as advice — is how designs fail audits.",
@@ -113,7 +113,7 @@ export const engineeringW29Lessons: Lesson[] = [
       },
       {
         heading: "The paper trail is the product",
-        body: "You will forget this project. The next engineer will not have been in the room. The drawing notes, the calculation references, the assumption ledger entries — that trail is what makes the design maintainable, auditable, and defensible in court. Documentation is not overhead on the engineering; for the second owner of the design, it is the engineering.",
+        body: "You forget the project. The next engineer wasn't in the room. The drawing notes, the calculation references, the assumption ledger entries — that trail is what makes the design maintainable, auditable, and defensible in court. Documentation isn't overhead on the engineering; for the second owner of the design, it's what lets them pick it up and keep going.",
         formula: "design value = hardware + retrievable reasoning",
       },
     ],
@@ -174,7 +174,7 @@ export const engineeringW29Lessons: Lesson[] = [
     index: 27,
     title: "The review and the signature",
     minutes: 40,
-    lede: "You will run a design review like an institution: find the findings, grade their severity, issue a verdict the findings support — and sign it.",
+    lede: "Run a design review like an institution: find the findings, grade their severity, issue a verdict the findings support — and sign it.",
     start:
       "Every failed structure you have met in this course — the walkway, the mirror, the O-ring — passed through rooms full of smart people who did not catch it. A design review is the institution that exists because individuals miss things. || The roles: the presenter defends the design and brings the evidence. The reviewers attack the design, never the designer — the question is always 'what breaks this?', not 'who did this?'. The scribe records findings, not opinions. The findings get severities: critical (someone could die, or the mission is lost — stop), major (must be fixed or the design does not proceed as drawn), minor (fix, but it does not gate the verdict), observation (a note for the record). || The review ends in a verdict the findings support: approve, approve-with-conditions, or reject. Then someone signs. The signature says: I looked, I found what I found, and this verdict is mine.",
     use: "When a design is about to be built, bought, or flown — any point of no return. || The presenter walks the package: requirements, calculations, drawings, assumption ledger. Reviewers file findings against requirements and shalls, each with a severity and a location. The scribe keeps the list. The chair issues the verdict the open findings demand: any open critical is a rejection, any open major is conditional approval at best. || Stop when every finding is addressed or explicitly accepted as a risk with a signature, and the memo — what was reviewed, what was found, why this verdict — is written while the memory is fresh. A review with no written memo did not happen.",

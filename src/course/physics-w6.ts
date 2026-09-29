@@ -13,9 +13,9 @@ export const physicsW6Lessons: Lesson[] = [
     index: 16,
     title: "Torque: force with a lever arm",
     minutes: 35,
-    lede: "You will compute a moment as τ = rF sin θ, assign its sign by the right-hand rule, and size a wrench from a bolt's torque specification.",
+    lede: "Compute a moment as τ = rF sin θ, assign its sign by the right-hand rule, and size a wrench from a bolt's torque specification.",
     start:
-      "A rusted axle bolt will not move under a 0.2 m ratchet no matter how hard you pull, then breaks free the moment you slip a 0.6 m pipe over the handle. The force is the same; the arm tripled. || Torque — the moment of a force about a pivot — is what actually turns things. τ = rF sin θ: the force times the perpendicular distance from the pivot to the force's line of action. Only the part of the force perpendicular to the arm counts; a pull straight along the arm, θ = 0, produces no torque at all. || Torque has a sign: counterclockwise positive by convention, set by the right-hand rule. The sign is not decoration — it is how several torques add, and the net torque is what decides whether a body stays put or starts to spin.",
+      "A rusted axle bolt will not move under a 0.2 m ratchet no matter how hard you pull, then breaks free the moment you slip a 0.6 m pipe over the handle. The force is the same; the arm tripled. || Torque — the moment of a force about a pivot — is what actually turns things. τ = rF sin θ: the force times the perpendicular distance from the pivot to the force's line of action. Only the part of the force perpendicular to the arm counts; a pull straight along the arm, θ = 0, produces no torque at all. || Torque has a sign: counterclockwise positive by convention, set by the right-hand rule. Torques add algebraically by their signs, and the net torque decides whether a body stays put or starts to spin.",
     use: "Whenever a force acts at a distance from a pivot: wrenches, see-saws, door handles, bracket bolts, crane loads. || Identify the pivot. Measure r from the pivot to the force's point of application. Take the component of F perpendicular to r — equivalently rF sin θ, where θ is the angle between the arm and the force. Assign + for counterclockwise, − for clockwise, and sum. || Stop when you can state the net torque with sign and units (N·m). If it is zero, the body has no angular acceleration; if not, you know which way it turns.",
     example:
       "A lug nut calls for 110 N·m. You have a 0.25 m wrench and can pull with 400 N perpendicular to the handle. || τ = rF sin θ = 0.25 × 400 × sin 90° = 100 N·m. Perpendicular means sin θ = 1, the best case. || 100 < 110: you cannot reach spec with this wrench at 90°. Either lengthen the arm or push harder — and note that pulling at 60° would give only 0.25 × 400 × sin 60° ≈ 86.6 N·m, because the lever arm shrinks with sin θ.",
@@ -27,7 +27,7 @@ export const physicsW6Lessons: Lesson[] = [
       },
       {
         heading: "Sign is the whole accounting system",
-        body: "Counterclockwise positive, clockwise negative — the right-hand rule with your thumb out of the page. Two children on a see-saw produce torques of opposite sign; balance is the statement that they sum to zero. A sign error is not a small error: it turns “holds” into “tips over.” When in doubt, sketch the curved arrow and check the direction by hand.",
+        body: "Counterclockwise positive, clockwise negative — the right-hand rule with your thumb out of the page. Two children on a see-saw produce torques of opposite sign; balance is the statement that they sum to zero. A wrong sign does not give a slightly wrong answer: it says the see-saw holds when it tips, or tips when it holds. When in doubt, sketch the curved arrow and check the direction by hand.",
         formula: "Στ = 0 ⇒ no angular acceleration",
       },
       {
@@ -45,7 +45,7 @@ export const physicsW6Lessons: Lesson[] = [
         prompt: "A 0.25 m wrench, 80 N applied perpendicular to the handle. The torque is…",
         options: ["20 N·m", "0.2 N·m", "320 N·m", "20 J"],
         answer: 0,
-        why: "τ = rF sin θ = 0.25 × 80 × 1 = 20 N·m. It is newton-meters of torque, not joules — no displacement, no energy transferred.",
+        why: "τ = rF sin θ = 0.25 × 80 × 1 = 20 N·m — newton-meters of torque. No displacement means no energy transferred, so not joules.",
       },
       {
         prompt: "Same wrench and force, but the pull is at 30° to the handle. Now the torque is…",
@@ -78,9 +78,9 @@ export const physicsW6Lessons: Lesson[] = [
     index: 17,
     title: "Rotation: kinematics and inertia",
     minutes: 35,
-    lede: "You will translate between linear and angular motion with the r-map, compute moments of inertia from mass distribution, and predict spin-up under a known torque.",
+    lede: "Translate between linear and angular motion with the r-map, compute moments of inertia from mass distribution, and predict spin-up under a known torque.",
     start:
-      "A figure skater pulls her arms in and her spin rate doubles — no torque applied, yet ω changes. Nothing was pushed; the mass moved closer to the axis. || Rotation has its own kinematics: angle θ, angular velocity ω = dθ/dt, angular acceleration α = dω/dt. Every linear equation from Week 2 has a rotational twin — swap x→θ, v→ω, a→α, and the constant-acceleration forms carry over intact. The bridge is the radius: s = rθ, v = ωr, a_t = αr. || But force's twin is not mass — it is moment of inertia I, and unlike mass it depends on where the mass sits. Same mass, same radius, different I: a hoop beats a disk at the axis because every gram of the hoop rides at full radius.",
+      "A figure skater pulls her arms in and her spin rate doubles — no torque applied, yet ω changes. Nothing was pushed; the mass moved closer to the axis. || Rotation has its own kinematics: angle θ, angular velocity ω = dθ/dt, angular acceleration α = dω/dt. Every linear equation from Week 2 has a rotational twin — swap x→θ, v→ω, a→α, and the constant-acceleration forms carry over intact. The bridge is the radius: s = rθ, v = ωr, a_t = αr. || The twin of force is moment of inertia I, and unlike mass it depends on where the mass sits. Same mass, same radius, different I: a hoop beats a disk at the axis because every gram of the hoop rides at full radius.",
     use: "Whenever something spins up, spins down, or holds a rate: flywheels, motors, gears, tossed objects. || Map the problem: write the angular quantities, use the r-map to convert any linear data, look up or compute I for the shape, then use τ = Iα exactly as you used F = ma. For composite bodies, add inertias about the same axis; for offset axes, use the parallel-axis theorem. || Stop when ω(t) or θ(t) is stated with units (rad/s, rad) and a sanity check — a 2 kg disk does not reach 100 rad/s from a 1 N·m torque in a second.",
     example:
       "A solid steel cylinder (m = 2 kg, r = 0.10 m) is spun by a constant 0.05 N·m torque for 5 s from rest. || I = ½mr² = 0.5 × 2 × 0.01 = 0.01 kg·m². α = τ/I = 0.05/0.01 = 5 rad/s². After 5 s: ω = αt = 25 rad/s, θ = ½αt² = 62.5 rad — about 10 revolutions. || A hoop of the same mass and radius has I = mr² = 0.02 kg·m² — double — so the same torque gives half the angular acceleration. Mass alone never told you that; distribution does.",
@@ -92,7 +92,7 @@ export const physicsW6Lessons: Lesson[] = [
       },
       {
         heading: "Inertia is mass with an address",
-        body: "I = Σmr²: each gram weighted by the square of its distance from the axis. The square is merciless — mass at twice the radius counts four times. That is why flywheels are rims, not disks, and why the skater's spin responds so violently to arm position. Memorize the five: point mr², hoop mr², solid cylinder ½mr², rod about center mL²/12, solid sphere ⅖mr².",
+        body: "I = Σmr²: each gram weighted by the square of its distance from the axis. The square is harsh — mass at twice the radius counts four times. That is why flywheels are rims, not disks, and why the skater's spin responds so strongly to arm position. Memorize the five: point mr², hoop mr², solid cylinder ½mr², rod about center mL²/12, solid sphere ⅖mr².",
         formula: "I = Σmr²; τ = Iα",
       },
       {
@@ -138,7 +138,7 @@ export const physicsW6Lessons: Lesson[] = [
     index: 18,
     title: "Static equilibrium and beam reactions",
     minutes: 35,
-    lede: "You will solve for support reactions with ΣF = 0 and Στ = 0, read supports as reaction promises, and choose the moment center that kills an unknown.",
+    lede: "Solve for support reactions with ΣF = 0 and Στ = 0, read supports as reaction promises, and choose the moment center that kills an unknown.",
     start:
       "A 6 m scaffold plank rests on two sawhorses. A painter stands 2 m from the left horse. Which horse carries more? Guessing is how planks tip. || Static equilibrium is two statements: the forces sum to zero (no translation) and the torques about any point sum to zero (no rotation). Two equations, so you can solve for two unknowns — which is exactly what a simply supported beam offers: one unknown reaction at each support. || Supports are promises about which reactions they provide. A pin gives two (horizontal and vertical); a roller gives one (vertical only); a fixed support gives three (adding a moment). Read the support, list the unknowns, then write the equations.",
     use: "For any structure at rest: bridges, brackets, shelves, crane booms. || Draw the free body (Week 3's discipline). List support reactions per the support type. Write ΣF_y = 0, then Στ = 0 about the point that eliminates the most unknowns — usually one support, so the other reaction drops out of the moment equation. Solve, then check: reactions must sum to the total load, and each must be positive (a negative reaction means your assumed direction was wrong, or the beam lifts off). || Stop when both reactions are found and the check passes. If a reaction comes out negative, flip its assumed direction and say what that means physically.",
@@ -147,7 +147,7 @@ export const physicsW6Lessons: Lesson[] = [
     ideas: [
       {
         heading: "Two equations, two unknowns",
-        body: "Equilibrium is a solvable system, not a philosophy: ΣF = 0 kills translation, Στ = 0 kills rotation, and together they determine the support reactions of a simply supported beam. A third unknown — a fixed support's moment, a second span — needs more than statics; that is the doorway to indeterminate structures and, later, to elasticity.",
+        body: "Equilibrium gives a solvable system: ΣF = 0 kills translation, Στ = 0 kills rotation, and together they determine the support reactions of a simply supported beam. A third unknown — a fixed support's moment, a second span — needs more than statics; that is the doorway to indeterminate structures and, later, to elasticity.",
         formula: "ΣF_y = 0; Στ_A = 0",
       },
       {
@@ -157,7 +157,7 @@ export const physicsW6Lessons: Lesson[] = [
       },
       {
         heading: "Choose the moment center",
-        body: "Στ = 0 holds about any point, so choose the point that makes the algebra short: take moments about a support and its unknown reaction contributes nothing. This is not a trick; it is the same principle as choosing coordinates along the incline in Week 3. The physics is invariant — the arithmetic is yours to minimize.",
+        body: "Στ = 0 holds about any point, so choose the point that makes the algebra short: take moments about a support and its unknown reaction contributes nothing. It is the same idea as choosing coordinates along the incline in Week 3 — the physics does not care where you take moments, so pick the center that keeps the arithmetic simple.",
         formula: "Στ_A = 0 ⇒ B_y·L = Σ F_i·x_i",
       },
     ],
@@ -198,7 +198,7 @@ export const physicsW6Lessons: Lesson[] = [
           "Midspan moments are always larger",
         ],
         answer: 0,
-        why: "A force through the moment center contributes no moment, so Στ_A = 0 contains only B_y — one equation, one unknown. Any center is valid; the support is just the laziest choice.",
+        why: "A force through the moment center contributes no moment, so Στ_A = 0 contains only B_y — one equation, one unknown. Any center is valid; the support just happens to eliminate an unknown.",
       },
     ],
   },

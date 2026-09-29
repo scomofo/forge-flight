@@ -98,6 +98,29 @@ export const lessons: Lesson[] = [
   ...ladderLessons,
 ];
 
+export type CourseTerm = { term: string; body: string };
+
+export const courseIntro: { heading: string; approach: string[]; terms: CourseTerm[] } = {
+  heading: "How this course works",
+  approach: [
+    "This course has one student. It assumes your shop: drawings in millimeters, a stock list priced by the inch, a mill whose DRO reads in inches. Every lesson starts from something you can picture — a bracket called out on a drawing, that DRO, a glider on a windy day — and the formula comes after the picture, never before. Each lesson follows the same shape: the picture and what it means, when the idea applies and when to stop, one worked case with the arithmetic shown, three key ideas, then a bench where you try it yourself, and four checks. Three out of four passes, except on the Math Runway, where it’s four out of four.",
+    "The Math Runway comes first, because everything later assumes you can convert units, rearrange a formula, and read a graph. You don’t have to take all of it. The diagnostic is 24 questions, open-resource, about 45 minutes, and it assigns only the modules you need — test out of the rest. It never hands you a pass/fail label.",
+    "Two habits run through the whole course. First, units are part of the number: every quantity carries its unit from the first line to the last, and the benches speak SI — meters, kilograms, seconds, newtons. Second, estimate before you compute: round to one digit, do it in your head, and let the rough answer catch the wrong ones before they cost you.",
+    "After the runway: Physics, then Materials, then Engineering, then Manufacturing. Each one assumes the ones before it. The 201, 301, and 401 tracks go deeper wherever you want more.",
+  ],
+  terms: [
+    { term: "DRO", body: "Digital readout: the position display on the mill or lathe. It reads in inches or millimeters depending on how it’s set. The stock list prices by the inch, and the mill’s DRO reads in inches — while your drawing says millimeters." },
+    { term: "Stock", body: "Raw material as the supplier sells it: bar, sheet, tube. The stock list prices it, usually by the inch or foot, usually imperial even when your drawing is metric." },
+    { term: "Mill / lathe", body: "The machine tools. Most of this course’s examples live within arm’s reach of one." },
+    { term: "Caliper / micrometer", body: "The measuring tools. They show up wherever measurement error matters." },
+    { term: "Track", body: "One course: Math Runway, Physics 101, Materials 101, Engineering 101, Manufacturing, and the deeper 201/301/401 ladder tracks." },
+    { term: "Lesson", body: "One sitting, with a minute estimate up top. The estimate is honest; the bench is where the time goes." },
+    { term: "Bench", body: "The interactive workbench inside each lesson. Not a quiz — the place where you change a value and watch what happens." },
+    { term: "Checks", body: "The four questions at the end of each lesson. Three out of four moves you on; the Math Runway wants four." },
+    { term: "Diagnostic", body: "The 24-question placement quiz for the Math Runway. It assigns modules. It doesn’t grade you." },
+  ],
+};
+
 const coreOrder: TrackId[] = ["math", "physics", "materials", "engineering"];
 
 export function isIntroTrack(track: string) {
