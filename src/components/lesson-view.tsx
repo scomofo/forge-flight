@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bench } from "@/components/bench";
+import { ConceptHelp } from "@/components/concept-help";
 import { LessonClip } from "@/components/lesson-clip";
 import { lessonFigures } from "@/components/figures";
 import { Quiz } from "@/components/quiz";
@@ -139,6 +140,7 @@ function ReadFlow({ lesson }: { lesson: Lesson }) {
               <p className="mt-3 max-w-prose text-lg leading-relaxed text-ink">{point}</p>
               {rest ? <p className="mt-3 max-w-prose leading-relaxed text-muted">{rest}</p> : null}
               {idea.formula ? <p className="mt-4 font-serif text-xl text-accent">{idea.formula}</p> : null}
+              {idea.help?.length ? <ConceptHelp help={idea.help} /> : null}
             </section>
           );
         }
