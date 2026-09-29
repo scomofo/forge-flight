@@ -190,7 +190,7 @@ export const materialsW15Lessons: Lesson[] = [
       },
       {
         heading: "The through-line, end to end",
-        body: "Structure → processing → properties → performance is not a slogan; it is the chain of custody for every claim in the memo. The obstacle (martensite laths, precipitates, grain boundaries) is the structure. The furnace schedule or the rolling mill is the processing. Yield and elongation are the properties. The bolt holding the joint is the performance. Break any link — claim properties without naming the structure, or name a process without a schedule — and the memo cannot be checked.",
+        body: "Structure → processing → properties → performance is the chain of custody for every claim in the memo. The obstacle (martensite laths, precipitates, grain boundaries) is the structure. The furnace schedule or the rolling mill is the processing. Yield and elongation are the properties. The bolt holding the joint is the performance. Break any link — claim properties without naming the structure, or name a process without a schedule — and the memo cannot be checked.",
         formula: "Structure → processing → properties → performance",
       },
     ],

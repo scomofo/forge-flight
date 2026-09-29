@@ -113,7 +113,7 @@ export const engineeringW29Lessons: Lesson[] = [
       },
       {
         heading: "The paper trail is the product",
-        body: "You will forget this project. The next engineer will not have been in the room. The drawing notes, the calculation references, the assumption ledger entries — that trail is what makes the design maintainable, auditable, and defensible in court. Documentation isn't overhead on the engineering; for the second owner of the design, it's the part that lets them pick it up and keep going.",
+        body: "You forget the project. The next engineer wasn't in the room. The drawing notes, the calculation references, the assumption ledger entries — that trail is what makes the design maintainable, auditable, and defensible in court. Documentation isn't overhead on the engineering; for the second owner of the design, it's what lets them pick it up and keep going.",
         formula: "design value = hardware + retrievable reasoning",
       },
     ],
