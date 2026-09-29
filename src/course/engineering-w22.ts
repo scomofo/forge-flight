@@ -13,6 +13,14 @@ export const engineeringW22Lessons: Lesson[] = [
     title: "Models are tools, not truth",
     minutes: 35,
     lede: "A model is a question-answering machine with a limited territory. State its claim, its assumptions, and the test that would prove it wrong — and never ask it a question outside the territory it was validated in.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A model answers a specific question under a specific set of assumptions. It does not automatically remain trustworthy when the operating condition changes. || Define the model's inputs, outputs, assumptions, and validation domain. Outside that domain, the software may still produce a number, but that does not make the number meaningful. || Good model use includes a plan for checking the prediction against reality and a clear statement of what the model does not include."
     use: "When you are about to decide from a calculation instead of a test — sizing a part, signing off a procedure, trusting a simulation. || Write down what the model claims, the assumptions it needs to be true, and the domain it was validated in. Check each assumption against your case, one by one, out loud. Name the measurement or experiment that would falsify the result. || Stop when the model's domain covers your question and the falsifying test exists and is affordable. If the model has never been checked against anything like your case, stop calculating and go measure. Extrapolating past the last validated case is guessing.",
@@ -92,6 +100,14 @@ export const engineeringW22Lessons: Lesson[] = [
     title: "Uncertainty travels with the number",
     minutes: 40,
     lede: "Propagate uncertainties through a calculation two ways — worst-case and root-sum-square — and know which one you're entitled to quote.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Measurements and model inputs carry uncertainty, whether or not you write it down. Derived results inherit that uncertainty. || For small uncertainties, each input contributes roughly its sensitivity multiplied by its own uncertainty. Combine contributions by worst case when errors could align or the bound must be conservative; use root-sum-square when the errors are independent and random. || State which method you used and why. The arithmetic is only as defensible as the assumptions behind the uncertainty model."
     use: "Whenever a result is computed from measured inputs — which is to say, whenever a result is computed at all. || List every input with its ±, in consistent units, at the same confidence. Work out how sensitive the output is to each input — ∂f/∂xᵢ analytically, or numerically with a small nudge. Combine: worst-case sum for the guarantee, RSS for the expectation. || Stop when you can state the result as value ± uncertainty with the method named out loud. Never let the ± quietly fall off when the number moves into the next calculation — that is how 50.00 ± 0.03 becomes 50.00, and then becomes a part that does not fit.",
@@ -166,6 +182,14 @@ export const engineeringW22Lessons: Lesson[] = [
     title: "Sensitivity: where to spend the money",
     minutes: 35,
     lede: "Rank inputs by how much they move the answer, and turn the error budget into a shopping list.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Sensitivity analysis tells you which inputs actually control the output uncertainty. That is useful when measurement time or budget is limited. || Normalized sensitivity shows the percent change in output caused by a percent change in an input. Combine that leverage with the input's actual uncertainty to estimate its contribution to the result. || Improve the dominant contributors first, then recalculate. Once one source is reduced, another may become the new limiting term."
     use: "When the uncertainty is too big, or the instrument budget too small, or someone asks 'where would better data actually help?' || Compute each input's normalized sensitivity and its variance share of the RSS total. Sort descending. Price the improvement of the top input against the uncertainty it buys back — a 3× better gauge that halves the total is a purchase; one that trims 2% isn't worth the requisition. || Stop when the dominant input is improved or priced out. Document the residual uncertainty as the honest limit of the measurement — 'this is as tight as this rig gets' is a legitimate result.",
