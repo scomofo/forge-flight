@@ -14,23 +14,23 @@ export const engineeringW25Lessons: Lesson[] = [
     minutes: 35,
     lede: "Watch an Ashby index crown a winner — and then let the joint disqualify it. The system property is the minimum of the member and its connections.",
     start:
-      "A pull-rod for a tow rig. Minimum mass, must carry 20 kN in tension, and the ends have to attach to steel clevises. Strength sizes this rod, so run the strength index σ/ρ with the bench's numbers: steel 47, aluminum 102, quasi-isotropic CFRP 375 MPa per g/cm³. CFRP wins by a landslide — more than three and a half times aluminum's strength per kilogram, and eight times steel's. || But CFRP cannot take a thread, and it cannot be welded to a steel clevis. The rod ends become a second design problem: bond the carbon to a metal end fitting, or bolt through a reinforced hole. Take a single-lap epoxy bond with a classroom allowable shear of 15 MPa. Bond area needed: 20,000 N / 15 MPa = 1,333 mm². On a 25 mm wide strap that is 53 mm of bond length — doable, inspectable, and now the most failure-prone 53 mm on the whole rig. || The index ranked the ideal material; the joint re-ranked the design. So select a material-plus-joint for the assembly, never a material alone — and quote the system by its weaker half.",
+      "A material index may identify the lightest material for a member, but the assembly still has to transfer load into and out of that member. || If a material requires inserts, adhesive bonds, special fasteners, or isolation from another material, those interfaces become part of the design problem. The joint can erase the advantage suggested by the raw material property. || Compare material-plus-joint concepts, not isolated material coupons."
     use: "When a selection study hands you a winner and you need to check whether the winner survives contact with assembly. || Run the index to make the shortlist, then force each candidate through its joints: can it be joined to its neighbors, by what process, with what efficiency, at what cost? || Stop when the decision names the joint explicitly — 'CFRP' alone leaves the hardest part of the design undecided.",
     example:
       "The tow-hook bracket: bracket ties a trailer coupler to a steel hitch receiver, outdoor, salt spray. || Ashby says CFRP (lightest), then aluminum, then steel. The joint says: CFRP cannot be TIG welded to the steel receiver, a bolted hole in CFRP needs a bonded metal insert, and carbon's galvanic potential (+0.25 V) against steel (−0.60 V) in salt spray is a 0.85 V gap — the steel inserts would sacrifice themselves. Aluminum welds to nothing here either (dissimilar to steel), so it bolts on with isolation. Steel welds to steel at 100% efficiency with no galvanic question. || The record reads: steel wins on the joint, not the index. The two losers are named with their causes of death.",
     ideas: [
       {
-        heading: "Indices rank ideals; joints rank assemblies",
+        heading: "Material indices do not include the joint design",
         body: "An Ashby index assumes the part is free — free to be the optimal shape, free of neighbors. Real parts have ends, and ends have joints. A welded steel part carries ~100% of its base strength through the joint; a bolted composite part may carry 50–60% through a hole that concentrates stress threefold. Multiply the index by the joint efficiency before you crown anyone.",
         formula: "system merit = joint efficiency × member merit",
       },
       {
-        heading: "Every joint is a second material",
+        heading: "Treat joint behavior as its own design problem",
         body: "The bondline, the weld metal, the fastener — each is its own material with its own properties, its own temperature limit, its own failure mode. An epoxy lap joint with 15 MPa allowable shear is a structural element in its own right, with an allowable an order of magnitude below the aluminum it joins. Design the joint as a part, not as an afterthought.",
         formula: "bond area = P / τ_allow",
       },
       {
-        heading: "The interface is where selections die",
+        heading: "Check interface constraints before finalizing the material choice",
         body: "Dissimilar metals invite galvanic cells. Different expansion coefficients lock in stress with every temperature swing. A material that can't be welded, threaded, or bonded to its neighbor can't be built into this assembly. Screen on joinability before you optimize on properties.",
         formula: "select(material + joint + process), never material alone",
       },
@@ -94,23 +94,23 @@ export const engineeringW25Lessons: Lesson[] = [
     minutes: 35,
     lede: "Size the three great joint families — mechanical, fusion, adhesive — and check the two silent killers: thermal mismatch and galvanic corrosion.",
     start:
-      "Three ways to move 3 kN across a lap joint. A bolt: one M8 through 4 mm aluminum plate, single shear. Bearing stress on the plate: 3,000 N / (8 mm × 4 mm) = 93.8 MPa. Shear stress in the bolt: 3,000 N / 50.3 mm² = 59.7 MPa. The hole concentrates stress, but the joint is inspectable and removable. || A weld: TIG on 6061-T6 keeps ≈70% of base strength through the heat-affected zone — the weld is full-strength only if you designed for 70%. A bond: epoxy at 15 MPa allowable needs 200 mm² of lap — no holes, no heat, but peel will kill it before shear does, and 120 °C softens the whole scheme. || Then the silent killers. Bolt steel to aluminum and swing the temperature 80 °C: Δα = 11e-6/°C gives σ = 68,900 × 11e-6 × 80 ≈ 61 MPa as a one-axis estimate — about a fifth of 6061-T6's 276 MPa yield, cycling with the weather every day (a bolted lap relieves part of it by slipping; a weld relieves none). Bolt carbon fiber to aluminum in salt air: graphite sits at +0.25 V, aluminum at −0.75 V, a full volt of galvanic drive — the aluminum fastener becomes the sacrificial anode.",
+      "Bolts, welds, and adhesive bonds transfer load in different ways and introduce different failure modes. || Size the obvious load path first: bolt shear and bearing, weld strength including heat-affected-zone effects, or adhesive area and peel sensitivity. || Then check the interface environment. Thermal-expansion mismatch and galvanic corrosion can control the design even when the static joint-strength calculation passes."
     use: "When two parts meet and you must choose how they meet. || Pick the family by disassembly, inspection, and temperature needs; size it by its own arithmetic (bearing/shear, HAZ efficiency, bond area); then run the two compatibility checks — thermal mismatch stress and galvanic gap — in the service environment. || Stop when the joint has a strength number, a mismatch number, and a named answer for corrosion. A joint with no corrosion answer will get one from the field, eventually.",
     example:
       "The dock railing: rails bolted to posts, constant salt spray, twenty-year life. || Bearing and shear size the bolt in one line of arithmetic. The galvanic check: 304 stainless (−0.10 V) against 6061 aluminum (−0.75 V) is a 0.65 V gap in saltwater — high risk, aluminum loses. Against GFRP (non-conductive) there is no cell at all. Thermal: aluminum on stainless, Δα = 6e-6/°C, is ≈25 MPa (one-axis estimate) over a 60 °C swing — below the screening line, noted, not driving. || The joint decision: stainless-to-stainless bolts, or GFRP rails on stainless posts with isolated fasteners. Aluminum rails die in the record with 'galvanic' as the cause.",
     ideas: [
       {
-        heading: "Three families, three arithmetics",
+        heading: "Bolts, welds, and adhesive bonds need different checks",
         body: "Bolts: bearing stress P/(d·t) on the plate, shear P/A on the shank — the hole is a stress concentration you pay for with inspectability. Welds: the heat-affected zone keeps a fraction of base strength (70% for TIG 6061-T6, 100% for steel) — size the member for the HAZ, not the catalog yield. Adhesives: shear area P/τ over a large lap — generous in shear, treacherous in peel, gone by 120 °C.",
         formula: "σ_bearing = P/(d·t)  ·  τ_bolt = P/A  ·  A_bond = P/τ_allow",
       },
       {
-        heading: "Thermal mismatch is a load",
+        heading: "Thermal-expansion mismatch can create interface stress",
         body: "Two materials, one temperature swing, different expansions — something has to give, and what gives is stress: σ = E·Δα·ΔT in the softer member, the one-axis estimate (full biaxial constraint adds a factor 1/(1−ν)). A steel bolt in an aluminum cleat over 80 °C gives ~61 MPa — about a fifth of 6061-T6's 276 MPa yield, cycling every day the sun shines; a bolted lap slips and relieves part of it, a weld relieves none. Treat ΔT as a load case with the same seriousness as the mechanical load.",
         formula: "σ = E · Δα · ΔT  (one-axis estimate)",
       },
       {
-        heading: "Galvanic corrosion is a battery you built",
+        heading: "Dissimilar conductive materials can create galvanic corrosion",
         body: "Dissimilar conductive metals in an electrolyte are a battery, and the anode dissolves. The drive is the potential gap: carbon fiber (+0.25 V) against aluminum (−0.75 V) is a full volt — in salt spray the aluminum sacrifices itself. Defense is isolation (sleeves, sealant), a closer couple, or making the replaceable (sacrificial) part the anode. And mind the area ratio: a small anode feeding a large cathode fails fast.",
         formula: "risk ∝ potential gap × environment severity",
       },
@@ -185,7 +185,7 @@ export const engineeringW25Lessons: Lesson[] = [
         formula: "decision = properties + joints + cost + schedule + risk",
       },
       {
-        heading: "Advantages nobody pays for are not advantages",
+        heading: "A benefit matters only if a requirement or objective rewards it",
         body: "CFRP saves 2 kg on a bracket with a 4 kg limit. Nobody — no requirement, no customer, no physics — pays for those 2 kg. An advantage no requirement rewards doesn't count, and one that costs 8× with added process risk is a bad trade. The requirements packet from Week 21 is the judge: if the win isn't in the packet, it isn't a win.",
         formula: "value = advantage × requirement weight (zero weight → zero value)",
       },
