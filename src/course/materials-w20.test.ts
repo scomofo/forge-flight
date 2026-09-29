@@ -56,7 +56,7 @@ test("week 20 opens the materials track in syllabus order", () => {
   );
   for (const l of materialsW20Lessons) assert.equal(l.track, "materials");
   const materials = lessons.filter((l) => l.track === "materials");
-  assert.equal(materials.length, 37, "materials track must hold weeks 11-20 plus the 7 legacy lessons");
+  assert.equal(materials.length, 30, "materials track must hold weeks 11-20");
   assert.deepEqual(
     materials.map((l) => l.id),
     [
@@ -90,18 +90,11 @@ test("week 20 opens the materials track in syllabus order", () => {
       "matmethod",
       "sparsynth",
       "matmastery",
-      "families",
-      "bonding",
-      "curve",
-      "compare",
-      "grains",
-      "selection",
-      "birth",
     ],
   );
   assert.deepEqual(
     materials.map((l) => l.index),
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
   );
   for (const l of materialsW20Lessons) {
     assert.ok(lessons.includes(l), `week-20 lesson ${l.id} must be in lessons`);

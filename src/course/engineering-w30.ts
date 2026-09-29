@@ -3,8 +3,7 @@ import type { Lesson } from "./types.ts";
 /**
  * Engineering 101, Week 30 — Capstone integration (capstone week of the
  * Engineering block and of the whole course). These three lessons open the
- * engineering track (indices 1–3) on this branch; the eleven legacy
- * engineering lessons follow re-indexed from 4. Evidence due: capstone design
+ * engineering track (indices 1–3). Evidence due: capstone design
  * package + final review. Final gate: a simulation score alone is
  * insufficient — the learner must show a requirement, a model, a test, a
  * mismatch, and a justified revision; the closed-book check closes at 70%
