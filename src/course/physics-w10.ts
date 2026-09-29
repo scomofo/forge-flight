@@ -2,8 +2,7 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 10 — Physics synthesis (capstone week of the Physics block).
- * These three lessons open the physics track (indices 1–3) on this branch; the
- * pre-existing physics lessons follow re-indexed from 4. Evidence due:
+ * These three lessons open the physics track (indices 1–3). Evidence due:
  * closed-book mastery check + Glider Lab I. Block gate: at least 70% on the
  * mastery check, plus a filed correction for every missed conservation-law or
  * free-body-diagram item, before Materials 101.

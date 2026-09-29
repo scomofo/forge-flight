@@ -3,8 +3,7 @@ import type { Lesson } from "./types.ts";
 /**
  * Materials 101, Week 20 — Materials synthesis (capstone week of the
  * Materials block). These three lessons open the materials track (indices
- * 1–3) on this branch; the seven legacy materials lessons follow re-indexed
- * from 4. Evidence due: closed-book mastery check + Glider Lab II. Block
+ * 1–3). Evidence due: closed-book mastery check + Glider Lab II. Block
  * gate: at least 70% on the mastery check, plus a filed correction for
  * every missed chain-reasoning or failure-diagnosis item, before
  * Engineering 101.

@@ -38,7 +38,7 @@ test("week 29 opens the engineering track in syllabus order", () => {
   );
   for (const l of engineeringW29Lessons) assert.equal(l.track, "engineering");
   const engineering = lessonsFor("engineering");
-  assert.equal(engineering.length, 41, "engineering track must hold weeks 21-30 plus the 11 legacy lessons");
+  assert.equal(engineering.length, 30, "engineering track must hold weeks 21-30");
   assert.deepEqual(
     engineering.map((l) => l.id),
     [
@@ -72,22 +72,11 @@ test("week 29 opens the engineering track in syllabus order", () => {
       "capmethod",
       "glidersynth",
       "capmastery",
-      "design",
-      "equilibrium",
-      "stress",
-      "beams",
-      "tradeoffs",
-      "failure",
-      "notch",
-      "fatigue",
-      "crack",
-      "bolt",
-      "mean",
     ],
   );
   assert.deepEqual(
     engineering.map((l) => l.index),
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
   );
   for (const l of engineeringW29Lessons) {
     assert.ok(lessons.includes(l), `week-29 lesson ${l.id} must be in lessons`);

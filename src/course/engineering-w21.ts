@@ -32,7 +32,7 @@ export const engineeringW21Lessons: Lesson[] = [
       },
       {
         heading: "Write the demands before the shape",
-        body: "Requirements first, concepts second. If you sketch first, the requirements become a description of the sketch — a defense of a shape you already chose. The design-loop bench from the legacy lessons scores concepts against weighted demands; this is where those demands come from, and why their weights are allowed to change in the open.",
+        body: "Requirements first, concepts second. If you sketch first, the requirements become a description of the sketch — a defense of a shape you already chose. The design-loop bench scores concepts against weighted demands; this is where those demands come from, and why their weights are allowed to change in the open.",
         formula: "needs → requirements → concepts → tests",
       },
     ],
