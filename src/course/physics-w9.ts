@@ -37,6 +37,7 @@ export const physicsW9Lessons: Lesson[] = [
         heading: "Natural frequency depends on stiffness and mass",
         body: "ω = √(k/m) is fixed by the system before you touch it. Stiffen the spring and it hurries; add mass and it dawdles. Your release chooses only how far it swings (amplitude) and where in the cycle it starts (phase). This separation — system sets the rate, you set the swing — is what makes the tuning fork reliable and the car predictable.",
         formula: "ω = √(k/m), f = ω/2π, T = 2π√(m/k)",
+        help: [{ concept: "natural-frequency" }],
       },
       {
         heading: "Energy shifts between kinetic and potential",
@@ -188,6 +189,10 @@ export const physicsW9Lessons: Lesson[] = [
         heading: "Thermal expansion can become significant over long lengths",
         body: "Thermal expansion is millimeters per meter per tens of degrees — easy to dismiss, impossible to ignore at structural scale. α is a material constant (12×10⁻⁶/°C for steel, 23×10⁻⁶ for aluminum), and the expansion is strictly proportional to length and temperature change. Bigger structure, bigger swing, bigger movement: always compute it before deciding it is negligible.",
         formula: "ΔL = αL₀ΔT",
+        help: [
+          { concept: "thermal-expansion" },
+          { concept: "delta-symbol", trigger: "What does ΔT mean?" },
+        ],
       },
       {
         heading: "Restraining thermal expansion creates stress",
