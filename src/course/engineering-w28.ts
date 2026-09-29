@@ -17,6 +17,14 @@ export const engineeringW28Lessons: Lesson[] = [
     title: "Trade studies: comparison, kept honest",
     minutes: 40,
     lede: "Compare design alternatives against explicit, weighted criteria, find the dominated ones you can reject without argument, and learn how much the weights can move before the winner changes.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A trade study makes competing design alternatives comparable against the same criteria. || Define the alternatives, criteria, weights, and scoring method before looking for a winner. Normalize quantities that use different units so one criterion does not dominate simply because its raw numbers are larger. || The value of the trade study is transparency: when weights or assumptions change, everyone can see why the ranking changes."
     use: "When you have two or more real candidates and must pick one — materials, concepts, processes, suppliers — and someone (including future you) will ask why the loser lost. || List the alternatives, fix the criteria with a direction (more is better, or less), score every alternative on every criterion from data or honest estimates, normalize each criterion 0..1, weight by importance, and rank. Then check for dominance: if an alternative is at least as good on everything and better on something, it dominates — the dominated one is rejected without touching the weights. || Stop when the winner is robust: nudge the weights and see how far they move before the ranking flips. If one weight twitching flips the winner, the study is telling you the decision isn't settled — defend the weights in writing or admit the study doesn't discriminate.",
@@ -97,6 +105,14 @@ export const engineeringW28Lessons: Lesson[] = [
     title: "Parametric sweeps: vary one thing",
     minutes: 40,
     lede: "Sweep one design variable across its range, read the response curve for optima and cliffs, and know exactly what one-at-a-time sweeping cannot see.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "A parametric sweep changes one design variable across a range while holding the others fixed. It is useful for seeing trends, knees, optima, and sudden regime changes. || Read the whole response curve rather than just the minimum or maximum. A knee may offer most of the benefit without the cost of pushing to the mathematical optimum. || Remember the limitation: one-variable sweeps do not reveal interactions. Use them to find promising regions, then investigate coupled variables if the decision depends on them."
     use: "When one variable dominates the design — depth of a beam, diameter of a shaft, thickness of a panel — and you need the response curve, not a single answer. || Freeze every other input, step the variable across its full plausible range in equal steps, compute the response at each step, and plot response versus variable. Mark pass/fail against the requirement and read the curve: optimum, knee, cliff. || Stop sweeping when the curve's story is stable — more points just redraw the same curve. The sweep's job is the shape of the answer, not its sixth decimal.",
@@ -177,6 +193,14 @@ export const engineeringW28Lessons: Lesson[] = [
     title: "Convergence: knowing when to stop",
     minutes: 35,
     lede: "Write a stopping rule before you iterate, recognize diminishing returns in the iteration history, and treat the schedule as a real constraint on perfection.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Iterative analyses need a stopping rule. Without one, it is easy to keep refining a number long after the decision has stopped changing. || Define a convergence metric and tolerance before starting. Track how much the result changes with each refinement and look for diminishing returns. || If schedule or budget forces you to stop before convergence, say so explicitly and report the remaining sensitivity rather than presenting the last iteration as final."
     use: "When you are iterating anything — mesh refinement, parameter sweeps, design loops, test campaigns — and each round costs time or money. || Before the first iteration, write the stopping rule: the tolerance, how many consecutive iterations must meet it, and the budget cap. Log every iteration's answer and the relative change; stop when the rule trips or the budget dies. || Stop documenting when the declaration is written: the final answer, the convergence evidence, and — if you stopped on budget — what is still unconverged and who owns the risk.",
