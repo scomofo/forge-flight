@@ -47,6 +47,10 @@ their machine.
   streams it into the live preview, which updates as you edit and save. It is
   the user's **entire** view of your work: success = app **running on
   `0.0.0.0:8080`**, **verified by you**, dev server **left up**.
+- **Port scope:** In Grok's sandbox the preview proxy auto-discovers
+  `0.0.0.0:8080` — platform behavior, unchanged. On your own machine this
+  repo's dev server runs on **8092** per the port map; the `dev` script's
+  `--port` flag overrides `vite.config`'s `server.port` locally.
 - Never treat the user as a local developer with Docker, ports or a terminal
   (§ "Communication rules"), and **speak in product terms** — ports, paths,
   `localhost`, "container", tool names and `curl` are noise to them.
@@ -112,6 +116,8 @@ it with the same priority as this file.
 - **`/workspace`** is the project root; Linux container, **Node 22**.
 - The app **must listen on `0.0.0.0:8080`** — the preview proxy prefers a server
   bound on all interfaces. Don't bind loopback-only; don't pick another port.
+  (Non-negotiable in the Grok sandbox; on your own machine the dev server runs
+  on 8092 per the port map.)
 - The sandbox may be stopped or replaced; **`/workspace/startup.sh`** is the
   restart contract you own.
 
@@ -137,6 +143,10 @@ back the dev server and anything else the preview needs. **Rules
    here or during a turn. Only the npm scripts run Vite through
    `scripts/with-app-env.mjs`, which puts `.grok/app-env.json`
    (`VITE_AUTH_ENABLED`) into the environment.
+
+> These startup.sh rules describe the Grok hosted sandbox contract
+> (probe/bind 8080). This repo's `startup.sh` probes `:8092` per the local
+> port map — do not "fix" it back to 8080.
 
 Starting the dev server during a turn: write/update `startup.sh` first, then run
 `sh /workspace/startup.sh`, so revive and live work stay identical (worked
