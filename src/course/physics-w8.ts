@@ -166,7 +166,7 @@ export const physicsW8Lessons: Lesson[] = [
       "Throw two paper airplanes: one nose-heavy, one tail-heavy. The nose-heavy one glides; the tail-heavy one tumbles. Same paper, same air — the difference is where the weight sits. || Lift and drag both scale with the dynamic pressure q = ½ρv², the wing area S, and a dimensionless coefficient that packs in all the geometry: L = qS·C_L, D = qS·C_D. C_L grows with angle of attack until the airflow lets go of the wing — stall — and then it falls. Static margin is the stability number: (x_NP − x_CG) divided by the mean chord, where x_NP is the neutral point and x_CG the center of gravity, both measured from the nose. Positive means a nose-up gust creates a nose-down restoring moment. || q is the kinetic energy per unit volume of the air you are flying through — it is the only speed scale in the problem, which is why every aerodynamic force goes as v². Stability, by contrast, is geometry alone: it does not depend on speed at all.",
     use: "Sizing a wing, checking a design's stability number, reading Glider Lab's verdicts instead of taking them on faith. || Compute wing loading W/S — the single number that sets stall speed. Compute v_stall = √(2W/(ρS·C_Lmax)): below this speed, level flight is impossible at any angle of attack. Compute the static margin and demand roughly 0.05–0.25: below 0.05 the glider is twitchy, negative is unflyable, far above 0.25 it is nose-heavy and mushy. || Stop when you can predict the stall speed from wing loading alone and call stable/marginal/unstable from the margin without touching a simulator.",
     example:
-      "A balsa glider: mass 0.25 kg, wing area 0.06 m², C_Lmax 1.1. || Stall speed: v = √(2 × 0.25 × 9.81 / (1.225 × 0.06 × 1.1)) = √(4.905 / 0.08085) = √60.67 ≈ 7.79 m/s. Fly slower than ~7.8 m/s and no angle of attack will hold it up — the wing simply cannot make enough lift. Static margin: neutral point 0.30 m from the nose, CG at 0.27 m, mean chord 0.12 m → SM = (0.30 − 0.27)/0.12 = 0.25, right at the top of the stable band. || Now the force balance at cruise. At 9 m/s with C_L = 0.6: q = ½ × 1.225 × 81 = 49.6 Pa, L = 49.6 × 0.06 × 0.6 = 1.79 N against a weight of 2.45 N — short. The glider must fly faster or at a higher angle of attack; the numbers say so before the bench does.",
+      "A balsa glider: mass 0.25 kg, wing area 0.06 m², C_Lmax 1.1. || Stall speed: v = √(2 × 0.25 × 9.81 / (1.225 × 0.06 × 1.1)) = √(4.905 / 0.08085) = √60.67 ≈ 7.79 m/s. Fly slower than ~7.8 m/s and no angle of attack will hold it up — the wing simply cannot make enough lift. Static margin: neutral point 0.30 m from the nose, CG at 0.27 m, mean chord 0.12 m → SM = (0.30 − 0.27)/0.12 = 0.25, right at the top of the stable band. || Now the force balance at cruise. At 9 m/s with C_L = 0.6: q = ½ × 1.225 × 81 = 49.6 Pa, L = 49.6 × 0.06 × 0.6 = 1.79 N against a weight of 2.45 N — short. The glider must fly faster or at a higher angle of attack; the numbers say so before the bench does. And that lift is not free: the 0.12 m chord on 0.06 m² means a 0.50 m span, so AR = b²/S = 0.25/0.06 = 4.17. The lift slope is a = 2π × 4.17/(4.17 + 2) = 4.25 per radian, and with e = 0.85 the induced drag at C_L = 0.6 is C_Di = 0.36/(π × 4.17 × 0.85) = 0.0324 — about 49.6 × 0.06 × 0.0324 = 0.096 N of drag spent just making lift.",
     ideas: [
       {
         heading: "Dynamic pressure is the only speed scale",
@@ -174,9 +174,9 @@ export const physicsW8Lessons: Lesson[] = [
         formula: "L = qS·C_L, D = qS·C_D, q = ½ρv²",
       },
       {
-        heading: "Stall is flow separation, not engine failure",
-        body: "C_L climbs roughly linearly with angle of attack — then the airflow lets go of the upper surface, the wing stops turning air downward efficiently, and lift falls while drag spikes. The glider model's teaching polar does exactly this: linear to a 12° stall, then a straight decay. Past stall, pulling back harder makes things worse. Recovery is always the same: lower the nose, get the flow reattached, trade altitude for speed.",
-        formula: "v_stall = √(2W / (ρS·C_Lmax))",
+        heading: "The lift curve: its slope, its price, its stall",
+        body: "C_L climbs roughly linearly with angle of attack, and the wing's shape sets how steeply. Aspect ratio AR = b²/S (span squared over area — span/chord for a rectangular wing) is the shape number: the finite-wing lift slope is a = 2π·AR/(AR+2) per radian, so a long, skinny wing climbs its lift curve faster than a short, stubby one. Lift has a price, too: the wingtips shed vortices that tilt the lift backward into induced drag, C_Di = C_L²/(π·AR·e), where e is the span efficiency (0.85 is the classroom constant). Double AR at the same C_L and the induced drag halves. Then the airflow lets go of the upper surface, the wing stops turning air downward efficiently, and lift falls while drag spikes — stall. The glider model's teaching polar does exactly this: linear to a 12° stall, then a straight decay. Past stall, pulling back harder makes things worse. Recovery is always the same: lower the nose, get the flow reattached, trade altitude for speed.",
+        formula: "AR = b²/S,  a = 2π·AR/(AR+2) per rad,  C_Di = C_L²/(π·AR·e),  v_stall = √(2W / (ρS·C_Lmax))",
       },
       {
         heading: "Static margin is the stability number",
@@ -223,10 +223,15 @@ export const physicsW8Lessons: Lesson[] = [
         why: "Static margin = (x_NP − x_CG)/MAC goes negative, so a nose-up gust creates a nose-up moment — the disturbance amplifies. This is unflyable without active control, which is why the CG must sit ahead of the neutral point.",
       },
       {
-        prompt: "At double the airspeed, with the same angle of attack, drag…",
-        options: ["Quadruples", "Doubles", "Stays the same", "Halves"],
+        prompt: "The balsa glider's wing (AR = 4.17, e = 0.85) makes C_Di = 0.032 at C_L = 0.6. You build a slimmer wing of the same area with AR = 8.33 and fly it at the same C_L. Its induced drag coefficient is…",
+        options: [
+          "0.016 — halved, because AR sits in the denominator",
+          "0.008 — quartered, because AR is span squared",
+          "0.065 — doubled, because a longer wing drags more",
+          "0.032 — unchanged, because induced drag depends only on C_L",
+        ],
         answer: 0,
-        why: "D = qS·C_D and q = ½ρv² — drag scales with v². Same for lift: this is why the force balance is so sensitive to speed, and why the stall-speed prediction matters more than any coefficient tweak.",
+        why: "C_Di = C_L²/(π·AR·e) = 0.36/(π × 8.33 × 0.85) ≈ 0.016: AR appears once, in the denominator, so doubling it halves the induced drag. Quartering squares the change twice — the b² is already inside AR. Doubling puts AR in the numerator. Unchanged forgets that the wing's shape sets the price of each unit of C_L.",
       },
     ],
   },

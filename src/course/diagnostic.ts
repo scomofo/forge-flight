@@ -2,8 +2,9 @@
  * The 45-minute, open-resource placement diagnostic for the math runway.
  *
  * 24 questions, 4 per topic across six topics. It assigns modules — it never
- * assigns a pass/fail label. A topic at 3–4 of 4 tests out of its module;
- * 0–2 of 4 takes the module.
+ * assigns a pass/fail label. A topic at 4 of 4 tests out of its module —
+ * the same bar the module's own check sets (RUNWAY_PASS_AT). 0–3 of 4 takes
+ * the module.
  */
 
 export const DIAGNOSTIC_TOPICS = [
@@ -275,8 +276,8 @@ const MODULE_TOPICS: Record<ModuleId, DiagnosticTopic[]> = {
   "triangles-vectors": ["geometry-trig", "vectors"],
 };
 
-/** 3–4 of 4 on a topic tests out; 0–2 takes the module. */
-const TEST_OUT_AT = 3;
+/** 4 of 4 on a topic tests out, matching the module's own pass mark; 0–3 takes the module. */
+export const TEST_OUT_AT = 4;
 
 export type ModuleRecommendation = {
   moduleId: ModuleId;

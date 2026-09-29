@@ -234,8 +234,24 @@ test("lesson worked numbers check out", () => {
   const area = (Math.PI / 4) * 12.5 * 12.5;
   const yieldStress = 42900 / area;
   assert.ok(Math.abs(yieldStress - 350) < 1, `bar yield stress ${yieldStress.toFixed(1)} MPa should be ~350 MPa`);
-  // Lesson 3: 865 MPa characteristic / 1.5 -> ~577 MPa allowable.
-  assert.ok(Math.abs(designAllowable(865, 1.5) - 576.7) < 0.5);
+  // Lesson 3: mean 879, s ≈ 6.5 -> 879 − 13 = 866 MPa characteristic / 1.5 -> ~577 MPa allowable.
+  const ti = [872, 885, 879];
+  const tiMean = ti.reduce((a, b) => a + b, 0) / ti.length;
+  const tiS = Math.sqrt(ti.reduce((a, x) => a + (x - tiMean) ** 2, 0) / (ti.length - 1));
+  assert.ok(Math.abs(tiMean - 879) < 0.5 && Math.abs(tiS - 6.5) < 0.05, `Ti mean ${tiMean}, s ${tiS}`);
+  assert.ok(Math.abs(designAllowable(tiMean - 2 * tiS, 1.5) - 577) < 0.5);
+  // Readcurve check: 10.0 mm bar, 21.2 kN -> ≈ 270 MPa.
+  const [readcurve, , allowables] = materialsW14Lessons;
+  const alY = 21200 / ((Math.PI / 4) * 10 * 10);
+  assert.ok(Math.abs(alY - 270) < 0.5, `Al yield ${alY}`);
+  const alCheck = readcurve.checks.find((c) => c.prompt.includes("21.2 kN"));
+  assert.ok(alCheck, "readcurve must carry the σ = F/A₀ check");
+  assert.equal(alCheck.options[alCheck.answer], "≈ 270 MPa");
+  // Allowables check: 6061-T6 mean 285, s 9 -> (285 − 18)/1.5 = 178 MPa.
+  assert.equal(designAllowable(285 - 2 * 9, 1.5), 178);
+  const allowCheck = allowables.checks.find((c) => c.prompt.includes("mean − 2s"));
+  assert.ok(allowCheck, "allowables must carry the characteristic-value check");
+  assert.equal(allowCheck.options[allowCheck.answer], "≈ 178 MPa");
 });
 
 test("designAllowable and reductionOfArea are the stated ratios", () => {

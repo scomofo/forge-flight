@@ -142,6 +142,11 @@ test("Hall-Petch matches the lesson's worked numbers", () => {
   assert.ok(approx(hallPetch(110, 0.65, 20), 255.3), "20 μm grains → ~255 MPa");
   assert.ok(approx(hallPetch(110, 0.65, 5), 400.7), "5 μm grains → ~401 MPa");
   assert.ok(approx(hallPetch(110, 0.65, 200), 156.0), "200 μm grains → ~156 MPa");
+  // Check case: σ₀ = 70, k = 0.74, 25 μm → 70 + 148 = 218 MPa.
+  assert.ok(approx(hallPetch(70, 0.74, 25), 218), "25 μm grains → 218 MPa");
+  const hpCheck = materialsW15Lessons[0].checks.find((c) => c.prompt.includes("25 μm"));
+  assert.ok(hpCheck, "strengthen must carry the Hall-Petch computation check");
+  assert.equal(hpCheck.options[hpCheck.answer], "≈ 218 MPa");
   assert.throws(() => hallPetch(110, 0.65, 0), /positive/);
   assert.throws(() => hallPetch(110, 0.65, -5), /positive/);
 });

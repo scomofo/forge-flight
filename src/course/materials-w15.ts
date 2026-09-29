@@ -31,7 +31,7 @@ export const materialsW15Lessons: Lesson[] = [
       },
       {
         heading: "The other three obstacles",
-        body: "Work hardening tangles dislocations into a forest where they block each other — strong, but ductility collapses and the metal goes anisotropic. Solid-solution atoms distort the lattice and snag passing dislocations — a moderate gain for a small ductility cost, paid in alloying money. Precipitates force dislocations to bow between them like a rope around posts — the biggest gain of all, priced in furnace schedule discipline and the danger of overaging past the peak.",
+        body: "Work hardening tangles dislocations into a forest where they block each other — strong, but ductility collapses and the metal goes anisotropic. Solid-solution atoms distort the lattice and snag passing dislocations — a moderate gain for a small ductility cost, paid in alloying money, with diminishing returns: the gain goes as √c, so doubling the solute from 1% to 2% buys only √2 ≈ 1.41 times the gain, not twice. Precipitates force dislocations to bow between them like a rope around posts — the biggest gain of all, priced in furnace schedule discipline and the danger of overaging past the peak.",
         formula: "Δσ_ss ∝ √c (solute fraction c)",
       },
     ],
@@ -52,15 +52,11 @@ export const materialsW15Lessons: Lesson[] = [
         why: "A dislocation moves a wrinkle of slip across the plane instead of breaking every bond at once. Strengthening is about obstructing that wrinkle, not about the bond strength.",
       },
       {
-        prompt: "Hall-Petch says refining grains from 200 μm to 50 μm…",
-        options: [
-          "Doubles the boundary term k·d^(−1/2)",
-          "Halves the yield strength",
-          "Leaves the yield strength unchanged",
-          "Quadruples the ductility",
-        ],
+        prompt:
+          "A low-carbon steel has σ₀ = 70 MPa and k = 0.74 MPa·m^1/2. Its grains measure 25 μm. What yield strength does Hall-Petch predict?",
+        options: ["≈ 218 MPa", "≈ 148 MPa", "≈ 74.7 MPa", "≈ 70.1 MPa"],
         answer: 0,
-        why: "d^(−1/2) goes as 1/√d: √(200/50) = 2, so the boundary contribution doubles. Ductility is barely touched — that is grain refinement's signature advantage.",
+        why: "Convert first: 25 μm = 25×10⁻⁶ m, √ = 0.005 m^1/2, so k/√d = 0.74 / 0.005 = 148 MPa, and σ_y = 70 + 148 = 218 MPa. 148 forgot to add the friction stress σ₀. 74.7 put d in millimetres (√0.025), and 70.1 left it in micrometres (√25) — k is per root metre, so d must be in metres.",
       },
       {
         prompt: "Which mechanism costs the most ductility?",

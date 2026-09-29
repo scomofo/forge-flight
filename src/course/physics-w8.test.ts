@@ -23,11 +23,13 @@ import {
   RHO_SEAWATER,
   RHO_WATER,
   stabilityVerdict,
+  inducedDragCoeff,
   stallSpeed,
   staticMargin,
   venturiPressureDrop,
   wingLoading,
 } from "./fluids.ts";
+import { finiteWingSlope } from "../forge/sim/formulas.ts";
 import { lessons, lessonsFor } from "./catalog.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -231,4 +233,26 @@ test("force balance reproduces the lesson's cruise numbers", () => {
   });
   assert.ok(Math.abs(edge.liftOverWeight - 1) < 1e-9, "stall speed is defined by L = W");
   assert.ok(edge.balanced);
+});
+
+test("aspect ratio, lift slope, and induced drag match the lift lesson", () => {
+  // Lesson 3 worked case: 0.06 m^2 wing on a 0.12 m chord -> 0.50 m span.
+  const span = 0.06 / 0.12;
+  assert.ok(Math.abs(span - 0.5) < 1e-12);
+  const ar = span ** 2 / 0.06;
+  assert.ok(Math.abs(ar - 4.1667) < 1e-3, `AR ${ar} should be ~4.17`);
+  assert.ok(Math.abs(ar - span / 0.12) < 1e-12, "b^2/S equals span/chord on a rectangular wing");
+  // Finite-wing lift slope 2*pi*AR/(AR+2) ~ 4.25 per radian.
+  assert.ok(Math.abs(finiteWingSlope(ar) - 4.2454) < 1e-3);
+  // Induced drag at CL 0.6, e = 0.85 -> 0.0324, ~0.096 N at 9 m/s.
+  const cdi = inducedDragCoeff(0.6, ar, 0.85);
+  assert.ok(Math.abs(cdi - 0.03236) < 1e-4, `CDi ${cdi} should be ~0.0324`);
+  const di = dynamicPressure(RHO_AIR, 9) * 0.06 * cdi;
+  assert.ok(Math.abs(di - 0.0963) < 1e-3, `induced drag ${di} should be ~0.096 N`);
+  // Lesson 3 check: doubling AR at the same CL halves CDi (0.032 -> 0.016).
+  const cdi2 = inducedDragCoeff(0.6, 2 * ar, 0.85);
+  assert.ok(Math.abs(cdi2 / cdi - 0.5) < 1e-12);
+  assert.ok(Math.abs(cdi2 - 0.01618) < 1e-4);
+  // A longer wing climbs its lift curve faster.
+  assert.ok(finiteWingSlope(2 * ar) > finiteWingSlope(ar));
 });

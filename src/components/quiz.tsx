@@ -18,7 +18,7 @@ function hash(text: string) {
   return h >>> 0;
 }
 
-export function shuffledOrder(count: number, seed: string): number[] {
+function shuffledOrder(count: number, seed: string): number[] {
   const order = Array.from({ length: count }, (_, i) => i);
   let state = hash(seed) || 1;
   for (let i = count - 1; i > 0; i--) {

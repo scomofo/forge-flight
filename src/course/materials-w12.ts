@@ -48,10 +48,11 @@ export const materialsW12Lessons: Lesson[] = [
         why: "Corners give 8 × 1/8 = 1, faces give 6 × 1/2 = 3, total 4. BCC has 2, HCP's conventional cell has 6, simple cubic has 1.",
       },
       {
-        prompt: "The packing efficiency of FCC (and HCP) is…",
-        options: ["74%", "68%", "52%", "100%"],
+        prompt:
+          "Copper is FCC with a measured cell edge a = 361.5 pm and molar mass 63.55 g/mol. What theoretical density does the structure predict?",
+        options: ["≈ 8.94 g/cm³", "≈ 4.47 g/cm³", "≈ 2.23 g/cm³", "≈ 13.4 g/cm³"],
         answer: 0,
-        why: "Close-packed structures reach π/(3√2) ≈ 74%, the maximum for equal spheres. BCC manages 68%, simple cubic only 52%. Nothing reaches 100% with spheres.",
+        why: "a = 361.5×10⁻¹⁰ cm, so a³ ≈ 4.72×10⁻²³ cm³. Mass per cell = 4 × 63.55 ÷ 6.022×10²³ ≈ 4.22×10⁻²² g, and 4.22×10⁻²² ÷ 4.72×10⁻²³ ≈ 8.94 g/cm³ — the datasheet says 8.96. 4.47 used BCC's 2 atoms per cell, 2.23 counted only the corner atom, and 13.4 used HCP's 6-atom cell. The atom count is the whole game.",
       },
       {
         prompt: "At room temperature, which structure is most reliably ductile?",

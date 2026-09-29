@@ -319,9 +319,12 @@ export function SpringbackBench() {
   const [t, setT] = useState(1);
   const [radius, setRadius] = useState(15);
   const mat = bendMats.find((m) => m.id === id) ?? bendMats[2];
-  const lose = (3 * mat.y) / (mat.e * t);
-  const flat = lose >= 1 / radius - 1e-9;
-  const rf = flat ? Infinity : 1 / (1 / radius - lose);
+  const kappa = 1 / radius;
+  const kappaY = (2 * mat.y) / (mat.e * t);
+  const flat = kappa <= kappaY + 1e-12;
+  const kappaF = flat ? 0 : kappa - 1.5 * kappaY + (0.5 * kappaY ** 3) / (kappa * kappa);
+  const lose = kappa - kappaF;
+  const rf = flat ? Infinity : 1 / kappaF;
   const turning = flat ? 0 : 90 * (radius / rf);
   const included = flat ? 180 : 180 - turning;
   const opened = flat ? 90 : 90 - turning;
@@ -347,7 +350,7 @@ export function SpringbackBench() {
   return (
     <BenchShell
       prompt="Bend aluminum at 1 mm thick on a 15 mm radius. Then switch to titanium, same thickness and radius. || Titanium opens further. Yield over modulus is higher, so more of the bend was elastic."
-      note="Pure bending of an elastic-perfectly plastic strip. Curvature lost is 3 σ_y / (E t), the fully plastic value, so near the flat limit it overstates springback. Stretch-bending or bottoming the bend would cut springback. No friction. The bright arc opens from the punch, then the loop repeats. The angle after you let go is the readout."
+      note="Pure bending of an elastic-perfectly plastic strip, solved exactly. First yield is at curvature κ_y = 2 σ_y / (E t). At or below it the bend is all elastic and springs flat. Above it the curvature left is κ − 1.5 κ_y + 0.5 κ_y³ / κ². For sharp bends the curvature lost tends to 3 σ_y / (E t). Stretch-bending or bottoming the bend would cut springback. No friction. The bright arc opens from the punch, then the loop repeats. The angle after you let go is the readout."
       controls={
         <>
           <div className="flex flex-wrap gap-2 sm:col-span-2">
@@ -404,8 +407,8 @@ export function SpringbackBench() {
       </svg>
       <p className="mt-3 text-sm leading-relaxed text-well-dim">
         {flat
-          ? `${mat.name} gives back more curvature than the punch applied. 3 σ/E t is ${fmt(lose, 4)} per mm, and 1/R is only ${fmt(1 / radius, 4)}. It springs flat.`
-          : `${mat.name}: σ/E is ${fmt(mat.y / mat.e, 5)}. The angle between the legs goes from 90° to ${fmt(included, 1)}°. It opened ${fmt(opened, 1)}°. The faint arc is under the punch. The bright arc is after you let go.`}
+          ? `${mat.name} never yields at this radius. 1/R is ${fmt(kappa, 4)} per mm, and first yield needs 2 σ/E t = ${fmt(kappaY, 4)} per mm. The whole bend was elastic, so it springs flat.`
+          : `${mat.name}: σ/E is ${fmt(mat.y / mat.e, 5)}. It gives back ${fmt(lose, 4)} per mm of curvature. The angle between the legs goes from 90° to ${fmt(included, 1)}°. It opened ${fmt(opened, 1)}°. The faint arc is under the punch. The bright arc is after you let go.`}
       </p>
     </BenchShell>
   );

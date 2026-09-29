@@ -204,6 +204,23 @@ test("factor of safety reproduces the lesson's hoist", () => {
   approx(allowableStress(ultimate, 3.75) / 1e6, 200, 1e-6, "hoist allowable MPa");
 });
 
+test("bending stress check reproduces the fos flat bar", () => {
+  // 30 x 5 mm flat bar laid flat, 40 N at 200 mm: M = 8 N·m, c = 2.5 mm → 64 MPa
+  const I = inertiaRect(0.03, 0.005);
+  approx(I, 3.125e-10, 1e-9, "flat-bar I");
+  const M = 40 * 0.2;
+  const sigma = (M * 0.0025) / I;
+  approx(sigma / 1e6, 64, 1e-9, "flat-bar root stress MPa");
+  const allow = allowableStress(250e6, 2.5);
+  approx(allow / 1e6, 100, 1e-9, "flat-bar allowable MPa");
+  assert.ok(sigma < allow, "64 MPa passes the 100 MPa allowable");
+  approx(factorOfSafety(250e6, sigma), 3.90625, 1e-9, "flat-bar n against yield");
+  // distractors: full thickness as c, load as moment, bar on edge
+  approx(((M * 0.005) / I) / 1e6, 128, 1e-9, "c = h slip");
+  approx(((40 * 0.0025) / I) / 1e6, 320, 1e-9, "no lever arm slip");
+  approx(((M * 0.015) / inertiaRect(0.005, 0.03)) / 1e6, 10.6667, 1e-4, "on-edge slip");
+});
+
 test("seeded noise is deterministic and bounded", () => {
   const a = seededNoise("steel|rect|40|20|25|1|100");
   const b = seededNoise("steel|rect|40|20|25|1|100");

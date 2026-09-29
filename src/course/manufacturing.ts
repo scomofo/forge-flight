@@ -164,7 +164,7 @@ export const manufacturingLessons: Lesson[] = [
     lede: "Predict which way a bend opens after you let go, and which material opens more.",
     start: "Bend a strip of aluminum in your hands and let go. It opens back a little. The angle you bent to is not the angle that stays. || Part of every bend is like a spring, and that part comes back. The recovery is larger when the metal stays elastic up to a high stress and is not very stiff. Titanium opens more than aluminum for that reason. || Overbend on purpose. Do not set the tool to the angle printed on the drawing.",
     use: "A bend has to hold an angle after you let go. || Compare yield with modulus. The higher that ratio, the more the bend opens. || Predict which material opens more before you switch it. Do not set the die to the angle on the drawing.",
-    example: "A 1 mm aluminum sheet bent over a 15 mm radius, then the same bend in titanium. || Aluminum (270 MPa, 70 GPa) gives back 3 × 270 / (70,000 × 1) = 0.0116 per mm of curvature. The radius grows to about 18.2 mm and a 90° bend opens about 15.6°. Titanium (880 MPa, 110 GPa) gives back 0.024 per mm: about 23.4 mm, and it opens about 32.4°. || Do not set the die to the angle on the drawing. Overbend the one that opens more.",
+    example: "A 1 mm aluminum sheet bent over a 15 mm radius, then the same bend in titanium. || Aluminum (270 MPa, 70 GPa): the quick estimate 3 × 270 / (70,000 × 1) = 0.0116 per mm is close to the exact 0.0115 per mm the bench uses. The radius grows to about 18.1 mm and a 90° bend opens about 15.6°. Titanium (880 MPa, 110 GPa) gives back 0.0235 per mm: about 23.2 mm, and it opens about 31.8°. || Do not set the die to the angle on the drawing. Overbend the one that opens more.",
     ideas: [
       {
         heading: "The bend is partly elastic",
@@ -172,12 +172,12 @@ export const manufacturingLessons: Lesson[] = [
       },
       {
         heading: "Yield over modulus sets the recovery",
-        body: "For a fully plastic strip in pure bending, the curvature you lose on unloading is 3 times yield strength divided by modulus and thickness. High yield and low modulus give the elastic strain more to recover. Thin sheet and a large radius give that recovery a bigger share of the bend.",
-        formula: "1/R − 1/Rf = 3 σ_y / (E t)",
+        body: "For a sharp bend in pure bending, the curvature you lose on unloading is close to 3 times yield strength divided by modulus and thickness. That is the large-bend approximation. The bench solves the strip exactly: with κ = 1/R and first-yield curvature κ_y = 2 σ_y / (E t), the curvature left is κ − 1.5 κ_y + 0.5 κ_y³ / κ². High yield and low modulus give the elastic strain more to recover. Thin sheet and a large radius give that recovery a bigger share of the bend.",
+        formula: "1/R − 1/Rf ≈ 3 σ_y / (E t)  (sharp bends)",
       },
       {
         heading: "Past a point it springs flat",
-        body: "3 σ_y / (E t) assumes a fully plastic section and is accurate only when 1/R is well above 2 σ_y / (E t). The strip stays elastic, and springs flat, when 1/R ≤ 2 σ_y / (E t). The bench keeps the fully plastic term, so near that limit it says flat a little early. You did not fail to push hard enough in this model. You chose a radius so gentle, or a sheet so thin and strong, that the metal never had to stay bent.",
+        body: "The strip stays elastic, and springs flat, when 1/R ≤ 2 σ_y / (E t). The bench uses that exact limit. 3 σ_y / (E t) assumes a fully plastic section, so it is trustworthy only when 1/R is well above the limit; near it, the quick estimate would call the bend flat too early. You did not fail to push hard enough in this model. You chose a radius so gentle, or a sheet so thin and strong, that the metal never had to stay bent.",
       },
     ],
     bench: "springback",
@@ -204,7 +204,7 @@ export const manufacturingLessons: Lesson[] = [
           "Steel cannot be bent",
         ],
         answer: 1,
-        why: "The recovery term is 3 σ_y / (E t). Titanium's σ_y / E is several times mild steel's. Same geometry, more elastic share.",
+        why: "The recovery scales with σ_y / (E t), about 3 σ_y / (E t) for a sharp bend. Titanium's σ_y / E is several times mild steel's. Same geometry, more elastic share.",
       },
       {
         prompt: "The strip springs flat when…",
@@ -215,7 +215,7 @@ export const manufacturingLessons: Lesson[] = [
           "Modulus is infinite",
         ],
         answer: 1,
-        why: "Then no fiber ever yielded, so the whole bend was elastic. Nothing plastic remains to hold the arc. The fully plastic 3 σ_y / (E t) term is only trustworthy well above that limit. A thicker sheet moves the other way: it springs less.",
+        why: "Then no fiber ever yielded, so the whole bend was elastic. Nothing plastic remains to hold the arc. The bench uses this exact limit. The fully plastic 3 σ_y / (E t) estimate is only trustworthy well above it. A thicker sheet moves the other way: it springs less.",
       },
       {
         prompt: "Why might a stretch-bent part spring less than this bench?",
@@ -226,7 +226,7 @@ export const manufacturingLessons: Lesson[] = [
           "The formula already includes friction",
         ],
         answer: 0,
-        why: "Tension shifts the neutral axis and leaves less elastic moment to recover. Bottoming or coining the bend does a similar job by pressing it hard into the die. This bench is pure bending on purpose, so you can see the 3 σ_y / (E t) term alone.",
+        why: "Tension shifts the neutral axis and leaves less elastic moment to recover. Bottoming or coining the bend does a similar job by pressing it hard into the die. This bench is pure bending on purpose, so you can see the yield-over-modulus effect alone.",
       },
     ],
   },

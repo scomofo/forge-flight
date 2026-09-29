@@ -9,8 +9,8 @@ export const mathTrack: Track = {
 };
 
 /**
- * The math runway gates the core course at 80%: on a four-question check
- * that means 4 of 4. Existing tracks keep the default PASS_AT (3 of 4).
+ * The math runway gates the core course at full marks: 4 of 4 on its
+ * four-question check. Existing tracks keep the default PASS_AT (3 of 4).
  */
 const RUNWAY_PASS_AT = 4;
 
@@ -324,10 +324,16 @@ export const mathLessons: Lesson[] = [
         why: "π rad = 180° by definition. 2π is the full circle.",
       },
       {
-        prompt: "A displacement vector has components (3, 4) m. Its magnitude is…",
-        options: ["5 m", "7 m", "12 m", "25 m"],
+        prompt:
+          "Two come-alongs work a seized engine stand across the shop floor: one pulls 500 N along the floor line (0°), the other 300 N at 60° to that line. The resultant pull is…",
+        options: [
+          "700 N at 21.8° to the floor line",
+          "800 N at 30° to the floor line",
+          "583 N at 31.0° to the floor line",
+          "774 N at 11.2° to the floor line",
+        ],
         answer: 0,
-        why: "√(3² + 4²) = √25 = 5. The 3-4-5 triangle shows up everywhere — worth recognizing on sight.",
+        why: "Components first: Rx = 500 + 300·cos 60° = 650 N, Ry = 300·sin 60° ≈ 260 N. Then R = √(650² + 260²) ≈ 700 N and θ = atan2(260, 650) = 21.8°. 800 N at 30° adds the magnitudes and averages the angles; 583 N treats the two pulls as if they were at right angles; 774 N at 11.2° swaps sine and cosine on the 60° pull.",
       },
     ],
     passAt: RUNWAY_PASS_AT,

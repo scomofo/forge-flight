@@ -31,6 +31,18 @@ export type FamilyProfile = {
   corrosionResistant: boolean; // typical uncoated behavior
   diesBy: string; // the characteristic failure mode
   tempStory: string; // what the service-temperature limit means
+  /**
+   * A specialist sub-family that clears service temperatures above the
+   * ordinary envelope, at a cost penalty. Screening judges the family at its
+   * best edge, so above serviceTemp[1] (and up to upTo) the family is judged
+   * as this grade instead of being killed outright.
+   */
+  hotEscape?: {
+    via: string; // the grades that survive
+    upTo: number; // °C, continuous service ceiling of those grades
+    costVsSteel: number; // rough material cost multiple vs ordinary steel
+    oxidationResistant: boolean; // survives hot air uncoated
+  };
 };
 
 export const PROFILES: Record<FamilyId, FamilyProfile> = {
@@ -45,7 +57,8 @@ export const PROFILES: Record<FamilyId, FamilyProfile> = {
     corrosionResistant: false,
     diesBy: "Yields, then tears — or creeps under sustained load when hot.",
     tempStory:
-      "Sustained load above roughly 0.4× the melting point (in kelvin) brings creep: aluminum sags near 150°C, steels near 450°C.",
+      "Sustained load above roughly 0.4× the melting point (in kelvin) brings creep: aluminum sags near 150°C, steels near 450°C. Nickel superalloys push on to about 1000°C, at roughly 20× the cost of steel.",
+    hotEscape: { via: "nickel superalloys", upTo: 1000, costVsSteel: 20, oxidationResistant: true },
   },
   ceramic: {
     family: "ceramic",
@@ -146,6 +159,12 @@ export type ScreenResult = {
   family: FamilyId;
   passes: boolean;
   failedOn: string[];
+  /** Set when the family survives only through its hotEscape grades. */
+  survivesVia?: string;
+  /** Cost multiple vs ordinary steel carried by those grades. */
+  costPenalty?: number;
+  /** Plain-language flag explaining the narrow survival. */
+  caveat?: string;
 };
 
 /**
@@ -158,7 +177,14 @@ export function screenFamilies(c: Constraints): ScreenResult[] {
   return FAMILIES.map((family) => {
     const p = PROFILES[family];
     const failedOn: string[] = [];
-    if (c.minServiceTemp !== undefined && p.serviceTemp[1] < c.minServiceTemp) {
+    const escape =
+      c.minServiceTemp !== undefined &&
+      p.serviceTemp[1] < c.minServiceTemp &&
+      p.hotEscape !== undefined &&
+      c.minServiceTemp <= p.hotEscape.upTo
+        ? p.hotEscape
+        : undefined;
+    if (c.minServiceTemp !== undefined && !escape && p.serviceTemp[1] < c.minServiceTemp) {
       failedOn.push(
         `service temperature: needs ${c.minServiceTemp}°C, family tops out at ${p.serviceTemp[1]}°C`,
       );
@@ -184,14 +210,40 @@ export function screenFamilies(c: Constraints): ScreenResult[] {
     if (c.electrical === "insulate" && p.conducts === true) {
       failedOn.push("electrical: must insulate, family conducts");
     }
-    if (c.corrosion && !p.corrosionResistant) {
+    if (c.corrosion && !(escape ? escape.oxidationResistant : p.corrosionResistant)) {
       failedOn.push("corrosion: must survive uncoated, family needs protection");
     }
     if (c.forbidDirectional && p.directional) {
       failedOn.push("directionality: load direction unknown, anisotropy unacceptable");
     }
-    return { family, passes: failedOn.length === 0, failedOn };
+    const passes = failedOn.length === 0;
+    if (escape && passes) {
+      return {
+        family,
+        passes,
+        failedOn,
+        survivesVia: escape.via,
+        costPenalty: escape.costVsSteel,
+        caveat: `ordinary grades top out at ${p.serviceTemp[1]}°C; at ${c.minServiceTemp}°C only ${escape.via} survive, at ~${escape.costVsSteel}× the cost of steel`,
+      };
+    }
+    return { family, passes, failedOn };
   });
+}
+
+/**
+ * The screen-then-rank pick. Survivors that clear the screens outright beat
+ * survivors that clear them only through a cost-penalty grade. Returns the
+ * single outright survivor, or — if every survivor carries a penalty — the
+ * cheapest of them. Returns null when nothing survives or when two or more
+ * outright survivors remain (ranking them is a human tradeoff step).
+ */
+export function recommendFamily(results: ScreenResult[]): FamilyId | null {
+  const standing = results.filter((r) => r.passes);
+  const outright = standing.filter((r) => r.costPenalty === undefined);
+  if (outright.length === 1) return outright[0].family;
+  if (outright.length > 1 || standing.length === 0) return null;
+  return [...standing].sort((a, b) => (a.costPenalty ?? 0) - (b.costPenalty ?? 0))[0].family;
 }
 
 /** Families still standing after the screens, in canonical order. */

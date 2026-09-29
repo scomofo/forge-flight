@@ -179,6 +179,13 @@ test("basquin life matches the lesson's worked numbers", () => {
   // Lesson 2 worked case: 300 MPa amplitude, σ_f′ = 900 MPa, b = −0.1 → ≈29,500 cycles
   const N = basquinLife(300e6, 900e6, -0.1);
   assert.ok(Math.abs(N - 29524.5) / 29524.5 < 1e-9, `N should be ≈29524.5, got ${N}`);
+  // Check case: 400 MPa on the same steel → ½·2.25¹⁰ ≈ 1,660 cycles
+  const N400 = basquinLife(400e6, 900e6, -0.1);
+  assert.ok(Math.abs(N400 - 1662.6) < 0.5, `N at 400 MPa should be ≈1,663, got ${N400}`);
+  const fatigue = materialsW16Lessons.find((l) => l.id === "fatigue")!;
+  const bCheck = fatigue.checks.find((c) => c.prompt.includes("σ_a = 400 MPa"));
+  assert.ok(bCheck, "fatigue must carry the Basquin life check");
+  assert.equal(bCheck.options[bCheck.answer], "≈ 1,660 cycles");
   // Inverted: the allowable stress at that life is the original amplitude
   const s = basquinStress(N, 900e6, -0.1);
   assert.ok(Math.abs(s - 300e6) / 300e6 < 1e-9, "basquinStress must invert basquinLife");
@@ -215,6 +222,15 @@ test("paris growth extends the crack and detects fracture", () => {
   });
   assert.equal(broken.fractured, true);
   assert.equal(broken.cyclesToFracture, 0);
+});
+
+test("paris and griffith idea numbers check out", () => {
+  // C = 1e-11 m/cycle per (MPa√m)³ is 1e-29 per (Pa√m)³; ΔK = 20 MPa√m → 8e-8 m/cycle
+  assert.ok(Math.abs(1e-29 * (20e6) ** 3 - 8e-8) < 1e-12);
+  assert.ok(Math.abs(1e-29 * (40e6) ** 3 - 6.4e-7) < 1e-11);
+  // Glass: E = 70 GPa, γ = 1 J/m², a = 1 μm → ≈211 MPa; 1 mm → ≈6.7 MPa
+  assert.ok(Math.abs(griffithStress(70e9, 1, 1e-6) / 1e6 - 211.1) < 0.1);
+  assert.ok(Math.abs(griffithStress(70e9, 1, 1e-3) / 1e6 - 6.68) < 0.01);
 });
 
 test("larson-miller matches the lesson's worked numbers", () => {

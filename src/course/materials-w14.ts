@@ -80,15 +80,11 @@ export const materialsW14Lessons: Lesson[] = [
         why: "High slope (stiff), respectable fracture stress (strong in this test), but the curve is a short spike — almost no plastic strain, so the area under it is tiny. Stiff and brittle coexist happily.",
       },
       {
-        prompt: "You double the load on a bar and the extension doubles; you unload and it returns to its original length. Then you double the load again and it stays permanently longer. The transition between those two behaviors is…",
-        options: [
-          "Necking",
-          "Yield",
-          "Fracture",
-          "Work hardening",
-        ],
-        answer: 1,
-        why: "Proportional loading with full recovery is elastic; permanent set after unloading is plastic. The boundary is yield — the single most consequential landmark on the curve.",
+        prompt:
+          "An aluminum tensile bar is 10.0 mm in diameter. The load–extension record leaves the straight line at 21.2 kN. What is the engineering yield stress?",
+        options: ["≈ 270 MPa", "≈ 67.5 MPa", "≈ 212 MPa", "≈ 1080 MPa"],
+        answer: 0,
+        why: "A₀ = π/4 × (10.0 mm)² = 78.5 mm², and 21,200 N ÷ 78.5 mm² ≈ 270 MPa (N/mm² is MPa). 67.5 used π × (10 mm)² — the diameter as a radius, four times the area. 212 divided by d² = 100 mm², dropping the π/4. 1080 used π/4 × (5 mm)² — the radius as a diameter, a quarter of the area.",
       },
     ],
   },
@@ -112,7 +108,7 @@ export const materialsW14Lessons: Lesson[] = [
       },
       {
         heading: "Ductility has two measures",
-        body: "Elongation at fracture (εf, percent) is the common one — how much longer the gauge section got. Reduction of area ((A₀−Af)/A₀) measures the neck: it stays meaningful when elongation is distorted by gauge length. Both say the same thing qualitatively: how much plastic flow happened before separation. A material can be ductile in one loading and brittle in another — temperature and notch change the answer.",
+        body: "Elongation at fracture (εf, percent) is the common one — how much longer the gauge section got. Reduction of area ((A₀−Af)/A₀) measures the neck: it stays meaningful when elongation is distorted by gauge length. Worked: a 50 mm gauge that measures 68 mm after fracture gives %EL = 18/50 = 36%; a 10.0 mm bar (78.5 mm²) whose neck ends at 6.3 mm (31.2 mm²) gives %RA ≈ 60%. Both say the same thing qualitatively: how much plastic flow happened before separation. A material can be ductile in one loading and brittle in another — temperature and notch change the answer.",
         formula: "%EL = (Lf − L₀)/L₀ · 100%    %RA = (A₀ − Af)/A₀ · 100%",
       },
       {
@@ -183,7 +179,7 @@ export const materialsW14Lessons: Lesson[] = [
       "A real tensile record is not the clean curves of the curve-reading lesson. The load cell hums, the extensometer slips a few microns, and the initial slope wobbles. Three bars from the same heat give yield strengths of 342, 358, and 349 MPa. || The extraction procedure is the same — slope for E, offset line for yield, peak for UTS — but now it runs on noisy data, and the answer comes with scatter. You fit the slope through the linear prefix and stop where the points leave the line; you let the offset construction find the crossing. The method's own error is a few percent, and you report it. || Then comes the step the curve alone cannot take: turn the scatter into an allowable. A characteristic value from the low tail of the scatter, divided by a factor of safety. The curve gives you properties; judgment plus statistics gives you an allowable.",
     use: "You have tensile data and a part to size. || Extract E, σy, σuts from the record; estimate the scatter across specimens; pick a characteristic strength that the scatter justifies; divide by the factor of safety the consequence of failure demands. || Stop when you can write: 'Allowable 390 MPa = 585 MPa characteristic / 1.5', and say where each number came from.",
     example:
-      "Ti-6Al-4V, three specimens: yield readings 872, 885, 879 MPa. || Mean 879, standard deviation ~7 MPa — tight, as befits a controlled alloy. Take a characteristic value near the low tail, say 865 MPa, and a factor of safety of 1.5 for a static-strength check: allowable = 865 / 1.5 ≈ 577 MPa (real A/B-basis values need many more specimens). || The curve said ~880. The design uses 577. The gap between them is scatter, uncertainty, and consequence — and none of those are on the curve.",
+      "Ti-6Al-4V, three specimens: yield readings 872, 885, 879 MPa. || Mean 879, standard deviation ≈ 6.5 MPa — tight, as befits a controlled alloy. Take a quick low-tail characteristic two standard deviations below the mean, 879 − 2 × 6.5 = 866 MPa, and a factor of safety of 1.5 for a static-strength check: allowable = 866 / 1.5 ≈ 577 MPa (real A/B-basis values need many more specimens and statistical tolerance factors). || The curve said ~880. The design uses 577. The gap between them is scatter, uncertainty, and consequence — and none of those are on the curve.",
     ideas: [
       {
         heading: "Extraction is fitting, not reading",
@@ -192,13 +188,13 @@ export const materialsW14Lessons: Lesson[] = [
       },
       {
         heading: "Engineering stress lies after necking — usefully",
-        body: "Engineering stress uses the original area A₀, so after necking begins the curve falls: the load drops even as the true stress in the neck keeps rising. True stress (F/A_actual) and true strain (ln(L/L₀)) keep climbing. For design, engineering stress is the honest choice — your part's cross-section is the original one — but when you read 'strain hardening' in a paper, check which stress they mean. The post-necking fall is bookkeeping: the load drops because the neck's area shrinks faster than the metal hardens.",
+        body: "Engineering stress uses the original area A₀, so after necking begins the curve falls: the load drops even as the true stress in the neck keeps rising. True stress (F/A_actual) and true strain (ln(L/L₀)) keep climbing. For design, engineering stress is the honest choice — your part's cross-section is the original one — but when you read 'strain hardening' in a paper, check which stress they mean. The post-necking fall is bookkeeping: the load drops because the neck's area shrinks faster than the metal hardens. Worked: just before necking at σ_eng = 400 MPa and ε_eng = 0.20, the true stress is 400 × 1.20 = 480 MPa and the true strain ln(1.20) ≈ 0.18.",
         formula: "σ_true = σ_eng(1 + ε_eng),  ε_true = ln(1 + ε_eng)  (to necking)",
       },
       {
         heading: "Allowable = characteristic / factor of safety",
         body: "The factor of safety is priced uncertainty: material scatter, load uncertainty, analysis idealization, and consequence of failure. A footbridge and a spacecraft bracket do not share a factor. And processing moves the whole curve: quench-and-temper raises the landmarks, annealing lowers them — so the allowable belongs to a material and a process together, never to an alloy name alone. Structure → processing → properties → performance, with the bill due at the end.",
-        formula: "σ_allow = σ_characteristic / FoS   (FoS from consequence, not habit)",
+        formula: "σ_char ≈ mean − 2s (quick screen) · σ_allow = σ_char / FoS",
       },
     ],
     bench: "allowable",
@@ -218,15 +214,11 @@ export const materialsW14Lessons: Lesson[] = [
         why: "The load drops because the neck's area shrinks faster than the material hardens. True stress = F/A_actual keeps rising. The fall is bookkeeping, not softening.",
       },
       {
-        prompt: "A design allowable is best described as…",
-        options: [
-          "The mean of the measured strengths",
-          "A low-tail characteristic strength divided by a factor of safety",
-          "The UTS divided by 2, always",
-          "The highest stress any specimen survived",
-        ],
-        answer: 1,
-        why: "The mean is not safe — half the material is weaker than it. You take a value the scatter justifies from below, then divide by a factor priced on consequence and uncertainty.",
+        prompt:
+          "Five 6061-T6 specimens give a mean yield of 285 MPa with standard deviation 9 MPa. Using the quick low-tail rule (mean − 2s) and a factor of safety of 1.5, what allowable do you issue?",
+        options: ["≈ 178 MPa", "≈ 190 MPa", "≈ 184 MPa", "≈ 401 MPa"],
+        answer: 0,
+        why: "Characteristic = 285 − 2 × 9 = 267 MPa; allowable = 267 / 1.5 = 178 MPa. 190 divided the mean — half the material is weaker than the mean. 184 stepped down only one s, which still leaves about one bar in six below it. 401 multiplied by the factor instead of dividing. And mean − 2s from five bars is a screening estimate: real A- and B-basis values need many specimens and statistical tolerance factors.",
       },
       {
         prompt: "Two specimen sets have the same mean yield, 350 MPa. Set A has σ = 5 MPa, set B has σ = 40 MPa. For the same factor of safety…",

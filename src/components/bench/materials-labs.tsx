@@ -72,6 +72,7 @@ import {
   FAMILIES,
   FAMILY_LABEL,
   PROFILES,
+  recommendFamily,
   screenFamilies,
   type Constraints,
   type FamilyId,
@@ -3856,7 +3857,7 @@ const BRIEFS: Brief[] = [
       },
     ],
     debrief:
-      "Temperature did the deciding: at their honest best edges, metals creep, polymers are gone, composites lose their matrix. The ceramic wins and charges brittleness — so the design pays with compliant mounts, generous radii, and no threads.",
+      "Temperature did the deciding: polymers are gone, composites lose their matrix, and ordinary steels and aluminum creep. Only nickel superalloys carry the metal family through — at ~20× the cost of steel. The ceramic clears the screens outright and wins on cost and oxidation, then charges brittleness — so the design pays with compliant mounts, generous radii, and no threads.",
   },
   {
     id: "light-panel",
@@ -3976,6 +3977,8 @@ export function FamDecisionBench() {
     .filter((c) => onKeys.includes(c.key))
     .reduce<Constraints>((acc, c) => ({ ...acc, ...c.patch }), {});
   const results = screenFamilies(activePatch);
+  const pick = recommendFamily(results);
+  const penalized = results.filter((r) => r.passes && r.costPenalty !== undefined);
   const words = memo.trim() === "" ? 0 : memo.trim().split(/\s+/).length;
 
   const toggle = (key: string) =>
@@ -4018,10 +4021,13 @@ export function FamDecisionBench() {
           <div key={r.family} className={cn("rounded-lg px-3 py-2 ring-1", r.passes ? "ring-white/20" : "ring-red-400/40 opacity-80")}>
             <div className="flex items-baseline justify-between text-sm">
               <span className="font-medium text-well-fg">{FAMILY_LABEL[r.family]}</span>
-              <span className={cn("text-sm", r.passes ? "text-well-dim" : "text-red-300")}>
-                {r.passes ? "survives" : "screened out"}
+              <span className={cn("text-sm", r.passes ? (r.caveat ? "text-amber-300" : "text-well-dim") : "text-red-300")}>
+                {r.passes ? (r.caveat ? "survives, at a price" : "survives") : "screened out"}
               </span>
             </div>
+            {r.passes && r.caveat && (
+              <p className="mt-1 text-sm leading-relaxed text-well-dim">{r.caveat}</p>
+            )}
             {!r.passes && (
               <ul className="mt-1 list-disc pl-5 text-sm leading-relaxed text-well-dim">
                 {r.failedOn.map((reason) => (
@@ -4032,6 +4038,13 @@ export function FamDecisionBench() {
           </div>
         ))}
       </div>
+      {pick !== null && penalized.length > 0 && penalized.every((r) => r.family !== pick) && (
+        <p className="mb-5 text-sm leading-relaxed text-well-dim">
+          {`Screen, then rank: ${FAMILY_LABEL[pick]} clears every screen outright. ${penalized
+            .map((r) => `${FAMILY_LABEL[r.family]} survives only via ${r.survivesVia} at ~${r.costPenalty}× steel cost`)
+            .join("; ")} — it passes the screen and loses the tradeoff on cost and oxidation.`}
+        </p>
+      )}
       <div className="mb-5">
         <div className="mb-2 text-sm text-well-dim">Defend a survivor — pick the family you would specify</div>
         <div className="grid grid-cols-2 gap-2">

@@ -18,6 +18,7 @@ import {
   FAMILIES,
   PROFILES,
   reussModulus,
+  recommendFamily,
   screenFamilies,
   specificModulus,
   specificStrength,
@@ -163,11 +164,20 @@ test("family profiles cover the four families with sane envelopes", () => {
   assert.equal(PROFILES.metal.directional, false);
 });
 
-test("hot-bracket screens leave only ceramic standing", () => {
+test("hot-bracket screens: metal survives only via superalloys at a cost penalty, ceramic wins", () => {
   const results = screenFamilies({ minServiceTemp: 900, minStrength: 50, corrosion: true });
-  assert.deepEqual(survivors(results), ["ceramic"]);
+  assert.deepEqual(survivors(results), ["metal", "ceramic"]);
   const metal = results.find((r) => r.family === "metal")!;
-  assert.ok(metal.failedOn.some((s) => s.includes("900")), "metal must fail on temperature");
+  assert.equal(metal.survivesVia, "nickel superalloys", "metal survives 900°C only via nickel superalloys");
+  assert.equal(metal.costPenalty, 20, "superalloys carry the ~20× steel cost penalty the lesson names");
+  assert.ok(metal.caveat?.includes("900"), "the caveat must name the 900°C demand");
+  const ceramic = results.find((r) => r.family === "ceramic")!;
+  assert.equal(ceramic.costPenalty, undefined, "ceramic clears the screens outright");
+  assert.equal(recommendFamily(results), "ceramic", "ranking lands on ceramic on cost/oxidation");
+  assert.ok(
+    screenFamilies({ minServiceTemp: 1100 }).find((r) => r.family === "metal")!.failedOn.some((s) => s.includes("1100")),
+    "above the superalloy ceiling metal is screened out",
+  );
   const polymer = results.find((r) => r.family === "polymer")!;
   assert.ok(polymer.failedOn.some((s) => s.includes("900")), "polymer must fail on temperature");
   const composite = results.find((r) => r.family === "composite")!;

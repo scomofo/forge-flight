@@ -31,7 +31,7 @@ export const materialsW16Lessons: Lesson[] = [
       },
       {
         heading: "Griffith: cracks run on an energy budget",
-        body: "A crack extends when the elastic strain energy released by its growth exceeds the energy cost of the new surface. That budget gives Griffith's fracture stress, and it falls as the crack lengthens — the theoretical strength of glass is gigapascals, while a scratched window breaks at a sneeze. The strength of a brittle solid is set by its largest flaw, not by its bonds.",
+        body: "A crack extends when the elastic strain energy released by its growth exceeds the energy cost of the new surface. That budget gives Griffith's fracture stress, and it falls as the crack lengthens — the theoretical strength of glass is gigapascals, while a scratched window breaks at a sneeze. Worked for glass, E = 70 GPa and γ ≈ 1 J/m²: a 1 μm flaw gives √(2 × 70×10⁹ × 1 / (π × 10⁻⁶)) ≈ 211 MPa; a 1 mm scratch drops it to about 6.7 MPa. The strength of a brittle solid is set by its largest flaw, not by its bonds.",
         formula: "σ_f = √(2Eγ / πa)",
       },
       {
@@ -101,7 +101,7 @@ export const materialsW16Lessons: Lesson[] = [
       },
       {
         heading: "Paris: most of life is crack growth",
-        body: "The Paris law says a crack's growth per cycle goes as the stress-intensity range raised to m — about 3 for metals. Doubling ΔK multiplies the growth rate by eight. The corollary that matters: a crack spends most of its life short, then sprints. Inspection intervals are sized from that sprint — the growth life from a detectable crack to a critical one.",
+        body: "The Paris law says a crack's growth per cycle goes as the stress-intensity range raised to m — about 3 for metals. Doubling ΔK multiplies the growth rate by eight. Worked: with C = 1×10⁻¹¹ m/cycle (ΔK in MPa√m) and m = 3, a crack at ΔK = 20 MPa√m grows 10⁻¹¹ × 20³ = 8×10⁻⁸ m — 0.08 μm per cycle; at 40 MPa√m, 0.64 μm. The corollary that matters: a crack spends most of its life short, then sprints. Inspection intervals are sized from that sprint — the growth life from a detectable crack to a critical one.",
         formula: "da/dN = C(ΔK)^m",
       },
       {
@@ -116,10 +116,11 @@ export const materialsW16Lessons: Lesson[] = [
     note: "Teaching coefficients, not a fitted alloy: σ_f′ and b are representative, and the bench ignores surface finish, notches, and mean stress — all of which shorten real life. A scratch or a weld toe can skip the crack's birth entirely.",
     checks: [
       {
-        prompt: "A steel S-N curve flattens at roughly half the ultimate strength. That plateau is the…",
-        options: ["Endurance limit", "Yield strength", "Proportional limit", "Creep threshold"],
+        prompt:
+          "The example's steel (σ_f′ = 900 MPa, b = −0.1) now sees fully reversed σ_a = 400 MPa. What life does Basquin predict?",
+        options: ["≈ 1,660 cycles", "≈ 3,330 cycles", "≈ 22,100 cycles", "Effectively infinite"],
         answer: 0,
-        why: "Below the endurance limit, a steel can survive effectively infinite cycles — the S-N curve goes horizontal. It is the only free lunch in fatigue, and aluminum does not get one.",
+        why: "2N = (400/900)^(1/−0.1) = (0.444)^(−10) = 2.25¹⁰ ≈ 3,325 reversals, so N ≈ 1,660 cycles. 3,330 stopped at reversals — Basquin counts 2N. 22,100 scaled the 300 MPa life of 29,500 down linearly; with an exponent of −10, a third more stress costs a factor of about 18 in life. Infinite took half of σ_f′ as the endurance limit — that limit is about half the ultimate, and this steel already had a finite life at 300 MPa.",
       },
       {
         prompt: "With a Paris exponent m = 3, doubling the stress-intensity range multiplies the crack growth rate by…",
@@ -171,7 +172,7 @@ export const materialsW16Lessons: Lesson[] = [
       },
       {
         heading: "Diffusion sets the clock",
-        body: "Creep is thermally activated: Norton's power law pairs a stress exponent n (typically 3–8) with an Arrhenius term in temperature. The activation energy Q is large, so modest temperature changes swing the rate by orders of magnitude. This is why a hot spot, not the nominal temperature, usually decides a hot part's life.",
+        body: "Creep is thermally activated: Norton's power law pairs a stress exponent n (typically 3–8) with an Arrhenius term in temperature. With n = 5, 20% more stress multiplies the rate by 1.2⁵ ≈ 2.5. The activation energy Q is large, so modest temperature changes swing the rate by orders of magnitude. This is why a hot spot, not the nominal temperature, usually decides a hot part's life.",
         formula: "ε̇ = Aσⁿe^(−Q/RT)",
       },
       {

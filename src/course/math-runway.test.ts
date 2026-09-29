@@ -11,7 +11,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { diagnosticQuestions, DIAGNOSTIC_TOPICS, recommendModules, type DiagnosticTopic } from "./diagnostic.ts";
+import { diagnosticQuestions, DIAGNOSTIC_TOPICS, recommendModules, TEST_OUT_AT, type DiagnosticTopic } from "./diagnostic.ts";
 import { mathLessons, mathTrack } from "./math.ts";
 import { tracks, lessons, introTrackIds, lessonsFor, lessonNeighbors } from "./catalog.ts";
 import { isPassed, lessonKey, type TrackId } from "./types.ts";
@@ -159,11 +159,13 @@ test("diagnostic recommendation logic", () => {
   assert.ok(vecRec?.take, "weak vectors assigns 0E even when geometry-trig is strong");
   assert.ok(withVector.find((r) => r.moduleId === "graphs")?.take === false);
 
-  // Boundary: 3 of 4 is a test-out, 0 of 4 is a take.
+  // Boundary: the test-out bar equals the module's own pass mark, so 3 of 4
+  // takes the module and 0 of 4 takes it too.
+  assert.equal(TEST_OUT_AT, mathLessons[0].passAt, "diagnostic bar matches the module gate");
   const boundary = structuredClone(full);
   boundary.graphs = { correct: 3, total: 4 };
   boundary.powers = { correct: 0, total: 4 };
   const b = recommendModules(boundary);
-  assert.ok(b.find((r) => r.moduleId === "graphs")?.take === false, "3/4 tests out");
+  assert.ok(b.find((r) => r.moduleId === "graphs")?.take === true, "3/4 takes the module");
   assert.ok(b.find((r) => r.moduleId === "powers")?.take === true, "0/4 takes the module");
 });

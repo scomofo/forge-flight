@@ -188,15 +188,15 @@ export const physicsW7Lessons: Lesson[] = [
         why: "n covers unknowns inside the analyzed failure mode. Catastrophic consequence demands asking which modes were analyzed at all — buckling, fatigue, corrosion each need their own check.",
       },
       {
-        prompt: "Why don't aircraft use n = 10 like a cautious bridge?",
+        prompt: "A mild-steel flat bar (30 mm wide, 5 mm thick, laid flat) sticks 200 mm out of a vise with 40 N hung on the end. The steel yields at 250 MPa and you chose n = 2.5, so the allowable is 100 MPa. The root bending stress σ = Mc/I is…",
         options: [
-          "Weight is itself a load — margin costs fuel and payload",
-          "Aircraft materials are weaker",
-          "Regulations forbid it",
-          "Aircraft never experience unexpected loads",
+          "64 MPa — under the 100 MPa allowable, it passes",
+          "128 MPa — over the allowable, it fails",
+          "320 MPa — over the allowable, it fails",
+          "10.7 MPa — far under the allowable, it passes easily",
         ],
         answer: 0,
-        why: "Every kilogram of margin flies forever. Aircraft earn n ≈ 1.5 with testing, inspection, and deep knowledge of their loads — the factor is negotiated, not maximized.",
+        why: "M = 40 N × 0.2 m = 8 N·m, I = bh³/12 = 0.030 × 0.005³/12 = 3.125×10⁻¹⁰ m⁴, c = h/2 = 2.5 mm, so σ = 8 × 0.0025/3.125×10⁻¹⁰ = 64 MPa — n = 250/64 ≈ 3.9 against yield. 128 MPa takes c as the full 5 mm thickness instead of half. 320 MPa uses the 40 N load as if it were the moment and drops the 0.2 m lever arm. 10.7 MPa swaps width and thickness — the bar bent the stiff way, on edge, not laid flat.",
       },
       {
         prompt: "A beam's deflection passes span/250 but its stress exceeds the allowable. The beam…",

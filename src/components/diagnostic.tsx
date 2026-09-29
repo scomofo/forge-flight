@@ -50,9 +50,9 @@ export function Diagnostic() {
           graded; setup and reasoning are.
         </p>
         <p className="mt-4 max-w-prose leading-relaxed text-muted">
-          This assigns modules, never a pass/fail label. Score 3 or 4 of 4 on a topic and you test
-          out of its module. Score 2 or fewer and the module is assigned. Each module takes roughly
-          3–6 hours and gates at 80%.
+          This assigns modules, never a pass/fail label. Score 4 of 4 on a topic and you test
+          out of its module. Score 3 or fewer and the module is assigned. Each module takes roughly
+          3–6 hours and its check wants 4 of 4, the same bar.
         </p>
         <Button className="mt-8" onClick={() => setStage("quiz")}>
           Begin the diagnostic

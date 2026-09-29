@@ -239,8 +239,8 @@ export type Lesson = {
   checks: [Check, Check, Check, Check];
   /**
    * Correct answers required to pass this lesson's check. Defaults to
-   * PASS_AT (3 of 4). The math runway sets 4, which is the 80% mastery gate
-   * on a four-question check.
+   * PASS_AT (3 of 4). The math runway sets 4: full marks on a
+   * four-question check.
    */
   passAt?: number;
 };

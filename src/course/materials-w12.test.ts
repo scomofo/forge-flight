@@ -184,6 +184,12 @@ test("theoretical density recovers the aluminum datasheet number", () => {
   const aFe = latticeParameterPm("bcc", 124);
   const rhoFe = theoreticalDensity(55.85, STRUCTURES.bcc.atomsPerCell, cubicCellVolumeCm3(aFe));
   assert.ok(Math.abs(rhoFe - 7.87) < 0.05, `Fe density ${rhoFe} should be ≈ 7.87 g/cm³`);
+  // Check case: copper FCC from a measured edge, a = 361.5 pm -> ≈ 8.94 g/cm³
+  const rhoCu = theoreticalDensity(63.55, STRUCTURES.fcc.atomsPerCell, cubicCellVolumeCm3(361.5));
+  assert.ok(Math.abs(rhoCu - 8.94) < 0.01, `Cu density ${rhoCu} should be ≈ 8.94 g/cm³`);
+  const cuCheck = materialsW12Lessons[0].checks.find((c) => c.prompt.includes("361.5 pm"));
+  assert.ok(cuCheck, "crystal lesson must carry the copper density check");
+  assert.equal(cuCheck.options[cuCheck.answer], "≈ 8.94 g/cm³");
   // HCP cell volume exceeds the cubic formula's; magnesium check ≈ 1.74 g/cm³
   const aMg = latticeParameterPm("hcp", 160);
   const rhoMg = theoreticalDensity(24.31, STRUCTURES.hcp.atomsPerCell, hcpCellVolumeCm3(aMg));
