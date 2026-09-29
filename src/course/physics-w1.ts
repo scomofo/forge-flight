@@ -13,33 +13,33 @@ export const physicsW1Lessons: Lesson[] = [
     index: 1,
     title: "SI units and dimensions",
     minutes: 35,
-    lede: "Express any mechanical quantity in SI base units, read a dimension as MᵃLᵇTᶜ, and reject a candidate formula on dimensional grounds alone.",
+    lede: "Use units as an error check: reduce mechanical quantities to M, L, and T, and spot formulas that cannot possibly be right.",
     start:
-      "In 1999 the Mars Climate Orbiter burned up in the Martian atmosphere because one engineering team fed the navigation software pound-force seconds while the software expected newton-seconds. A $125 million spacecraft, lost to a unit nobody converted. || A dimension is what kind of quantity you have — mass, length, time, and their combinations. A unit is which ruler you measured it with — kilograms or slugs, meters or feet. SI fixes seven base dimensions; every mechanical quantity is MᵃLᵇTᶜ for some exponents a, b, c. Force is MLT⁻² whether you call it newtons or pounds. || Think of dimensions as a type system. You cannot add meters to seconds, and any equation that tries is broken at the type level. That makes dimensional analysis the cheapest check in the subject — run it before you compute anything, since no arithmetic repairs a dimensional mismatch.",
-    use: "Before you trust any formula — one you derived, one from a datasheet, one you half-remember. Also when the shape of an unknown relationship is all you need: the dimensions often pin down the formula up to a dimensionless constant. || Write every quantity as MᵃLᵇTᶜ. Multiply and divide by adding and subtracting exponents. Demand that both sides match, term by term. The arguments of sin, exp, log, and friends must be dimensionless. || Stop when both sides agree and you can name the dimension of the answer. If they don't agree, stop: no arithmetic rescues a dimensional mismatch.",
+      "In 1999, the Mars Climate Orbiter was lost after one part of the navigation chain used pound-force seconds and another expected newton-seconds. That is an expensive reminder that units are not clerical details. || Here is the distinction we need. A dimension tells you what kind of quantity you have: mass, length, time, or some combination of them. A unit tells you how you measured it: kilograms or slugs, metres or feet. In mechanics, we can reduce everything to M, L, and T. Force, for example, is MLT⁻² no matter which unit system you use. || Before you touch the calculator, check the dimensions. If one side of an equation is a length and the other is a time, you are done: something upstream is wrong. If you have a programming background, dimensions behave a bit like types. That analogy is useful, but the practical rule is simpler: mismatched dimensions mean a broken equation.",
+    use: "Use this whenever you are about to trust a formula: one you derived, one from a datasheet, or one you only half remember. It is especially useful before a long calculation. || Rewrite each quantity in M, L, and T. When you multiply, add exponents; when you divide, subtract them. Both sides of the equation must match, and anything inside sin, exp, or log must be dimensionless. || Once both sides match, the formula has passed this check. That does not prove it is correct. It only means the units have stopped objecting.",
     example:
-      "A pendulum's period T depends on its length l and gravity g. Three candidates circulate: T = 2π√(l/g), T = 2π√(g/l), T = 2π·l/g. || [l] = L and [g] = LT⁻². For the first: [l/g] = L / LT⁻² = T², and √(T²) = T — a time, matching the period. The second gives √(T⁻²) = T⁻¹, a frequency. The third gives T², a squared time. || Two candidates fail without a single experiment. What dimensions cannot tell you is the 2π: dimensional analysis fixes the shape of a formula, never its dimensionless constant. That part needs theory or measurement.",
+      "Suppose you half remember the pendulum formula. You know the period T depends on length l and gravity g, but you cannot remember whether the useful combination is √(l/g) or √(g/l). || Check the units before guessing. [l] = L and [g] = LT⁻², so [l/g] = T² and √(l/g) has units of time. Good. Flip the ratio and you get T⁻¹, a frequency. The third candidate, l/g, gives T². || We still have not proved the pendulum formula, and this check will never produce the factor 2π. But in about ten seconds we ruled out two bad versions. That is exactly what dimensional analysis is good at.",
     ideas: [
       {
-        heading: "SI is a contract, not a preference",
-        body: "Seven base units — meter, kilogram, second, ampere, kelvin, mole, candela — and mechanics needs only the first three. Everything else is a combination: the newton is kg·m/s², the joule is N·m, the watt is J/s, the pascal is N/m². The contract's value is not elegance; it is that two strangers' numbers combine without negotiation. The Orbiter died because two teams were not party to the same contract.",
+        heading: "Why SI helps",
+        body: "SI gives everyone the same starting point. Mechanics mostly lives on metre, kilogram, and second; units such as newtons, joules, watts, and pascals are built from them. You do not need to love SI. You need to be able to combine two measurements without first wondering what unit convention the other person used.",
         formula: "1 N = 1 kg·m/s²",
       },
       {
-        heading: "Dimensions are a type system",
-        body: "Every term in a sum must carry the same dimensions, exactly as every branch of a conditional must return the same type. Checking is mechanical: substitute MᵃLᵇTᶜ for each symbol and do the exponent arithmetic. A surprising share of published errors — and essentially all unit-conversion disasters — are type errors that this check catches in seconds.",
+        heading: "A fast way to catch nonsense",
+        body: "Every term in a sum has to describe the same kind of quantity. You can add one length to another length; you cannot add a length to a time and hope the calculator sorts it out. Substitute MᵃLᵇTᶜ for the symbols and do the exponent arithmetic. It is boring in the best possible way: quick, mechanical, and very good at catching mistakes.",
         formula: "[F] = MLT⁻², [E] = ML²T⁻²",
       },
       {
-        heading: "Dimensionless is a signal",
-        body: "Whenever the dimensions cancel out entirely, pay attention: a dimensionless quantity is a pure number, and pure numbers carry the real physics. Strain is ΔL/L — no units, just a ratio. Arguments of transcendental functions must be dimensionless, which is why decay always looks like e^(−t/τ) with τ a time. Later, dimensionless groups like Reynolds number will decide whole flow regimes.",
+        heading: "When the units disappear",
+        body: "Sometimes everything cancels. That is not an error. Strain, ΔL/L, is dimensionless because it is one length divided by another. The same idea explains why the argument of eˣ, sin(x), or ln(x) cannot carry units. You will see this again later in quantities such as Reynolds number, where a unitless ratio tells you which physical behaviour to expect.",
         formula: "sin(x), eˣ, ln(x) demand [x] = 1",
       },
     ],
     bench: "dimcheck",
     prompt:
-      "Pick a candidate equation and enter the M/L/T exponents for each side. || A mismatch kills the candidate — say which side is wrong and what it actually is. || Clear all four candidates, then write down the one rule the checker enforces.",
-    note: "The checker knows mechanics only — mass, length, time. Charge, temperature, and amount of substance are outside its vocabulary, which is fine: every equation in Physics 101 lives in M, L, T.",
+      "Start with one candidate equation and enter the M/L/T exponents on both sides. || If they do not match, do not keep calculating. Identify the mismatch and say what dimension each side actually has. || Work through all four candidates. When you are done, write the rule you would use next time without the checker.",
+    note: "This checker only knows mass, length, and time. That is enough for the mechanics in Physics 101. We will bring in other base dimensions when we actually need them.",
     checks: [
       {
         prompt: "The dimension of force is…",
@@ -78,32 +78,32 @@ export const physicsW1Lessons: Lesson[] = [
     index: 2,
     title: "Significant figures and uncertainty",
     minutes: 35,
-    lede: "Report a measurement with only the digits you can defend, propagate uncertainty through a calculation, and read a specification the way its author wrote it.",
+    lede: "Report measurements without pretending you know more than the instrument does, and carry that uncertainty through a calculation.",
     start:
-      "A digital caliper reads 12.345 mm on the edge of a hand-sawn bracket. The display offers five digits; the cut deserves perhaps three. Writing down all five does not make the bracket more precise — it makes the report dishonest. || Precision is how finely you can repeat a reading. Accuracy is how close you are to the truth. Significant figures are the convention that keeps the two from being confused: every reported digit is a digit you claim means something. Uncertainty is the honest version of the same idea — a ± band with a stated meaning, instead of a silent agreement about the last digit. || Extra digits are not extra knowledge. In design they are worse than useless: a fake digit becomes a fake margin, and margins get trusted.",
-    use: "Every time you report a measured or computed quantity — a memo, a datasheet line, a lab notebook entry. || Count significant figures: non-zero digits always count, captive zeros count, leading zeros never do, trailing zeros count only with a decimal point. In multiplication and division the answer carries the fewest sig figs of any input; in addition and subtraction it is limited by the least precise decimal place. For uncertainty: relative uncertainties add in quadrature for products, absolute uncertainties add in quadrature for sums. Compute with full precision and round once, at the end. || Stop when the value's last reported digit is the first uncertain one, and the uncertainty itself carries one significant figure — two at most. 2.71 ± 0.06 kg/L. Never 2.7135 ± 0.0621.",
+      "A digital caliper might show 12.345 mm on the edge of a hand-sawn bracket. The display is happy to give you five digits. The bracket probably is not. || Precision is about repeatability. Accuracy is about closeness to the true value. Significant figures are a shorthand for how many digits you are prepared to defend; uncertainty says the same thing more explicitly with a ± range. || Here is the habit to build: do the calculation with full precision, then report only what the measurement supports. Extra digits can make a weak measurement look stronger than it is, and people tend to trust numbers that look precise.",
+    use: "Use these rules whenever a measured number leaves your notebook and enters a calculation, memo, drawing, or report. || For significant figures, multiplication and division are limited by the input with the fewest significant figures; addition and subtraction are limited by decimal place. For uncertainty, products use relative uncertainty and sums use absolute uncertainty, combined in quadrature. Keep the calculator digits while you work and round once at the end. || A good final answer looks like 2.71 ± 0.06 kg/L, not 2.7135 ± 0.0621. The second version is not more informative. It is just more digits.",
     example:
-      "A bracket's mass is 3.20 ± 0.05 kg and its volume 1.18 ± 0.02 L. What is the density, honestly? || ρ = 3.20 / 1.18 = 2.712 kg/L on the calculator. Relative uncertainties: 0.05/3.20 = 1.6% and 0.02/1.18 = 1.7%. In quadrature: √(1.6² + 1.7²) = 2.3%, so the absolute uncertainty is 2.712 × 0.023 = 0.063 kg/L. || Report ρ = 2.71 ± 0.06 kg/L. The inputs had three significant figures, so the value keeps three — and the uncertainty's first digit sits in the second decimal place, which is exactly where the value stops.",
+      "A bracket has a mass of 3.20 ± 0.05 kg and a volume of 1.18 ± 0.02 L. We want its density. || The calculator gives ρ = 3.20 / 1.18 = 2.712 kg/L. The relative uncertainties are 1.6% and 1.7%; combine them in quadrature and you get about 2.3%. Applied to the density, that is roughly 0.063 kg/L. || So report 2.71 ± 0.06 kg/L. If you wrote 2.712 ± 0.063, the arithmetic would be fine but the reporting would be poor. The extra digits are not supported by the measurement.",
     ideas: [
       {
         heading: "Precision is not accuracy",
         body: "A scale that reads 70.00 kg every time you step on it is precise. If it is miscalibrated by 5 kg, it is precisely wrong. Repeatability is a property of the instrument; truth is a property of the calibration. Random error shrinks when you average; systematic error does not — it hides inside every digit, immune to repetition. When readings cluster tightly around the wrong value, suspect the instrument, not the statistics.",
       },
       {
-        heading: "The honest digit",
-        body: "Significant figures are a compact way of saying “my knowledge ends here.” 0.00450 has three: the leading zeros are placeholders, the trailing zero after the decimal is a claim. In multiplication the weakest input rules — 12.3 × 4.56 is 56.1, not 56.088, because 12.3 only brought three digits. In addition it is the decimal place that rules: 12.3 + 4.56 = 16.9, because the tenths place is where knowledge ends.",
+        heading: "Where to stop writing digits",
+        body: "Take 0.00450. It has three significant figures: 4, 5, and the final 0. The leading zeros only locate the decimal point. For multiplication, 12.3 × 4.56 should be reported as 56.1 because 12.3 only gives you three significant figures. For addition, watch the decimal place instead: 12.3 + 4.56 becomes 16.9.",
         formula: "0.00450 → three significant figures",
       },
       {
-        heading: "Uncertainty propagates",
-        body: "A result is never better than its inputs, and the arithmetic tells you exactly how much worse. For products, relative uncertainties add in quadrature; for sums, absolute ones do. Either way the weakest input dominates: halving one uncertainty while the other stays put barely moves the total. That tells you where to spend money — on the instrument behind the largest term, not the one that is easiest to upgrade.",
+        heading: "Your inputs set the ceiling",
+        body: "A calculation cannot manufacture better measurements. For products, combine relative uncertainties in quadrature; for sums, combine absolute uncertainties. If one input contributes most of the uncertainty, improving a different instrument will barely move the final result. This is useful when you are deciding what actually needs a better measurement.",
         formula: "δ(AB)/AB = √((δA/A)² + (δB/B)²)",
       },
     ],
     bench: "memo",
     prompt:
-      "Write the measurement memo: state a measurand with its unit, report value ± uncertainty with honest digits, justify the instrument, and name the dominant error source. || Check every rubric box before you call it done — the memo is evidence, not a draft.",
-    note: "The memo persists in this browser. The rubric is the grader: a stranger reading your memo should be able to check every box without asking you anything.",
+      "Write the measurement memo as if another student has to reproduce your reasoning without asking you questions. State what you measured and the unit, report value ± uncertainty with sensible digits, justify the instrument, and identify the dominant error source. || Before you submit it, read the rubric once more and make sure each claim can actually be found in the memo.",
+    note: "The memo stays in this browser. A useful test is to imagine handing it to someone who was not in the room: could they tell what you measured, how well you know it, and what probably limited the result?",
     checks: [
       {
         prompt: "How many significant figures does 0.00450 have?",
@@ -142,31 +142,31 @@ export const physicsW1Lessons: Lesson[] = [
     index: 3,
     title: "Orders of magnitude and Fermi estimation",
     minutes: 35,
-    lede: "Decompose an unanswerable question into estimable factors, multiply powers of ten, and land within a factor of ten of the truth.",
+    lede: "Turn a question you cannot answer directly into a handful of estimates you can defend, then see whether the result is in the right ballpark.",
     start:
-      "In 1945 Enrico Fermi stood about 16 kilometers (ten miles) from the first atomic test, dropped scraps of paper as the blast wave passed, and estimated the yield at 10 kilotons from how far they flew. Instruments later said about 20. He was off by a factor of two — with confetti. || An order of magnitude is a factor of ten: 10³ versus 10⁴. A Fermi estimate decomposes a question nobody can answer directly into three to five factors somebody can bound, estimates each to within a factor of two or three, and multiplies. The arithmetic lives in log space, where small errors stay small. || Most design decisions turn on the exponent, not the digit. Whether a load is 10³ N or 10⁶ N chooses the machine; whether it is 3,000 or 4,000 does not. A Fermi estimate is also a sanity check on detailed calculations: any result that disagrees with it by orders of magnitude has a structural error somewhere.",
-    use: "When no data exists yet — sizing a concept, checking a simulation, sanity-checking somebody else's number. || Decompose into factors you can bound from experience. Estimate each to one significant figure; being off by a factor of two either way is fine. Multiply the powers of ten and keep the leading digits loose. Anchor the result against something you know. || Stop at 10^E with a stated band of about ±1 order of magnitude. Then ask whether it survives contact with a known anchor — if not, find which factor lied.",
+      "At the Trinity test in 1945, Enrico Fermi dropped scraps of paper as the blast wave arrived and used their motion to estimate the explosion's yield. His rough answer was about 10 kilotons; later measurements were around 20. For a back-of-the-envelope estimate, that is remarkably close. || A Fermi estimate works by replacing one hard question with several easier ones. Estimate three to five factors you can at least bound, keep the numbers rough, and multiply. An order of magnitude is simply a factor of ten: 10³ versus 10⁴. || The goal is not a pretty number. It is to find the scale of the answer. If your rough estimate says 10⁴ N and a detailed spreadsheet says 40 N, that disagreement deserves attention before you trust the spreadsheet.",
+    use: "Use Fermi estimation early, when you do not yet have enough data for a detailed model, and later as a sanity check on one. || Break the question into factors you can estimate from experience or simple references. One significant figure is usually enough. Being off by a factor of two on an input is acceptable at this stage. Multiply, then compare the result with something familiar. || Stop when you know the order of magnitude and can point to the weakest assumption. If the answer feels wrong, do not add more decimal places. Revisit the assumptions.",
     example:
-      "How many piano tuners work in Chicago? || Three million people is about 1.2 million households; perhaps 1 in 20 owns a piano, giving 60,000 pianos. Pianos get tuned roughly yearly. A tuner does about 2 a day, 250 days a year — 500 tunings per tuner-year. So 60,000 / 500 = 120 tuners. || Directories list on the order of a hundred. Every factor was good to maybe 2×, and four such factors still land within an order of magnitude. That is the whole trick: decomposition converts one impossible guess into several easy ones.",
+      "How many piano tuners work in Chicago? Do not guess the final number. Build it. || Suppose there are about 3 million people, or roughly 1.2 million households. Maybe 1 household in 20 has a piano: about 60,000 pianos. If each gets tuned about once a year and one tuner handles roughly 500 jobs a year, 60,000 / 500 gives about 120 tuners. || A directory count is on the order of a hundred. None of our inputs was especially precise, but they were reasonable enough to land us in the right neighbourhood. That is the skill: replace one impossible guess with a few manageable ones.",
     ideas: [
       {
-        heading: "Decompose, don't guess",
-        body: "A direct guess at “piano tuners in Chicago” draws on nothing you know. Four sub-estimates — households, piano ownership, tuning frequency, tuner throughput — each draw on something you actually know: city sizes, how often your acquaintances tune, what a workday holds. The structure is the estimate; the numbers are just filling. If a factor resists bounding, decompose it one level further.",
+        heading: "Break the question apart",
+        body: "A direct guess at “piano tuners in Chicago” has nowhere to stand. Households, piano ownership, tuning frequency, and jobs per tuner are all easier to think about. If one of those still feels impossible to estimate, split it again. The useful part of a Fermi estimate is often the structure you choose before you enter any numbers.",
       },
       {
-        heading: "Log space forgives",
-        body: "Errors multiply, but in log space they add — and independent over- and under-estimates partly cancel instead of compounding. Four factors each wrong by 2× leave the total wrong by roughly 2–4×, not 16×. That is why Fermi estimates cluster near the truth: the arithmetic absorbs the errors instead of stacking them.",
+        heading: "Rough inputs can still give a useful answer",
+        body: "Several rough estimates do not automatically make the final answer useless. Some assumptions will be high and others low, and on a logarithmic scale those errors can partly cancel. Do not count on perfect cancellation, though. If several inputs are all biased in the same direction, the result will be biased too. This is estimation, not magic.",
         formula: "log₁₀(ABC) = log₁₀A + log₁₀B + log₁₀C",
       },
       {
-        heading: "The exponent is the decision",
-        body: "10³ versus 10⁶ is a different machine, a different budget, a different physics regime. 3×10³ versus 4×10³ is the same design with a different paint color. Estimate the exponent first and spend precision only where the exponent is settled — a refined digit means nothing while the exponent is unknown.",
+        heading: "Get the scale before the detail",
+        body: "The difference between 10³ N and 10⁶ N can change the entire design. The difference between 3,000 N and 4,000 N usually does not, at least not this early. Get the scale right first. Precision is worth buying only after you know you are working in the right neighbourhood.",
       },
     ],
     bench: "fermi",
     prompt:
-      "Work the bench's Fermi question: set each factor as a power of ten and watch the product assemble. || Land within one order of magnitude of the reference, then name your weakest factor and say why it was weak.",
-    note: "The reference answers are anchors, not grades. Being off by a factor of 3 with an honest decomposition beats being exactly right by luck.",
+      "Work the bench's Fermi question one factor at a time. Use powers of ten first; tidy coefficients can come later. || When you finish, compare with the reference and identify the assumption you trust least. That is usually the first place to improve if you need a better estimate.",
+    note: "Treat the reference as a scale check, not a target to reverse-engineer. A result that is off by a factor of three but built from clear assumptions is more useful than a lucky exact guess.",
     checks: [
       {
         prompt: "The order of magnitude of 2,300 is…",
