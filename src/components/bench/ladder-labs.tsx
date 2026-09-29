@@ -930,7 +930,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
       const omega = 4.8 / inertia;
       return {
         readouts: [
-          { label: "Angular momentum", value: "4.8" },
+          { label: "Angular momentum", value: "4.8 kg·m²/s" },
           { label: "Spin", value: `${fmt(omega, 2)} rad/s` },
           { label: "Inertia", value: fmt(inertia, 1) },
         ],
@@ -1037,7 +1037,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
   thermal: {
     prompt:
       "Heat a fixed steel bar by 50°. || Stress is 120 MPa and the length cannot change. Switch to free. || Stress drops to zero and a 1 m bar grows about 0.60 mm.",
-    note: "Steel, E = 200 GPa, α = 12×10⁻⁶ per kelvin. Fully fixed or fully free. A real restraint is somewhere between.",
+    note: "Steel, E = 200 GPa, α = 12×10⁻⁶ per kelvin. A bar held along its length only. Fully fixed or fully free. A real restraint is somewhere between.",
     animate: false,
     sketch: "meter",
     choices: {
@@ -1673,23 +1673,24 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
   },
   thermomech: {
     prompt:
-      "Add a 40° rise the bar is not free to grow into. || Thermal stress is 96 MPa. Mechanical stress is still 40. A load cell on the force would have missed the larger term.",
-    note: "Same steel as the thermal bench, Eα = 2.4 MPa per degree, fully constrained, plus a mechanical tension of 40 MPa. They add in this one-dimensional model.",
+      "Add a 40° rise the bar is not free to grow into. || Thermal stress is 96 MPa of compression. Mechanical stress is still 40 MPa of tension. The net is about 56 MPa compression. A load cell on the applied force would have missed the larger term.",
+    note: "Same steel as the thermal bench, Eα = 2.4 MPa per degree, a bar fully held along its length, plus a mechanical tension of 40 MPa. Heating a held bar makes the thermal term compressive, so the net is 40 minus the thermal term in this one-axis model.",
     animate: false,
     sketch: "meter",
     sliders: [{ key: "rise", label: "Temperature rise", min: 0, max: 60, step: 5, digits: 0, suffix: "°" }],
     initial: { rise: 0 },
     view: (v) => {
       const thermal = 2.4 * n(v, "rise");
-      const total = 40 + thermal;
+      const net = 40 - thermal;
+      const netSense = net < 0 ? "compression" : "tension";
       return {
         readouts: [
-          { label: "Total", value: `${fmt(total, 0)} MPa` },
-          { label: "Thermal", value: `${fmt(thermal, 0)} MPa` },
-          { label: "Mechanical", value: "40 MPa" },
+          { label: "Net", value: `${fmt(Math.abs(net), 0)} MPa ${netSense}` },
+          { label: "Thermal (compression)", value: `${fmt(thermal, 0)} MPa` },
+          { label: "Mechanical (tension)", value: "40 MPa" },
         ],
-        sentence: `40 MPa from the load, plus 2.4 MPa for every degree the bar cannot expand. At ${fmt(n(v, "rise"), 0)}° the total is ${fmt(total, 0)} MPa.`,
-        aux: { level: Math.min(1, total / 200) },
+        sentence: `40 MPa of tension from the load, and 2.4 MPa of compression for every degree the bar cannot expand. At ${fmt(n(v, "rise"), 0)}° the thermal term is ${fmt(thermal, 0)} MPa and the net is ${fmt(Math.abs(net), 0)} MPa ${netSense}.`,
+        aux: { level: Math.min(1, Math.abs(net) / 200) },
       };
     },
   },
@@ -1785,7 +1786,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
   distort: {
     prompt:
       "Set heat to 100 J/mm and thickness to 6 mm. Double the heat. || The bow doubles. Put the heat back and double the thickness. || The bow falls by four.",
-    note: "Teaching bow δ = 1.08 × heat / thickness², with heat in J/mm and thickness in mm, giving millimeters. It has the right powers and a made-up coefficient. Restraint and sequence matter as much as the heat. The plate bows and holds, then the loop repeats. The millimeters are the readout.",
+    note: "Teaching bow δ = 1.08 × heat / thickness², with heat in J/mm and thickness in mm, giving millimeters. It uses teaching powers (real plate stiffness goes as thickness cubed) and a made-up coefficient. Restraint and sequence matter as much as the heat. The plate bows and holds, then the loop repeats. The millimeters are the readout.",
     animate: true,
     sketch: "bow",
     sliders: [

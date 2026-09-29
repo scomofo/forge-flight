@@ -375,12 +375,12 @@ export const CAP_MASTERY_BANK: CapMasteryItem[] = [
     prompt: "Three tolerances stack to 0.25 mm worst-case and 0.15 mm RSS into a 0.20 mm clearance. For a safety interlock you…",
     options: [
       "Ship it — RSS passes",
-      "Redesign or loosen — the method you choose is the risk you accept, and safety is staked on worst-case",
+      "Redesign — tighten the dominant tolerance or open the clearance; safety is staked on worst-case",
       "Average the two methods",
-      "Tighten all tolerances",
+      "Ship it and inspect every part",
     ],
     answer: 1,
-    why: "RSS is statistics as mercy — it assumes the tolerances conspire never. A safety interlock is staked on Murphy's law as arithmetic: worst-case. The method is the risk posture.",
+    why: "RSS is statistics as mercy — it assumes the tolerances conspire never. A safety interlock is staked on Murphy's law as arithmetic: worst-case. Loosening a tolerance only grows the worst-case stack. The method is the risk posture.",
   },
   {
     id: "mix-fmea",

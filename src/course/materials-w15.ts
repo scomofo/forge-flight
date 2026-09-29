@@ -2,9 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 15 — Strengthening & heat treatment.
- * These three lessons open the materials track (indices 1–3); the seven
- * pre-existing materials lessons follow re-indexed from 4.
- * Evidence due: process-to-property design memo (lesson 3 bench).
+ * Materials-track indices 13–15.
+ * Evidence due: process-to-property design memo (processchoice bench).
  * Through-line: structure → processing → properties → performance.
  */
 export const materialsW15Lessons: Lesson[] = [
@@ -19,15 +18,15 @@ export const materialsW15Lessons: Lesson[] = [
       "Take a steel paperclip and bend it back and forth. The first bend is easy. The second is harder. By the fourth the metal fights you — and then it snaps with almost no stretch left. You did not change the alloy. You changed something inside it, and that something made it stronger and then killed it. || A metal deforms permanently when planes of atoms slip past each other, and that slip is carried by dislocations — line defects that move far more easily than whole planes. Strength is therefore not a property of the atoms; it is friction against dislocation motion. Every strengthening mechanism is a way of installing obstacles in the dislocations' path. || There are four obstacles worth knowing: grain boundaries, tangled dislocations, dissolved solute atoms, and grown precipitates. Each one blocks slip by a different trick, and each one charges a different price. The rest of the week is learning to pick the right obstacle for the job.",
     use: "A part needs more yield strength than its alloy delivers in the soft condition. || Pick the mechanism whose obstacle fits the alloy and the shop: grain refinement when you control the thermomechanical schedule, work hardening when the part is formed anyway, solid solution when the alloy already carries solutes, precipitation when the alloy has a phase to grow and you can hold a furnace schedule. Name the obstacle, name the price. || Stop when you can say which mechanism is doing the work in a given part and what was traded to buy it. If two mechanisms are active, say which one dominates — they rarely split the credit evenly.",
     example:
-      "A 1045 steel bar with 20 μm grains: σ₀ = 110 MPa, k = 0.65 MPa·m^1/2. || σ = 110 + 0.65 / √(20×10⁻⁶) = 110 + 0.65 × 223.6 = 255 MPa. Now refine the grains to 5 μm by controlled rolling: 0.65 / √(5×10⁻⁶) = 0.65 × 447.2 = 291 MPa on top of the 110, for σ = 401 MPa. || Same chemistry, 57% more yield — because a slip plane now runs into a grain boundary every 5 μm instead of every 20. Note what Hall-Petch cannot do: it says nothing about ductility, and below a few microns the grains start sliding instead of blocking.",
+      "A 1045 steel bar with 20 μm grains: σ₀ = 110 MPa, k = 0.65 MPa·m^1/2. || σ = 110 + 0.65 / √(20×10⁻⁶) = 110 + 0.65 × 223.6 = 255 MPa. Now refine the grains to 5 μm by controlled rolling: 0.65 / √(5×10⁻⁶) = 0.65 × 447.2 = 291 MPa on top of the 110, for σ = 401 MPa. || Same chemistry, 57% more yield — because a slip plane now runs into a grain boundary every 5 μm instead of every 20. Note what Hall-Petch cannot do: it says nothing about ductility, and below a few tens of nanometres the grains start sliding instead of blocking.",
     ideas: [
       {
         heading: "Strength is friction against dislocations",
-        body: "A perfect crystal would be enormously strong — every bond across a slip plane would have to break at once. Real metals are thousands of times weaker because dislocations let the slip propagate one atomic row at a time, like moving a rug by pushing a wrinkle across it. So the yield strength of a metal measures how hard it is to move its dislocations, and every strengthening mechanism makes that journey harder.",
+        body: "A perfect crystal would be enormously strong — every bond across a slip plane would have to break at once. Real metals are ten to a thousand times weaker because dislocations let the slip propagate one atomic row at a time, like moving a rug by pushing a wrinkle across it. So the yield strength of a metal measures how hard it is to move its dislocations, and every strengthening mechanism makes that journey harder.",
       },
       {
         heading: "Hall-Petch: boundaries are walls",
-        body: "A grain boundary is a wall where the crystal orientation changes: a dislocation arriving there has no slip plane to continue on. Halve the grain size and you roughly double the wall density, which is why the strength climbs as one over the square root of the grain diameter. It is the only mechanism that raises strength while barely touching ductility — and the only one an anneal can erase in minutes.",
+        body: "A grain boundary is a wall where the crystal orientation changes: a dislocation arriving there has no slip plane to continue on. Finer grains mean shorter pile-ups of dislocations at each wall, and the pile-up stress concentration is what gives the one-over-root-d law. It is the only mechanism that raises strength while barely touching ductility — and its gain survives an anneal only as long as grain growth is held off.",
         formula: "σ_y = σ₀ + k·d^(−1/2)",
       },
       {
@@ -83,7 +82,7 @@ export const materialsW15Lessons: Lesson[] = [
           "Normalize from austenite",
         ],
         answer: 0,
-        why: "Copper has no martensite to quench, no precipitates to age, and no austenite to normalize from — work hardening is its only lever. Annealing is the undo button, used sparingly because it erases the gain.",
+        why: "Copper has no martensite to quench, no precipitates to age, and no austenite to normalize from — work hardening is the only lever that needs no alloy change or furnace. But welding will anneal the heat-affected zone and give the gain back, so keep welds out of the strength path. Annealing is the undo button, used sparingly because it erases the gain.",
       },
     ],
   },
@@ -106,7 +105,7 @@ export const materialsW15Lessons: Lesson[] = [
       },
       {
         heading: "Martensite is trapped carbon",
-        body: "Cool austenite slowly and carbon diffuses out into soft ferrite and cementite. Cool it fast — past the nose of the TTT diagram before diffusion can act — and the carbon is trapped inside a body-centered-tetragonal lattice it does not fit in. The distortion blocks every dislocation in sight: hardness soars, toughness craters. Tempering lets a little carbon move, a little carbide precipitate, and the lattice relax just enough. The TTT diagram is a map of this race: miss the nose and you get martensite; linger above it and you get pearlite or bainite instead.",
+        body: "Cool austenite slowly and carbon diffuses out into soft ferrite and cementite. Cool it fast — past the nose of the TTT diagram before diffusion can act — and the carbon is trapped inside a body-centered-tetragonal lattice it does not fit in. The distortion blocks every dislocation in sight: hardness soars, toughness craters. Tempering lets a little carbon move, a little carbide precipitate, and the lattice relax just enough. The TTT diagram is a map of this race: miss the nose and you get martensite; cross the curves above the nose and you get pearlite; hold below the nose but above Ms and you get bainite.",
         formula: "TTT nose: cool faster than the critical rate → martensite",
       },
       {
@@ -143,7 +142,7 @@ export const materialsW15Lessons: Lesson[] = [
         why: "Martensite's body-centered-tetragonal lattice is stuffed with carbon that could not diffuse out in time. The distortion pins dislocations almost completely — hence the hardness, and the brittleness.",
       },
       {
-        prompt: "On a TTT diagram, cooling that just misses the nose produces…",
+        prompt: "On a TTT diagram, cooling that misses the nose and continues below Ms without pause produces…",
         options: [
           "Martensite",
           "Coarse pearlite",
@@ -151,7 +150,7 @@ export const materialsW15Lessons: Lesson[] = [
           "Spheroidized carbides",
         ],
         answer: 0,
-        why: "Missing the nose means diffusion never got its chance — the austenite survives down to the martensite-start temperature and shears into martensite. Touch the nose and diffusion wins: pearlite or bainite instead.",
+        why: "Missing the nose means diffusion never got its chance — the austenite survives down to the martensite-start temperature (Ms) and shears into martensite. Cross the curves above the nose and you get pearlite; hold below the nose but above Ms and you get bainite.",
       },
       {
         prompt: "An aged aluminum part is past peak hardness and softening. The correct call is…",
@@ -177,7 +176,7 @@ export const materialsW15Lessons: Lesson[] = [
       "A purchasing manager asks for a bolt that holds 800 MPa and stretches 10% before it breaks, at commodity price, in the millions. The catalog offers a dozen alloys and twice as many tempers. No single number picks the winner: the strongest option is brittle, the cheapest is soft, the toughest is expensive. || Choosing is a sequence. First, write the requirement as numbers: floors for strength and ductility, a ceiling for cost. Second, screen: any alloy-route pair that misses a floor is out before ranking begins — a point outside the window cannot win. Third, match the mechanism to what remains: what obstacle does this alloy actually offer, and what does the shop actually control? Fourth, name the process: temperature, time, deformation. Fifth, verify against the numbers you wrote in step one. || The sequence exists because the alternative is arguing about favorite materials.",
     use: "A part has a strength floor, a ductility floor, and a cost ceiling. || Write the three numbers. Throw out every alloy-route pair that misses any of them. Among the survivors, pick the cheapest process that clears the floors with margin — and name the strengthening mechanism doing the work and what was traded away. || Stop when the memo defends itself: requirement numbers, chosen alloy and route, predicted properties with margin, the mechanism, the trade. If a stranger cannot grade it without asking you anything, it is not done.",
     example:
-      "The bolt: 800 MPa yield, 10% elongation. Cold-worked 1045 gives 560 MPa — out at the screen, no matter how cheap. || Quenched-and-tempered 4140 gives 1300 MPa and 11%: margin 1.6 on strength, clears ductility, at 2.3× the material cost of plain 1045. Solution-aged 2024 gives 345 MPa — not in the same league. || The call: 4140, oil quench from 850°C, temper near 400°C. The mechanism is tempered martensite; the trade is cost and a heat-treatment schedule the shop must actually hold. Structure (trapped carbon, fine carbides) → processing (quench + temper) → properties (1300 MPa, 11%) → performance (the bolt holds).",
+      "The bolt: 800 MPa yield, 10% elongation. Cold-worked 1045 gives 560 MPa — out at the screen, no matter how cheap. || Solution-aged 2024 gives 345 MPa — not in the same league. Quenched-and-tempered 1045 gives 850 MPa and 12% at 1.9× base cost, but a 1.06 margin is thin. Q&T 4140 gives 1300 MPa and 11% (margin 1.6) at 2.3× base cost (1.6× material plus heat treatment). || The call: pay for 4140's margin and hardenability through the bolt section — oil quench from 850°C, temper near 400°C. The mechanism is tempered martensite; the trade is cost and a heat-treatment schedule the shop must actually hold. Structure (trapped carbon, fine carbides) → processing (quench + temper) → properties (1300 MPa, 11%) → performance (the bolt holds).",
     ideas: [
       {
         heading: "The triangle: strength, ductility, cost",
@@ -186,7 +185,7 @@ export const materialsW15Lessons: Lesson[] = [
       },
       {
         heading: "Screens before rankings",
-        body: "A hard floor is a guillotine. The 560 MPa cold-worked 1045 does not get partial credit toward an 800 MPa requirement — it is out, and the ranking never sees it. This is the same discipline as the materials-selection lesson's screens, applied one level down: there, alloys were screened; here, processes are screened. Only survivors get ranked, and they get ranked by what the job values — usually cost, once the floors are cleared.",
+        body: "A hard floor is a guillotine. The 560 MPa cold-worked 1045 does not get partial credit toward an 800 MPa requirement — it is out, and the ranking never sees it. The materials-selection lesson (Screen, then rank) will apply the same discipline one level up: there, whole materials get screened; here, processes are screened. Only survivors get ranked, and they get ranked by what the job values — usually cost, once the floors are cleared.",
       },
       {
         heading: "The through-line, end to end",
@@ -222,7 +221,7 @@ export const materialsW15Lessons: Lesson[] = [
         why: "1300 MPa with 11% elongation clears both floors with margin; cold work tops out near 560 MPa and spends the ductility. The price is the alloy cost and a real heat-treatment schedule.",
       },
       {
-        prompt: "A part needs 300 MPa, good formability, and corrosion resistance. The mechanism-first pick is…",
+        prompt: "A part needs 250 MPa yield, good formability, and corrosion resistance. The mechanism-first pick is…",
         options: [
           "6061 aluminum, solution-treated and aged to T6",
           "1045 steel, quenched and left untempered",
@@ -230,7 +229,7 @@ export const materialsW15Lessons: Lesson[] = [
           "4140 steel, quenched and tempered to full hardness",
         ],
         answer: 0,
-        why: "6061-T6 delivers 276–310 MPa with 12% elongation, welds well, and resists weather — precipitation hardening matched to an alloy that offers it. Untempered 1045 is a brittle warning, and copper cannot reach 300 MPa usefully.",
+        why: "6061-T6 yields ~276 MPa (UTS ~310) with ~12% elongation, welds well, and resists weather — precipitation hardening matched to an alloy that offers it. Untempered 1045 is a brittle warning, and annealed copper yields only ~70 MPa.",
       },
       {
         prompt: "In the memo, the sentence 'the mechanism is tempered martensite' belongs to which link of the chain?",

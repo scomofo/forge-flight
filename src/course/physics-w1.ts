@@ -2,8 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 1 — Measurement, units & estimation.
- * These three lessons open the physics track (indices 1–3); the pre-existing
- * physics lessons follow re-indexed from 4. Evidence due: measurement memo
+ * These three lessons open the physics track (indices 1–3); the rest of the
+ * physics weeks follow from index 4. Evidence due: measurement memo
  * (lesson 2 bench) + dimensional-analysis set (lesson 1 bench and checks).
  */
 export const physicsW1Lessons: Lesson[] = [
@@ -51,7 +51,7 @@ export const physicsW1Lessons: Lesson[] = [
         prompt: "A wave speed v on a string of tension F and mass per length μ. Which form is dimensionally possible?",
         options: ["v = √(F/μ)", "v = √(μ/F)", "v = F/μ", "v = F·μ"],
         answer: 0,
-        why: "[F] = MLT⁻² and [μ] = ML⁻¹, so [F/μ] = L²T⁻² and its root is LT⁻¹ — a speed. The second gives T/L, the third gives v²'s dimensions, the fourth is nonsense.",
+        why: "[F] = MLT⁻² and [μ] = ML⁻¹, so [F/μ] = L²T⁻² and its root is LT⁻¹ — a speed. √(μ/F) gives T/L, F/μ gives the dimensions of v², and F·μ is nonsense.",
       },
       {
         prompt: "An equation adds ½at² to vt. Dimensionally…",
@@ -144,7 +144,7 @@ export const physicsW1Lessons: Lesson[] = [
     minutes: 35,
     lede: "Decompose an unanswerable question into estimable factors, multiply powers of ten, and land within a factor of ten of the truth.",
     start:
-      "In 1945 Enrico Fermi stood ten kilometers from the first atomic test, dropped scraps of paper as the blast wave passed, and estimated the yield at 10 kilotons from how far they flew. Instruments later said about 20. He was off by a factor of two — with confetti. || An order of magnitude is a factor of ten: 10³ versus 10⁴. A Fermi estimate decomposes a question nobody can answer directly into three to five factors somebody can bound, estimates each to within a factor of two or three, and multiplies. The arithmetic lives in log space, where small errors stay small. || Most design decisions turn on the exponent, not the digit. Whether a load is 10³ N or 10⁶ N chooses the machine; whether it is 3,000 or 4,000 does not. A Fermi estimate is also a sanity check on detailed calculations: any result that disagrees with it by orders of magnitude has a structural error somewhere.",
+      "In 1945 Enrico Fermi stood about 16 kilometers (ten miles) from the first atomic test, dropped scraps of paper as the blast wave passed, and estimated the yield at 10 kilotons from how far they flew. Instruments later said about 20. He was off by a factor of two — with confetti. || An order of magnitude is a factor of ten: 10³ versus 10⁴. A Fermi estimate decomposes a question nobody can answer directly into three to five factors somebody can bound, estimates each to within a factor of two or three, and multiplies. The arithmetic lives in log space, where small errors stay small. || Most design decisions turn on the exponent, not the digit. Whether a load is 10³ N or 10⁶ N chooses the machine; whether it is 3,000 or 4,000 does not. A Fermi estimate is also a sanity check on detailed calculations: any result that disagrees with it by orders of magnitude has a structural error somewhere.",
     use: "When no data exists yet — sizing a concept, checking a simulation, sanity-checking somebody else's number. || Decompose into factors you can bound from experience. Estimate each to one significant figure; being off by a factor of two either way is fine. Multiply the powers of ten and keep the leading digits loose. Anchor the result against something you know. || Stop at 10^E with a stated band of about ±1 order of magnitude. Then ask whether it survives contact with a known anchor — if not, find which factor lied.",
     example:
       "How many piano tuners work in Chicago? || Three million people is about 1.2 million households; perhaps 1 in 20 owns a piano, giving 60,000 pianos. Pianos get tuned roughly yearly. A tuner does about 2 a day, 250 days a year — 500 tunings per tuner-year. So 60,000 / 500 = 120 tuners. || Directories list on the order of a hundred. Every factor was good to maybe 2×, and four such factors still land within an order of magnitude. That is the whole trick: decomposition converts one impossible guess into several easy ones.",
@@ -169,10 +169,10 @@ export const physicsW1Lessons: Lesson[] = [
     note: "The reference answers are anchors, not grades. Being off by a factor of 3 with an honest decomposition beats being exactly right by luck.",
     checks: [
       {
-        prompt: "The order of magnitude of 4,800 is…",
-        options: ["10³", "10⁴", "10²", "5 × 10³"],
+        prompt: "The order of magnitude of 2,300 is…",
+        options: ["10³", "10⁴", "10²", "2 × 10³"],
         answer: 0,
-        why: "4,800 = 4.8 × 10³ — nearest power of ten is 10³. Order of magnitude names the exponent, not the coefficient.",
+        why: "2,300 = 2.3 × 10³, and log₁₀(2,300) ≈ 3.4, so 10³ is the nearest power of ten either way you count. Order of magnitude names the exponent, not the coefficient.",
       },
       {
         prompt: "Why does decomposing into factors beat one direct guess?",
@@ -205,7 +205,7 @@ export const physicsW1Lessons: Lesson[] = [
           "Redo the Fermi with more significant figures",
         ],
         answer: 0,
-        why: "A three-order disagreement means something structural is wrong — a missed load path, a unit slip, a wrong model. More digits on either side cannot fix that; finding the missing factor can.",
+        why: "A more-than-two-order disagreement means something structural is wrong — a missed load path, a unit slip, a wrong model. More digits on either side cannot fix that; finding the missing factor can.",
       },
     ],
   },

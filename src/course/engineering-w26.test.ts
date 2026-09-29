@@ -31,7 +31,7 @@ const LESSON_STACK: StackPart[] = [
   { label: "Cover", nominal: 20, tol: 0.1 },
 ];
 
-test("week 26 opens the engineering track in syllabus order", () => {
+test("week 26 lessons sit at their engineering-track indices in syllabus order", () => {
   assert.equal(engineeringW26Lessons.length, 3);
   assert.deepEqual(
     engineeringW26Lessons.map((l) => l.id),
@@ -188,6 +188,12 @@ test("process screening reproduces the lesson's bracket verdict", () => {
     dieCast.reasons.some((r) => r.includes("cannot hold")),
     "die-cast rejection must name tolerance",
   );
+  assert.ok(
+    dieCast.reasons.some((r) => r.includes("uneconomical")),
+    "die-cast rejection must also name tooling economics at 500 units",
+  );
+  // Tooling-free processes are not penalized below their sweet spot.
+  assert.ok(byId.get("turning")!.reasons.every((r) => !r.includes("uneconomical")));
 
   const fdm = byId.get("fdm")!;
   assert.ok(!fdm.viable, "FDM must fail the tolerance screen");
@@ -211,4 +217,12 @@ test("process screening reproduces the lesson's bracket verdict", () => {
   const jigById = new Map(jig.map((s) => [s.process.id, s]));
   assert.ok(jigById.get("cnc-mill")!.viable, "CNC milling must clear the jig screens");
   assert.ok(!jigById.get("die-cast")!.viable, "die casting must fail material for steel");
+  assert.ok(
+    jigById.get("die-cast")!.reasons.some((r) => r.includes("uneconomical")),
+    "die casting must also fail volume for a 3-unit jig",
+  );
+  assert.ok(
+    jigById.get("turning")!.reasons.every((r) => !r.includes("uneconomical")),
+    "tooling-free turning is not penalized at 3 units",
+  );
 });

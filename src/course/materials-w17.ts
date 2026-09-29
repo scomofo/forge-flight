@@ -2,8 +2,7 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 17 — Phase diagrams & transformations.
- * These three lessons open the materials track (indices 1–3); the seven
- * pre-existing materials lessons follow re-indexed from 4.
+ * These three lessons are materials-track indices 19–21.
  * Evidence due: binary phase-diagram problem set (lesson 1 & 2 bench).
  * Through-line: structure → processing → properties → performance.
  */
@@ -16,7 +15,7 @@ export const materialsW17Lessons: Lesson[] = [
     minutes: 35,
     lede: "Locating any alloy on a binary phase diagram, naming the phases present at a given temperature, and drawing the tie line that shows what each phase is actually made of.",
     start:
-      "A spool of 60/40 solder melts the instant the iron touches it — one temperature, solid to liquid, no in-between. A spool of 50/50 solder goes soft and pasty over a thirty-degree span, smearing before it flows. Same two metals, different ratio, completely different melting behavior — the difference is where each alloy sits on the lead–tin phase diagram. || A binary phase diagram is equilibrium's answer to the two questions a foundry actually controls: what did you mix, and how hot is it. The horizontal axis is composition, in weight percent of one component. The vertical axis is temperature. Every point on that map is a state: which phases are present, and what each one contains. The lines are boundaries where the phase count changes — cross one and something starts to melt, freeze, or precipitate. || The map has its shape because nature minimizes free energy at every composition and temperature, and the lowest-energy arrangement moves as you move. The lens-shaped two-phase field of the copper–nickel system says the two metals dissolve in each other completely — liquid and solid both — but the solid prefers the higher-melting nickel. The diagram never predicts how fast anything happens. It predicts where the system is trying to go.",
+      "A spool of 63/37 solder melts the instant the iron touches it — one temperature, solid to liquid, no in-between. A spool of 50/50 solder goes soft and pasty over a thirty-degree span, smearing before it flows. Same two metals, different ratio, completely different melting behavior — the difference is where each alloy sits on the lead–tin phase diagram. || A binary phase diagram is equilibrium's answer to the two questions a foundry actually controls: what did you mix, and how hot is it. The horizontal axis is composition, in weight percent of one component. The vertical axis is temperature. Every point on that map is a state: which phases are present, and what each one contains. The lines are boundaries where the phase count changes — cross one and something starts to melt, freeze, or precipitate. || The map has its shape because nature minimizes free energy at every composition and temperature, and the lowest-energy arrangement moves as you move. The lens-shaped two-phase field of the copper–nickel system says the two metals dissolve in each other completely — liquid and solid both — but the solid prefers the higher-melting nickel. The diagram never predicts how fast anything happens. It predicts where the system is trying to go.",
     use: "Choosing an alloy, a casting temperature, or a heat-treatment window — anywhere the question is 'what phases am I dealing with.' || Fix the composition: drop a vertical line at your alloy's weight percent. Fix the temperature: draw the horizontal line. Read the field their intersection falls in — that is your phase assemblage. In a two-phase field, extend the horizontal tie line through your point to both boundaries; its ends are the compositions of the two phases, which are generally not your alloy's composition. || Stop when you can name every phase present and the composition of each. If your point sits exactly on a boundary, say which side you mean — the line itself is a transition, not a state.",
     example:
       "A Cu–30 wt% Ni alloy cools slowly from 1400°C. Nothing happens until its vertical line meets the liquidus: T = 1085 + 3.7 × 30 = 1196°C, where the first α solid appears. Freezing finishes at the solidus: T = 1085 + 3.2 × 30 = 1181°C — a 15-degree freezing range, the 'mushy zone' where the casting is neither liquid nor solid. || Halfway through, at 1190°C, the tie line runs from liquidus to solidus: C_L = (1190 − 1085)/3.7 = 28.4 wt% Ni in the liquid, C_α = (1190 − 1085)/3.2 = 32.8 wt% Ni in the solid. The solid is richer in nickel — the higher-melting component — exactly as the lens shape promised. || The alloy is 30% nickel on average, but at 1190°C no phase actually is: the liquid holds 28.4% and the solid 32.8%. Overall composition and phase composition are different numbers. Confusing them is the most common beginner error with these diagrams.",
@@ -39,7 +38,7 @@ export const materialsW17Lessons: Lesson[] = [
     bench: "phaseset",
     prompt:
       "Run the problem set: for each alloy and temperature, name the phase field, read the tie-line ends off the diagram, and compute the phase fractions. || Predict before you enter — the diagram is drawn for you, but the reading is yours. || Finish all six; the eutectic problem is the one that checks whether you actually read the lines.",
-    note: "The diagram is a teaching linearization of Pb–Sn: real boundaries curve, but the reading rules are identical. Numbers are classroom-grade — good enough to learn the method, not to certify a solder joint.",
+    note: "The diagram is a teaching linearization of Pb–Sn: real boundaries curve, but the reading rules are identical. Cu–Ni numbers use straight-line fits valid only near 20–45 wt% Ni; the real liquidus and solidus curve and meet at 1455°C. Numbers are classroom-grade — good enough to learn the method, not to certify a solder joint.",
     checks: [
       {
         prompt: "Cu–30 wt% Ni at 1190°C sits in…",
@@ -124,7 +123,7 @@ export const materialsW17Lessons: Lesson[] = [
           "The ratio of the two phase compositions",
         ],
         answer: 0,
-        why: "Opposite arm over the whole. The α end is near the alloy, so the segment from the alloy to the far end is the long one — and α, being near, gets the large fraction.",
+        why: "Opposite arm over the whole: the segment from the alloy to the β end, over the full tie line. The nearer α sits to the alloy, the longer that arm and the larger α's share.",
       },
       {
         prompt: "The lever rule returns…",
@@ -156,7 +155,7 @@ export const materialsW17Lessons: Lesson[] = [
       "Pour the same bronze into a sand mold and into a water-cooled copper mold and you get two different metals: one soft and coarse-grained, one harder and finer — from the same melt, the same chemistry. The phase diagram did not change. The cooling rate did, and the cooling rate decides how closely the alloy follows the diagram. || A phase transformation is the alloy reorganizing as temperature falls: liquid freezing to solid, one solid splitting into two. The eutectic reaction is the most dramatic: at one fixed temperature and one fixed composition, liquid transforms into two solids at once — L → α + β. The eutectoid is its solid-state twin: γ → α + Fe₃C, the reaction that makes pearlite, the backbone of steel. || The diagram shows equilibrium — the destination the alloy wants. Diffusion is the vehicle, and diffusion needs time. Cool slowly and the alloy arrives: compositions follow the solvus lines, fractions follow the lever. Cool fast and it strands partway: the solid traps the high-temperature composition — coring — and the properties follow the stranded structure, not the diagram's promise.",
     use: "Cooling any alloy through a transformation, or choosing the cooling rate for a casting or heat treatment. || Drop a vertical line at your composition. Walk down in temperature: at each boundary, name what starts to form. At a eutectic, split the remaining liquid into the eutectic microconstituent, and apply the lever rule just above the eutectic temperature for primary versus eutectic fractions. Then ask the rate question: slow enough for diffusion to keep up, or fast enough to freeze the high-temperature state in? || Stop when you can sketch the room-temperature microstructure — which phases, roughly how much of each, in what arrangement — and say what changes if you quench instead.",
     example:
-      "Pb–40 wt% Sn cools from 300°C. At the liquidus the first α appears; by just above 183°C the lever rule on the L + α field gives primary α: W_α = (61.9 − 40)/(61.9 − 19.2) = 21.9/42.7 = 0.513 — about 51% chunky primary α dendrites, 49% remaining liquid at the eutectic composition. || At 183°C that liquid undergoes the eutectic reaction: L → α + β, freezing into fine alternating lamellae of lead-rich α and tin-rich β. Just below 183°C the alloy is 51% primary α plus 49% eutectic microconstituent — two morphologies, three phases' worth of chemistry, all from one cooling curve. || The numbers came from the diagram at equilibrium. A fast-cooled casting of the same alloy shows less primary α and a finer, more divorced eutectic — the same destination on the map, but the casting did not get all the way there.",
+      "Pb–40 wt% Sn cools from 300°C. At the liquidus the first α appears; by just above 183°C the lever rule on the L + α field gives primary α: W_α = (61.9 − 40)/(61.9 − 19.2) = 21.9/42.7 = 0.513 — about 51% chunky primary α dendrites, 49% remaining liquid at the eutectic composition. || At 183°C that liquid undergoes the eutectic reaction: L → α + β, freezing into fine alternating lamellae of lead-rich α and tin-rich β. Just below 183°C the alloy is 51% primary α plus 49% eutectic microconstituent — two morphologies, only two phases (α and β), all from one cooling curve. || The numbers came from the diagram at equilibrium. A fast-cooled casting of the same alloy shows less primary α and a finer, more divorced eutectic — the same destination on the map, but the casting did not get all the way there.",
     ideas: [
       {
         heading: "The eutectic is a fixed point",
@@ -166,7 +165,7 @@ export const materialsW17Lessons: Lesson[] = [
       {
         heading: "Coring is frozen history",
         body: "In Cu–Ni the first solid to freeze is nickel-rich and the last is nickel-poor; with slow cooling, solid-state diffusion evens this out as the temperature falls. Quench the casting and diffusion never gets its chance: each dendrite keeps a nickel-rich core and a nickel-poor rim — microsegregation you can etch and see. The cure is a homogenizing anneal: hold hot, and let diffusion finish the job the quench interrupted.",
-        formula: "first solid ≈ 1.16 × C₀ (Ni-rich); last solid ≈ C₀",
+        formula: "first solid ≈ 1.16 × C₀ (Ni-rich); at equilibrium everything ends at C₀, but a quench leaves the last solid below C₀ (Ni-poor rim)",
       },
       {
         heading: "Iron–carbon runs the world",
@@ -198,7 +197,7 @@ export const materialsW17Lessons: Lesson[] = [
           "The precipitation of β from α on cooling",
         ],
         answer: 0,
-        why: "Three phases coexist at the eutectic point — the phase rule leaves zero degrees of freedom, so it runs at fixed T. L → α over a range is ordinary freezing; the last option is solvus precipitation.",
+        why: "Three phases coexist at the eutectic point — the phase rule leaves zero degrees of freedom, so it runs at fixed T. L → α over a range is ordinary freezing; β coming out of α on cooling is solvus precipitation.",
       },
       {
         prompt: "A quenched Cu–Ni casting shows coring: dendrite cores are…",

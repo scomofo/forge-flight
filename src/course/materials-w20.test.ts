@@ -191,7 +191,8 @@ test("spar chain pins the lesson's worked numbers", () => {
   closeTo(byId.balsa.massG, 0.96, 0.05, "balsa mass");
   closeTo(byId.al7075.massG, 16.9, 0.2, "aluminum mass");
   closeTo(byId.cfrp.massG, 9.6, 0.2, "carbon mass");
-  // Fatigue sanity: operating stress below endurance for every candidate.
+  // Fatigue sanity: operating stress well below each candidate's long-life
+  // fatigue strength (aluminum has no true endurance limit; 5e8-cycle value).
   // Aluminum and carbon sit at a few percent (effectively infinite life);
   // balsa at ~53% still sees far too few gust cycles in a glider's life to matter.
   const ratios = Object.fromEntries(chain.results.map((r) => [r.material.id, r.fatigueRatio]));

@@ -2,9 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 7 — Elasticity & simple structures.
- * These three lessons head the physics track (indices 1–3); the pre-existing
- * physics lessons follow re-indexed from 4. Evidence due: predict-then-measure
- * beam deflection (lesson 2 bench and checks).
+ * These three lessons are physics-track indices 19–21, after Week 6.
+ * Evidence due: predict-then-measure beam deflection (lesson 2 bench and checks).
  */
 export const physicsW7Lessons: Lesson[] = [
   {
@@ -18,7 +17,7 @@ export const physicsW7Lessons: Lesson[] = [
       "A crane picks up a two-ton steel beam on a cable no thicker than your thumb. The cable stretches — every loaded material stretches, steel included — and the engineer who sized it did not guess: she divided the load by the area. || Stress, σ, is force spread over area: σ = F/A. Strain, ε, is stretch relative to length: ε = ΔL/L. The first is what the material feels; the second is how it answers. Strain has no units — it is a ratio, the dimensionless signal Week 1 taught you to respect. || Internal force has to go somewhere. It distributes over the cross-section, so a thicker cable feels less stress for the same load. That is the whole reason cables, columns, and bones are sized by area, not by vibes: double the diameter and the stress falls by four.",
     use: "Whenever you size a member for axial load — cable, column, tie rod. || Compute the stress σ = F/A, compare it to what the material is allowed (more on that next lesson), then compute the stretch δ = FL/AE and check it is acceptable. Force, length, area, modulus — all four have to be in SI before the arithmetic. || Stop when the stress is under the allowable and the stretch is within whatever the job tolerates. A cable that holds but stretches a meter has still failed its design.",
     example:
-      "A 10 mm diameter steel rod, 2 m long, hangs a 15 kN load. Does it hold, and how much does it stretch? || Area A = π(0.005)² = 7.85×10⁻⁵ m². Stress σ = 15000 / 7.85×10⁻⁵ = 1.91×10⁸ Pa = 191 MPa. Mild steel yields around 250 MPa, so the stress is under yield with room to spare. Stretch δ = FL/AE = 15000 × 2 / (7.85×10⁻⁵ × 200×10⁹) = 1.91×10⁻³ m. || 191 MPa — the rod holds. 1.91 mm of stretch on a 2 m rod — a strain of about 0.001, one part in a thousand. Steel feels rigid because the modulus is enormous; it stretches all the same.",
+      "A 10 mm diameter steel rod, 2 m long, hangs a 15 kN load. Does it hold, and how much does it stretch? || Area A = π(0.005)² = 7.85×10⁻⁵ m². Stress σ = 15000 / 7.85×10⁻⁵ = 1.91×10⁸ Pa = 191 MPa. Mild steel yields around 250 MPa, so the stress is under yield, but only by a factor of 1.3 — thin margin for a hanging load (next lesson). Stretch δ = FL/AE = 15000 × 2 / (7.85×10⁻⁵ × 200×10⁹) = 1.91×10⁻³ m. || 191 MPa — the rod holds. 1.91 mm of stretch on a 2 m rod — a strain of about 0.001, one part in a thousand. Steel feels rigid because the modulus is enormous; it stretches all the same.",
     ideas: [
       {
         heading: "Stress is internal force per area",
@@ -38,7 +37,7 @@ export const physicsW7Lessons: Lesson[] = [
     ],
     bench: "stressstrain",
     prompt:
-      "Pick a material, a diameter, and a load. || Find the load where the stress first crosses yield — that boundary is the whole story of the elastic range. || Write down the stress, the strain, and the safety factor at your working load.",
+      "Pick a material, a diameter, and a load. || Find the load where the stress first crosses yield — that boundary is the whole story of the elastic range. || Write down the stress, the strain, and how far under yield you are (yield ÷ stress; next lesson names that ratio the factor of safety) at your working load.",
     note: "Teaching yield values, not code allowables. Uniform axial stress, no notch, no bending — the idealizations the formulas assume.",
     checks: [
       {
@@ -83,11 +82,11 @@ export const physicsW7Lessons: Lesson[] = [
       "Stand on a diving board and it sags. The top surface stretches, the bottom surface squeezes, and somewhere in the middle a layer does nothing at all. || Bending is differential stretch: strain varies through the depth, tension on the convex side, compression on the concave side, zero at the neutral axis. The second moment of area, I = ∫y²dA, measures how far the material sits from that axis — material far from the middle counts quadratically, because it is both more strained and has more leverage. || That is why floor joists are deep, not wide, and why an I-beam puts almost all its steel in the flanges. Depth is the cheap lever: for a rectangle, I = bh³/12, and the cube means a little extra depth buys a lot of stiffness.",
     use: "When you need a beam's stiffness before you trust any single number: read the formula as a scaling law. || Deflection scales with L³ — double the span, eight times the sag. It scales inversely with h³ — double the depth, one-eighth the sag. It scales inversely with E — the material lever, the weakest of the three. || Stop trusting the number when the beam stops being slender or the deflection stops being small: δ beyond about a tenth of the span means the linear formula is leaving its range. Use the scaling law for comparisons, and don't ask the precise digits for more than the linear theory can give.",
     example:
-      "A steel ruler cantilevers 300 mm off a desk: 25 mm wide, 2 mm thick, 5 N at the tip. How far does it droop? || I = bh³/12 = 0.025 × (0.002)³/12 = 1.67×10⁻¹¹ m⁴. δ = FL³/3EI = 5 × (0.3)³ / (3 × 200×10⁹ × 1.67×10⁻¹¹) = 0.0135 m. || 13.5 mm of droop — about a twentieth of the span, inside the formula's honest range. Now halve the thickness to 1 mm: I falls by eight, so δ rises eightfold to about 10.8 cm, and the small-deflection assumption is broken. The scaling law warned you: halving the thickness costs eightfold. Past about δ/L = 0.1 the precise number is no longer honest, but the scaling law still is.",
+      "A steel ruler cantilevers 300 mm off a desk: 25 mm wide, 2 mm thick, 5 N at the tip. How far does it droop? || I = bh³/12 = 0.025 × (0.002)³/12 = 1.67×10⁻¹¹ m⁴. δ = FL³/3EI = 5 × (0.3)³ / (3 × 200×10⁹ × 1.67×10⁻¹¹) = 0.0135 m. || 13.5 mm of droop — about a twentieth of the span, inside the formula's honest range. The root stress: M = 5 × 0.3 = 1.5 N·m, y = 1 mm, so σ = My/I = 1.5 × 0.001 / 1.67×10⁻¹¹ = 90 MPa. Now halve the thickness to 1 mm: I falls by eight, so δ rises eightfold to about 10.8 cm, the small-deflection assumption is broken, and the root stress quadruples to 360 MPa (y halves, I falls by eight). The scaling law warned you: halving the thickness costs eightfold. Past about δ/L = 0.1 the precise number is no longer honest, but the scaling law still is.",
     ideas: [
       {
         heading: "Bending is differential stretch",
-        body: "Axial load stretches every fiber equally. Bending stretches fibers in proportion to their distance from the neutral axis — the side away from the load goes into tension, the near side into compression. The stress at a fiber is σ = My/I: linear through the depth, maximum at the outer faces, zero where it costs you nothing to remove material.",
+        body: "Axial load stretches every fiber equally. Bending stretches fibers in proportion to their distance from the neutral axis — the convex side goes into tension, the concave side into compression. The stress at a fiber is σ = My/I: linear through the depth, maximum at the outer faces, zero where it costs you nothing to remove material.",
         formula: "σ = My/I",
       },
       {
@@ -120,9 +119,9 @@ export const physicsW7Lessons: Lesson[] = [
       },
       {
         prompt: "In a sagging beam, the top fibers are in…",
-        options: ["Tension", "Compression", "Shear only", "Nothing — the top is unstressed"],
+        options: ["Compression", "Tension", "Shear only", "Nothing — the top is unstressed"],
         answer: 0,
-        why: "The convex side stretches: sagging puts the top in tension and the bottom in compression, with the neutral axis unstressed between them.",
+        why: "Sagging bends the beam concave-up: the convex bottom stretches (tension), the top shortens (compression), and the neutral axis between them is unstressed.",
       },
       {
         prompt: "Your predicted 4.2 mm deflection measures 4.9 mm. The honest response is…",
@@ -162,14 +161,14 @@ export const physicsW7Lessons: Lesson[] = [
       },
       {
         heading: "Predict, then measure",
-        body: "The discipline that makes margins honest: write the predicted number down before you test. A prediction of 4.2 mm against a measurement of 4.9 mm is not a failure — the 17% gap is where you learn what the model missed. Clamp compliance, load placement, material scatter: each suspect you rule out is knowledge the next design inherits. Agreement with the prediction is reassuring; the gap is what teaches.",
+        body: "The discipline that makes margins honest: write the predicted number down before you test. A prediction of 4.2 mm against a measurement of 4.9 mm is not a failure — the −14% error (predicted low by 0.7 mm) is where you learn what the model missed. Clamp compliance, load placement, material scatter: each suspect you rule out is knowledge the next design inherits. Agreement with the prediction is reassuring; the gap is what teaches.",
         formula: "error % = (predicted − measured) / measured × 100",
       },
     ],
     bench: "beamdefl",
     prompt:
       "Run the deflection bench again, but this time decide the load from a target factor of safety first. || Size the beam so the bending stress stays under the allowable, then predict and measure the deflection. || Report n, the allowable stress, and your prediction error.",
-    note: "Same bench, engineer's question: the deflection is the serviceability check, the stress against the allowable is the strength check. A beam can pass one and fail the other.",
+    note: "Same bench, engineer's question: the deflection is the serviceability check, the stress against the allowable is the strength check. A beam can pass one and fail the other. The span/250 rule is a common serviceability limit: the sag may be at most 1/250 of the span (1.2 mm on a 300 mm span).",
     checks: [
       {
         prompt: "Ultimate load 45 kN, working load 12 kN. The factor of safety is…",

@@ -45,7 +45,7 @@ export type SparMaterial = {
   densityKgM3: number;
   /** Which factor of safety applies to this material's strength. */
   fos: number;
-  /** Endurance-limit estimate for the fatigue sanity check, Pa. */
+  /** Long-life fatigue strength for the sanity check, Pa: an endurance limit for steel, the 5×10⁸-cycle strength for aluminum (which has no true limit). */
   endurancePa: number;
   /** Fracture toughness for the crack sanity check, Pa*sqrt(m). */
   kIcPaSqrtM: number;

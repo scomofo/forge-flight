@@ -185,13 +185,14 @@ test("buckling logic matches the tent-pole worked case", () => {
   assert.equal(effectiveLength(1.5, "fixed-fixed"), 0.75);
 
   const col = sectionProps({ kind: "round-tube", d: 0.025, t: 0.002 });
-  const pcr = eulerLoad(69e9, col.I, effectiveLength(1.5, "pinned-pinned"));
-  approx(pcr, 2914.1, 1e-3, "Euler load N");
-  approx(pcr / col.A / 1e6, 20.165, 1e-3, "buckling stress MPa");
-  approx(pcr / 686, 4.25, 1e-2, "FoS vs 70 kg camper");
+  const pcr = eulerLoad(68.9e9, col.I, effectiveLength(1.5, "pinned-pinned"));
+  approx(pcr, 2909.9, 1e-3, "Euler load N");
+  approx(pcr / col.A / 1e6, 20.136, 1e-3, "buckling stress MPa");
+  approx(pcr / 686, 4.24, 1e-2, "FoS vs 70 kg camper");
+  approx((276e6 * col.A) / pcr, 13.7, 1e-2, "crush load ≈ 14× buckling load");
 
   // fixed-free quarters the pinned-pinned value
-  const pcrFree = eulerLoad(69e9, col.I, effectiveLength(1.5, "fixed-free"));
+  const pcrFree = eulerLoad(68.9e9, col.I, effectiveLength(1.5, "fixed-free"));
   approx(pcrFree, pcr / 4, 1e-9, "fixed-free = Pcr/4");
 });
 
@@ -212,10 +213,13 @@ test("combined loading: von Mises and shaft sizing", () => {
   approx(shaftDiameterVonMises(200, 300, 150e6) * 1000, 28.132, 1e-3, "shaft diameter mm");
   const vm30 = shaftVonMises(200, 300, 0.03);
   approx(vm30 / 1e6, 123.69, 1e-3, "vm at 30 mm");
+  // bending-only size for comparison: 23.9 mm
+  approx(Math.cbrt((32 * 200) / (Math.PI * 150e6)) * 1000, 23.86, 1e-3, "bending-only diameter mm");
   assert.ok(vm30 < 150e6, "30 mm shaft must clear the allowable");
 
   // margin of safety semantics
   approx(marginOfSafety(276, 118), 276 / 118 - 1, 1e-12, "MS");
+  approx(marginOfSafety(276, 117.68), 1.345, 1e-3, "bending example MS (unrounded σ)");
   assert.ok(marginOfSafety(150, 200) < 0, "negative MS means failure");
 });
 

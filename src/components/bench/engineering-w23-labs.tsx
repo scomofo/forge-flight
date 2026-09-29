@@ -25,8 +25,8 @@ const PATH_STAGES = [
 ];
 
 const DEFAULT_MARGIN_ROWS: MarginRow[] = [
-  { label: "Limit tension (MPa)", applied: 120, allowable: 167 },
-  { label: "Limit bending (MPa)", applied: 90, allowable: 167 },
+  { label: "Limit tension (MPa)", applied: 120, allowable: 276 },
+  { label: "Limit bending (MPa)", applied: 90, allowable: 276 },
   { label: "Ultimate tension (MPa)", applied: 180, allowable: 310 },
   { label: "Bearing at pin hole (MPa)", applied: 140, allowable: 220 },
 ];

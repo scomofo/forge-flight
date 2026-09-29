@@ -34,7 +34,7 @@ import { lessonsFor } from "./catalog.ts";
 const approx = (a: number, b: number, tol: number, msg: string) =>
   assert.ok(Math.abs(a - b) <= tol, `${msg}: got ${a}, want ${b} ± ${tol}`);
 
-test("week 28 opens the engineering track in syllabus order", () => {
+test("week 28 lessons sit at their engineering-track indices in syllabus order", () => {
   assert.equal(engineeringW28Lessons.length, 3);
   assert.deepEqual(
     engineeringW28Lessons.map((l) => l.id),
@@ -212,4 +212,8 @@ test("hasConverged implements the written stopping rule", () => {
   assert.ok(!hasConverged([2.1, 2.03, 1.99, 1.97], 0.005, 2), "tight tolerance does not trip");
   assert.ok(!hasConverged([1.0], 0.05, 2), "needs enough history");
   assert.ok(!hasConverged([], 0.05, 2), "empty history never converges");
+  // Lesson's depth history: 11% then 1.9% — only one sub-tolerance change.
+  approx((60 - 54) / 54, 0.111, 0.001, "first relative change");
+  approx((54 - 53) / 53, 0.019, 0.001, "second relative change");
+  assert.ok(!hasConverged([60, 54, 53], 0.05, 2), "one sub-tolerance change is not two");
 });

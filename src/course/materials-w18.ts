@@ -2,8 +2,7 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 18 — Metals, ceramics, polymers & composites.
- * These three lessons open the materials track (indices 1–3); the seven
- * pre-existing materials lessons follow re-indexed from 4. Evidence due:
+ * These three lessons are materials-track indices 22–24. Evidence due:
  * material family decision under constraints (lesson 3 bench).
  *
  * The block's through-line: structure → processing → properties →
@@ -23,7 +22,7 @@ export const materialsW18Lessons: Lesson[] = [
       "A kiln shelf sits at 1400°C and is allowed to crack. A wing spar must be stiff for its mass and the load runs one way. A grocery bag must stretch, weigh nothing, and cost a cent. || Those are three jobs, and each one belongs to a different family before any alloy or grade is named: ceramic, composite, polymer. A family is a way the atoms hold together — metallic, ionic/covalent network, long chains, fiber in matrix — and that bonding arrives as a pack: stiffness, density, temperature ceiling, and failure mode travel together. || Processing moves you inside the pack but never out of it. Heat treatment can double a steel's strength; it cannot make steel light, or make it survive 1400°C. So selection happens in the right order: the job's non-negotiable demand picks the family, and only then does the grade get chosen.",
     use: "When a job names its demands — conduct, stay hot, take a hit, be light, be stiff in one direction. || Read each family's envelope at its best edge, and ask which demand kills which family. The survivor is your starting point, not your answer. || Stop when you can name the winner and its price in one sentence: the family, the demand that forced it, and the property you sacrificed. If every family fails a demand, the demand itself is what needs renegotiating.",
     example:
-      "A beam must be stiff, and mass is the budget. Candidates: steel, aluminum, carbon-fiber composite. || Specific stiffness E/ρ: steel 200/7.85 ≈ 25.5, aluminum 69/2.7 ≈ 25.6, CFRP along the fiber 140/1.55 ≈ 90 GPa per g/cm³. || The two metals tie — aluminum is not stiffer per mass than steel, which surprises everyone once — and the composite wins by 3.5×, but only along the fiber and only if the temperature stays below the matrix's ceiling.",
+      "A tie rod must be stiff in tension, and mass is the budget. Candidates: steel, aluminum, carbon-fiber composite. || Specific stiffness E/ρ: steel 200/7.85 ≈ 25.5, aluminum 69/2.7 ≈ 25.6, CFRP along the fiber 140/1.55 ≈ 90 GPa per g/cm³. || The two metals tie — aluminum is not stiffer per mass than steel, which surprises everyone once — and the composite wins by 3.5×, but only along the fiber and only if the temperature stays below the matrix's ceiling.",
     ideas: [
       {
         heading: "Bonding writes the pack",
@@ -33,7 +32,7 @@ export const materialsW18Lessons: Lesson[] = [
       {
         heading: "No virtue travels alone",
         body: "Selection errors almost always come from shopping for one property. The stiffness you wanted arrives with the density you didn't; the temperature ceiling arrives with the brittleness. Read the envelope as a bundle — density, modulus, strength, service temperature, failure mode — and distrust any comparison that quotes a single number. A strength quoted without a temperature and a direction is a rumor, not a datum.",
-        formula: "specific stiffness E/ρ decides mass-limited design, not E alone",
+        formula: "specific stiffness E/ρ decides a mass-limited tie; a beam uses E^(1/2)/ρ; never E alone",
       },
       {
         heading: "Processing picks the point, not the pack",
@@ -50,12 +49,12 @@ export const materialsW18Lessons: Lesson[] = [
         prompt: "Why do aluminum and steel tie on specific stiffness?",
         options: [
           "Aluminum is a weaker metal in every way",
-          "The modulus-to-density ratio is nearly identical for most metals",
+          "Their E/ρ happens to be nearly equal (~25) — Fe, Al, Ti and Mg all cluster there",
           "Steel's extra strength cancels its extra mass",
           "Specific stiffness is not a real quantity",
         ],
         answer: 1,
-        why: "E/ρ ≈ 25 GPa per g/cm³ for both: 200/7.85 for steel, 69/2.7 for aluminum. Metallic bonding sets a similar stiffness per atom, so swapping steel for aluminum saves mass at equal stiffness — it never buys more stiffness per mass.",
+        why: "E/ρ ≈ 25 GPa per g/cm³ for both: 200/7.85 for steel, 69/2.7 for aluminum. So in tension, aluminum neither saves nor costs mass at equal stiffness; it wins only in bending, where thicker sections pay.",
       },
       {
         prompt: "A part must conduct electricity and be drawn into thin wire. The family is…",
@@ -98,17 +97,17 @@ export const materialsW18Lessons: Lesson[] = [
       "A carbon-fiber tube is a hero along its axis and a disappointment across it. A kiln shelf shrugs at 1400°C, then cracks when a cold tool touches it. || Directionality and temperature are the two ways a brochure number lies to you. The rule of mixtures bounds the directional lie: load parallel to continuous fibers and the fiber dominates (Voigt); load across them and the soft matrix dominates (Reuss). Temperature kills by mechanism: polymers soften through their glass transition, metals creep above ~0.4 of their melting point in kelvin, ceramics survive the heat and die from its sudden change. || Design to the weak direction and the hot limit. The headline number was measured along the fiber, at room temperature — conditions your part may not enjoy.",
     use: "When a part carries load in a known direction or sees sustained heat. || Compute the mixture bounds for the direction you actually load; compare the service temperature against the family's killing mechanism — Tg for polymers, 0.4·Tm for metals under load, thermal shock for ceramics. || Stop when the weak-direction stiffness and the hot-limit strength both clear the demand with margin. If only the brochure direction clears it, you do not have a design.",
     example:
-      "A unidirectional CFRP, 60% carbon fiber (Ef = 230 GPa) in epoxy (Em = 3 GPa). It will also see a fast 500 K quench in service; the backup ceramic option is alumina (E = 300 GPa, α = 8×10⁻⁶/K, tensile strength ≈ 300 MPa). || Voigt: 0.6×230 + 0.4×3 = 139.2 GPa along the fiber. Reuss: 1/(0.6/230 + 0.4/3) ≈ 7.4 GPa across it — a 19:1 ratio. Thermal shock on the alumina: σ ≈ E·α·ΔT = 300×10³×8×10⁻⁶×500 = 1200 MPa, four times its tensile strength. || The composite is superb in exactly one direction and must never see the quench across its matrix; the ceramic survives steady heat and would not survive the quench at all. Each family names its killing condition.",
+      "A unidirectional CFRP, 60% carbon fiber (Ef = 230 GPa) in epoxy (Em = 3 GPa). It will also see a sudden 500 K temperature drop in service; the backup ceramic option is alumina (E = 300 GPa, α = 8×10⁻⁶/K, tensile strength ≈ 300 MPa). || Voigt: 0.6×230 + 0.4×3 = 139.2 GPa along the fiber. Reuss: 1/(0.6/230 + 0.4/3) ≈ 7.4 GPa across it — a 19:1 ratio. Thermal shock on the alumina, as the one-axis constrained estimate: σ ≈ E·α·ΔT = 300×10³×8×10⁻⁶×500 = 1200 MPa, four times its tensile strength. || The composite is superb in exactly one direction and must never see that drop across its matrix; the ceramic survives steady heat and would not survive the shock at all. Each family names its killing condition.",
     ideas: [
       {
         heading: "The mixture has two bounds",
-        body: "Voigt (parallel): the stiff phase carries the strain, so the composite approaches the fiber. Reuss (series): the soft phase takes the strain, so the composite approaches the matrix. Real layups live between the bounds, and the ratio between them — 19:1 in the example — is the honest measure of anisotropy. Wood, drawn wire, rolled sheet, and every composite share this structure: processing aims the strong direction, and the weak direction is the design value.",
+        body: "Voigt (parallel): both phases share the same strain, so the stiff phase carries most of the load and the composite approaches the fiber. Reuss (series): the soft phase takes the strain, so the composite approaches the matrix. Real layups live between the bounds, and the ratio between them — 19:1 in the example — is the honest measure of anisotropy. Wood, drawn wire, rolled sheet, and every composite share this structure: processing aims the strong direction, and the weak direction is the design value.",
         formula: "E∥ = Vf·Ef + Vm·Em;  1/E⊥ = Vf/Ef + Vm/Em",
       },
       {
         heading: "Temperature kills by mechanism",
-        body: "Polymers: past the glass transition the chains unlock and the modulus collapses — that is the service ceiling, not the melting point. Metals: sustained load above ~0.4·Tm (kelvin) brings creep, slow permanent flow — aluminum sags near 150°C, steels near 450°C. Ceramics: the network holds to white heat, but E·α·ΔT from a sudden quench exceeds the flaw-limited strength and the part cracks. Three families, three different ways to die of temperature.",
-        formula: "σ_thermal ≈ E·α·ΔT;  T_creep ≈ 0.4·T_melt (K)",
+        body: "Polymers: past the glass transition the chains unlock and the modulus collapses — that is the service ceiling, not the melting point. Metals: sustained load above ~0.4·Tm (kelvin) brings creep, slow permanent flow — aluminum sags near 150°C, steels near 450°C. Ceramics: the network holds to white heat, but E·α·ΔT from a sudden temperature change exceeds the flaw-limited strength and the part cracks. Three families, three different ways to die of temperature.",
+        formula: "σ_thermal ≈ E·α·ΔT (one-axis constrained estimate);  T_creep ≈ 0.4·T_melt (K)",
       },
       {
         heading: "The envelope edge is the design value",
@@ -127,7 +126,7 @@ export const materialsW18Lessons: Lesson[] = [
         why: "Reuss bound: 1/(0.6/230 + 0.4/3) ≈ 7.4 GPa. Across the fiber the soft epoxy takes the strain, so the composite is matrix-dominated — a 19:1 anisotropy ratio.",
       },
       {
-        prompt: "Alumina quenched through 500 K sees roughly E·α·ΔT = 1200 MPa of thermal stress. It cracks because…",
+        prompt: "Alumina taking a sudden 500 K temperature drop sees roughly E·α·ΔT = 1200 MPa of thermal stress (the one-axis constrained estimate). It cracks because…",
         options: [
           "Ceramics cannot survive any temperature change",
           "1200 MPa exceeds its flaw-limited tensile strength (~300 MPa)",
@@ -169,10 +168,10 @@ export const materialsW18Lessons: Lesson[] = [
     minutes: 35,
     lede: "Separating hard screens from soft tradeoffs, killing families against the screens, ranking the survivors — and stating the price of the winner out loud.",
     start:
-      "In January 1986 the Challenger's booster O-rings were asked to seal in cold they were never chosen for. The elastomer lost its resilience, hot gas blew past, and seven people died. || It was a selection failure rather than a strength failure: the service temperature fell outside the family's envelope, and nobody's screen caught it. Selection is a discipline for exactly this: write the constraints down, apply the hard ones as screens that kill families outright, and rank the survivors on the soft ones — cost, mass, makeability. || A decision is finished only when the winner's price is stated. 'Ceramic, because 900°C killed everything else; we accept brittleness and will design thick sections with no stress concentrations.' Constraints you can negotiate are tradeoffs. Constraints you cannot are screens. Confusing the two is how O-rings end up in the cold.",
+      "In January 1986 the Challenger's booster O-rings were asked to seal in cold they were never chosen for. The elastomer lost its resilience, hot gas blew past, and seven people died. || It was a selection failure rather than a strength failure: the service temperature fell outside the family's envelope, and the engineers' temperature screen was written down and overridden. A screen only works if nobody can waive it quietly. Selection is a discipline for exactly this: write the constraints down, apply the hard ones as screens that kill families outright, and rank the survivors on the soft ones — cost, mass, makeability. || A decision is finished only when the winner's price is stated. 'Ceramic, because 900°C killed everything but a superalloy we cannot afford; we accept brittleness and will design thick sections with no stress concentrations.' Constraints you can negotiate are tradeoffs. Constraints you cannot are screens. Confusing the two is how O-rings end up in the cold.",
     use: "When a part needs a family. || List every constraint — temperature, load, environment, shape, volume, cost. Mark each as screen (violating it kills the part) or tradeoff (it ranks survivors). Apply screens at the families' best envelope edges, so a kill is honest. || Stop when one family stands and you can state its price. If none stand, a constraint must move — and relaxing a screen is a decision someone signs off on, with the consequences named.",
     example:
-      "A bracket must hold 50 MPa at 900°C continuous, in air, bolted to a steel frame. || Screens: service temperature ≥ 900°C kills polymers (done by ~250°C), composites (matrix done by ~250°C), and ordinary metals (creep by ~450°C) — at their best edges, honestly dead. Strength ≥ 50 MPa at temperature and air-oxidation resistance leave the ceramics standing: alumina or silicon carbide. || Winner: ceramic — and the stated price is brittleness plus thermal-expansion mismatch with the steel frame, so the bracket gets compliant mounts and generous radii. The temperature did the deciding; the design pays the price the family charges.",
+      "A bracket must hold 50 MPa at 900°C continuous, in air, bolted to a steel frame. || Screens: service temperature ≥ 900°C kills polymers (done by ~250°C), composites (matrix done by ~250°C), and ordinary steels and aluminum (creep by ~450°C) — at their best edges, honestly dead. Strength ≥ 50 MPa at temperature and air-oxidation resistance leave two standing: nickel superalloys and the ceramics, alumina or silicon carbide. || The superalloy survives but costs ~20× steel; ceramic wins on cost and oxidation. Winner: ceramic — and the stated price is brittleness plus thermal-expansion mismatch with the steel frame, so the bracket gets compliant mounts and generous radii. The temperature did the deciding; the design pays the price the family charges.",
     ideas: [
       {
         heading: "Screens kill, tradeoffs rank",
@@ -185,7 +184,7 @@ export const materialsW18Lessons: Lesson[] = [
       },
       {
         heading: "Process and environment are constraints too",
-        body: "A family that cannot be made into the shape, at the volume, on the schedule, is screened out regardless of its properties — ceramics do not take threads well, composites do not take rush orders. And service is a constraint: UV embrittles polymers, salt water pits unprotected metals, thermal cycling loosens everything. The O-ring failed on a service constraint nobody wrote down. Write them down.",
+        body: "A family that cannot be made into the shape, at the volume, on the schedule, is screened out regardless of its properties — ceramics do not take threads well, composites do not take rush orders. And service is a constraint: UV embrittles polymers, salt water pits unprotected metals, thermal cycling loosens everything. The O-ring's cold limit was written down and overridden. Write constraints down, and make waiving one a signed decision.",
       },
     ],
     bench: "famdecision",
@@ -202,7 +201,7 @@ export const materialsW18Lessons: Lesson[] = [
           "Unavoidable — no material could have sealed that joint",
         ],
         answer: 1,
-        why: "The elastomer lost resilience in the cold — a temperature constraint the selection never screened for. The material was fine inside its envelope; the job put it outside.",
+        why: "The elastomer lost resilience in the cold. The engineers had flagged that temperature limit, and it was overridden. The material was fine inside its envelope; the launch decision put it outside.",
       },
       {
         prompt: "A hard screen differs from a tradeoff in that…",
@@ -216,15 +215,15 @@ export const materialsW18Lessons: Lesson[] = [
         why: "Service temperature, corrosion with no coating, a mass cap — violate these and the part fails. Cost and machinability choose among the families that survived. Ranking before screening lets a cheap wrong answer win.",
       },
       {
-        prompt: "A 900°C continuous bracket in air screens out metals because…",
+        prompt: "A 900°C continuous bracket in air screens out ordinary steels and aluminum because…",
         options: [
           "Metals melt at 900°C",
-          "Even the best ordinary metals creep or soften well below 900°C sustained",
+          "They creep or soften well below 900°C sustained",
           "Metals cannot be bolted to steel",
           "Ceramics are cheaper",
         ],
         answer: 1,
-        why: "Steels creep above ~450°C sustained; aluminum sags near 150°C. Refractory metals exist but oxidize catastrophically in air — at their honest best edge, the metal family is dead for this job.",
+        why: "Steels creep above ~450°C sustained; aluminum sags near 150°C. Refractory metals oxidize catastrophically in air. Nickel superalloys do clear 900°C — turbine blades live there — but at ~20× the cost of steel, so they pass the screen and lose on the tradeoff.",
       },
       {
         prompt: "A material decision is finished when…",

@@ -2,9 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 4 — Work, energy & power.
- * These three lessons open the physics track (indices 1–3); the pre-existing
- * physics lessons follow re-indexed from 4. Evidence due: energy audit of a
- * simple mechanism (lesson 1 bench).
+ * Week 4 lessons, indices 10–12. Evidence due: energy audit of a simple
+ * mechanism (lesson 3 bench).
  */
 export const physicsW4Lessons: Lesson[] = [
   {
@@ -15,7 +14,7 @@ export const physicsW4Lessons: Lesson[] = [
     minutes: 35,
     lede: "Compute the work of a force as F·d·cosθ, add works with their signs, and read the net work as the change in kinetic energy.",
     start:
-      "A tow truck drags a car 40 meters. The cable pulls at 20° above horizontal with 5,000 N. How much of that pull actually goes into motion? || Work is the energy a force delivers along a displacement: W = F·d·cosθ. Only the component of force along the direction of motion counts. A force at right angles to the motion — the normal force on a rolling cart, the cable's upward tug while the car moves forward — does no work at all. Work is signed: a force opposing the motion does negative work and takes energy away. || The work-energy theorem says the net work on a body equals its change in kinetic energy: W_net = ΔK = ½mv² − ½mv₀². That turns work into a bookkeeping device — you stop asking “what are the forces at each instant?” and start asking “how much energy went in, and how fast is the body now?”",
+      "A tow truck drags a car 40 meters. The cable pulls at 20° above horizontal with 5,000 N. How much of that pull actually goes into motion? || Work is the energy a force delivers along a displacement: W = F·d·cosθ. Only the component of force along the direction of motion counts. A force at right angles to the motion — the normal force on a rolling cart, the cable's upward tug while the car moves forward — does no work at all. For the tow truck, 5,000 × cos20° ≈ 4,700 N lies along the road; over 40 m that is about 188 kJ, and the 1,700 N upward part adds nothing. Work is signed: a force opposing the motion does negative work and takes energy away. || The work-energy theorem says the net work on a body equals its change in kinetic energy: W_net = ΔK = ½mv² − ½mv₀². That turns work into a bookkeeping device — you stop asking “what are the forces at each instant?” and start asking “how much energy went in, and how fast is the body now?”",
     use: "When a force acts over a distance and you want the resulting speed — pushes, pulls, drags, braking — or when you need to split a complicated force history into signed contributions. || Resolve each force into the component along the displacement (multiply by cosθ, with θ measured from the direction of motion). Multiply by the distance. Add all the signed works. Set the total equal to ΔK and solve for the unknown — usually a speed. || Stop when the net work equals the change in kinetic energy and every force that moved the body has its line in the ledger. If a force acted but the displacement was zero — holding a weight still — its work is zero; the tired arms are chemistry, not mechanics.",
     example:
       "A 10 kg crate is pushed 5 m across a floor with a horizontal 90 N force. Friction opposes with 30 N. Starting from rest, how fast is it moving? || Applied work: W = 90 × 5 × cos0° = 450 J. Friction's work: W = 30 × 5 × cos180° = −150 J. Net work: 450 − 150 = 300 J. By the theorem, 300 = ½·10·v², so v = √60 ≈ 7.75 m/s. || Notice what we never computed: the acceleration, or how long the push took. Work lets you jump from forces straight to speed, skipping the entire kinematic middle.",
@@ -36,10 +35,10 @@ export const physicsW4Lessons: Lesson[] = [
         formula: "W_friction = −f_k·d",
       },
     ],
-    bench: "energyaudit",
+    bench: "dropspeed",
     prompt:
-      "Audit one mechanism: enter the work you put in and the useful work you got out. || The efficiency is the ratio — say where the rest went. || Complete the audit for all three mechanisms, then write the one-sentence audit note.",
-    note: "The audit persists in this browser. Useful output can never exceed input — if your numbers say otherwise, the measurement is wrong, not the physics.",
+      "Predict the drop speed from height alone: gravity's work mgh is the net work, so it equals ½mv². || Add an initial speed and watch the ½mv₀² term join the ledger. || Move the mass sliders, then explain in one line why the mass cancels.",
+    note: "The predictor uses v = √(v₀² + 2gh) — the work-energy theorem with gravity as the only force doing work, no friction. Next lesson's energy bench turns friction on to show what the real world subtracts.",
     checks: [
       {
         prompt: "A 60 N force pushes a box 3 m at 60° above horizontal. The work is…",
@@ -75,10 +74,10 @@ export const physicsW4Lessons: Lesson[] = [
     minutes: 35,
     lede: "Sort forces into conservative and non-conservative, bank energy as gravitational and elastic potential, and predict motion from energy alone.",
     start:
-      "A roller coaster climbs 20 m, then drops. Nobody computes the normal force at every point of the track — yet the speed at the bottom is predicted to three figures. || Some forces have perfect memory: gravity and ideal springs store the work done against them as potential energy and return every joule when you come back. These are conservative forces, and for them the work depends only on the endpoints, never the path. Friction is the opposite — a non-conservative force whose work depends on the whole journey and comes back as heat, never as motion. || Potential energy turns “where is it?” into “how fast can it go?” Gravitational: U = mgh. Elastic: U = ½kx². Where only conservative forces act, the sum K + U never changes — energy is conserved, and motion follows from arithmetic.",
+      "A roller coaster climbs 20 m, then drops. Nobody computes the normal force at every point of the track — yet the speed at the bottom is predicted before the car ever rolls. || Some forces have perfect memory: gravity and ideal springs store the work done against them as potential energy and return every joule when you come back. These are conservative forces, and for them the work depends only on the endpoints, never the path. Friction is the opposite — a non-conservative force whose work depends on the whole journey and comes back as heat, never as motion. || Potential energy turns “where is it?” into “how fast can it go?” Gravitational: U = mgh. Elastic: U = ½kx². Where only conservative forces act, the sum K + U never changes — energy is conserved, and motion follows from arithmetic.",
     use: "When heights, stretches, or speeds trade off and you want one from the other — drops, launches, pendulums, springs — without touching a force diagram. || Choose a datum (h = 0) for gravitational potential; it is differences that matter, not the absolute. Write K₁ + U₁ = K₂ + U₂, counting gravitational and elastic potential on both sides. Put any non-conservative work (friction, drag) on the ledger as a loss: K₁ + U₁ + W_nc = K₂ + U₂. || Stop when every joule is named — kinetic, gravitational, elastic, or lost — and the total on the left equals the total on the right. If the numbers do not balance, a term is missing, not the law.",
     example:
-      "The coaster crests at 20 m above the dip, starting nearly from rest. What is its speed at the bottom, ignoring friction? || K₁ + U₁ = K₂ + U₂ becomes 0 + mgh = ½mv² + 0. The mass cancels — every mass falls the same way — leaving v = √(2gh) = √(2 × 9.81 × 20) = √392.4 ≈ 19.81 m/s. || That is about 71 km/h, from one line of algebra. Friction would shave it down; the energy equation tells you exactly where to subtract.",
+      "The coaster crests at 20 m above the dip, starting nearly from rest. What is its speed at the bottom, ignoring friction? || K₁ + U₁ = K₂ + U₂ becomes 0 + mgh = ½mv² + 0. The mass cancels — every mass falls the same way — leaving v = √(2gh) = √(2 × 9.81 × 20) = √392.4 ≈ 19.81 m/s (four figures kept to track the arithmetic; report about 20 m/s). || That is about 71 km/h, from one line of algebra. Friction would shave it down; the energy equation tells you exactly where to subtract.",
     ideas: [
       {
         heading: "Conservative forces have memory",
@@ -92,7 +91,7 @@ export const physicsW4Lessons: Lesson[] = [
       },
       {
         heading: "Mass cancels in free fall",
-        body: "v = √(2gh) has no m in it. Galileo's result falls out of energy conservation in one line: mgh = ½mv², and the m was never doing anything. This is why the hammer and the feather — in vacuum — hit together, and why the bench's drop-speed prediction ignores the mass slider. Any theory of gravity has to explain this cancellation; it is not a coincidence of the algebra.",
+        body: "v = √(2gh) has no m in it. Galileo's result falls out of energy conservation in one line: mgh = ½mv², and the m was never doing anything. This is why the hammer and the feather — in vacuum — hit together, and why the energy bench's speed readout ignores the mass slider. Any theory of gravity has to explain this cancellation; it is not a coincidence of the algebra.",
         formula: "v = √(2gh),  independent of m",
       },
     ],
@@ -135,10 +134,10 @@ export const physicsW4Lessons: Lesson[] = [
     minutes: 35,
     lede: "Price energy in watts, compute efficiency as useful over input, and write an energy budget that names every loss.",
     start:
-      "Two cranes lift the same steel beam to the same height. One takes a minute, the other ten. The energy delivered is identical; the electric bills are not. || Power is the rate of energy transfer: P = W/Δt, in watts — joules per second. For a force pushing along the motion, P = F·v: the same force at twice the speed costs twice the power. Efficiency is the fraction of input energy that becomes useful output: η = W_useful / W_in. The rest is not destroyed — energy is conserved — it is merely demoted to heat, sound, and deformation you did not want. || An energy budget lists input, useful output, and every loss, and the three must sum to the input. A budget that does not balance is an unfinished measurement, not a broken law.",
+      "Two cranes lift the same steel beam to the same height. One takes a minute, the other ten. The energy delivered is identical; the motors are not — one needs ten times the power rating. || Power is the rate of energy transfer: P = W/Δt, in watts — joules per second. For a force pushing along the motion, P = F·v: the same force at twice the speed costs twice the power. Efficiency is the fraction of input energy that becomes useful output: η = W_useful / W_in. The rest is not destroyed — energy is conserved — it is merely demoted to heat, sound, and deformation you did not want. || An energy budget lists input, useful output, and every loss, and the three must sum to the input. A budget that does not balance is an unfinished measurement, not a broken law.",
     use: "When the question is how fast energy flows or where it went — motor sizing, battery life, machine efficiency, utility bills. || Compute the useful work from the task (mgh for a lift, ½mv² for a launch). Divide by the time for power, or by the input energy for efficiency. Name the losses: friction, resistance heating, air drag, sound, idle draw. || Stop when input = useful + losses, with each loss attached to a physical mechanism. If efficiency exceeds 100%, a measurement is wrong — recheck the input, which is usually where the error hides.",
     example:
-      "A hoist lifts 200 kg by 3 m in 12 s. The useful work is 200 × 9.81 × 3 = 5,886 J, so the mechanical power is 5,886 / 12 ≈ 490.5 W — about two-thirds of a horsepower. The motor draws 800 W electrically. || Efficiency: η = 490.5 / 800 ≈ 0.613, or 61.3%. The missing 309.5 W is not lost to physics; it heats the windings, fights gear friction, and hums out of the housing. || Same lift, same energy — but the clock and the bill are set by power, not work. That is why motors are sold in watts and horsepower, never in joules.",
+      "A hoist lifts 200 kg by 3 m in 12 s. The useful work is 200 × 9.81 × 3 = 5,886 J, so the mechanical power is 5,886 / 12 ≈ 490.5 W (extra figures kept so the budget closes; report about 490 W) — about two-thirds of a horsepower. The motor draws 800 W electrically. || Efficiency: η = 490.5 / 800 ≈ 0.613, or 61.3%. The missing 309.5 W is not lost to physics; it heats the windings, fights gear friction, and hums out of the housing. || Same lift, same energy — but the clock and the motor size are set by power, not work. That is why motors are sold in watts and horsepower, never in joules.",
     ideas: [
       {
         heading: "Watts are joules per second",
@@ -156,10 +155,10 @@ export const physicsW4Lessons: Lesson[] = [
         formula: "W_in = W_useful + Σ losses",
       },
     ],
-    bench: "dropspeed",
+    bench: "energyaudit",
     prompt:
-      "Predict the drop speed from height alone, then add an initial speed. || Move the mass slider and watch the prediction ignore it. || Explain in one line why the mass cancels.",
-    note: "The predictor uses v = √(v₀² + 2gh) — pure conservation, no friction. Compare with the energy bench's friction-on run to see what the real world subtracts.",
+      "Audit one mechanism: enter the work you put in and the useful work you got out. || The efficiency is the ratio — say where the rest went. || Complete the audit for all three mechanisms, then write the one-sentence audit note.",
+    note: "The audit persists in this browser. Useful output can never exceed input — if your numbers say otherwise, the measurement is wrong, not the physics.",
     checks: [
       {
         prompt: "A motor does 5,886 J of useful work in 12 s. Its mechanical power:",

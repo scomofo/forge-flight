@@ -2,10 +2,9 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 12 — Atomic order and microstructure.
- * These three lessons open the materials track (indices 1–3); the
- * pre-existing materials lessons follow re-indexed from 4. The block
- * through-line is structure → processing → properties → performance.
- * Evidence due: microstructure interpretation set (lesson 2 bench).
+ * Materials-track indices 4–6, following the week-11 bonding lessons. The
+ * block through-line is structure → processing → properties → performance.
+ * Evidence due: microstructure interpretation set (graintex bench).
  */
 export const materialsW12Lessons: Lesson[] = [
   {
@@ -16,8 +15,8 @@ export const materialsW12Lessons: Lesson[] = [
     minutes: 35,
     lede: "Count the atoms in a unit cell, compute how tightly they pack, and name which crystal structure a metal uses — and why that choice decides how it deforms.",
     start:
-      "A grocer stacks oranges in a pyramid without thinking about it. Every orange touches twelve neighbors, and no arrangement of equal spheres packs tighter. Metallurgists call that face-centered cubic, and copper, aluminum, nickel, and lead all use it. || A crystal is atoms sitting on a repeating lattice; the unit cell is the tile that repeats. Nearly every engineering metal uses one of four tilings: simple cubic, body-centered cubic, face-centered cubic, or hexagonal close-packed. The tiling is the structure. Everything downstream — how the metal bends, how it fails, whether you can forge it or only cast it — starts here. || Two wires can look identical and behave oppositely: one bends around your finger, the other snaps. Same atoms, different packing — the structure decides the properties.",
-    use: "When you choose a metal for forming, or explain why a part cracked instead of bending. || Count atoms per cell (a corner atom is shared by 8 cells, a face atom by 2, a body atom is whole), compute the packing efficiency, and count the slip systems — the planes and directions along which atomic layers can slide. Twelve slip systems means the metal almost always finds a way to yield: ductile. Three means it often cannot: limited ductility, watch for cracking. || Stop when you can look at a structure label — FCC, BCC, HCP — and predict “this will forge, this will need care.”",
+      "A grocer stacks oranges in a pyramid without thinking about it. Every orange touches twelve neighbors, and no arrangement of equal spheres packs tighter. Metallurgists call that face-centered cubic, and copper, aluminum, nickel, and lead all use it. || A crystal is atoms sitting on a repeating lattice; the unit cell is the tile that repeats. Nearly every engineering metal uses one of three tilings: body-centered cubic, face-centered cubic, or hexagonal close-packed (simple cubic is a teaching model; almost nothing uses it). The tiling is the structure. Everything downstream — how the metal bends, how it fails, whether you can forge it or only cast it — starts here. || Two wires can look identical and behave oppositely: one bends around your finger, the other snaps. Same atoms, different packing — the structure decides the properties.",
+    use: "When you choose a metal for forming, or explain why a part cracked instead of bending. || Count atoms per cell (a corner atom is shared by 8 cells, a face atom by 2, a body atom is whole), compute the packing efficiency, and count the slip systems — the planes and directions along which atomic layers can slide. FCC's twelve close-packed slip systems mean the metal almost always finds a way to yield: ductile. BCC also has 12+, but they need thermal help, so it can turn brittle when cold. Three means it often cannot: limited ductility, watch for cracking. || Stop when you can look at a structure label — FCC, BCC, HCP — and predict “this will forge, this will need care.”",
     example:
       "Aluminum is FCC with atomic radius 143 pm. || The face diagonal holds four radii, so the cell edge is a = 2√2·r = 2√2 × 143 pm ≈ 404 pm. Corners contribute 8 × 1/8 = 1 atom, faces 6 × 1/2 = 3, for 4 atoms per cell. Density: 4 × 26.98 g/mol ÷ Avogadro's number ÷ (404×10⁻¹⁰ cm)³ ≈ 2.70 g/cm³. || That is the datasheet number, derived from the structure alone — no measurement of a block required. The call: if your computed density misses the datasheet by more than a few percent, suspect the structure assignment or the radius, not the arithmetic.",
     ideas: [
@@ -58,7 +57,7 @@ export const materialsW12Lessons: Lesson[] = [
         prompt: "At room temperature, which structure is most reliably ductile?",
         options: ["FCC", "HCP", "Simple cubic", "Diamond cubic"],
         answer: 0,
-        why: "FCC offers 12 independent slip systems, so a slip plane is almost always favorably oriented — copper and aluminum bend rather than snap. HCP has only 3 readily active systems, which is why magnesium needs care.",
+        why: "FCC offers 12 close-packed slip systems that need little stress to activate at any temperature, so a slip plane is almost always favorably oriented — copper and aluminum bend rather than snap. HCP has only 3 readily active systems, which is why magnesium needs care.",
       },
       {
         prompt: "Room-temperature α-iron is…",
@@ -89,7 +88,7 @@ export const materialsW12Lessons: Lesson[] = [
       {
         heading: "Hall–Petch has limits",
         body: "The inverse-root law holds across a wide middle range, then breaks at both ends. In very coarse single-crystal-like grains there are too few boundaries to matter; in nanocrystalline metals (grains below ~20 nm) the mechanism changes — boundaries start sliding instead of blocking, and further refinement can soften the metal. “Finer is stronger” holds across the engineering middle; the exceptions live at the extremes.",
-        formula: "Valid roughly 1 μm – 100 μm; breaks below ~20 nm",
+        formula: "Holds from ~100 μm down to ~tens of nm; breaks below ~20 nm",
       },
       {
         heading: "Texture is anisotropy with a paper trail",
@@ -121,7 +120,7 @@ export const materialsW12Lessons: Lesson[] = [
           "Improve room-temperature hardness",
         ],
         answer: 0,
-        why: "At 1500°C, boundaries slide and voids nucleate there — creep failure starts at the mosaic lines. One crystal means no boundaries, so no boundary sliding. It is structure → performance at temperature.",
+        why: "At metal temperatures above 1000°C (in gas near 1500°C), boundaries slide and voids nucleate there — creep failure starts at the mosaic lines. One crystal means no boundaries, so no boundary sliding. It is structure → performance at temperature.",
       },
       {
         prompt: "A rolled sheet is stronger along the rolling direction because…",
@@ -155,14 +154,14 @@ export const materialsW12Lessons: Lesson[] = [
     minutes: 35,
     lede: "Tell glass from crystal by what atoms do with no long-range plan — and read a fracture surface like a flight recorder.",
     start:
-      "Drop a steel ruler and a glass stirring rod. The ruler bends or bounces; the rod becomes shards. Both are hard, both are mostly silicon and oxygen or iron and carbon at the atomic level — the difference is not what they are made of but whether the atoms agreed on a plan. || An amorphous solid has no repeating lattice beyond a few atomic spacings: window glass, most polymers below their glass transition, and metallic glasses. Without slip planes there are no dislocations, so a metallic glass can be enormously strong with an elastic limit near 2% — ten times a crystalline alloy's. Then one shear band carries all the strain, and it fails with no warning. || Whether you get crystal or glass is a processing decision: cool a liquid fast enough and the atoms never get the time to organize — the liquid's disorder freezes in. Quench rate writes the structure, and the properties follow.",
+      "Drop a steel ruler and a glass stirring rod. The ruler bends or bounces; the rod becomes shards. Both are hard. Part of the difference is bonding (last week's lesson), and part is whether the atoms agreed on a plan — a metallic glass isolates the second effect. || An amorphous solid has no repeating lattice beyond a few atomic spacings: window glass, most polymers below their glass transition, and metallic glasses. Without slip planes there are no dislocations, so a metallic glass can be enormously strong with an elastic limit near 2% — several times a crystalline alloy's. Then one shear band carries all the strain, and it fails with no warning. || Whether you get crystal or glass is a processing decision: cool a liquid fast enough and the atoms never get the time to organize — the liquid's disorder freezes in. Quench rate writes the structure, and the properties follow.",
     use: "When a part must be hard, wear-resistant, or corrosion-proof but will never be asked to bend — and whenever you look at a broken part. || Read the fracture surface: a dimpled surface means ductile microvoid coalescence (it stretched before it parted); flat, faceted cleavage means brittle fracture along crystal planes; a mirror-smooth surface with river patterns means glass. Match the surface to the failure mode before you blame the load. || Stop when you can hold a broken part and reconstruct the failure from the surface alone.",
     example:
-      "A Zr-based metallic glass: yield strength ≈ 1.9 GPa, elastic strain limit ≈ 2%. A high-strength crystalline steel: ≈ 1.5 GPa, elastic limit ≈ 0.2%. || The glass is the better spring by an order of magnitude — it stores ten times the elastic energy per volume. But bend the glass past 2% and a single shear band takes the whole deformation: catastrophic, silent, total. || The call: specify metallic glass for a spring, a scalpel edge, or a golf club face — never for a bracket that must fail gracefully and warn you first.",
+      "A Zr-based metallic glass: yield strength ≈ 1.9 GPa, elastic strain limit ≈ 2%. A high-strength crystalline steel: ≈ 1.5 GPa, elastic limit ≈ 0.75%. || The glass is the better spring by a wide margin — it stores roughly three to four times the elastic energy per volume (σ²/2E: 19 vs 5.6 MJ/m³). But bend the glass past 2% and a single shear band takes the whole deformation: catastrophic, silent, total. || The call: specify metallic glass for a spring, a scalpel edge, or a golf club face — never for a bracket that must fail gracefully and warn you first.",
     ideas: [
       {
         heading: "Glass transition, not melting",
-        body: "A crystal melts at one temperature: order collapses all at once. A glass softens over a range — the glass transition — because there is no lattice to collapse, only gradually increasing atomic mobility. Below Tg the atoms are frozen mid-shuffle; above it the material creeps like an extremely viscous liquid. Window glass sags over centuries for exactly this reason.",
+        body: "A crystal melts at one temperature: order collapses all at once. A glass softens over a range — the glass transition — because there is no lattice to collapse, only gradually increasing atomic mobility. Below Tg the atoms are frozen mid-shuffle; above it the material creeps like an extremely viscous liquid. Far below Tg the viscosity is so high (>10²⁰ Pa·s) that no flow is measurable — old window panes are uneven from manufacture, not sagging.",
         formula: "Tg: frozen disorder → mobile disorder (no latent heat)",
       },
       {
@@ -171,14 +170,14 @@ export const materialsW12Lessons: Lesson[] = [
       },
       {
         heading: "Microscopy is evidence, in layers",
-        body: "Optical microscopy with etching shows grains and phases down to about a micron — the mosaic from lesson 2. The scanning electron microscope reads surfaces: fracture dimples, fatigue striations, inclusions, at thousand-fold magnification. The transmission electron microscope goes through thin foils to image dislocations and even atomic columns. Each layer answers a different question, and a serious failure analysis climbs the ladder: optical first, SEM for the fracture, TEM when the mechanism itself is on trial.",
+        body: "Optical microscopy with etching shows grains and phases down to about a micron — the mosaic from the grains lesson. The scanning electron microscope reads surfaces: fracture dimples, fatigue striations, inclusions, at thousand-fold magnification. The transmission electron microscope goes through thin foils to image dislocations and even atomic columns. Each layer answers a different question, and a serious failure analysis climbs the ladder: optical first, SEM for the fracture, TEM when the mechanism itself is on trial.",
         formula: "Optical ≈ 1 μm · SEM ≈ 10 nm · TEM ≈ atomic",
       },
     ],
     bench: "glassform",
     prompt:
       "Run the quench: pick an alloy, slide the cooling rate, and find the slowest rate that still freezes in glass. || Watch what the glass buys (strength, elastic limit, corrosion) and what it costs (ductility, warning before failure). || Then state the processing rule in one sentence.",
-    note: "Critical cooling rates are order-of-magnitude honest: window glass ~1 K/s, good metallic glasses ~1–100 K/s, pure metals need ~10⁶ K/s. The bench uses representative values, not alloy datasheets.",
+    note: "Critical cooling rates are order-of-magnitude honest: window glass ~1 K/s, bulk metallic glasses ~1–100 K/s, melt-spun binary glasses ~10⁵–10⁶ K/s, pure metals ≳10¹² K/s. The bench uses representative values, not alloy datasheets.",
     checks: [
       {
         prompt: "A metallic glass is very strong mainly because…",

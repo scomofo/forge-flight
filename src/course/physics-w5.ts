@@ -2,8 +2,7 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 5 — Momentum & collisions.
- * These three lessons open the physics track (indices 1–3); the pre-existing
- * physics lessons follow re-indexed from 4. Evidence due: video-analysis
+ * Week 5 lessons, indices 13–15. Evidence due: video-analysis
  * collision lab (lesson 1 bench) + restitution analysis (lesson 3 bench).
  */
 export const physicsW5Lessons: Lesson[] = [
@@ -15,7 +14,7 @@ export const physicsW5Lessons: Lesson[] = [
     minutes: 35,
     lede: "Trade force against time: the same momentum change can be a hammer blow or a gentle catch, and impulse is the ledger that records the trade.",
     start:
-      "Catch a fastball barehanded and you pull your hand back with the ball; catch it against a brick wall and something breaks. The ball's velocity changes by the same amount either way. What differs is how long the change takes. || Impulse J = F_avg · Δt is force accumulated over time. Momentum p = m·v is the thing that accumulation changes: J = Δp, the impulse-momentum theorem. Stretch the stop from 10 ms to 120 ms and the average force falls by a factor of twelve, for the same Δp. || The wall does not cheat the physics — it spends the same impulse in a tenth of the time, so the force is ten times larger. Crumple zones, airbags, and bent knees are all the same trick: stretch the time and the force falls.",
+      "Catch a fastball barehanded and you pull your hand back with the ball; catch it against a brick wall and something breaks. The ball's velocity changes by the same amount either way. What differs is how long the change takes. || Impulse J = F_avg · Δt is force accumulated over time. Momentum p = m·v is the thing that accumulation changes: J = Δp, the impulse-momentum theorem. Stretch the stop from 10 ms to 120 ms and the average force falls by a factor of twelve, for the same Δp. || The wall does not cheat the physics — it spends the same impulse in a twelfth of the time, so the force is twelve times larger. Crumple zones, airbags, and bent knees are all the same trick: stretch the time and the force falls.",
     use: "Whenever a force acts over a time interval and you need the resulting motion — impacts, launches, thrust. Also whenever a textbook quotes a huge force and you suspect the interval: divide the momentum change by the time to audit the claim. || Compute the momentum change Δp = m·(v − v₀) as a signed quantity — direction matters. Estimate or measure the interaction time Δt. Divide: F_avg = Δp/Δt. || Stop when you can say whether the average force is survivable, plausible, or absurd. If the time is unknown, say so and bound it — the force estimate is only as good as the time estimate.",
     example:
       "A 0.15 kg baseball arrives at 40 m/s and the catcher's glove rides back 0.12 s. || Δp = 0.15 × (0 − 40) = −6.0 kg·m/s; the glove supplies +6.0 kg·m/s. F_avg = 6.0 / 0.12 = 50 N — about the weight of a 5 kg bag. || Now stop the same ball against a wall in 0.01 s: F_avg = 600 N. Same momentum change, twelve times the force. Time is the only variable that moved.",
@@ -48,7 +47,7 @@ export const physicsW5Lessons: Lesson[] = [
         why: "Δp = 0.15 × 40 = 6.0 kg·m/s, and F_avg = 6.0 / 0.12 = 50 N. 6 N is the impulse, not the force — dividing by the time is the whole point.",
       },
       {
-        prompt: "Why does extending the stopping time reduce the peak force?",
+        prompt: "Why does extending the stopping time reduce the average force?",
         options: [
           "The momentum change is smaller",
           "The same Δp is spread over more time, so Δp/Δt falls",
@@ -56,7 +55,7 @@ export const physicsW5Lessons: Lesson[] = [
           "Friction only acts over long times",
         ],
         answer: 1,
-        why: "The momentum change is fixed by the before/after velocities. Time is the only free variable: same Δp over more seconds means less force per second.",
+        why: "The momentum change is fixed by the before/after velocities. Time is the only free variable: same Δp over more seconds means a smaller average force.",
       },
       {
         prompt: "A ball bounces straight back at its incoming speed v. The momentum change is…",
@@ -131,7 +130,7 @@ export const physicsW5Lessons: Lesson[] = [
       {
         prompt: "Total momentum of a system is conserved when…",
         options: [
-          "All forces are internal",
+          "No friction acts between the bodies",
           "The net external force on the system is zero",
           "No kinetic energy is lost",
           "Every mass in the system is equal",
@@ -158,7 +157,7 @@ export const physicsW5Lessons: Lesson[] = [
       "A Newton's cradle clicks for a minute; a lump of clay dropped on the floor thuds once and stops. Both are collisions — masses, velocities, contact. One returns nearly all its kinetic energy; the other spends it on deformation and heat. || Momentum is conserved in both, because during the brief impact the internal contact forces dwarf everything external. Kinetic energy is conserved only in the elastic case. The coefficient of restitution e = (separation speed)/(approach speed) measures the elasticity: e = 1 is perfectly elastic, e = 0 is perfectly inelastic (they stick). || The clay and the cradle obey the same momentum equation. They differ only in e — one number that decides how much motion survives the hit.",
     use: "For any 1D two-body collision: write momentum conservation, m₁v₁ + m₂v₂ = m₁u₁ + m₂u₂. Add the restitution condition, u₂ − u₁ = e·(v₁ − v₂). Solve the pair for the two unknowns — two equations, two unknowns, done. || Use e = 1 for ideal elastic (billiards, atoms), e = 0 for stick (clay, coupled railcars), and a measured e in between for everything real. || Stop when you have both outgoing velocities and have checked momentum balances. Then compute the kinetic energy lost — it is the check that the collision was what you claimed.",
     example:
-      "A 2 kg cart at 4 m/s strikes a 3 kg cart at rest, head-on. Elastic first: u₁ = (2−3)/5 × 4 = −0.8 m/s, u₂ = (2×2)/5 × 4 = 3.2 m/s — the light cart rebounds, the heavy one walks away at 3.2 m/s, and the 16 J of kinetic energy is all still there. || If they stick instead: v = (2 × 4)/5 = 1.6 m/s shared, and the kinetic energy falls to ½ × 5 × 1.6² = 6.4 J. || 9.6 J went to deformation and heat — momentum kept every joule of its own accounting, energy spent 60% of the budget. Same impact, different e.",
+      "A 2 kg cart at 4 m/s strikes a 3 kg cart at rest, head-on. Elastic first: u₁ = (2−3)/5 × 4 = −0.8 m/s, u₂ = (2×2)/5 × 4 = 3.2 m/s — the light cart rebounds, the heavy one walks away at 3.2 m/s, and the 16 J of kinetic energy is all still there. || If they stick instead: v = (2 × 4)/5 = 1.6 m/s shared, and the kinetic energy falls to ½ × 5 × 1.6² = 6.4 J. || 9.6 J went to deformation and heat — momentum kept every kg·m/s, energy spent 60% of the budget. Same impact, different e.",
     ideas: [
       {
         heading: "Momentum conservation is the non-negotiable",
@@ -167,7 +166,7 @@ export const physicsW5Lessons: Lesson[] = [
       },
       {
         heading: "e measures what the hit gives back",
-        body: "e = (u₂ − u₁)/(v₁ − v₂): relative speed after over relative speed before, along the line of impact. A tennis ball on concrete is e ≈ 0.8; steel on steel approaches 0.95; clay is 0. It is measured, not derived — drop the ball, measure the bounce height, and e = √(h_bounce/h_drop), since height goes as v².",
+        body: "e = (u₂ − u₁)/(v₁ − v₂): relative speed after over relative speed before, along the line of impact. A tennis ball on concrete is e ≈ 0.75; steel on steel approaches 0.95; clay is 0. It is measured, not derived — drop the ball, measure the bounce height, and e = √(h_bounce/h_drop), since height goes as v².",
         formula: "e = separation speed / approach speed",
       },
       {

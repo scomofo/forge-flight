@@ -95,9 +95,9 @@ export const diagnosticQuestions: DiagnosticQuestion[] = [
     id: "al-3",
     topic: "algebra",
     prompt: "Solve 3x + 7 = 25.",
-    options: ["6", "32/3", "10.7", "18"],
+    options: ["6", "32/3", "18", "4/3"],
     answer: 0,
-    why: "Subtract 7 (→ 3x = 18), divide by 3 (→ x = 6). Check: 3·6 + 7 = 25.",
+    why: "Subtract 7 (→ 3x = 18), divide by 3 (→ x = 6). Check: 3·6 + 7 = 25. 32/3 comes from adding 7, 18 from skipping the divide, and 4/3 from dividing only the 25.",
   },
   {
     id: "al-4",
@@ -176,7 +176,7 @@ export const diagnosticQuestions: DiagnosticQuestion[] = [
     prompt: "A calibration line through (0, 0.2) and (10, 5.2) has intercept…",
     options: ["0.2", "0.5", "5.2", "0"],
     answer: 0,
-    why: "The intercept is the value at x = 0, given directly: 0.2. A nonzero intercept here would mean signal at no load — worth questioning.",
+    why: "The intercept is the value at x = 0, given directly: 0.2. This intercept is nonzero: the instrument reads 0.2 at no load — an offset to zero out or question.",
   },
   // ——— geometry & trig ———
   {

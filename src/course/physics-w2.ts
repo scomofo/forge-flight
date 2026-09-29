@@ -2,8 +2,7 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 2 — Vectors & kinematics.
- * These three lessons open the physics track (indices 1–3); the pre-existing
- * physics lessons follow re-indexed from 4. Evidence due: motion
+ * Week 2 lessons, indices 4–6. Evidence due: motion
  * reconstruction from position-time data (lesson 2 bench) + projectile
  * prediction set (lesson 3 bench and checks).
  */
@@ -16,7 +15,7 @@ export const physicsW2Lessons: Lesson[] = [
     minutes: 35,
     lede: "Resolve any vector into components, add vectors component-wise, and use the dot product to project one vector onto another.",
     start:
-      "A survey crew fixes a property corner at 40 m east and 30 m north of the benchmark, then a second corner 25 m west and 10 m north of the first. The deed needs the straight-line distance between the two corners, and '65 m of walking' is not the answer. || A vector is a magnitude plus a direction. Components are its shadows on chosen axes: pick perpendicular axes and the vector becomes two signed numbers — x = |v|cosθ, y = |v|sinθ, with θ measured from +x. The axes are your choice; the arrow does not care which way you drew them. || Components turn geometry into arithmetic. Adding arrows is a mess of parallelograms; adding components is 'add the x's, add the y's.' The dot product, which looks like a formula to memorize, becomes a one-line projection. The rule has this shape because perpendicular directions don't interfere — each axis minds its own business.",
+      "A survey crew fixes a property corner at 40 m east and 30 m north of the benchmark, then a second corner 25 m west and 10 m north of the first. The deed needs the straight-line distance between the two corners, and '35 m of walking' is not the answer. || A vector is a magnitude plus a direction. Components are its shadows on chosen axes: pick perpendicular axes and the vector becomes two signed numbers — x = |v|cosθ, y = |v|sinθ, with θ measured from +x. The axes are your choice; the arrow does not care which way you drew them. || Components turn geometry into arithmetic. Adding arrows is a mess of parallelograms; adding components is 'add the x's, add the y's.' The dot product, which looks like a formula to memorize, becomes a one-line projection. The rule has this shape because perpendicular directions don't interfere — each axis minds its own business.",
     use: "Whenever vectors must be combined — forces on a bracket, a boat in a current, displacements on a map — or when only the part of a vector along some direction matters. || Write each vector as (x, y). Add component-wise: R = (Ax+Bx, Ay+By). Recover magnitude |R| = √(Rx² + Ry²) and direction θ = atan2(Ry, Rx). For the part of A along B, take A·B = AxBx + AyBy = |A||B|cosφ and divide by |B|. || Stop when you can state the result as magnitude and direction in the frame the problem uses. Never add magnitudes unless the vectors are parallel — the sum of the lengths is only an upper bound.",
     example:
       "Two tugs pull a barge: F₁ = 5.0 kN at 30° above the dock axis, F₂ = 3.0 kN at 20° below it. Resultant? || F₁ = (5cos30°, 5sin30°) = (4.33, 2.50) kN. F₂ = (3cos(−20°), 3sin(−20°)) = (2.82, −1.03) kN. Sum: R = (7.15, 1.47) kN. |R| = √(7.15² + 1.47²) = 7.30 kN, at θ = atan2(1.47, 7.15) = 11.6° above the dock. The projection of F₁ onto the dock direction is F₁·x̂ = 4.33 kN. || The barge feels 7.30 kN at 11.6° — well under the 8.0 kN the magnitudes sum to, because the vertical parts partly cancel. That cancellation is the entire reason components exist.",

@@ -46,7 +46,7 @@ function closeTo(actual: number, expected: number, tol: number, name: string) {
   );
 }
 
-test("week 30 opens the engineering track in syllabus order", () => {
+test("week 30 lessons sit at their engineering-track indices in syllabus order", () => {
   assert.equal(engineeringW30Lessons.length, 3);
   assert.deepEqual(
     engineeringW30Lessons.map((l) => l.id),

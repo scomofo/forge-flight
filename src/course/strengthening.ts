@@ -173,7 +173,7 @@ const OUTCOMES: Record<AlloyId, Record<RouteId, Outcome>> = {
   },
   cu: {
     anneal: { compatible: true, yield: 70, elong: 45, costMult: 2.1, note: "Dead soft: draws into wire without complaint." },
-    coldwork: { compatible: true, yield: 272, elong: 6, costMult: 2.25, note: "Half-hard and beyond — the only lever copper has." },
+    coldwork: { compatible: true, yield: 272, elong: 6, costMult: 2.25, note: "Half-hard and beyond — the lever that needs no alloy change or furnace. A weld anneals it away." },
     normalize: { compatible: false, reason: "Normalizing is a steel heat treatment; copper has no phase change to exploit." },
     "quench-temper": { compatible: false, reason: "Copper forms no martensite and no precipitates worth aging." },
     "solution-age": { compatible: false, reason: "No precipitating phase — copper cannot be aged." },

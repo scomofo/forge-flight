@@ -44,7 +44,7 @@ export const selMaterials: SelMaterial[] = [
     name: "1045 carbon steel",
     family: "metal",
     density: 7.85,
-    modulus: 210,
+    modulus: 200,
     strength: 450,
     cost: 2,
     embodied: 30,

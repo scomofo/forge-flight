@@ -86,6 +86,8 @@ export interface ProcessCapability {
   typicalTolMm: number;
   /** Where the economics work: prototype (1–10), low (10–500), medium (500–10k), high (10k+). */
   sweetSpot: VolumeBand;
+  /** True when a dedicated die or mold must be paid for before the first part, so low volume cannot amortize it. */
+  toolingHeavy?: boolean;
   materials: string[];
   note: string;
 }
@@ -104,6 +106,7 @@ export const PROCESSES: ProcessCapability[] = [
     name: "Die casting",
     typicalTolMm: 0.1,
     sweetSpot: "high",
+    toolingHeavy: true,
     materials: ["aluminum", "zinc", "magnesium"],
     note: "Expensive steel dies; thin walls and fine detail at volume.",
   },
@@ -191,7 +194,8 @@ function bandForVolume(volume: number): VolumeBand {
 /**
  * Screen every known process against a part brief. Tolerance is the first
  * screen (a process that cannot hold the tolerance is out), volume economics
- * second, material compatibility third.
+ * second (too far above the sweet spot, or too far below it for a
+ * tooling-heavy process), material compatibility third.
  */
 export function screenProcesses(brief: PartBrief): ProcessScreening[] {
   const band = bandForVolume(brief.volume);
@@ -211,7 +215,14 @@ export function screenProcesses(brief: PartBrief): ProcessScreening[] {
     if (bandGap >= 2) {
       viable = false;
       reasons.push(`uneconomical at ${brief.volume} units (a ${process.sweetSpot}-volume process)`);
-    } else if (bandGap === 1) {
+    } else if (bandGap <= -2 && process.toolingHeavy) {
+      // Below the sweet spot only tooling-heavy processes suffer: the die cost
+      // cannot spread over so few parts. Tooling-free processes stay flat.
+      viable = false;
+      reasons.push(
+        `uneconomical at ${brief.volume} units — tooling cannot amortize (a ${process.sweetSpot}-volume process)`,
+      );
+    } else if (bandGap === 1 || (bandGap === -1 && process.toolingHeavy)) {
       reasons.push(`workable at ${brief.volume} units but not its sweet spot`);
     } else {
       reasons.push(`economic at ${brief.volume} units`);

@@ -328,7 +328,7 @@ export function CapPredictBench() {
                 {state.suspect === prime.id ? (
                   <p className="rounded-lg bg-well-fg px-3 py-2 text-sm text-well">
                     Prime suspect named: {prime.why} The revision models the root as a torsional spring in
-                    series with the beam, fits the spring from the 0.61 mm, and re-checks the strength
+                    series with the beam, fits the spring from the 0.61 mm, then predicts the deflection at a second test load before measuring it, and re-checks the strength
                     margins — which still clear by 50×.
                   </p>
                 ) : (

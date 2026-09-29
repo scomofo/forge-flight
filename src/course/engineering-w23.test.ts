@@ -130,13 +130,14 @@ test("week-23 bench ids are registered in the bench index", () => {
 });
 
 test("margin arithmetic reproduces the lesson's tow-hook worked numbers", () => {
-  // 100 mm² lug, 12 kN limit load → 120 MPa applied; 250 MPa yield / 1.5 → 167 MPa allowable
+  // 100 mm² lug, 12 kN limit load → 120 MPa applied; limit row vs 276 MPa yield (6061-T6 catalog)
   assert.equal(ultimateLoad(12000), 18000, "ultimate = 1.5 × limit");
-  assert.ok(Math.abs(factorOfSafety(167, 120) - 1.3917) < 1e-3);
-  assert.ok(Math.abs(marginOfSafety(167, 120) - 0.3917) < 1e-3);
-  assert.equal(marginVerdict(marginOfSafety(167, 120)), "passes");
-  // ultimate row: 180 MPa applied vs 310 MPa allowable
+  assert.ok(Math.abs(factorOfSafety(276, 120) - 2.3) < 1e-3);
+  assert.ok(Math.abs(marginOfSafety(276, 120) - 1.3) < 1e-3);
+  assert.equal(marginVerdict(marginOfSafety(276, 120)), "passes");
+  // ultimate row: 180 MPa applied vs 310 MPa ultimate strength — this row governs
   assert.ok(Math.abs(marginOfSafety(310, 180) - 0.7222) < 1e-3);
+  assert.ok(marginOfSafety(310, 180) < marginOfSafety(276, 120), "ultimate row governs");
 });
 
 test("margin verdicts classify fail, thin, and pass", () => {
@@ -177,7 +178,7 @@ test("FMEA scoring reproduces the lesson's tow-release worked numbers", () => {
     severity: 9,
     occurrence: 3,
     detection: 5,
-    mitigation: "Redundant release spring plus a documented spring-replacement interval",
+    mitigation: "Redundant release spring, spring-replacement interval, and a load-cell release check at annual inspection",
     occurrenceAfter: 1,
     detectionAfter: 2,
   };

@@ -202,6 +202,18 @@ test("judge screens against the requirement floors", () => {
   const fail = judge(bolt, outcome("1045", "coldwork"));
   assert.ok(!fail.ok, "cold-worked 1045 must miss the bolt floors");
   assert.ok(fail.reasons.length >= 2, "it misses both strength and elongation");
+  // processchoice example: Q&T 1045 is the cheapest pass, but its margin is thin
+  const qt1045 = outcome("1045", "quench-temper");
+  const cheap = judge(bolt, qt1045);
+  assert.ok(cheap.ok, "1045 Q&T clears the bolt floors");
+  assert.ok(approx(cheap.margin ?? 0, 850 / 800, 0.01), "1045 Q&T margin ~1.06");
+  assert.equal(qt1045.costMult, 1.9);
+  assert.equal(outcome("4140", "quench-temper").costMult, 2.3);
+  // processchoice check: 6061-T6 yields 276 MPa, so the check's floor is 250, not 300
+  const t6 = outcome("6061", "solution-age");
+  assert.equal(t6.yield, 276);
+  assert.ok(judge({ id: "t", name: "t", minYield: 250, minElong: 10, brief: "" }, t6).ok);
+  assert.ok(!judge(REQUIREMENTS.find((r) => r.id === "skin")!, t6).ok);
   const incompat = judge(bolt, outcome("2024", "quench-temper"));
   assert.ok(!incompat.ok);
   assert.ok(incompat.reasons.length === 1);

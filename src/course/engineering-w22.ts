@@ -2,8 +2,7 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Engineering 101, Week 22 — Models, assumptions & uncertainty.
- * These three lessons open the engineering track (indices 1–3); the eleven
- * pre-existing engineering lessons follow re-indexed from 4. Evidence due:
+ * These three lessons are engineering-track indices 4–6. Evidence due:
  * error budget for a measurement chain (lesson 2 + 3 bench).
  */
 export const engineeringW22Lessons: Lesson[] = [
@@ -15,10 +14,10 @@ export const engineeringW22Lessons: Lesson[] = [
     minutes: 35,
     lede: "A model is a question-answering machine with a limited territory. State its claim, its assumptions, and the test that would prove it wrong — and never ask it a question outside the territory it was validated in.",
     start:
-      "In November 1940 the Tacoma Narrows Bridge tore itself apart in a 64 km/h wind. The designers had done the arithmetic: their model said the deck would hold under a steady wind far stronger than that. They were right about the model's own question — and the bridge still died, twisting at its torsional natural frequency as vortex shedding drove a resonance. || A model is a question-answering machine: inputs in, outputs out, and the answers are only as honest as the assumptions baked in. Every model has a domain — the range of cases it was actually checked against. Outside that domain, the outputs are just numbers. || 'All models are wrong, some are useful' is a reminder with teeth: useful means wrong in known ways, inside a known domain, with a stated test for when reality disagrees. That's the only kind of model an engineer is allowed to decide from.",
+      "In November 1940 the Tacoma Narrows Bridge tore itself apart in a 64 km/h wind. The designers had done the arithmetic: their model said the deck would hold under a steady wind far stronger than that. They were right about the model's own question — and the bridge still died, twisting in torsional flutter, a self-excited aeroelastic oscillation, not a forced resonance. || A model is a question-answering machine: inputs in, outputs out, and the answers are only as honest as the assumptions baked in. Every model has a domain — the range of cases it was actually checked against. Outside that domain, the outputs are just numbers. || 'All models are wrong, some are useful' is a reminder with teeth: useful means wrong in known ways, inside a known domain, with a stated test for when reality disagrees. That's the only kind of model an engineer is allowed to decide from.",
     use: "When you are about to decide from a calculation instead of a test — sizing a part, signing off a procedure, trusting a simulation. || Write down what the model claims, the assumptions it needs to be true, and the domain it was validated in. Check each assumption against your case, one by one, out loud. Name the measurement or experiment that would falsify the result. || Stop when the model's domain covers your question and the falsifying test exists and is affordable. If the model has never been checked against anything like your case, stop calculating and go measure. Extrapolating past the last validated case is guessing.",
     example:
-      "The Tacoma Narrows design model answered one question: does the deck hold under a steady 65 km/h wind? The answer was yes, with margin. || The bridge failed in a 64 km/h wind — below the design wind — from aeroelastic flutter, an oscillation the static model had no vocabulary for. The model answered its own question correctly; it was just never asked the question that mattered. || Validation has to cover the failure mode you fear, not the one you modeled. A model validated for static loads says nothing about dynamics, regardless of how many decimal places it prints.",
+      "The Tacoma Narrows design model answered one question: does the deck hold under its steady design wind, far stronger than 64 km/h? The answer was yes, with margin. || The bridge failed in a 64 km/h wind, well below the design wind, from aeroelastic flutter, an oscillation the static model had no vocabulary for. The model answered its own question correctly; it was just never asked the question that mattered. || Validation has to cover the failure mode you fear, not the one you modeled. A model validated for static loads says nothing about dynamics, regardless of how many decimal places it prints.",
     ideas: [
       {
         heading: "A model has a domain; outside it, silence",
@@ -168,7 +167,7 @@ export const engineeringW22Lessons: Lesson[] = [
     minutes: 35,
     lede: "Rank inputs by how much they move the answer, and turn the error budget into a shopping list.",
     start:
-      "Two instruments, one budget: a better pressure gauge or a better micrometer? Guessing is how labs burn money — usually on the instrument that was already fine. || The normalized sensitivity Sᵢ = (xᵢ/y)(∂y/∂xᵢ) says how many percent the output moves per percent the input moves: pure leverage, straight from the formula's shape. Multiply each leverage by its input's actual relative uncertainty and square it, and you get the input's variance share — the fraction of the output's scatter that input owns. || Rank the shares. The top of the list is where measurement money goes; the bottom is where 'good enough' lives. Recompute after every upgrade, because the ranking moves — today's dominant link is tomorrow's solved problem, and the ranking has to be recomputed after every change.",
+      "Two instruments, one budget: a better pressure gauge or a better micrometer? Guessing is how labs burn money — usually on the instrument that was already fine. || The normalized sensitivity Sᵢ = (xᵢ/y)(∂y/∂xᵢ) says how many percent the output moves per percent the input moves: pure leverage, straight from the formula's shape. Multiply each leverage by its input's actual relative uncertainty and square it, and you get the input's variance share — the fraction of the output's scatter that input owns. || Rank the shares. The top of the list is where measurement money goes; the bottom is where 'good enough' lives. Recompute after every upgrade, because the ranking moves — today's dominant link is tomorrow's solved problem.",
     use: "When the uncertainty is too big, or the instrument budget too small, or someone asks 'where would better data actually help?' || Compute each input's normalized sensitivity and its variance share of the RSS total. Sort descending. Price the improvement of the top input against the uncertainty it buys back — a 3× better gauge that halves the total is a purchase; one that trims 2% isn't worth the requisition. || Stop when the dominant input is improved or priced out. Document the residual uncertainty as the honest limit of the measurement — 'this is as tight as this rig gets' is a legitimate result.",
     example:
       "Same thrust rig: p = 10.0 ± 0.1 MPa (1%), d = 50.0 ± 0.1 mm (0.2%). The leverages: S_p = 1, S_d = 2 — the diameter is twice as leveraged, because area squares it. || But leverage is not the bill: variance shares are (1×1%)² vs (2×0.2%)² — 86% pressure, 14% diameter. Halving the pressure uncertainty cuts RSS from 211 N to 126 N; halving the diameter uncertainty instead only reaches 200 N. || Spend where leverage AND sloppiness are both large. Here that is the pressure gauge, and it isn't close — the micrometer's double leverage is wasted on an input that is already tight.",
@@ -179,7 +178,7 @@ export const engineeringW22Lessons: Lesson[] = [
       },
       {
         heading: "One-factor-at-a-time lies a little",
-        body: "Varying one input while holding the rest frozen misses interactions — inputs whose errors move together. For most engineering formulas the first-order ranking is close enough to spend money by, and a Monte Carlo run (sample everything at once, watch the output's scatter) checks it: if the Monte Carlo spread disagrees badly with the RSS total, the linear approximation is breaking and the ranking needs a second look.",
+        body: "Varying one input while holding the rest frozen misses interactions — inputs whose errors move together. For most engineering formulas the first-order ranking is close enough to spend money by, and a Monte Carlo run (sample everything at once, watch the output's scatter) checks it. Compare like with like: for ± bounds sampled uniformly, the Monte Carlo standard deviation should be about RSS/√3. A big departure from that means the linear approximation is breaking and the ranking needs a second look.",
       },
       {
         heading: "The budget is the deliverable",
@@ -221,7 +220,7 @@ export const engineeringW22Lessons: Lesson[] = [
         why: "Variance shares are relative — shrinking the top link promotes the runner-up. The ranking is a moving target, so the budget is recomputed after every change until the residual is acceptable or priced out.",
       },
       {
-        prompt: "Monte Carlo spread disagrees badly with the RSS total. Likely cause?",
+        prompt: "Your ± bounds are sampled uniformly, and the Monte Carlo standard deviation lands far from RSS/√3. Likely cause?",
         options: [
           "The random seed was unlucky",
           "The model's nonlinearity is breaking the first-order approximation",

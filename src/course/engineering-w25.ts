@@ -2,9 +2,7 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Engineering 101, Week 25 — Materials selection in a system.
- * These three lessons continue the engineering track (indices 1–3 alongside
- * the other week branches; the final integration pass orders all weeks);
- * the eleven pre-existing engineering lessons follow re-indexed from 4.
+ * These three lessons are engineering-track indices 13–15.
  * Evidence due: joint/material decision record (lesson 1 + 3 bench).
  */
 export const engineeringW25Lessons: Lesson[] = [
@@ -16,7 +14,7 @@ export const engineeringW25Lessons: Lesson[] = [
     minutes: 35,
     lede: "Watch an Ashby index crown a winner — and then let the joint disqualify it. The system property is the minimum of the member and its connections.",
     start:
-      "A pull-rod for a tow rig. Minimum mass, must carry 20 kN in tension, and the ends have to attach to steel clevises. Run the tie index E/ρ: steel 25.5, aluminum 25.6, CFRP 90 GPa per g/cm³. CFRP wins by a landslide — three and a half times stiffer per kilogram than either metal. || But CFRP cannot take a thread, and it cannot be welded to a steel clevis. The rod ends become a second design problem: bond the carbon to a metal end fitting, or bolt through a reinforced hole. Take a single-lap epoxy bond with a classroom allowable shear of 15 MPa. Bond area needed: 20,000 N / 15 MPa = 1,333 mm². On a 25 mm wide strap that is 53 mm of bond length — doable, inspectable, and now the most failure-prone 53 mm on the whole rig. || The index ranked the ideal material; the joint re-ranked the design. So select a material-plus-joint for the assembly, never a material alone — and quote the system by its weaker half.",
+      "A pull-rod for a tow rig. Minimum mass, must carry 20 kN in tension, and the ends have to attach to steel clevises. Strength sizes this rod, so run the strength index σ/ρ with the bench's numbers: steel 47, aluminum 102, quasi-isotropic CFRP 375 MPa per g/cm³. CFRP wins by a landslide — more than three and a half times aluminum's strength per kilogram, and eight times steel's. || But CFRP cannot take a thread, and it cannot be welded to a steel clevis. The rod ends become a second design problem: bond the carbon to a metal end fitting, or bolt through a reinforced hole. Take a single-lap epoxy bond with a classroom allowable shear of 15 MPa. Bond area needed: 20,000 N / 15 MPa = 1,333 mm². On a 25 mm wide strap that is 53 mm of bond length — doable, inspectable, and now the most failure-prone 53 mm on the whole rig. || The index ranked the ideal material; the joint re-ranked the design. So select a material-plus-joint for the assembly, never a material alone — and quote the system by its weaker half.",
     use: "When a selection study hands you a winner and you need to check whether the winner survives contact with assembly. || Run the index to make the shortlist, then force each candidate through its joints: can it be joined to its neighbors, by what process, with what efficiency, at what cost? || Stop when the decision names the joint explicitly — 'CFRP' alone leaves the hardest part of the design undecided.",
     example:
       "The tow-hook bracket: bracket ties a trailer coupler to a steel hitch receiver, outdoor, salt spray. || Ashby says CFRP (lightest), then aluminum, then steel. The joint says: CFRP cannot be TIG welded to the steel receiver, a bolted hole in CFRP needs a bonded metal insert, and carbon's galvanic potential (+0.25 V) against steel (−0.60 V) in salt spray is a 0.85 V gap — the steel inserts would sacrifice themselves. Aluminum welds to nothing here either (dissimilar to steel), so it bolts on with isolation. Steel welds to steel at 100% efficiency with no galvanic question. || The record reads: steel wins on the joint, not the index. The two losers are named with their causes of death.",
@@ -24,7 +22,7 @@ export const engineeringW25Lessons: Lesson[] = [
       {
         heading: "Indices rank ideals; joints rank assemblies",
         body: "An Ashby index assumes the part is free — free to be the optimal shape, free of neighbors. Real parts have ends, and ends have joints. A welded steel part carries ~100% of its base strength through the joint; a bolted composite part may carry 50–60% through a hole that concentrates stress threefold. Multiply the index by the joint efficiency before you crown anyone.",
-        formula: "system merit = min(member merit, joint efficiency × member merit)",
+        formula: "system merit = joint efficiency × member merit",
       },
       {
         heading: "Every joint is a second material",
@@ -51,7 +49,7 @@ export const engineeringW25Lessons: Lesson[] = [
           "The rod's strength times a 1.5 safety factor",
         ],
         answer: 0,
-        why: "A chain is its weakest link. The 20 kN rod is fine at 600 MPa; the bonded joint at 15 MPa allowable over its area is what sizes the design. Quoting the member strength alone is how joints get under-designed.",
+        why: "A chain is its weakest link. CFRP's ~600 MPa gives a rod far stronger than 20 kN needs; the bonded joint at 15 MPa allowable over its area is what sizes the design. Quoting the member strength alone is how joints get under-designed.",
       },
       {
         prompt: "Why does the lesson say to screen on joinability before optimizing on properties?",
@@ -96,10 +94,10 @@ export const engineeringW25Lessons: Lesson[] = [
     minutes: 35,
     lede: "Size the three great joint families — mechanical, fusion, adhesive — and check the two silent killers: thermal mismatch and galvanic corrosion.",
     start:
-      "Three ways to move 3 kN across a lap joint. A bolt: one M8 through 4 mm aluminum plate, single shear. Bearing stress on the plate: 3,000 N / (8 mm × 4 mm) = 93.8 MPa. Shear stress in the bolt: 3,000 N / 50.3 mm² = 59.7 MPa. The hole concentrates stress, but the joint is inspectable and removable. || A weld: TIG on 6061-T6 keeps ≈70% of base strength through the heat-affected zone — the weld is full-strength only if you designed for 70%. A bond: epoxy at 15 MPa allowable needs 200 mm² of lap — no holes, no heat, but peel will kill it before shear does, and 120 °C softens the whole scheme. || Then the silent killers. Bolt steel to aluminum and swing the temperature 80 °C: Δα = 11e-6/°C gives σ = 70,000 × 11e-6 × 80 ≈ 62 MPa fully constrained — a quarter of 6061-T6's yield, cycling with the weather every day (a bolted lap relieves part of it by slipping; a weld relieves none). Bolt carbon fiber to aluminum in salt air: graphite sits at +0.25 V, aluminum at −0.75 V, a full volt of galvanic drive — the aluminum fastener becomes the sacrificial anode.",
+      "Three ways to move 3 kN across a lap joint. A bolt: one M8 through 4 mm aluminum plate, single shear. Bearing stress on the plate: 3,000 N / (8 mm × 4 mm) = 93.8 MPa. Shear stress in the bolt: 3,000 N / 50.3 mm² = 59.7 MPa. The hole concentrates stress, but the joint is inspectable and removable. || A weld: TIG on 6061-T6 keeps ≈70% of base strength through the heat-affected zone — the weld is full-strength only if you designed for 70%. A bond: epoxy at 15 MPa allowable needs 200 mm² of lap — no holes, no heat, but peel will kill it before shear does, and 120 °C softens the whole scheme. || Then the silent killers. Bolt steel to aluminum and swing the temperature 80 °C: Δα = 11e-6/°C gives σ = 68,900 × 11e-6 × 80 ≈ 61 MPa as a one-axis estimate — about a fifth of 6061-T6's 276 MPa yield, cycling with the weather every day (a bolted lap relieves part of it by slipping; a weld relieves none). Bolt carbon fiber to aluminum in salt air: graphite sits at +0.25 V, aluminum at −0.75 V, a full volt of galvanic drive — the aluminum fastener becomes the sacrificial anode.",
     use: "When two parts meet and you must choose how they meet. || Pick the family by disassembly, inspection, and temperature needs; size it by its own arithmetic (bearing/shear, HAZ efficiency, bond area); then run the two compatibility checks — thermal mismatch stress and galvanic gap — in the service environment. || Stop when the joint has a strength number, a mismatch number, and a named answer for corrosion. A joint with no corrosion answer will get one from the field, eventually.",
     example:
-      "The dock railing: rails bolted to posts, constant salt spray, twenty-year life. || Bearing and shear size the bolt in one line of arithmetic. The galvanic check: 304 stainless (−0.10 V) against 6061 aluminum (−0.75 V) is a 0.65 V gap in saltwater — high risk, aluminum loses. Against GFRP (non-conductive) there is no cell at all. Thermal: aluminum on stainless, Δα = 6e-6/°C, is ≈25 MPa fully constrained over a 60 °C swing — below the screening line, noted, not driving. || The joint decision: stainless-to-stainless bolts, or GFRP rails on stainless posts with isolated fasteners. Aluminum rails die in the record with 'galvanic' as the cause.",
+      "The dock railing: rails bolted to posts, constant salt spray, twenty-year life. || Bearing and shear size the bolt in one line of arithmetic. The galvanic check: 304 stainless (−0.10 V) against 6061 aluminum (−0.75 V) is a 0.65 V gap in saltwater — high risk, aluminum loses. Against GFRP (non-conductive) there is no cell at all. Thermal: aluminum on stainless, Δα = 6e-6/°C, is ≈25 MPa (one-axis estimate) over a 60 °C swing — below the screening line, noted, not driving. || The joint decision: stainless-to-stainless bolts, or GFRP rails on stainless posts with isolated fasteners. Aluminum rails die in the record with 'galvanic' as the cause.",
     ideas: [
       {
         heading: "Three families, three arithmetics",
@@ -108,12 +106,12 @@ export const engineeringW25Lessons: Lesson[] = [
       },
       {
         heading: "Thermal mismatch is a load",
-        body: "Two materials, one temperature swing, different expansions — something has to give, and what gives is stress: σ = E·Δα·ΔT in the softer member, the fully-constrained upper bound. A steel bolt in an aluminum cleat over 80 °C gives ~62 MPa — a quarter of 6061-T6's yield, cycling every day the sun shines; a bolted lap slips and relieves part of it, a weld relieves none. Treat ΔT as a load case with the same seriousness as the mechanical load.",
-        formula: "σ = E · Δα · ΔT",
+        body: "Two materials, one temperature swing, different expansions — something has to give, and what gives is stress: σ = E·Δα·ΔT in the softer member, the one-axis estimate (full biaxial constraint adds a factor 1/(1−ν)). A steel bolt in an aluminum cleat over 80 °C gives ~61 MPa — about a fifth of 6061-T6's 276 MPa yield, cycling every day the sun shines; a bolted lap slips and relieves part of it, a weld relieves none. Treat ΔT as a load case with the same seriousness as the mechanical load.",
+        formula: "σ = E · Δα · ΔT  (one-axis estimate)",
       },
       {
         heading: "Galvanic corrosion is a battery you built",
-        body: "Dissimilar conductive metals in an electrolyte are a battery, and the anode dissolves. The drive is the potential gap: carbon fiber (+0.25 V) against aluminum (−0.75 V) is a full volt — in salt spray the aluminum sacrifices itself. Defense is isolation (sleeves, sealant), a closer couple, or making the replaceable part the cathode. And mind the area ratio: a small anode feeding a large cathode fails fast.",
+        body: "Dissimilar conductive metals in an electrolyte are a battery, and the anode dissolves. The drive is the potential gap: carbon fiber (+0.25 V) against aluminum (−0.75 V) is a full volt — in salt spray the aluminum sacrifices itself. Defense is isolation (sleeves, sealant), a closer couple, or making the replaceable (sacrificial) part the anode. And mind the area ratio: a small anode feeding a large cathode fails fast.",
         formula: "risk ∝ potential gap × environment severity",
       },
     ],
@@ -145,15 +143,15 @@ export const engineeringW25Lessons: Lesson[] = [
         why: "The heat-affected zone is a different material with lower strength. Designing to the catalog yield at a weld is designing to a strength that isn't there.",
       },
       {
-        prompt: "Steel bolt in aluminum cleat, 80 °C swing. The locked-in stress is ≈62 MPa. Why does this matter?",
+        prompt: "Steel bolt in aluminum cleat, 80 °C swing. The locked-in stress is ≈61 MPa. Why does this matter?",
         options: [
-          "It is a quarter of 6061-T6's yield and cycles daily — it adds to every mechanical load and can drive fatigue",
+          "It is about a fifth of 6061-T6's yield and cycles daily — it adds to every mechanical load and can drive fatigue",
           "It only matters above 200 °C",
           "Thermal stress relaxes immediately",
           "Aluminum has no yield strength",
         ],
         answer: 0,
-        why: "σ = E·Δα·ΔT = 70,000 × 11e-6 × 80 ≈ 62 MPa. It never appears on the load diagram, but the material feels it — a silent mean stress on top of every cycle.",
+        why: "σ = E·Δα·ΔT = 68,900 × 11e-6 × 80 ≈ 61 MPa, the one-axis estimate. It never appears on the load diagram, but the material feels it — a silent mean stress on top of every cycle.",
       },
       {
         prompt: "CFRP part bolted with aluminum fasteners in salt air. The verdict is…",
@@ -176,7 +174,7 @@ export const engineeringW25Lessons: Lesson[] = [
     minutes: 35,
     lede: "Weigh properties against cost, schedule, risk, and repairability — and write the decision record that lets the choice survive its critics.",
     start:
-      "Back to the tow-hook bracket. Three honest candidates. CFRP: lightest, stiffest per kilogram, index winner — and the joint needs bonded titanium inserts, the layup needs a qualified shop, the lead time is six weeks, and one stone chip in the wrong place starts a delamination you cannot see. Aluminum 6061-T6: bolts to the steel receiver with isolated fasteners, weldable to itself, any shop can cut it, two-day turnaround. Steel 1018: heaviest by far, cheapest by far, welds to the receiver at full efficiency, every welder on earth can do it. || Now the columns the property table doesn't have: part cost (CFRP 8×, aluminum 2×, steel 1×), lead time (weeks vs days vs days), inspection (ultrasound vs visual vs visual), repairability (replace vs weld vs weld), risk (new process vs routine vs routine). The mass requirement says 'at most 4 kg' — all three pass. Nothing in the requirements pays for CFRP's lightness. || So steel wins — not on any property index, but as the best system: the joint is trivial, the cost is trivial, the risk is trivial, and no requirement rewards the mass saved. Write that down, with the losers and their causes of death, and the decision survives review. Without the record it's just 'we picked steel' — and 'we picked steel' never wins an argument with 'but composites are better'.",
+      "Back to the tow-hook bracket. Three honest candidates. CFRP: lightest, stiffest per kilogram, index winner — and the joint needs bonded steel inserts, the layup needs a qualified shop, the lead time is six weeks, and one stone chip in the wrong place starts a delamination you cannot see. Aluminum 6061-T6: bolts to the steel receiver with isolated fasteners, weldable to itself, any shop can cut it, two-day turnaround. Steel 1018: heaviest by far, cheapest by far, welds to the receiver at full efficiency, every welder on earth can do it. || Now the columns the property table doesn't have: part cost (CFRP 8×, aluminum 2×, steel 1×), lead time (weeks vs days vs days), inspection (ultrasound vs visual vs visual), repairability (replace vs weld vs weld), risk (new process vs routine vs routine). The mass requirement says 'at most 4 kg' — all three pass. Nothing in the requirements pays for CFRP's lightness. || So steel wins — not on any property index, but as the best system: the joint is trivial, the cost is trivial, the risk is trivial, and no requirement rewards the mass saved. Write that down, with the losers and their causes of death, and the decision survives review. Without the record it's just 'we picked steel' — and 'we picked steel' never wins an argument with 'but composites are better'.",
     use: "When the selection study is done and someone has to sign. || List the candidates that survived the hard screens (properties, joints, environment). Score them on the soft columns: cost, schedule, supply risk, inspection, repair. Check that some requirement actually rewards the winner's advantage — lightness nobody asked for is not an advantage. || Stop when the record names the winner, the rejected options with causes of death, the joint plan, and the risks you are accepting. An unwritten decision gets argued again the moment it's inconvenient.",
     example:
       "The avionics enclosure: needs EMI shielding and a lid that opens for service. || Nylon is cheapest and lightest — and non-conductive, so it cannot shield; the joint requirement (openable lid) kills adhesive. Stainless shields and bolts beautifully but weighs 3× the aluminum and costs more to machine. Aluminum 6061 bolts, shields, machines easily, and every shop stocks it. || Decision: 6061-T6 case and lid, bolted with captive fasteners, chromate conversion for the mild environment. Rejected: nylon (no shielding, lid must open), stainless (mass and cost buy nothing the requirements reward). The record is one page, and it ends the discussion.",

@@ -2,9 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 6 — Torque, rotation & equilibrium.
- * These three lessons open the physics track (indices 1–3); the pre-existing
- * physics lessons follow re-indexed from 4. Evidence due: beam reactions and
- * torque problem set (lesson 3 bench).
+ * These three lessons are physics-track indices 16–18, after Week 5.
+ * Evidence due: beam reactions and torque problem set (lesson 3 bench).
  */
 export const physicsW6Lessons: Lesson[] = [
   {
@@ -80,8 +79,8 @@ export const physicsW6Lessons: Lesson[] = [
     minutes: 35,
     lede: "Translate between linear and angular motion with the r-map, compute moments of inertia from mass distribution, and predict spin-up under a known torque.",
     start:
-      "A figure skater pulls her arms in and her spin rate doubles — no torque applied, yet ω changes. Nothing was pushed; the mass moved closer to the axis. || Rotation has its own kinematics: angle θ, angular velocity ω = dθ/dt, angular acceleration α = dω/dt. Every linear equation from Week 2 has a rotational twin — swap x→θ, v→ω, a→α, and the constant-acceleration forms carry over intact. The bridge is the radius: s = rθ, v = ωr, a_t = αr. || The twin of force is moment of inertia I, and unlike mass it depends on where the mass sits. Same mass, same radius, different I: a hoop beats a disk at the axis because every gram of the hoop rides at full radius.",
-    use: "Whenever something spins up, spins down, or holds a rate: flywheels, motors, gears, tossed objects. || Map the problem: write the angular quantities, use the r-map to convert any linear data, look up or compute I for the shape, then use τ = Iα exactly as you used F = ma. For composite bodies, add inertias about the same axis; for offset axes, use the parallel-axis theorem. || Stop when ω(t) or θ(t) is stated with units (rad/s, rad) and a sanity check — a 2 kg disk does not reach 100 rad/s from a 1 N·m torque in a second.",
+      "A figure skater pulls her arms in and her spin rate doubles — no torque applied, yet ω changes. Nothing was pushed; the mass moved closer to the axis. || Rotation has its own kinematics: angle θ, angular velocity ω = dθ/dt, angular acceleration α = dω/dt. Every linear equation from Week 2 has a rotational twin — swap x→θ, v→ω, a→α, and the constant-acceleration forms carry over intact. The bridge is the radius: s = rθ, v = ωr, a_t = αr. || The twin of mass is moment of inertia I, and unlike mass it depends on where the mass sits. Same mass, same radius, different I: a hoop beats a disk at the axis because every gram of the hoop rides at full radius.",
+    use: "Whenever something spins up, spins down, or holds a rate: flywheels, motors, gears, tossed objects. || Map the problem: write the angular quantities, use the r-map to convert any linear data, look up or compute I for the shape, then use τ = Iα exactly as you used F = ma. For composite bodies, add inertias about the same axis; for offset axes, use the parallel-axis theorem. || Stop when ω(t) or θ(t) is stated with units (rad/s, rad) and a sanity check — a 2 kg, 0.5 m-radius disk (I = 0.25 kg·m²) does not reach 100 rad/s from a 1 N·m torque in a second; it reaches 4 rad/s.",
     example:
       "A solid steel cylinder (m = 2 kg, r = 0.10 m) is spun by a constant 0.05 N·m torque for 5 s from rest. || I = ½mr² = 0.5 × 2 × 0.01 = 0.01 kg·m². α = τ/I = 0.05/0.01 = 5 rad/s². After 5 s: ω = αt = 25 rad/s, θ = ½αt² = 62.5 rad — about 10 revolutions. || A hoop of the same mass and radius has I = mr² = 0.02 kg·m² — double — so the same torque gives half the angular acceleration. Mass alone never told you that; distribution does.",
     ideas: [
@@ -140,15 +139,15 @@ export const physicsW6Lessons: Lesson[] = [
     minutes: 35,
     lede: "Solve for support reactions with ΣF = 0 and Στ = 0, read supports as reaction promises, and choose the moment center that kills an unknown.",
     start:
-      "A 6 m scaffold plank rests on two sawhorses. A painter stands 2 m from the left horse. Which horse carries more? Guessing is how planks tip. || Static equilibrium is two statements: the forces sum to zero (no translation) and the torques about any point sum to zero (no rotation). Two equations, so you can solve for two unknowns — which is exactly what a simply supported beam offers: one unknown reaction at each support. || Supports are promises about which reactions they provide. A pin gives two (horizontal and vertical); a roller gives one (vertical only); a fixed support gives three (adding a moment). Read the support, list the unknowns, then write the equations.",
+      "A 6 m scaffold plank rests on two sawhorses. A painter stands 2 m from the left horse. Which horse carries more? Guessing is how planks tip. || Static equilibrium is two statements: the forces sum to zero (no translation) and the torques about any point sum to zero (no rotation). In a plane that is three equations (ΣF_x, ΣF_y, Στ), so you can solve for three unknowns — which is exactly what a simply supported beam offers: two at the pin, one at the roller. With vertical loads only, the pin's horizontal reaction is zero and two vertical reactions remain. || Supports are promises about which reactions they provide. A pin gives two (horizontal and vertical); a roller gives one (vertical only); a fixed support gives three (adding a moment). Read the support, list the unknowns, then write the equations.",
     use: "For any structure at rest: bridges, brackets, shelves, crane booms. || Draw the free body (Week 3's discipline). List support reactions per the support type. Write ΣF_y = 0, then Στ = 0 about the point that eliminates the most unknowns — usually one support, so the other reaction drops out of the moment equation. Solve, then check: reactions must sum to the total load, and each must be positive (a negative reaction means your assumed direction was wrong, or the beam lifts off). || Stop when both reactions are found and the check passes. If a reaction comes out negative, flip its assumed direction and say what that means physically.",
     example:
-      "A 6 m beam, pin at x = 0, roller at x = 6 m. Loads: 800 N at 2 m, 400 N at 5 m. || Στ about the pin: B_y × 6 = 800 × 2 + 400 × 5 = 3600, so B_y = 600 N. ΣF_y = 0: A_y = 1200 − 600 = 600 N. || Check: 600 + 600 = 1200 = total load ✓. Both positive, so both supports push up. Note the symmetry of the answer is a coincidence of these numbers — move the 400 N load to 4 m and B_y drops to 4000/6 ≈ 533 N.",
+      "A 6 m beam, pin at x = 0, roller at x = 6 m. Loads: 800 N at 2 m, 400 N at 5 m. || Στ about the pin: B_y × 6 = 800 × 2 + 400 × 5 = 3600, so B_y = 600 N. ΣF_y = 0: A_y = 1200 − 600 = 600 N. || Check: 600 + 600 = 1200 = total load ✓. Both positive, so both supports push up. Note the symmetry of the answer is a coincidence of these numbers — move the 400 N load to 4 m and B_y drops to 3200/6 ≈ 533 N.",
     ideas: [
       {
-        heading: "Two equations, two unknowns",
-        body: "Equilibrium gives a solvable system: ΣF = 0 kills translation, Στ = 0 kills rotation, and together they determine the support reactions of a simply supported beam. A third unknown — a fixed support's moment, a second span — needs more than statics; that is the doorway to indeterminate structures and, later, to elasticity.",
-        formula: "ΣF_y = 0; Στ_A = 0",
+        heading: "Three equations, three unknowns",
+        body: "Equilibrium gives a solvable system: ΣF = 0 kills translation, Στ = 0 kills rotation. Planar statics gives three equations (ΣF_x, ΣF_y, Στ). A pin plus a roller, or a single fixed support, is exactly three unknowns; a fourth — an extra support or span — needs more than statics. That is the doorway to indeterminate structures and, later, to elasticity.",
+        formula: "ΣF_x = 0; ΣF_y = 0; Στ_A = 0",
       },
       {
         heading: "Supports speak reactions",

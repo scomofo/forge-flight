@@ -2,9 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Engineering 101, Week 26 — Manufacturing & tolerances.
- * These three lessons open the engineering track (indices 1–3); the eleven
- * pre-existing engineering lessons follow re-indexed from 4. Evidence due:
- * a tolerance stack (lesson 2 bench) and a process-choice memo (lessons 1/3).
+ * These three lessons are engineering-track indices 16–18. Evidence due:
+ * a tolerance stack (index 17 bench) and a process-choice memo (16/18).
  */
 export const engineeringW26Lessons: Lesson[] = [
   {
@@ -18,7 +17,7 @@ export const engineeringW26Lessons: Lesson[] = [
       "Send the same bracket drawing to three shops. The machine shop quotes $42 a part and holds ±0.025 mm without thinking. The die caster quotes $8 a part — at ten thousand units, after $12,000 of tooling — and holds ±0.1 mm if you are lucky. The print farm quotes $15 overnight with no tooling and hands you ±0.2 mm of layer lines. The drawing never changed. What the drawing means changed, because each process reads a tolerance as a different promise. || Manufacturing splits into four families: subtractive (milling, turning — cut away what you do not want), casting and molding (pour or press into a cavity), forming (bend and stamp sheet), and additive (grow it layer by layer). Each family has a tolerance it can hold as a matter of routine, a volume where its economics work, and materials it likes. A process that cannot hold your tightest tolerance is out of the running — unless you price in the secondary operation that gets you there. || You screen by tolerance first because tolerance is the one screen that is physics, not negotiation. Volume economics can be argued with — amortize tooling, accept a slower cycle. A process holding ±0.1 mm cannot be argued into ±0.05. That is why the process choice is a design input, not a purchasing decision made after the drawing is done.",
     use: "When you must choose how a part gets made, or when a shop returns your drawing with 'cannot hold that.' || List the part's material, planned volume, and tightest tolerance. Screen every candidate process: typical tolerance ≤ required tolerance, else it needs a named secondary op with its own cost; then volume — is this the process's sweet spot or are you fighting its economics; then material compatibility. || Stop when one process clears all three screens and you can state its price per part at your volume, tooling amortized, with the rejected processes named and their cause of death written down.",
     example:
-      "A 60 mm 6061 aluminum bracket, 500 units, two hole positions at ±0.05 mm, one cosmetic face. || CNC milling holds ±0.025 mm as routine — clears the ±0.05 screen with margin; 500 units sits comfortably in its low-volume sweet spot; aluminum machines beautifully. Die casting holds ±0.1 mm — fails the tolerance screen outright unless you add a ream operation for the holes. FDM printing holds ±0.2 mm — disqualified four times over. || CNC milling wins at roughly $38 a part. The memo records the price honestly: you are paying for cycle time, and the rejects are die casting (tolerance) and FDM (tolerance, surface, strength). No surprises at the quote stage, because the screens were the quote stage.",
+      "A 60 mm 6061 aluminum bracket, 500 units, two hole positions at ±0.05 mm, one cosmetic face. || CNC milling holds ±0.025 mm as routine — clears the ±0.05 screen with margin; 500 units sits comfortably in its low-volume sweet spot; aluminum machines beautifully. Die casting holds ±0.1 mm — fails the tolerance screen outright unless you add a ream operation for the holes. FDM printing holds ±0.2 mm — disqualified four times over. || CNC milling wins at roughly $42 a part. The memo records the price honestly: you are paying for cycle time, and the rejects are die casting (tolerance, and $12,000 of tooling over 500 parts) and FDM (tolerance, surface, strength). No surprises at the quote stage, because the screens were the quote stage.",
     ideas: [
       {
         heading: "Tolerance capability is the first screen",
@@ -27,7 +26,7 @@ export const engineeringW26Lessons: Lesson[] = [
       },
       {
         heading: "Volume decides the economics",
-        body: "Tooling-heavy processes (die casting, injection molding) are ruinous for ten parts and unbeatable for ten thousand; tooling-free processes (CNC, printing) cost the same per part at any volume. The unit cost is tooling divided by volume plus cycle cost — find the crossover and you know which side of it you live on before anyone quotes.",
+        body: "Tooling-heavy processes (die casting, injection molding) are ruinous for ten parts and unbeatable for ten thousand; tooling-free processes (CNC, printing) cost nearly the same per part at any volume once setup is spread. The unit cost is tooling divided by volume plus cycle cost — find the crossover and you know which side of it you live on before anyone quotes.",
         formula: "unit cost = tooling / volume + cycle cost",
       },
       {
@@ -112,7 +111,7 @@ export const engineeringW26Lessons: Lesson[] = [
       },
       {
         heading: "Fits are stacks with names",
-        body: "A hole and a shaft are a two-part stack. Max clearance = biggest hole minus smallest shaft; min clearance = smallest hole minus biggest shaft. Both clearances positive: clearance fit — it always assembles, always has play. Both negative: interference fit — it always presses, needs force or heat. Straddling zero: transition — some assemblies clear, some press. Name the fit before you choose the numbers.",
+        body: "A hole and a shaft are a two-part stack. Max clearance = biggest hole minus smallest shaft; min clearance = smallest hole minus biggest shaft. Both clearances zero or positive: clearance fit — it always assembles, always has play. Both negative: interference fit — it always presses, needs force or heat. Straddling zero: transition — some assemblies clear, some press. Name the fit before you choose the numbers.",
         formula: "C_max = hole_max − shaft_min;  C_min = hole_min − shaft_max",
       },
     ],
@@ -173,7 +172,7 @@ export const engineeringW26Lessons: Lesson[] = [
       "A drawing crossed a shop floor with ±0.01 mm on a face nobody would ever touch, mate, or seal against. The shop could mill the part in one setup — but not to ±0.01. So they milled it, then ground that one face, then inspected it on the CMM, and the part cost twice what it should have. The tolerance bought nothing; it was vanity with a price tag. Every shop has a drawer of such drawings. || Design for manufacturing means the drawing respects the process: tight tolerances only where a function lives — a stack, a fit, a seal — and generous tolerances everywhere else; standard stock sizes instead of custom; features a standard tool can reach in one setup; uniform wall thickness for molded parts; bend radii the press brake already owns. The cost of a tolerance is nonlinear: halving a tolerance roughly doubles the cost of that feature, because it moves you across a process boundary — from milling to grinding, from one setup to two, from in-process checking to 100% inspection. || That is why the process-choice memo exists. It lists the winner, the rejects with their causes of death, and — crucially — which tolerances are functional and which were relaxed. A year later, when someone asks why the bracket costs what it costs, the memo answers. Without it, the vanity tolerances creep back in one engineering change at a time.",
     use: "When finalizing a drawing, or when a quote comes back shocking and someone must find the money in the design. || For each tolerance on the drawing, ask what function it serves — stack, fit, seal, alignment — and name it. If it serves none, loosen it. Count setups and operations; prefer standard sizes and tools. || Stop when every remaining tight tolerance traces to a named function, the process choice is written down with rejects and reasons, and the quote no longer contains operations that buy nothing.",
     example:
-      "The 60 mm 6061 bracket again: the first drawing carried ±0.05 mm on the cosmetic face. || Nothing assembles against the face, seals against it, or aligns to it — its function is looks, and as-milled aluminum looks fine. Loosen the face to ±0.25 mm; keep ±0.05 on the two hole positions that locate the mating part, because those sit in a real stack. || The re-quote drops about 30%: one setup, no grinding, no CMM time on the face. The memo records the functional tolerances (the holes) and the relaxed one (the face), so the next engineer knows which is which.",
+      "The 60 mm 6061 bracket again: the first drawing carried ±0.01 mm on the cosmetic face. || Nothing assembles against the face, seals against it, or aligns to it — its function is looks, and as-milled aluminum looks fine. Loosen the face to ±0.25 mm; keep ±0.05 on the two hole positions that locate the mating part, because those sit in a real stack. || The re-quote drops about 30%: one setup, no grinding, no CMM time on the face. The memo records the functional tolerances (the holes) and the relaxed one (the face), so the next engineer knows which is which.",
     ideas: [
       {
         heading: "Every tolerance is a purchase",

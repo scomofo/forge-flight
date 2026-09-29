@@ -1690,7 +1690,7 @@ export function MicroInterpBench() {
 const quenchAlloys = [
   { name: "Window glass", criticalKs: 1, note: "A messy silicate network crystallizes sluggishly — almost any cooling makes glass." },
   { name: "Zr-based metallic glass", criticalKs: 10, note: "A confused multi-element alloy; water quenching a thin section suffices." },
-  { name: "Pure aluminum", criticalKs: 1e6, note: "Crystallizes eagerly — needs splat quenching or melt spinning." },
+  { name: "Aluminum-rich binary alloy", criticalKs: 1e6, note: "Crystallizes eagerly — needs melt spinning. Pure aluminum would need ~10¹² K/s, beyond any quench." },
 ] as const;
 
 export function GlassFormBench() {
@@ -3162,7 +3162,7 @@ export function CreepLifeBench() {
 
   return (
     <BenchShell
-      prompt="Run the hot short test: set the temperature and rupture time, and read off the Larson-Miller parameter. Then dial the service temperature down and watch the predicted life move. || Push the extrapolation past ten-to-one in time and watch the warning appear — then say why the warning exists. || Finish with a service life above 100,000 h from a test under 3,000 h, and name the mechanism change that would void your prediction."
+      prompt="Run the hot short test: set the temperature and rupture time, and read off the Larson-Miller parameter. Then dial the service temperature down and watch the predicted life move. || Push the extrapolation past ten-to-one in time and watch the warning appear — then say why the warning exists. || Finish with a service life above 20,000 h from a test of at least 2,000 h, and name the mechanism change that would void your prediction."
       note="C = 20 suits most alloys in the teaching range. Real qualification runs multiple temperatures and stresses, checks that one mechanism owns the data, and still applies a factor on life. The bench's warning at ten-to-one extrapolation is industry manners, not physics."
       controls={
         <>

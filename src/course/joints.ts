@@ -41,7 +41,7 @@ export type Material = {
 export const MATERIALS: Material[] = [
   { id: "steel1018", name: "1018 steel", e: 200, strength: 370, alpha: 12e-6, rho: 7.87, potential: -0.6, weldability: "excellent", weldFactor: 1.0 },
   { id: "ss304", name: "304 stainless", e: 193, strength: 215, alpha: 17e-6, rho: 8.0, potential: -0.1, weldability: "good", weldFactor: 0.9 },
-  { id: "al6061", name: "6061-T6 aluminum", e: 68, strength: 240, alpha: 23e-6, rho: 2.7, potential: -0.75, weldability: "good", weldFactor: 0.7 },
+  { id: "al6061", name: "6061-T6 aluminum", e: 68.9, strength: 276, alpha: 23e-6, rho: 2.7, potential: -0.75, weldability: "good", weldFactor: 0.7 },
   { id: "al2024", name: "2024-T3 aluminum", e: 73, strength: 320, alpha: 23e-6, rho: 2.78, potential: -0.75, weldability: "poor", weldFactor: 0.5 },
   { id: "ti64", name: "Ti-6Al-4V", e: 114, strength: 880, alpha: 8.6e-6, rho: 4.43, potential: -0.05, weldability: "good", weldFactor: 0.95 },
   { id: "copper", name: "C110 copper", e: 115, strength: 70, alpha: 17e-6, rho: 8.94, potential: -0.2, weldability: "fair", weldFactor: 0.8 },
@@ -56,7 +56,7 @@ export function material(id: string): Material {
   return m;
 }
 
-/** Fully constrained thermal-mismatch stress: σ = E · Δα · ΔT. Returns MPa. */
+/** One-axis constrained thermal-mismatch stress: σ = E · Δα · ΔT (biaxial adds 1/(1−ν)). Returns MPa. */
 export function thermalMismatchStress(eGPa: number, dAlphaPerC: number, dTC: number): number {
   return eGPa * 1000 * dAlphaPerC * dTC;
 }
@@ -193,7 +193,7 @@ export function interfaceVerdict(
     if (pct > 15) {
       issues.push(
         `Thermal mismatch: Δα = ${(dAlpha * 1e6).toFixed(1)}e-6/°C locks ≈${mismatchMPa.toFixed(0)} MPa into the ${softer.name} over ${dTC} °C` +
-          `${constraint < 1 ? " (after joint slip relief)" : " (fully constrained)"} — ${pct.toFixed(0)}% of its strength. The joint breathes with the weather.`,
+          `${constraint < 1 ? " (after joint slip relief)" : " (no slip relief, one-axis estimate)"} — ${pct.toFixed(0)}% of its strength. The joint breathes with the weather.`,
       );
     } else {
       notes.push(`Thermal mismatch is ≈${mismatchMPa.toFixed(0)} MPa — noted, not driving.`);

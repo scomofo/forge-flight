@@ -2,9 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 8 — Fluids & flight fundamentals.
- * These three lessons open the physics track (indices 1–3); the pre-existing
- * physics lessons follow re-indexed from 4. Evidence due: glider model
- * pre-lab (lesson 3 bench) and force balance.
+ * These three lessons are physics-track indices 22–24, after Week 7.
+ * Evidence due: glider model pre-lab (lesson 3 bench) and force balance.
  *
  * The glider sandbox already in the repo (src/forge/sim) supplies the lift,
  * drag, and static-margin closed forms; these lessons teach the physics that
@@ -27,7 +26,7 @@ export const physicsW8Lessons: Lesson[] = [
     ideas: [
       {
         heading: "Pressure is force per area",
-        body: "The SI unit is the pascal: one newton per square meter. A sharp knife cuts because the same force lands on a tiny area. Fluids at rest push normal to every surface — no sideways component, because a fluid at rest cannot sustain shear. That single fact is why dams are thick at the bottom and why your eardrums are a depth gauge.",
+        body: "The SI unit is the pascal: one newton per square meter. A sharp knife cuts because the same force lands on a tiny area. Fluids at rest push normal to every surface — no sideways component, because a fluid at rest cannot sustain shear. That fact, plus pressure growing with depth, is why dams are thick at the bottom and why your eardrums are a depth gauge.",
         formula: "p = F/A, 1 Pa = 1 N/m²",
       },
       {
@@ -102,7 +101,7 @@ export const physicsW8Lessons: Lesson[] = [
       },
       {
         heading: "Bernoulli, with its assumptions attached",
-        body: "p + ½ρv² + ρgh = constant along a streamline — energy per unit volume, conserved because nothing in the ideal model adds or removes it. The four assumptions are the price of admission: steady, incompressible, inviscid, one streamline. Across a pump or a turbine the constant changes (work crosses the boundary); in a boundary layer viscosity eats the budget; near Mach 1 density stops being constant.",
+        body: "p + ½ρv² + ρgh = constant along a streamline — energy per unit volume, conserved because nothing in the ideal model adds or removes it. The four assumptions are the price of admission: steady, incompressible, inviscid, one streamline. Across a pump or a turbine the constant changes (work crosses the boundary); in a boundary layer viscosity eats the budget; above roughly Mach 0.3 density stops being constant.",
         formula: "p + ½ρv² + ρgh = const",
       },
       {

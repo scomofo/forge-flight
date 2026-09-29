@@ -131,13 +131,17 @@ test("week-25 bench ids are registered in the bench index", () => {
 });
 
 test("thermal mismatch matches the lesson's worked numbers", () => {
-  // Steel bolt in aluminum cleat, 80 °C swing: 70 GPa × 11e-6 × 80.
-  const sigma = thermalMismatchStress(70, 11e-6, 80);
-  assert.ok(Math.abs(sigma - 61.6) < 0.05, `expected ≈61.6 MPa, got ${sigma}`);
-  assert.ok(sigma / 240 > 0.25, "a quarter of 6061-T6 yield");
-  // Aluminum on stainless, 60 °C: 68 GPa × 6e-6 × 60 ≈ 24.5 MPa.
-  const mild = thermalMismatchStress(68, 6e-6, 60);
-  assert.ok(Math.abs(mild - 24.48) < 0.05, `expected ≈24.5 MPa, got ${mild}`);
+  // Steel bolt in aluminum cleat, 80 °C swing: 68.9 GPa × 11e-6 × 80 (one-axis estimate).
+  const al = material("al6061");
+  assert.equal(al.e, 68.9, "6061-T6 modulus matches the catalog");
+  assert.equal(al.strength, 276, "6061-T6 yield matches the catalog");
+  const sigma = thermalMismatchStress(al.e, 11e-6, 80);
+  assert.ok(Math.abs(sigma - 60.63) < 0.05, `expected ≈60.6 MPa, got ${sigma}`);
+  const frac = sigma / al.strength;
+  assert.ok(frac > 0.2 && frac < 0.25, `about a fifth of 6061-T6 yield, got ${frac}`);
+  // Aluminum on stainless, 60 °C: 68.9 GPa × 6e-6 × 60 ≈ 24.8 MPa.
+  const mild = thermalMismatchStress(al.e, 6e-6, 60);
+  assert.ok(Math.abs(mild - 24.80) < 0.05, `expected ≈24.8 MPa, got ${mild}`);
   assert.equal(thermalMismatchStress(200, 0, 80), 0, "no Δα means no stress");
 });
 
@@ -155,6 +159,15 @@ test("adhesive bond area matches the lesson's worked number", () => {
   // 20 kN at 15 MPa allowable → 1,333 mm².
   const area = adhesiveBondArea(20000, 15);
   assert.ok(Math.abs(area - 1333.33) < 0.01, `expected ≈1333 mm², got ${area}`);
+});
+
+test("pull-rod strength index matches the lesson's numbers", () => {
+  const idx = (id: string) => material(id).strength / material(id).rho;
+  assert.ok(Math.abs(idx("steel1018") - 47.0) < 0.1, "steel σ/ρ ≈ 47");
+  assert.ok(Math.abs(idx("al6061") - 102.2) < 0.1, "aluminum σ/ρ ≈ 102");
+  assert.equal(idx("cfrp"), 375, "CFRP σ/ρ = 375");
+  assert.ok(idx("cfrp") / idx("al6061") > 3.5, "more than 3.5× aluminum");
+  assert.ok(Math.abs(idx("cfrp") / idx("steel1018") - 8) < 0.1, "about 8× steel");
 });
 
 test("galvanic risk flags the carbon/aluminum couple", () => {

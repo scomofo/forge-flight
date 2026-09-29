@@ -2,8 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 20 — Materials synthesis (capstone week of the
- * Materials block). These three lessons open the materials track (indices
- * 1–3). Evidence due: closed-book mastery check + Glider Lab II. Block
+ * Materials block). These three lessons are materials-track indices
+ * 28–30. Evidence due: closed-book mastery check + Glider Lab II. Block
  * gate: at least 70% on the mastery check, plus a filed correction for
  * every missed chain-reasoning or failure-diagnosis item, before
  * Engineering 101.
@@ -25,7 +25,7 @@ export const materialsW20Lessons: Lesson[] = [
       "Two engineers pick a spar material. The first hands you 'carbon fiber.' The second hands you 'balsa, provisionally' — plus six assumptions, each marked assumed, derived, or measured, and the two most likely to be wrong. || Synthesis is the second engineer. The deliverable is not the material choice — it is the choice plus its chain of custody. Every number from Weeks 11 through 19 arrived with an expiry date: handbook strength, a book E, a 2.5 g gust factor. Synthesis carries those dates into the decision instead of leaving them in the chapter. || An unlisted assumption is an uninspected weld. When a prediction meets a test and they disagree, the arithmetic is the last place to look; the ledger is the first.",
     use: "Any problem that needs more than one week's machinery — which is every real problem. || Open the ledger first: for each claim write whether it traces to structure, processing, or test, what breaks if it is false, and which limiting case would expose it. Then chain: structure → processing → properties → performance, each handoff stated in a sentence, dimensions checked at every joint. Then test limits: E → ∞, σ → 0, d → ∞, and demand sane behavior. When prediction and measurement disagree, autopsy the ledger before the arithmetic. || Stop when every claim has a provenance, every joint has a unit check, and you can name the assumption most likely to be wrong and what would prove it.",
     example:
-      "Carburizing at 950 °C for 4 h predicts a 0.80 mm case (W13: 2√(Dt)). || The measured case is 0.55 mm. The arithmetic is not wrong — the ledger is: 'furnace held 950 °C' was marked assumed, and the thermocouple read 40 °C low. Arrhenius makes D collapse with temperature, so a small lie in T becomes a large lie in depth. || The disagreement was never in the error function; it was in the assumption nobody wrote down. Write it down next time.",
+      "Carburizing at 950 °C for 4 h predicts a 0.80 mm diffusion length (W13: 2√(Dt)). || The measured depth, on the same basis, is 0.55 mm. The arithmetic is not wrong — the ledger is: 'furnace held 950 °C' was marked assumed, and the thermocouple read about 60 °C high — the furnace actually held ~890 °C. Arrhenius makes D collapse as the temperature drops, so a small lie in T becomes a large lie in depth. || The disagreement was never in the square root; it was in the assumption nobody wrote down. Write it down next time.",
     ideas: [
       {
         heading: "Every claim has a provenance",
@@ -33,7 +33,7 @@ export const materialsW20Lessons: Lesson[] = [
       },
       {
         heading: "Chain at the joints",
-        body: "A multi-week argument is a supply chain: Week 11's bonding sets Week 18's family, Week 15's treatment sets Week 14's curve, Week 16's toughness sets Week 19's selection. Restate each handoff in a sentence: 'the quench froze the carbon in solution, so the aged alloy yields at 505 MPa.' If you cannot say the handoff in words, the chain has a gap in it.",
+        body: "A multi-week argument is a supply chain: Week 11's bonding sets Week 18's family, Week 15's treatment sets Week 14's curve, Week 16's toughness sets Week 19's selection. Restate each handoff in a sentence: 'the quench froze zinc and magnesium in solution, so the aged 7075 yields at 505 MPa.' If you cannot say the handoff in words, the chain has a gap in it.",
       },
       {
         heading: "Limits are the cheapest experiment",
@@ -68,15 +68,15 @@ export const materialsW20Lessons: Lesson[] = [
         why: "Provenance is the chain of custody: structure, processing, or test. A textbook citation is not custody — the book's number was measured on someone else's specimen.",
       },
       {
-        prompt: "Your predicted case depth is 0.80 mm; the measured depth is 0.55 mm. First move:",
+        prompt: "Your predicted diffusion depth is 0.80 mm; the measured depth is 0.55 mm. First move:",
         options: [
           "Interrogate the assumption ledger — especially the furnace temperature",
-          "Recheck the error-function arithmetic",
+          "Recheck the diffusion-length arithmetic",
           "Run it longer and average the two depths",
           "Declare diffusion theory useless",
         ],
         answer: 0,
-        why: "Disagreement autopsies start with assumptions, not arithmetic: D is exponential in temperature, so a small T error dominates the error budget. Recomputing the same erf returns the same answer.",
+        why: "Disagreement autopsies start with assumptions, not arithmetic: D is exponential in temperature, so a small T error dominates the error budget. Recomputing the same 2√(Dt) returns the same answer.",
       },
       {
         prompt: "A model gives the right nominal deflection but diverges as E → ∞. You should…",
@@ -100,18 +100,18 @@ export const materialsW20Lessons: Lesson[] = [
     lede: "Running the whole block — requirements to failure checks — on one 4×6 mm spar, and finding that strength is not the constraint.",
     start:
       "The 100 g tow-launch glider pulls a 2.5 g gust and the wing spar takes the bend. Three candidates sit on the bench: balsa, 7075-T6 aluminum, unidirectional carbon. || No family wins every demand, so 'which material is best' is the wrong question. The right one is which requirement binds: which screen kills the lightest option, and what the survivors cost. The chain runs: gust load → root moment → bending stress → deflection → allowables → fatigue and fracture sanity → processing route → the call. || The surprise is waiting at the fourth link. Strength clears everywhere; the spar never comes close to yielding. Something else decides.",
-    use: "Requirements first: name the loads, the section, and the deflection limit. || Compute the chain link by link — M = L·s/4, σ = Mc/I, δ = wL⁴/8EI, allowable = strength/FoS — checking units at every joint. Then run the failure sanity checks: fatigue ratio against endurance, critical crack size against the part's dimensions. Then price each survivor: mass, processing route, what the choice assumes. || Stop when every candidate has a strength margin, a stiffness verdict, a mass, and a named binding constraint — and the call cites its week for every link.",
+    use: "Requirements first: name the loads, the section, and the deflection limit. || Compute the chain link by link — M = (L/2)(s/2) with L the total lift, s the half-span and the lift spread uniformly; σ = Mc/I; δ = w·s⁴/(8EI) with w = L/(2s); allowable = strength/FoS — checking units at every joint. Then run the failure sanity checks: fatigue ratio against long-life fatigue strength, critical crack size against the part's dimensions. Then price each survivor: mass, processing route, what the choice assumes. || Stop when every candidate has a strength margin, a stiffness verdict, a mass, and a named binding constraint — and the call cites its week for every link.",
     example:
       "Gust lift: 2.45 N. Root moment: 0.153 N·m. Section 4×6 mm: I = 72 mm⁴, c = 3 mm, σ = 6.4 MPa. || Allowables: 7075-T6 at 337 MPa (margin 53×), balsa at 17.5 MPa (margin 2.7×), carbon at 800 MPa (margin 125×). Strength is not the constraint — nothing is near yielding. Deflection: balsa 11.1 mm, aluminum 0.46 mm, carbon 0.25 mm against a 5 mm limit. Balsa, the lightest at 0.96 g, fails the stiffness screen; carbon survives at 9.6 g against aluminum's 16.9 g. || The call: carbon wins, and the ledger records why — stiffness killed balsa, mass killed aluminum. Change the deflection limit and the call changes; that is the point.",
     ideas: [
       {
         heading: "The binding constraint is found, not assumed",
         body: "Compute every margin and let the smallest one name the driver. Here strength margins run 2.7× to 125× while the stiffness screen disqualifies the lightest candidate outright. Assuming the driver — 'it's a strength problem' — optimizes the wrong link; the chain finds it for you.",
-        formula: "σ = M·c/I, δ = w·L⁴/(8·E·I), allowable = strength / FoS",
+        formula: "σ = M·c/I, δ = w·s⁴/(8·E·I) with s = half-span, allowable = strength / FoS",
       },
       {
         heading: "Strength is cheap here; stiffness is expensive",
-        body: "A 53× strength margin next to an 11 mm sag is the whole lesson in one spar: for light, slender structures, E governs and σ_y is along for the ride. This is why the selection indices of Week 19 exist — E/ρ and E^(1/2)/ρ rank what σ_y/ρ cannot. Match the index to the binding constraint or the ranking lies.",
+        body: "Balsa's 2.7× strength margin next to its 11 mm sag is the whole lesson in one spar: for light, slender structures, E governs and σ_y is along for the ride. This is why the selection indices of Week 19 exist — E/ρ and E^(1/2)/ρ rank what σ_y/ρ cannot. Match the index to the binding constraint or the ranking lies.",
       },
       {
         heading: "Every link cites its week",
@@ -152,15 +152,15 @@ export const materialsW20Lessons: Lesson[] = [
         why: "At 6.4 MPa operating stress, linear-elastic fracture mechanics says a crack would need to be meters long to run — the part fails by other means first. The limit test (σ → 0 ⇒ a_c → ∞) confirms the model is sane; the conclusion is that fracture doesn't bind here.",
       },
       {
-        prompt: "The fatigue check showed operating stress at 4% of the endurance limit. The correct reading is…",
+        prompt: "The fatigue check showed the aluminum spar's operating stress at 4% of its long-life (5×10⁸-cycle) fatigue strength. The correct reading is…",
         options: [
           "Effectively infinite life — fatigue doesn't drive this design",
           "The part will fail in fatigue anyway",
-          "Endurance limit doesn't apply to aluminum",
+          "The spar will crack within a few thousand gusts",
           "The gust factor must be wrong",
         ],
         answer: 0,
-        why: "Below the endurance limit, steel-family S-N curves flatten — cycles stop accumulating damage. The check's job was to rule fatigue out, and it did. Not every check needs to find a problem; ruling one out is a result.",
+        why: "Aluminum has no true endurance limit, but at 4% of its long-life strength the damage per gust is negligible over any realistic service life — fatigue is ruled out as the driver. The check's job was to rule fatigue out, and it did. Not every check needs to find a problem; ruling one out is a result.",
       },
     ],
   },

@@ -32,7 +32,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 
 const NEW_BENCHES = ["doe", "labreport"] as const;
 
-test("week 27 opens the engineering track in syllabus order", () => {
+test("week 27 lessons sit at their engineering-track indices in syllabus order", () => {
   assert.equal(engineeringW27Lessons.length, 3);
   assert.deepEqual(
     engineeringW27Lessons.map((l) => l.id),
@@ -153,7 +153,7 @@ test("pendulum fit recovers the lesson's worked numbers", () => {
   assert.ok(fit.r2 > 0.9999);
   assert.ok(fit.residuals.every((r) => Math.abs(r) < 0.01), "residuals are static");
   const g = gravityFromSlope(fit.slope);
-  assert.ok(Math.abs(g - 9.72) < 0.02, `g ${g}`);
+  assert.ok(Math.abs(g - 9.71) < 0.01, `g ${g}`);
 });
 
 test("factorial plan arithmetic", () => {

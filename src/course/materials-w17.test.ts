@@ -210,9 +210,10 @@ test("solidification path runs liquidus to solidus with lever fractions", () => 
   }
   close(path[0].wL, 1, 1e-9, "all liquid at liquidus");
   close(path[path.length - 1].wS, 1, 1e-9, "all solid at solidus");
-  // Coring: first solid is Ni-rich, last solid is the alloy itself.
+  // Coring: first solid is Ni-rich; the model's rim is the equilibrium
+  // last solid (C₀). A real quench leaves the rim below C₀.
   const spread = coringSpread(30);
   close(spread.core, 34.7, 0.1, "cored dendrite core");
-  close(spread.rim, 30, 1e-9, "rim is the alloy composition");
+  close(spread.rim, 30, 1e-9, "model rim is the equilibrium last solid, C₀");
   assert.throws(() => isoSolidificationPath(0), /\(0, 100\)/);
 });

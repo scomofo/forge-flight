@@ -35,7 +35,7 @@ const FOS_SCENARIOS: { id: string; text: string; expected: ConsequenceClass }[] 
   },
   {
     id: "FOS-B",
-    text: "A trailer tow-bar lug in highway service. Loads are ordinary but unmeasured.",
+    text: "A trailer tow-bar lug in highway service, backed by a safety chain. Loads are ordinary but unmeasured.",
     expected: "moderate",
   },
   {

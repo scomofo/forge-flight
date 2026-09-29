@@ -2,9 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 14 — Mechanical response.
- * These three lessons open the materials track (indices 1–3); the seven
- * pre-existing materials lessons follow re-indexed from 4. Evidence due:
- * curve-reading practical (lesson 1 bench) + calculations (lessons 2–3).
+ * Materials-track indices 10–12. Evidence due: curve-reading practical
+ * (readcurve bench) + calculations (toughduct and allowables).
  *
  * Through-line for the block: structure → processing → properties →
  * performance. This week is the properties link made quantitative — the
@@ -21,10 +20,10 @@ export const materialsW14Lessons: Lesson[] = [
     minutes: 40,
     lede: "Locate stiffness, yield, ultimate strength, and fracture on a real tensile curve — and keep stiffness, strength, and hardness as three different words.",
     start:
-      "A tensile machine pulls a steel bar and records two numbers: the pull per unit area, and the stretch per unit length. The plot of the second against the first is the material's mechanical autobiography. || Engineering stress is σ = F/A₀, load over the original cross-section. Engineering strain is ε = ΔL/L₀, extension over the original length. Both use original dimensions — a simplification you will revisit in lesson 3, which makes every curve comparable for now. || The curve has landmarks, and each landmark is a different property. The initial slope is stiffness. The stress where the curve leaves the straight line is where strength starts to matter. The peak is the most stress the bar ever carried. The strain where it ends is how far it went. Confusing any two of these is the most common error in the subject.",
+      "A tensile machine pulls a steel bar and records two numbers: the pull per unit area, and the stretch per unit length. The plot of the first against the second is the material's mechanical autobiography. || Engineering stress is σ = F/A₀, load over the original cross-section. Engineering strain is ε = ΔL/L₀, extension over the original length. Both use original dimensions — a simplification you will revisit in the allowables lesson, which makes every curve comparable for now. || The curve has landmarks, and each landmark is a different property. The initial slope is stiffness. The stress where the curve leaves the straight line is where strength starts to matter. The peak is the most stress the bar ever carried. The strain where it ends is how far it went. Confusing any two of these is the most common error in the subject.",
     use: "Someone hands you a tensile curve — a datasheet plot, a lab printout, a paper figure. || Read, in order: the initial slope (E, stiffness), the 0.2%-offset yield (σy, where permanent deformation begins), the maximum (σuts, ultimate tensile strength), and the fracture strain (ductility). Then state each in its own units: E in GPa, strengths in MPa, strain dimensionless. || Stop when you can point at each landmark and name it without reaching for 'strong' as a blanket word. If the curve is a straight line to fracture, say so: that is a brittle material, and yield never happened.",
     example:
-      "A 1020 steel bar, 12.5 mm diameter, pulled in tension. The load–extension record bends away from the straight line at 42.9 kN and the bar finally breaks at 51.5 kN. || Area A₀ = π/4 × (12.5 mm)² = 122.7 mm². Yield: σy = 42,900 N / 122.7 mm² = 350 MPa. Ultimate: σuts = 51,500 / 122.7 = 420 MPa. The initial slope of the σ–ε plot is 200 GPa — the stiffness, E. || The numbers are 350, 420, 200 GPa: three different quantities, three different landmarks. The 350 is where it stopped springing back. The 420 is the most it ever carried. The 200 GPa is how little it stretched getting there.",
+      "A 1020 steel bar, 12.5 mm diameter, pulled in tension. The load–extension record bends away from the straight line at 42.9 kN, and the load peaks at 51.5 kN before the bar necks and breaks. || Area A₀ = π/4 × (12.5 mm)² = 122.7 mm². Yield: σy = 42,900 N / 122.7 mm² = 350 MPa. Ultimate: σuts = 51,500 / 122.7 = 420 MPa. The initial slope of the σ–ε plot is 200 GPa — the stiffness, E. || The numbers are 350, 420, 200 GPa: three different quantities, three different landmarks. The 350 is where it stopped springing back. The 420 is the most it ever carried. The 200 GPa is how little it stretched getting there.",
     ideas: [
       {
         heading: "The 0.2% offset is a convention with a reason",
@@ -101,7 +100,7 @@ export const materialsW14Lessons: Lesson[] = [
     minutes: 35,
     lede: "Quantify how far a material stretches before breaking, integrate the area under its curve, and see why strength and ductility trade against each other.",
     start:
-      "Two bars, same cross-section. One is high-strength steel: it carries 1500 MPa and snaps at 3% elongation. The other is mild steel: it yields at 350 MPa and stretches to 36% before breaking. Drop a weight on each. || The high-strength bar absorbs the energy of a tall, thin spike. The mild steel absorbs the energy of a long, broad curve — roughly 140 MJ/m³ versus a few. The 'weaker' material survives the blow; the 'stronger' one shatters. || Toughness is the area under the stress–strain curve: stress (force per area) times strain (distance per length) is energy per volume. Ductility is the width of that area. Strength is only its height.",
+      "Two bars, same cross-section. One is high-strength steel: it carries 1500 MPa and snaps at 3% elongation. The other is mild steel: it yields at 350 MPa and stretches to 36% before breaking. Drop a weight on each. || The high-strength bar absorbs the energy of a tall, thin spike. The mild steel absorbs the energy of a long, broad curve — roughly 140 MJ/m³ versus about 40. The 'weaker' bar absorbs over three times the energy; the 'stronger' one breaks first. || Toughness is the area under the stress–strain curve: stress (force per area) times strain (distance per length) is energy per volume. Ductility is the width of that area. Strength is only its height.",
     use: "You are choosing a material for impact, crash, or anything that must fail gracefully. || Read elongation (or reduction of area) for ductility, and integrate — or estimate — the area under the curve for toughness. Compare candidates by area, not by peak. || Stop when you can rank three materials for a crash structure and defend the ranking with areas, not adjectives.",
     example:
       "Mild 1020 steel versus the same steel cold-worked. Annealed: σy = 350 MPa, elongation 36%, toughness ≈ 141 MJ/m³. Cold-worked: σy = 700 MPa, elongation 8%, toughness ≈ 57 MJ/m³. || Cold work doubled the yield — dislocations piled up and now resist further motion — but it spent the material's capacity to stretch. The area shrank by more than half even though the peak grew. || Processing moved the curve: strength up, ductility down, toughness down. That is the strength–ductility tradeoff, and it is why 'stronger' is not a synonym for 'better'.",
@@ -118,17 +117,17 @@ export const materialsW14Lessons: Lesson[] = [
       },
       {
         heading: "The tradeoff is structural, not accidental",
-        body: "The mechanisms that raise strength — cold work, grain refinement, precipitation, solid solution — all do it by obstructing dislocation motion. But plastic flow IS dislocation motion. Hindering dislocations raises the stress needed to move them and simultaneously reduces how far they can go. You cannot buy strength with these mechanisms without spending ductility.",
+        body: "The mechanisms that raise strength — cold work, precipitation, solid solution — all do it by obstructing dislocation motion. But plastic flow IS dislocation motion. Hindering dislocations raises the stress needed to move them and simultaneously reduces how far they can go. You cannot buy strength with these mechanisms without spending ductility. (Grain refinement is the notable exception — it raises strength and usually toughness.)",
         formula: "strength ↑ via dislocation obstruction ⇒ ductility ↓ (same mechanism)",
       },
     ],
     bench: "propcompare",
     prompt:
       "Eight engineering materials, one table of extracted curve parameters. || Rank them for three jobs: a crash rail, a stiff lightweight panel, a cutting edge. || Each ranking must cite the landmark that decided it — area, slope, or peak.",
-    note: "The table values come from the same curve model as lesson 1's bench, so the numbers are consistent across the week. Annealed copper is in the table: notice what its huge hardening does to the offset-yield reading.",
+    note: "The table values come from the same curve model as the curve-reading lesson's bench, so the numbers are consistent across the week. Annealed copper is in the table: notice what its huge hardening does to the offset-yield reading.",
     checks: [
       {
-        prompt: "Toughness, dimensionally, is…",
+        prompt: "Toughness is physically…",
         options: [
           "A stress, in MPa",
           "Energy per unit volume, in MJ/m³",
@@ -136,7 +135,7 @@ export const materialsW14Lessons: Lesson[] = [
           "A force, in newtons",
         ],
         answer: 1,
-        why: "∫σ dε has units of (force/area)·(length/length) = energy/volume. It answers 'how much energy did breaking this cost', which is what a crash cares about.",
+        why: "∫σ dε has units of (force/area)·(length/length) = energy/volume (MJ/m³ — the same dimensions as MPa, which is why it is quoted per volume, not as a stress). It answers 'how much energy did breaking this cost', which is what a crash cares about.",
       },
       {
         prompt: "Cold-working a steel doubles its yield but cuts elongation from 36% to 8%. Its toughness…",
@@ -158,7 +157,7 @@ export const materialsW14Lessons: Lesson[] = [
           "They change the crystal structure to ceramic",
         ],
         answer: 1,
-        why: "Strength from cold work, grain refinement, or precipitates all works by making dislocations harder to move. Less dislocation motion means less plastic strain before fracture — the same mechanism, both effects.",
+        why: "Strength from cold work, solid solution, or precipitates all works by making dislocations harder to move. Less dislocation motion means less plastic strain before fracture — the same mechanism, both effects.",
       },
       {
         prompt: "A ceramic and a metal have the same ultimate tensile strength. In an impact, the metal is usually safer because…",
@@ -181,10 +180,10 @@ export const materialsW14Lessons: Lesson[] = [
     minutes: 40,
     lede: "Turn a noisy tensile record into E, yield, and UTS, account for scatter, and convert a characteristic strength into a number you are allowed to design to.",
     start:
-      "A real tensile record is not the clean curves of lesson 1. The load cell hums, the extensometer slips a few microns, and the initial slope wobbles. Three bars from the same heat give yield strengths of 342, 358, and 349 MPa. || The extraction procedure is the same — slope for E, offset line for yield, peak for UTS — but now it runs on noisy data, and the answer comes with scatter. You fit the slope through the linear prefix and stop where the points leave the line; you let the offset construction find the crossing. The method's own error is a few percent, and you report it. || Then comes the step the curve alone cannot take: turn the scatter into an allowable. A characteristic value from the low tail of the scatter, divided by a factor of safety. The curve gives you properties; judgment plus statistics gives you an allowable.",
+      "A real tensile record is not the clean curves of the curve-reading lesson. The load cell hums, the extensometer slips a few microns, and the initial slope wobbles. Three bars from the same heat give yield strengths of 342, 358, and 349 MPa. || The extraction procedure is the same — slope for E, offset line for yield, peak for UTS — but now it runs on noisy data, and the answer comes with scatter. You fit the slope through the linear prefix and stop where the points leave the line; you let the offset construction find the crossing. The method's own error is a few percent, and you report it. || Then comes the step the curve alone cannot take: turn the scatter into an allowable. A characteristic value from the low tail of the scatter, divided by a factor of safety. The curve gives you properties; judgment plus statistics gives you an allowable.",
     use: "You have tensile data and a part to size. || Extract E, σy, σuts from the record; estimate the scatter across specimens; pick a characteristic strength that the scatter justifies; divide by the factor of safety the consequence of failure demands. || Stop when you can write: 'Allowable 390 MPa = 585 MPa characteristic / 1.5', and say where each number came from.",
     example:
-      "Ti-6Al-4V, three specimens: yield readings 872, 885, 879 MPa. || Mean 879, standard deviation ~7 MPa — tight, as befits a controlled alloy. Take a characteristic value near the low tail, say 865 MPa, and a factor of safety of 1.5 for a fatigue-critical aerospace part: allowable = 865 / 1.5 ≈ 577 MPa. || The curve said ~880. The design uses 577. The gap between them is scatter, uncertainty, and consequence — and none of those are on the curve.",
+      "Ti-6Al-4V, three specimens: yield readings 872, 885, 879 MPa. || Mean 879, standard deviation ~7 MPa — tight, as befits a controlled alloy. Take a characteristic value near the low tail, say 865 MPa, and a factor of safety of 1.5 for a static-strength check: allowable = 865 / 1.5 ≈ 577 MPa (real A/B-basis values need many more specimens). || The curve said ~880. The design uses 577. The gap between them is scatter, uncertainty, and consequence — and none of those are on the curve.",
     ideas: [
       {
         heading: "Extraction is fitting, not reading",
@@ -205,7 +204,7 @@ export const materialsW14Lessons: Lesson[] = [
     bench: "allowable",
     prompt:
       "You are given five specimen records from one heat of 6061-T6 with realistic scatter. || Extract the yield of each, compute the mean and the low-tail characteristic value, choose a factor of safety for a stated consequence, and issue the allowable. || Defend the factor — '1.5 because everyone uses 1.5' fails.",
-    note: "The five records are generated from the week-1 curve model with per-specimen parameter scatter plus measurement noise — the same machinery, now with a heat's worth of variation.",
+    note: "The five records are generated from the curve-reading lesson's curve model with per-specimen parameter scatter plus measurement noise — the same machinery, now with a heat's worth of variation.",
     checks: [
       {
         prompt: "After necking begins, the engineering stress–strain curve falls while the true curve keeps rising because…",
@@ -249,7 +248,7 @@ export const materialsW14Lessons: Lesson[] = [
           "Processes only affect cost, and cost is in the allowable",
         ],
         answer: 1,
-        why: "Cold work doubled one steel's yield and halved its toughness in lesson 2. '1020 steel' names no curve until you say annealed or cold-worked. Structure → processing → properties → performance.",
+        why: "Cold work doubled one steel's yield and more than halved its toughness in the toughness lesson. '1020 steel' names no curve until you say annealed or cold-worked. Structure → processing → properties → performance.",
       },
     ],
   },

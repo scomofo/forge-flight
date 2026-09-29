@@ -26,7 +26,7 @@ import { lessons, lessonsFor } from "./catalog.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-test("week 29 opens the engineering track in syllabus order", () => {
+test("week 29 lessons sit at their engineering-track indices in syllabus order", () => {
   assert.equal(engineeringW29Lessons.length, 3);
   assert.deepEqual(
     engineeringW29Lessons.map((l) => l.id),

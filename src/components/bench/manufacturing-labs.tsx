@@ -347,7 +347,7 @@ export function SpringbackBench() {
   return (
     <BenchShell
       prompt="Bend aluminum at 1 mm thick on a 15 mm radius. Then switch to titanium, same thickness and radius. || Titanium opens further. Yield over modulus is higher, so more of the bend was elastic."
-      note="Pure bending of an elastic-perfectly plastic strip. Curvature lost is 3 σ_y / (E t). A press brake adds tension, which cuts springback. No friction. The bright arc opens from the punch, then the loop repeats. The angle after you let go is the readout."
+      note="Pure bending of an elastic-perfectly plastic strip. Curvature lost is 3 σ_y / (E t), the fully plastic value, so near the flat limit it overstates springback. Stretch-bending or bottoming the bend would cut springback. No friction. The bright arc opens from the punch, then the loop repeats. The angle after you let go is the readout."
       controls={
         <>
           <div className="flex flex-wrap gap-2 sm:col-span-2">
@@ -699,7 +699,7 @@ export function StackBench() {
 
   return (
     <BenchShell
-      prompt="Set each part to ±0.20 mm. || Worst case misses the 0.50 mm allowance. The root-sum-square number still fits. The boxes keep changing length. The bright whisker does not. It is the unlucky stack, every error long together."
+      prompt="Set each part to ±0.20 mm. || Worst case misses the ±0.50 mm allowance. The root-sum-square number still fits. The boxes keep changing length. The bright whisker does not. It is the unlucky stack, every error long together."
       note="Three parts in a row, the same ± tolerance on each. Worst case adds them. Root sum square multiplies by √3, and only if the errors are independent and centered. It does not promise the next assembly. The drawing picks a new assembly every couple of seconds. The whisker above it is every error long, together."
       controls={
         <Slider
@@ -717,7 +717,7 @@ export function StackBench() {
         items={[
           { label: "Worst case", value: `${fmt(worst, 2)} mm` },
           { label: "Root sum square", value: `${fmt(rss, 2)} mm` },
-          { label: "Allowance", value: "0.50 mm" },
+          { label: "Allowance", value: "±0.50 mm" },
         ]}
       />
       <svg viewBox="0 0 320 110" className="h-28 w-full" aria-hidden>
@@ -754,10 +754,10 @@ export function StackBench() {
           : `This assembly lands at ${fmt(showStack, 2)} mm. The bright whisker is the worst case, ${fmt(worst, 2)} mm. The pale one is this draw.`}
         {" "}
         {worstFits
-          ? "Worst case fits inside 0.50 mm, so every stack fits, including the unlucky one."
+          ? "Worst case fits inside ±0.50 mm, so every stack fits, including the unlucky one."
           : rssFits
-            ? "Worst case is over 0.50 mm. Root sum square is under it. You are betting the errors scatter. You are not guaranteed the next three parts."
-            : "Both numbers miss 0.50 mm. Tighten a part or open the allowance. Averaging the two numbers does not create a pass."}
+            ? "Worst case is over ±0.50 mm. Root sum square is under it. You are betting the errors scatter. You are not guaranteed the next three parts."
+            : "Both numbers miss ±0.50 mm. Tighten a part or open the allowance. Averaging the two numbers does not create a pass."}
       </p>
     </BenchShell>
   );

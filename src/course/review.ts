@@ -199,7 +199,7 @@ export const FOS_TABLE: Record<ConsequenceClass, { label: string; fos: number; n
   moderate: {
     label: "Moderate — minor injury possible",
     fos: 2.0,
-    note: "The default for lifting and towing hardware.",
+    note: "The default for light towing hardware.",
   },
   high: {
     label: "High — serious injury plausible",
@@ -209,7 +209,7 @@ export const FOS_TABLE: Record<ConsequenceClass, { label: string; fos: number; n
   catastrophic: {
     label: "Catastrophic — loss of life plausible",
     fos: 5.0,
-    note: "Crewed flight, pressure vessels, elevators.",
+    note: "Crane hooks, pressure vessels, elevators. Measured loads plus mandated inspection can justify less (an airliner wing: 1.5 ultimate).",
   },
 };
 

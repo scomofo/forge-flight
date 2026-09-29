@@ -4,6 +4,34 @@ import { PASS_AT, type Lesson } from "@/course/types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
+/**
+ * Answer keys are authored mostly as option A or B, so options are shown in a
+ * shuffled order. The order is seeded from the lesson and question, so it is
+ * stable across renders and server/client, and changes on each retake.
+ */
+function hash(text: string) {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+export function shuffledOrder(count: number, seed: string): number[] {
+  const order = Array.from({ length: count }, (_, i) => i);
+  let state = hash(seed) || 1;
+  for (let i = count - 1; i > 0; i--) {
+    state ^= state << 13;
+    state ^= state >>> 17;
+    state ^= state << 5;
+    state >>>= 0;
+    const j = state % (i + 1);
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+}
+
 export function Quiz({
   lesson,
   next,
@@ -17,7 +45,12 @@ export function Quiz({
   const [picked, setPicked] = useState<number | null>(null);
   const [correct, setCorrect] = useState(0);
   const [done, setDone] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const question = lesson.checks[index];
+  const order = shuffledOrder(
+    question.options.length,
+    `${lesson.track}/${lesson.id}/${index}/${attempt}`,
+  );
   const need = lesson.passAt ?? PASS_AT;
 
   if (done) {
@@ -40,6 +73,7 @@ export function Quiz({
               setPicked(null);
               setCorrect(0);
               setDone(false);
+              setAttempt(attempt + 1);
             }}
           >
             Try the check again
@@ -65,7 +99,8 @@ export function Quiz({
       </legend>
       <p className="mt-3 font-serif text-2xl leading-snug text-ink">{question.prompt}</p>
       <div className="mt-5 flex flex-col gap-2">
-        {question.options.map((option, i) => {
+        {order.map((i) => {
+          const option = question.options[i];
           const revealed = picked !== null;
           const isAnswer = i === question.answer;
           const isPick = i === picked;

@@ -1508,7 +1508,7 @@ const END_LABELS: { value: EndCondition; label: string }[] = [
 
 const ALLOW_AL = 276e6; // Pa, 6061-T6 yield used as the design allowable in this bench
 const ALLOW_SHAFT = 150e6; // Pa
-const E_AL = 69e9;
+const E_AL = 68.9e9;
 const G_STEEL = 79e9;
 
 export function ComponentSizingBench() {

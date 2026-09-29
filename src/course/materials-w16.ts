@@ -2,8 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 16 — Fracture, fatigue & creep.
- * These three lessons open the materials track (indices 1–3); the seven
- * pre-existing materials lessons follow re-indexed from 4.
+ * These three lessons are materials-track indices 16–18, following the
+ * Week 11–15 lessons at indices 1–15.
  * Evidence due: failure-forensics case report (forensics bench).
  *
  * Through-line, as every week: structure → processing → properties →
@@ -19,7 +19,7 @@ export const materialsW16Lessons: Lesson[] = [
     minutes: 35,
     lede: "How cracks concentrate stress, when a crack goes critical, and why a running crack keeps running.",
     start:
-      "In January 1943 the Liberty ship Schenectady sat at calm anchorage in Portland, Oregon — and broke in two. No storm, no collision. A crack started at a sharp hatch corner and ran the length of the welded hull in minutes. The steel met its specification. || What changed was the processing: rivets had been replaced by welding, so the hull was one continuous plate and a crack no longer stopped at a plate edge — and the North Atlantic winter pushed the steel below its ductile-to-brittle transition. Structure (BCC iron), processing (welded continuous hull), properties (toughness collapses in the cold), performance (the ship breaks at anchor). || A crack is a stress concentrator with no radius. Every sharp corner multiplies the local stress — and once a crack exists, the stress field at its tip is described not by a multiplier but by the stress intensity K. K grows as the crack grows, which is the feedback loop that keeps a running crack going.",
+      "In January 1943 the Liberty ship Schenectady sat at a fitting-out dock in Portland, Oregon — and broke in two. No storm, no collision. A crack started at a sharp hatch corner and ran the length of the welded hull in minutes. The steel met its specification. || What changed was the processing: rivets had been replaced by welding, so the hull was one continuous plate and a crack no longer stopped at a plate edge — and a cold January night at the dock pushed the steel below its ductile-to-brittle transition. Structure (BCC iron), processing (welded continuous hull), properties (toughness collapses in the cold), performance (the ship breaks at the dock). || A crack is a stress concentrator with no radius. Every sharp corner multiplies the local stress — and once a crack exists, the stress field at its tip is described not by a multiplier but by the stress intensity K. K grows as the crack grows, which is the feedback loop that keeps a running crack going.",
     use: "Whenever a part carries load and might contain a flaw — which is every part. And at every hole, fillet, keyway, and weld toe, where the nominal stress is not the stress the material actually feels. || Multiply the nominal stress by K_t — 3 for a circular hole, worse for sharp notches. For a crack of half-length a, compute K = Yσ√(πa) and compare it against the material's K_IC. Solve for the critical crack size a_c, then ask whether your inspection can reliably find anything near it. || Stop calculating when K sits below K_IC with margin and a_c is comfortably above your detection limit. If a_c is smaller than what you can reliably find, the design has to change — detection alone will not keep the part safe.",
     example:
       "A steel plate carries 200 MPa. Its fracture toughness K_IC is 50 MPa√m, and a crack of 5 mm half-length is found. Acceptable? || K = 1 × 200 × √(π × 0.005) = 200 × 0.1253 = 25.1 MPa√m — half of K_IC, so the crack sits still today. The critical size: a_c = (50/200)²/π = 0.0625/π = 0.0199 m, about 20 mm. || A 5 mm crack leaves a factor of four on size at this stress. But a_c falls as 1/σ², so doubling the stress quarters it to 5 mm. Whatever crack size you are comfortable with has to be recomputed whenever the stress changes.",
@@ -36,7 +36,7 @@ export const materialsW16Lessons: Lesson[] = [
       },
       {
         heading: "K_IC: toughness as a material property",
-        body: "Plane-strain fracture toughness K_IC is the material's resistance to a running crack, measured per ASTM E399. It depends on thickness (thin sections get plane-stress help) and on temperature — BCC steels cross a ductile-to-brittle transition where K_IC collapses, which is what sank the Schenectady's hull at anchor. A toughness number without a temperature is a rumor.",
+        body: "Plane-strain fracture toughness K_IC is the material's resistance to a running crack, measured per ASTM E399. Thin sections show a higher apparent toughness K_c; K_IC is the thickness-independent, conservative value. It does depend on temperature — BCC steels cross a ductile-to-brittle transition where K_IC collapses, which is what broke the Schenectady's hull at the dock. A toughness number without a temperature is a rumor.",
         formula: "K = Yσ√(πa) must stay below K_IC",
       },
     ],
@@ -106,7 +106,7 @@ export const materialsW16Lessons: Lesson[] = [
       },
       {
         heading: "Miner's rule and honest scatter",
-        body: "Real loading is a spectrum, not a single amplitude. Miner's rule adds up the damage fractions — cycles spent over life available, block by block — and predicts failure at a sum of 1. It ignores sequence effects, and fatigue life scatters by factors of three to ten, so design factors on life that look cowardly are actually calibrated.",
+        body: "Real loading is a spectrum, not a single amplitude. Miner's rule adds up the damage fractions — cycles spent over life available, block by block — and predicts failure at a sum of 1. Spend 100,000 cycles of a 200,000-cycle life and 100,000 of a 400,000-cycle life: 0.5 + 0.25 = 0.75, a quarter of the life left. It ignores sequence effects, and fatigue life scatters by factors of three to ten, so design factors on life that look cowardly are actually calibrated.",
         formula: "Σ(n_i / N_i) = 1 at failure",
       },
     ],
@@ -147,7 +147,7 @@ export const materialsW16Lessons: Lesson[] = [
           "Polish the surface and ignore the cycles",
         ],
         answer: 0,
-        why: "Without an endurance limit every cycle costs something, so the part gets a rated life and a retirement or inspection schedule — the damage-tolerance philosophy the Comet disasters created.",
+        why: "Without an endurance limit every cycle costs something, so the part gets a rated life and a retirement or inspection schedule — the inspection-and-retirement discipline the Comet inquiry pushed the industry toward.",
       },
     ],
   },
@@ -162,7 +162,7 @@ export const materialsW16Lessons: Lesson[] = [
       "A turbine blade in a jet engine spins at ten thousand rpm in gas at 900°C. It does not melt — its melting point is far higher — and the centrifugal stress sits well below yield. Yet over thousands of hours the blade lengthens, millimeter by millimeter, until it rubs the casing. || At high temperature the atoms are mobile enough that the crystal flows under stresses that would be perfectly elastic at room temperature. Vacancies diffuse, dislocations climb, grain boundaries slide. The blade fails the way warm glass sags — on a clock measured in years. || Creep is failure with a time axis, so the design question takes stress, temperature, and time together: which combination of the three breaks the part? Temperature enters exponentially, which makes it the variable to watch most closely.",
     use: "For any part that lives hot under load: get the secondary (steady-state) creep rate — that is the design number. Use Larson-Miller to map a short hot test onto a long cooler service life. Size the part so the predicted strain stays acceptable for the required life. || P = T(20 + log₁₀ t_r), with T in kelvin and t_r in hours: one parameter collapses time and temperature into a single number. Test hot and short; serve cooler and long. || Stop extrapolating when the time ratio passes about an order of magnitude — deformation mechanisms change, and the parameter interpolates far better than it extrapolates. And remember the grain-size reversal: fine grains are wonderful for room-temperature strength and worse for creep, because boundaries slide.",
     example:
-      "A superalloy ruptures after 1,000 h at 800°C. What life does Larson-Miller predict at 700°C? || P = 1073 × (20 + log₁₀ 1000) = 1073 × 23 = 24,679. At 973 K: 20 + log₁₀ t = 24,679/973 = 25.36, so log₁₀ t = 5.36 and t ≈ 2.3 × 10⁵ h — about 26 years. || A hundred-degree drop bought a factor of 230 in life. That is the exponential at work: in creep, temperature moves the answer more than stress does.",
+      "A superalloy ruptures after 1,000 h at 800°C. What life does Larson-Miller predict at 700°C? || P = 1073 × (20 + log₁₀ 1000) = 1073 × 23 = 24,679. At 973 K: 20 + log₁₀ t = 24,679/973 = 25.36, so log₁₀ t = 5.36 and t ≈ 2.3 × 10⁵ h — about 26 years. || A hundred-degree drop bought a factor of 230 in life. That is the exponential at work: in creep, temperature moves the answer more than stress does. But it is a 230:1 extrapolation, far past the one-decade rule, so treat 26 years as a hypothesis to confirm with longer tests.",
     ideas: [
       {
         heading: "The creep curve's three acts",
@@ -182,7 +182,7 @@ export const materialsW16Lessons: Lesson[] = [
     ],
     bench: "creeplife",
     prompt:
-      "Run the hot short test: set the temperature and rupture time, and read off the Larson-Miller parameter. Then dial the service temperature down and watch the predicted life move. || Push the extrapolation past ten-to-one in time and watch the warning appear — then say why the warning exists. || Finish with a service life above 100,000 h from a test under 3,000 h, and name the mechanism change that would void your prediction.",
+      "Run the hot short test: set the temperature and rupture time, and read off the Larson-Miller parameter. Then dial the service temperature down and watch the predicted life move. || Push the extrapolation past ten-to-one in time and watch the warning appear — then say why the warning exists. || Finish with a service life above 20,000 h from a test of at least 2,000 h, and name the mechanism change that would void your prediction.",
     note: "C = 20 suits most alloys in the teaching range. Real qualification runs multiple temperatures and stresses, checks that one mechanism owns the data, and still applies a factor on life. The bench's warning at ten-to-one extrapolation is industry manners, not physics.",
     checks: [
       {
@@ -216,7 +216,7 @@ export const materialsW16Lessons: Lesson[] = [
           "Eliminate testing",
         ],
         answer: 0,
-        why: "P = T(20 + log t_r) collapses time and temperature into one number, so a thousand-hour test at 800°C speaks about decades at 700°C. It organizes testing; it never replaces it.",
+        why: "P = T(20 + log t_r) collapses time and temperature into one number, so a short test at 800°C speaks about a longer life at 700°C. Kept within about ten-to-one it interpolates well; past that it is a hypothesis. It organizes testing; it never replaces it.",
       },
       {
         prompt: "Extrapolating a 1,000 h test to 200,000 h of service is risky because…",

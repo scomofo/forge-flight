@@ -2,10 +2,9 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Engineering 101, Week 29 — Safety, ethics & communication.
- * These three lessons close out the pre-capstone engineering run (indices 1–3);
- * the eleven pre-existing engineering lessons follow re-indexed from 4.
- * Evidence due: design review memo (lesson 3 bench) + standards-reading
- * exercise (lessons 1–2 bench).
+ * These three lessons close out the pre-capstone engineering run (indices 25–27).
+ * Evidence due: design review memo (index 27 bench) + standards-reading
+ * exercise (indices 25–26 bench).
  */
 export const engineeringW29Lessons: Lesson[] = [
   {
@@ -16,10 +15,10 @@ export const engineeringW29Lessons: Lesson[] = [
     minutes: 35,
     lede: "Read a factor of safety as a priced statement about uncertainty and consequence — not as a property of the steel — and choose one you can defend.",
     start:
-      "A crane hook the size of your fist is rated for five times the load it will ever see. An airliner wing is built to 1.5 times its worst expected load. Same steel, same physics, wildly different numbers. || The factor of safety is not in the material. It is the engineer's answer to two questions: how much of this do I not know, and who gets hurt if I am wrong? FoS = capability ÷ demand. A crane's loads are sloppy and its inspections are rare, so the number is 5. An airliner's loads are measured to the newton and the wing is inspected on a schedule, so 1.5 is honest. || You choose the number before you choose the section. And the number you choose says, in public, how much uncertainty you are willing to bet someone else's safety on.",
+      "A crane hook the size of your fist is rated for five times the load it will ever see. An airliner wing is built to 1.5 times its worst expected load. Same metals, same physics, wildly different numbers. || The factor of safety is not in the material. It is the engineer's answer to two questions: how much of this do I not know, and who gets hurt if I am wrong? FoS = capability ÷ demand. A crane's loads are sloppy and its inspections are rare, so the number is 5. An airliner's loads are measured to the newton and the wing is inspected on a schedule, so 1.5 is honest. || You choose the number before you choose the section. And the number you choose says, in public, how much uncertainty you are willing to bet someone else's safety on.",
     use: "When you are about to size a part and the spreadsheet is asking for an allowable stress, or when a review asks why this number and not a smaller one. || Name the consequence class: low (property only), moderate (minor injury), high (serious injury), catastrophic (loss of life). Read the factor of safety off that class, adjusted for how well you know the loads and how often the part is inspected. Write the consequence class next to the number, every time. || Stop when the factor of safety, the consequence, and the inspection plan all appear on the same page. A bare number with no consequence attached is a guess, and no reviewer can check a guess.",
     example:
-      "A tow-bar lug for a light trailer, demand 12 kN, material yield 250 MPa. || The consequence is moderate — a failed tow bar at speed can kill, but the loads are ordinary highway loads. The class says FoS 2.0. Allowable stress = 250 ÷ 2.0 = 125 MPa. Required area = 12,000 N ÷ 125 MPa = 96 mm². The designer picks 100 mm² and writes 'FoS 2.0, consequence moderate, inspected at each service' on the drawing. || The area is arithmetic. The 2.0 is the ethics: it says 'I do not trust my knowledge of pothole loads enough to bet a highway on 1.4.'",
+      "A tow-bar lug for a light trailer, demand 12 kN, material yield 250 MPa. || The consequence is moderate — the trailer has a safety chain, so a lug failure means a dropped hitch at low speed, not a runaway trailer; the loads are ordinary highway loads. The class says FoS 2.0. Allowable stress = 250 ÷ 2.0 = 125 MPa. Required area = 12,000 N ÷ 125 MPa = 96 mm². The designer picks 100 mm² and writes 'FoS 2.0, consequence moderate, inspected at each service' on the drawing. || The area is arithmetic. The 2.0 is the ethics: it says 'I do not trust my knowledge of pothole loads enough to bet a highway on 1.4.'",
     ideas: [
       {
         heading: "FoS = capability ÷ demand, and both are estimates",
@@ -28,7 +27,7 @@ export const engineeringW29Lessons: Lesson[] = [
       },
       {
         heading: "The number prices the consequence, not the material",
-        body: "Low consequence and well-known loads: 1.5. Moderate: 2.0. High with uncertain loads: 3.0. Catastrophic: 5.0. These are not material constants — the same alloy gets all four numbers depending on whose life is underneath it. When someone asks 'why 3?', the answer is the consequence class and the inspection plan, never 'that is what we always use.'",
+        body: "Low consequence and well-known loads: 1.5. Moderate: 2.0. High with uncertain loads: 3.0. Catastrophic: 5.0. These are starting points, not verdicts: well-known loads plus scheduled inspection can justify less. An airliner wing carries lives at 1.5 ultimate because its loads are measured and its inspections are mandated. Nor are they material constants — the same alloy gets all four numbers depending on whose life is underneath it. When someone asks 'why 3?', the answer is the consequence class and the inspection plan, never 'that is what we always use.'",
         formula: "FoS ← consequence class × load knowledge × inspection",
       },
       {
@@ -78,13 +77,13 @@ export const engineeringW29Lessons: Lesson[] = [
       {
         prompt: "Margin of safety MS = FoS − 1. A part has MS = 0.0. What does that mean?",
         options: [
-          "The part is exactly at its allowable — no margin left, and any growth in demand is a failure",
+          "Demand equals capability — the part is at its failure threshold with nothing left to cover uncertainty",
           "The part is infinitely safe",
           "The factor of safety is undefined",
-          "The part has failed",
+          "The part has a 100% margin",
         ],
         answer: 0,
-        why: "MS = 0 means capability equals demand at the allowable: the budget is fully spent. Any unmodeled load growth, and the part is over its line. It is not a failure yet, but there is nowhere to hide.",
+        why: "MS = 0 means FoS = 1: demand equals capability, so the part sits right at its failure threshold with nothing left for load scatter or model error. Any unmodeled load growth, and the part is over its line. It is not a failure yet, but there is nowhere to hide.",
       },
     ],
   },
@@ -96,7 +95,7 @@ export const engineeringW29Lessons: Lesson[] = [
     minutes: 35,
     lede: "Read a standard the way a reviewer does — scope, shall-statements, and evidence — and keep a paper trail that outlives your memory of the project.",
     start:
-      "In 1908 Cadillac won the Dewar Trophy by disassembling three cars, scrambling the parts, and reassembling three working cars from the pile. Interchangeability — the idea that a part made in Detroit fits a car in London — was a standard before it was a slogan. || A standard is the memory of every failure before you, written down so you do not have to repeat it. It says: scope (what this covers), normative references (what it stands on), and shall-statements — the demands. Everything else is commentary. A 'shall' is a requirement with the force of the code behind it; a 'should' is advice; an appendix is guidance. || You read a standard by hunting shalls and asking, for each one: what evidence would prove this? If you cannot name the evidence, you haven't really read the clause yet.",
+      "In 1905 a boiler exploded in a shoe factory in Brockton, Massachusetts, and killed 58 people. It was one of hundreds of boiler explosions a year in America. A decade later ASME published its first Boiler Code, and the explosions fell away — not because steam got safer, but because every designer now had to meet rules written from the wreckage. || A standard is the memory of every failure before you, written down so you do not have to repeat it. It says: scope (what this covers), normative references (what it stands on), and shall-statements — the demands. Everything else is commentary. A 'shall' is a requirement with the force of the code behind it; a 'should' is advice; an appendix is guidance. || You read a standard by hunting shalls and asking, for each one: what evidence would prove this? If you cannot name the evidence, you haven't really read the clause yet.",
     use: "When a project says 'comply with' anything, or when you inherit a design and need to know what it was promised. || Read scope first — if your part is outside it, the standard does not apply and citing it is theater. Then list every shall that touches your part. For each shall, write the evidence: the test, the calculation, the inspection. || Stop when every shall has an evidence entry or an explicit waiver with a signature. A shall with no evidence is an unkept promise; the review in lesson 3 treats it as a finding.",
     example:
       "Tow-bar standard §4.2: 'The tow bar shall withstand three times the rated tow load without permanent deformation.' || That is one shall. The evidence: a pull test at 3× rated load, measured for permanent set — or a calculation traceable to a validated model, if the code allows analysis. The 'should be tested at room temperature' in the same paragraph is a should: advice, not a demand. Appendix A's fixture guidance is informative. || The compliance table has one row for the shall with the test report number, and nothing for the shoulds. Mixing them up — treating guidance as demand, or a shall as advice — is how designs fail audits.",

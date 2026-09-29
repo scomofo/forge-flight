@@ -2,7 +2,7 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Physics 101, Week 10 — Physics synthesis (capstone week of the Physics block).
- * These three lessons open the physics track (indices 1–3). Evidence due:
+ * These three lessons are physics-track indices 28–30. Evidence due:
  * closed-book mastery check + Glider Lab I. Block gate: at least 70% on the
  * mastery check, plus a filed correction for every missed conservation-law or
  * free-body-diagram item, before Materials 101.
@@ -20,7 +20,7 @@ export const physicsW10Lessons: Lesson[] = [
     minutes: 40,
     lede: "Write the assumption ledger before you compute, chain models across the whole block, and trust a limiting case over a finished number.",
     start:
-      "Two engineers predict a glider's range. The first hands you 261 m. The second hands you 260 ± 30 m, a list of six things she assumed, and the two assumptions most likely to be wrong. || Synthesis is the second engineer: the deliverable is the number plus its boundaries, not the number alone. Every formula from Weeks 1 through 9 arrived with an expiry date — inertial frames, small angles, negligible drag, linear elasticity. Synthesis is the discipline of carrying those dates into the calculation instead of leaving them in the chapter. || An assumption you never wrote down is one you never inspected. When a prediction meets reality and they disagree, the arithmetic is the last place to look; the ledger is the first.",
+      "Two engineers predict a glider's range. The first hands you 261 m. The second hands you 210 to 345 m, a list of six things she assumed, and the two assumptions most likely to be wrong. || Synthesis is the second engineer: the deliverable is the number plus its boundaries, not the number alone. Every formula from Weeks 1 through 9 arrived with an expiry date — inertial frames, small angles, negligible drag, linear elasticity. Synthesis is the discipline of carrying those dates into the calculation instead of leaving them in the chapter. || An assumption you never wrote down is one you never inspected. When a prediction meets reality and they disagree, the arithmetic is the last place to look; the ledger is the first.",
     use: "Any problem that needs more than one week's machinery — which is every real problem. || Open the ledger first: for each assumption write what you assume, what breaks if it is false, and which limiting case would expose it. Then chain: each step's output is the next step's input, and you check dimensions at every joint — Week 1 never retires. Then test limits: drive parameters to zero, to infinity, to equality, and demand the answer behave sanely. When prediction and measurement disagree, autopsy the ledger before the arithmetic. || Stop when every joint has a unit check, every extreme has a limit test, and you can point to the assumption most likely to be wrong and say what would prove it.",
     example:
       "Predict how long a 20 m drop takes: t = √(2h/g) = 2.02 s. || Limit tests: g → 0 gives t → ∞ (no gravity, never lands — sane); h → 0 gives t → 0 (no drop, no time — sane). The formula survives its extremes. || The measured time is 2.3 s. The arithmetic is not wrong — the ledger is: 'air drag negligible' fails for a light crate near 20 m/s, where ½ρv²A is a real force. The disagreement was never in the algebra; it was in the assumption nobody wrote down. Next time, it goes in the ledger.",
@@ -100,7 +100,7 @@ export const physicsW10Lessons: Lesson[] = [
       "A winch tow: the glider climbs the line, the line goes slack at 30 m, and the glider is on its own at 8 m/s. How far does it go? || No single week answers that. The tow is Week 4 (work becomes energy), the release is Week 3 (force balance), the glide is Week 8 (the drag polar), the range is Week 2 (kinematics), and the honest digits are Week 1. Synthesis is refusing to leave any of them out. || Real systems do not respect chapter boundaries. The tow line does not know it is 'an energy problem' — it is just 32.6 joules looking for somewhere to go.",
     use: "When the question spans the block: state the chain up front, then work it link by link. || 1. Tow (Week 4): the line's work becomes KE + PE at release — open the energy account. 2. Release (Week 3): steady glide means forces balance along and across the flight path; the path angle is set by D/L. 3. Polar (Week 8): CL from the wing slope at 4°, CD from parasite plus induced drag, L/D = CL/CD. 4. Range (Week 2): in still air, range = altitude × L/D. 5. Honest digits (Week 1): the least certain input rules the reported precision. || Stop when every joint carries a unit check, the energy account balances, and the final number wears only the digits its weakest input earned.",
     example:
-      "The reference glider: 0.10 kg, wing 500 × 90 mm, released at 8 m/s from 30 m. || Tow: KE = ½(0.10)(8²) = 3.2 J, PE = (0.10)(9.81)(30) = 29.4 J — the line did 32.6 J of work. Polar: aspect ratio 5.56, lift slope 4.62 per radian, at α = 4° CL = 0.323; CD = 0.030 + 0.0070 = 0.0370; L/D = 8.71. Trim: v = √(2·0.981/(1.225·0.045·0.323)) = 10.5 m/s. Glide: γ = atan(1/8.71) = 6.5°, D = 0.112 N, L = 0.975 N. Range: 30 × 8.71 = 261 m. || Report 260 ± 30 m: the parasite drag is a ±30% estimate and it owns the error budget. Note the release at 8 m/s sits below the 10.5 m/s trim — the glider spends about 2.4 m of altitude buying the missing speed on the way down. The model's authority ends at the first gust.",
+      "The reference glider: 0.10 kg, wing 500 × 90 mm, released at 8 m/s from 30 m. || Tow: KE = ½(0.10)(8²) = 3.2 J, PE = (0.10)(9.81)(30) = 29.4 J — the line did 32.6 J of work. Polar: aspect ratio AR = span/chord = 5.56, lift slope a = 2π·AR/(AR+2) = 4.62 per radian, so at α = 4° (0.0698 rad) CL = 0.323. Drag uses the reference glider's constants, parasite cd0 = 0.030 (an estimate) and span efficiency e = 0.85: induced CDi = CL²/(π·AR·e) = 0.0070, so CD = 0.030 + 0.0070 = 0.0370; L/D = 8.71. Trim: v = √(2·0.981/(1.225·0.045·0.323)) = 10.5 m/s. Glide: γ = atan(1/8.71) = 6.5°, D = 0.112 N, L = 0.975 N. Range: 30 × 8.71 = 261 m. Stability: neutral point 135 mm and CG 120 mm from the same datum, on the 90 mm chord, so static margin = (135 − 120)/90 = 16.7%. || Report roughly 210–345 m: cd0 is a ±30% estimate, and 0.021 to 0.039 swings the range by +85/−50 m, so the parasite drag owns the error budget. Note the release at 8 m/s sits below the 10.5 m/s trim — the glider spends about 2.4 m of altitude buying the missing speed on the way down. The model's authority ends at the first gust.",
     ideas: [
       {
         heading: "Energy opens the account",
@@ -114,7 +114,7 @@ export const physicsW10Lessons: Lesson[] = [
       },
       {
         heading: "The polar sets the terms",
-        body: "CL comes from the wing's lift slope at the trim angle; CD is parasite drag plus the induced price of making lift. Best L/D is where the two drags trade evenly. Fly faster or slower than the polar's sweet spot and the energy account drains faster — 261 m is a ceiling set by the wing, not a promise.",
+        body: "CL comes from the wing's lift slope at the trim angle; CD is parasite drag plus the induced price of making lift. Best L/D is where the two drags trade evenly. Fly faster or slower than the polar's sweet spot and the energy account drains faster — 261 m is what this trim buys; flown at best L/D (CL ≈ 0.67, L/D ≈ 11.1) the same wing could reach ≈ 330 m.",
         formula: "CD = cd0 + CL²/(π·AR·e)",
       },
     ],
@@ -157,7 +157,7 @@ export const physicsW10Lessons: Lesson[] = [
         why: "Below trim, lift is short of weight — the nose drops and PE converts to KE. About 2.4 m of altitude buys the missing 2.5 m/s. No stall: 4° is far from the 12° stall angle.",
       },
       {
-        prompt: "The range is reported as 260 ± 30 m rather than 261.4 m because…",
+        prompt: "The range is reported as roughly 210–345 m rather than 261.4 m because…",
         options: [
           "The parasite-drag estimate owns the error budget",
           "The arithmetic only deserves two digits",
@@ -165,7 +165,7 @@ export const physicsW10Lessons: Lesson[] = [
           "The wind is unknown",
         ],
         answer: 0,
-        why: "cd0 = 0.030 is a ±30% estimate and it flows straight into L/D and the range. Honest digits follow the weakest input (Week 1) — the arithmetic's precision is irrelevant.",
+        why: "cd0 = 0.030 is a ±30% estimate and it flows straight into L/D and the range: 0.021 gives 345 m, 0.039 gives 210 m. Honest digits follow the weakest input (Week 1) — the arithmetic's precision is irrelevant.",
       },
     ],
   },

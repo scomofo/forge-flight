@@ -2,9 +2,8 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 13 — Defects, diffusion & processing.
- * These three lessons open the materials track (indices 1–3); the pre-existing
- * materials lessons follow re-indexed from 4. Evidence due: diffusion profile
- * exercise (lesson 2 bench). Through-line: structure → processing → properties
+ * Materials-track indices 7–9. Evidence due: diffusion profile exercise
+ * (diffusion bench). Through-line: structure → processing → properties
  * → performance.
  */
 export const materialsW13Lessons: Lesson[] = [
@@ -14,17 +13,17 @@ export const materialsW13Lessons: Lesson[] = [
     index: 7,
     title: "Defects are the material",
     minutes: 35,
-    lede: "Explain why a perfect crystal should be a hundred times stronger than any real metal, and name the three defect families that do the actual work.",
+    lede: "Explain why a perfect crystal should be ten to a thousand times stronger than any real metal, and name the three defect families that do the actual work.",
     start:
-      "In 1926 Frenkel estimated the shear strength of a perfect crystal: slide one atomic plane over another, and the stress needed is roughly G/30, where G is the shear modulus. For iron that predicts about 2.5 GPa. Real iron yields at a few hundred MPa — wrong by an order of magnitude or more. || The word: a dislocation is a line defect — an extra half-plane of atoms wedged into the crystal. Moving a dislocation is a small local shuffle, not a whole-plane slide, so the stress it needs is a hundred times smaller. In 1934 Taylor, Orowan, and Polanyi proposed this independently to close exactly Frenkel's gap. || Why the rule has that shape: calling defects 'damage' gets it backwards. They are the machinery that every useful property runs on — strength, hardening, diffusion itself. A perfect crystal would be a curiosity, not an engineering material.",
+      "In 1926 Frenkel estimated the shear strength of a perfect crystal: slide one atomic plane over another, and the stress needed is about G/2π, where G is the shear modulus — ~13 GPa for iron. Refined models give ~G/30, about 2.7 GPa. Real iron yields at a few hundred MPa or less: 10–1000× lower, depending on purity. || The word: a dislocation is a line defect — an extra half-plane of atoms wedged into the crystal. Moving a dislocation is a small local shuffle, not a whole-plane slide, so the stress it needs is ten to a thousand times smaller. In 1934 Taylor, Orowan, and Polanyi proposed this independently to close exactly Frenkel's gap. || Why the rule has that shape: calling defects 'damage' gets it backwards. They are the machinery that every useful property runs on — strength, hardening, diffusion itself. A perfect crystal would be a curiosity, not an engineering material.",
     use: "Whenever you ask why a metal is soft or strong: check the defect population, not the composition. || Classify by dimension: 0D point defects (vacancies, interstitials), 1D line defects (dislocations), 2D planar defects (grain boundaries, stacking faults). Vacancy site fraction obeys Boltzmann, n/N = exp(−Qv/kT). Dislocation motion is slip; blocked dislocations are strength. || Stop when you can point at a processing step and name the defect it targets — quenching freezes vacancies in, cold work multiplies dislocations, annealing sweeps both out.",
     example:
       "Copper, vacancy formation energy Qv ≈ 0.9 eV. What fraction of sites are empty at 1000 K — and at room temperature? || n/N = exp(−0.9 / (8.617×10⁻⁵ × 1000)) = exp(−10.44) ≈ 2.9×10⁻⁵ at 1000 K. At 300 K: exp(−34.8) ≈ 7.6×10⁻¹⁶. || Heating from room temperature to 1000 K multiplies the equilibrium vacancy population by roughly 4×10¹⁰. Quench from high temperature and you freeze that far-from-equilibrium population into the metal — and it drives diffusion, aging, and precipitation from the inside.",
     ideas: [
       {
         heading: "Perfect is weak",
-        body: "Frenkel's whole-plane shear estimate, τ ≈ G/2π, is the strength a perfect crystal ought to have. Measured yield stresses sit one to two orders of magnitude below it. The resolution is not a better estimate — it is a different mechanism. Dislocations let a crystal shear one atomic row at a time, like moving a rug by pushing a wrinkle across it instead of dragging the whole rug.",
-        formula: "τ_theoretical ≈ G/30,  τ_measured ≪ τ_theoretical",
+        body: "Frenkel's whole-plane shear estimate is τ ≈ G/2π (~13 GPa for iron); refined models give ~G/30 (~2.7 GPa). Real yield is 10–1000× lower, depending on purity. The resolution is not a better estimate — it is a different mechanism. Dislocations let a crystal shear one atomic row at a time, like moving a rug by pushing a wrinkle across it instead of dragging the whole rug.",
+        formula: "τ_theoretical ≈ G/2π (refined: ~G/30),  τ_measured ≪ τ_theoretical",
       },
       {
         heading: "Vacancies obey Boltzmann",
@@ -43,7 +42,7 @@ export const materialsW13Lessons: Lesson[] = [
     note: "Vacancy numbers use copper's 0.9 eV as a classroom value; real Qv runs roughly 0.5–1.5 eV by metal. The lattice drawings are cartoons — a few dozen atoms standing in for 10²³.",
     checks: [
       {
-        prompt: "Frenkel's estimate says a perfect crystal should shear at ~G/30, but real metals yield far below that. Why?",
+        prompt: "Refined Frenkel-style estimates say a perfect crystal should shear at ~G/30, but real metals yield far below that. Why?",
         options: [
           "Dislocations move at far lower stress than whole-plane shear",
           "Grain boundaries carry most of the load",
@@ -51,7 +50,7 @@ export const materialsW13Lessons: Lesson[] = [
           "Real crystals have extra-perfect planes",
         ],
         answer: 0,
-        why: "A dislocation moves by a small local shuffle — the rug-wrinkle mechanism — so slip happens at stresses a hundred times below whole-plane shear. The gap between G/30 and measured yield is the signature of dislocations, not of experimental error.",
+        why: "A dislocation moves by a small local shuffle — the rug-wrinkle mechanism — so slip happens at stresses ten to a thousand times below whole-plane shear. The gap between G/30 and measured yield is the signature of dislocations, not of experimental error.",
       },
       {
         prompt: "Equilibrium vacancy fraction in copper (Qv = 0.9 eV): 1000 K versus 300 K.",
@@ -166,10 +165,10 @@ export const materialsW13Lessons: Lesson[] = [
     minutes: 35,
     lede: "Describe annealing, quenching, and case hardening as deliberate moves in defect populations — and predict which property moves.",
     start:
-      "Same steel bar, two histories. One quenched from 850 °C rings hard and snaps; one annealed bends. Composition identical, properties unrecognizable. || The word: annealing heals — recovery, then recrystallization, then grain growth sweep out dislocations and coarsen grains. Quenching freezes — cool so fast that diffusion cannot happen and carbon is trapped in martensite: very hard, very brittle. Tempering reheats gently to trade some of that hardness for toughness. || Why the rule has that shape: structure → processing → properties → performance. A heat treatment never touches composition; it only rearranges defects, and the properties follow.",
-    use: "When you choose or diagnose a heat treatment: ask which defect population it targets. || Anneal to soften and relieve stress; quench to harden; temper to toughen. Case-harden (carburize, nitride) for a hard skin on a tough core. Read a TTT diagram's nose: diffusion-controlled transformations at high temperature, suppressed by speed at low. || Stop when you can look at any process step and name the defect move — 'this dissolves precipitates', 'this traps carbon', 'this grows grains' — and say which property pays for it.",
+      "Same steel bar, two histories. One quenched from 850 °C rings hard and snaps; one annealed bends. Composition identical, properties unrecognizable. || The word: annealing heals — recovery, then recrystallization, then grain growth sweep out dislocations and coarsen grains. Quenching freezes — cool so fast that diffusion cannot happen and carbon is trapped in martensite: very hard, very brittle. Tempering reheats gently to trade some of that hardness for toughness. || Why the rule has that shape: structure → processing → properties → performance. Through-hardening, annealing and tempering never touch composition — they only rearrange defects, and the properties follow. Case hardening is the exception, and changes composition only in the skin.",
+    use: "When you choose or diagnose a heat treatment: ask which defect population it targets. || Anneal to soften and relieve stress; quench to harden; temper to toughen. Case-harden (carburize, nitride) for a hard skin on a tough core. A TTT diagram plots the time to transform at each hold temperature; the nose is the fastest point. Read the nose: diffusion-controlled transformations at high temperature, suppressed by speed at low. || Stop when you can look at any process step and name the defect move — 'this dissolves precipitates', 'this traps carbon', 'this grows grains' — and say which property pays for it.",
     example:
-      "4140 steel, three thermal histories. || Annealed: ~200 HB — soft, machinable, the baseline. Quenched from 850 °C: ~55 HRC — hard enough to scratch glass, brittle enough to fear. Quenched and tempered at 400 °C: ~45 HRC with real toughness — the working compromise. || Same chemistry, three different materials. The performance gap between a gear that lasts and one that spalls is not composition; it is the thermal history written into the defect structure.",
+      "4140 steel, three thermal histories. || Annealed: ~200 HB — soft, machinable, the baseline. Quenched from 850 °C: ~58 HRC — hard enough to scratch glass, brittle enough to fear. Quenched and tempered at 400 °C: ~42 HRC with real toughness — the working compromise. || Same chemistry, three different materials. The performance gap between a gear that lasts and one that spalls is not composition; it is the thermal history written into the defect structure.",
     ideas: [
       {
         heading: "Annealing is forgetting",
@@ -183,13 +182,13 @@ export const materialsW13Lessons: Lesson[] = [
       },
       {
         heading: "Case hardening is controlled diffusion",
-        body: "Carburizing writes lesson 2's error-function profile into a gear tooth: carbon in from the surface, hard martensitic case after quench, tough low-carbon core untouched. Nitriding does the same job with nitrogen at lower temperature and no quench. The case depth on the drawing is a diffusion length with a tolerance on it.",
-        formula: "case depth ≈ 2√(Dt)",
+        body: "Carburizing writes the diffusion lesson's error-function profile into a gear tooth: carbon in from the surface, hard martensitic case after quench, tough low-carbon core untouched. Nitriding does the same job with nitrogen at lower temperature and no quench. The case depth on the drawing is a diffusion length with a tolerance on it.",
+        formula: "case depth x = z·2√(Dt), z = erf⁻¹((Cs−Cx)/(Cs−C0))",
       },
     ],
     bench: "grains",
     prompt:
-      "Press Play to anneal. || Watch the grains coarsen and the yield strength fall — Hall–Petch in motion. || Connect it back: over-annealing is lesson 1's grain boundaries being deleted, one boundary at a time.",
+      "Press Play to anneal. || Watch the grains coarsen and the yield strength fall — Hall–Petch in motion. || Connect it back: over-annealing is the defects lesson's grain boundaries being deleted, one boundary at a time.",
     note: "The grains bench uses a generic Hall–Petch metal, not 4140 — the constants differ by alloy. Hardness numbers above are representative classroom values, not a specification. Check the datasheet before you make anything.",
     checks: [
       {

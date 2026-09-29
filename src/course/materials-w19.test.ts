@@ -155,11 +155,12 @@ test("week-19 bench ids are registered in the bench index", () => {
 });
 
 test("property indices match the lesson's worked numbers", () => {
-  // Lesson 1 worked case: tie rod, stiffness-limited, M = E/ρ
+  // Lesson 1 worked case: tie rod, stiffness-limited, M = E/ρ.
+  // Steel at the course-wide 200 GPa (25.5) lands within 1% of aluminum.
   const steel = propertyIndex(mat("steel1045"), "tie-stiffness");
   const al = propertyIndex(mat("al6061"), "tie-stiffness");
   const cfrp = propertyIndex(mat("cfrp"), "tie-stiffness");
-  assert.ok(Math.abs(steel - 210 / 7.85) / (210 / 7.85) < 1e-9);
+  assert.ok(Math.abs(steel - 200 / 7.85) / (200 / 7.85) < 1e-9);
   assert.ok(Math.abs(al - 69 / 2.7) / (69 / 2.7) < 1e-9);
   assert.ok(Math.abs(cfrp - 140 / 1.55) / (140 / 1.55) < 1e-9);
   // steel and aluminum within 5% on the index, carbon far ahead
@@ -217,12 +218,19 @@ test("ranking and trade study behave", () => {
 test("galvanic verdicts name the anode and scale with the cell", () => {
   const aluminum = galvanicSeries.find((m) => m.id === "aluminum")!;
   const steel = galvanicSeries.find((m) => m.id === "steel")!;
-  // Lesson 2 worked case: aluminum bolted to steel in salt splash, small anode
-  const v = galvanicRisk(aluminum, steel, "splash", true);
+  // Lesson 2 worked case: steel bolt in an aluminum cleat, salt splash.
+  // Small cathode on a large anode, so the area ratio does not amplify.
+  const v = galvanicRisk(aluminum, steel, "splash", false);
   assert.equal(v.anode.id, "aluminum", "the more negative metal dissolves");
   assert.equal(v.cathode.id, "steel");
   assert.ok(Math.abs(v.dV - 0.15) < 1e-9, `ΔV should be 0.15 V, got ${v.dV}`);
-  assert.equal(v.level, "high", "0.15 V + splash + small anode should read high");
+  assert.equal(v.level, "moderate", "0.15 V + splash + large anode should read moderate");
+  // The flip (aluminum rivets in steel plate): small anode reads high
+  assert.equal(
+    galvanicRisk(aluminum, steel, "splash", true).level,
+    "high",
+    "0.15 V + splash + small anode should read high",
+  );
   assert.ok(v.advice.length > 0, "verdict must advise how to break the cell");
   // dry air: no electrolyte, no cell
   assert.equal(galvanicRisk(aluminum, steel, "dry", true).level, "negligible");

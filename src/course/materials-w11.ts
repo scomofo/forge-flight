@@ -2,11 +2,11 @@ import type { Lesson } from "./types.ts";
 
 /**
  * Materials 101, Week 11 — Bonding and material families.
- * These three lessons open the materials track (indices 1–3); the
- * pre-existing materials lessons follow re-indexed from 4. Evidence due:
- * property predictions from bonding (lesson 3 bench and checks).
+ * These three lessons open the materials track (indices 1–3); week 12
+ * follows from index 4. Evidence due: property predictions from bonding
+ * (bondread bench and checks).
  *
- * Block through-line, stated in lesson 1: structure → processing →
+ * Block through-line, stated in bondpacks: structure → processing →
  * properties → performance. This week is the structure end of the chain:
  * what the atoms are doing to each other decides what the material can do.
  */
@@ -43,7 +43,7 @@ export const materialsW11Lessons: Lesson[] = [
     bench: "bonding",
     prompt:
       "Select each bond type in the explorer. || Watch conduction, melting, and ductility move together as you switch — they are not three separate choices. || Then say out loud which bond lets planes slip and which one punishes slip with fracture.",
-    note: "These are the textbook extremes. Graphite is covalent in the sheet and weak between sheets. Many ceramics are part ionic, part covalent. Lesson 3 is where mixed bonding stops being a footnote.",
+    note: "These are the textbook extremes. Graphite is covalent in the sheet and weak between sheets. Many ceramics are part ionic, part covalent. Reading a material from its bonding, later this week, is where mixed bonding stops being a footnote.",
     checks: [
       {
         prompt: "Why do metals conduct electricity?",
@@ -68,7 +68,7 @@ export const materialsW11Lessons: Lesson[] = [
         why: "The bonds are strong — that is why the melting point is high. Brittleness comes from geometry: a half-step slip puts cation against cation, and the repulsion cracks the lattice instead of letting it yield.",
       },
       {
-        prompt: "Diamond and sulfur are both covalent, yet diamond melts above 3500°C and sulfur at 115°C. Why?",
+        prompt: "Diamond and sulfur are both covalent, yet diamond survives past 3500°C without melting and sulfur melts at 115°C. Why?",
         options: [
           "Sulfur's bonds are ionic, not covalent",
           "Diamond is a network; sulfur is molecular — melting sulfur only defeats the weak forces between S₈ rings",
@@ -76,7 +76,7 @@ export const materialsW11Lessons: Lesson[] = [
           "Diamond contains metallic bonds between the covalent ones",
         ],
         answer: 1,
-        why: "A network must be broken wholesale to melt; a molecular solid melts when the weak secondary bonds between molecules yield. Same bond family, two hundred degrees versus thousands.",
+        why: "A network must be broken wholesale to melt; a molecular solid melts when the weak secondary bonds between molecules yield. Same bond family, about a hundred degrees versus thousands.",
       },
       {
         prompt: "A solid polymer softens at 130°C though its C–C backbone bonds are ~350 kJ/mol. The softening is governed by…",
@@ -106,13 +106,13 @@ export const materialsW11Lessons: Lesson[] = [
     ideas: [
       {
         heading: "Bond energy sets the temperature scale",
-        body: "Melting is the point where thermal motion defeats the bonds, so stronger bonds mean higher melting points — across one to two orders of magnitude of bond energy, from waxes at ~1 kJ/mol to tungsten near 850 and MgO near 3800. It is a correlation with wide scatter, not a formula: network topology, entropy, and decomposition all move the real number. Use it to place a material on the temperature map, never to compute a melting point.",
+        body: "Melting is the point where thermal motion defeats the bonds, so stronger bonds mean higher melting points — across three to four orders of magnitude of bond energy, from waxes at ~1 kJ/mol to tungsten near 850 and MgO near 3800. It is a correlation with wide scatter, not a formula: network topology, entropy, and decomposition all move the real number. Use it to place a material on the temperature map, never to compute a melting point.",
         formula: "T_m rises with bond energy — correlation, not a law; scatter is real",
       },
       {
         heading: "Stiffness is bond stiffness, scaled up",
-        body: "Pull a bond slightly and it resists like a spring; the curvature of the bond-energy curve at its minimum is the atomic spring constant. A macroscopic modulus is that spring constant times the number of bonds per area. Diamond's deep, narrow energy well is why it is both hard to melt and hard to stretch — one curve, two macroscopic properties. Polymers live in shallow secondary wells, so they are compliant at room temperature.",
-        formula: "modulus ∝ (bond stiffness) × (bonds per unit area)",
+        body: "Pull a bond slightly and it resists like a spring; the curvature of the bond-energy curve at its minimum is the atomic spring constant. A macroscopic modulus is that spring constant divided by the bond length: the bonds per area set the force, and the bond length turns stretch into strain. Diamond's deep, narrow energy well is why it is both hard to melt and hard to stretch — one curve, two macroscopic properties. Polymers live in shallow secondary wells, so they are compliant at room temperature.",
+        formula: "E ≈ S₀/r₀ — bond stiffness ÷ bond length (equivalently S₀ × bonds per area × r₀)",
       },
       {
         heading: "Mixed bonding means a mixed pack",
@@ -220,7 +220,7 @@ export const materialsW11Lessons: Lesson[] = [
         prompt: "You predict a material is an insulator; it turns out to conduct along one direction. The most likely cause of the miss:",
         options: [
           "You misread the hint entirely",
-          "Mixed bonding — a second bond type owns the conducting direction",
+          "Mixed bonding — the bond along that direction differs from the bond across it",
           "All insulators conduct a little",
           "The prediction method is useless",
         ],
