@@ -15,22 +15,22 @@ export const materialsW17Lessons: Lesson[] = [
     minutes: 35,
     lede: "Locating any alloy on a binary phase diagram, naming the phases present at a given temperature, and drawing the tie line that shows what each phase is actually made of.",
     start:
-      "A spool of 63/37 solder melts the instant the iron touches it — one temperature, solid to liquid, no in-between. A spool of 50/50 solder goes soft and pasty over a thirty-degree span, smearing before it flows. Same two metals, different ratio, completely different melting behavior — the difference is where each alloy sits on the lead–tin phase diagram. || A binary phase diagram is equilibrium's answer to the two questions a foundry actually controls: what did you mix, and how hot is it. The horizontal axis is composition, in weight percent of one component. The vertical axis is temperature. Every point on that map is a state: which phases are present, and what each one contains. The lines are boundaries where the phase count changes — cross one and something starts to melt, freeze, or precipitate. || The map has its shape because nature minimizes free energy at every composition and temperature, and the lowest-energy arrangement moves as you move. The lens-shaped two-phase field of the copper–nickel system says the two metals dissolve in each other completely — liquid and solid both — but the solid prefers the higher-melting nickel. The diagram never predicts how fast anything happens. It predicts where the system is trying to go.",
+      "A binary phase diagram maps equilibrium phases as a function of composition and temperature. || Composition is on the horizontal axis and temperature on the vertical. A point on the diagram tells you which phases are present at equilibrium, and tie lines tell you the compositions of coexisting phases. || The diagram predicts the equilibrium destination, not how quickly the material gets there. Kinetics and cooling rate come later."
     use: "Choosing an alloy, a casting temperature, or a heat-treatment window — anywhere the question is 'what phases am I dealing with.' || Fix the composition: drop a vertical line at your alloy's weight percent. Fix the temperature: draw the horizontal line. Read the field their intersection falls in — that is your phase assemblage. In a two-phase field, extend the horizontal tie line through your point to both boundaries; its ends are the compositions of the two phases, which are generally not your alloy's composition. || Stop when you can name every phase present and the composition of each. If your point sits exactly on a boundary, say which side you mean — the line itself is a transition, not a state.",
     example:
       "A Cu–30 wt% Ni alloy cools slowly from 1400°C. Nothing happens until its vertical line meets the liquidus: T = 1085 + 3.7 × 30 = 1196°C, where the first α solid appears. Freezing finishes at the solidus: T = 1085 + 3.2 × 30 = 1181°C — a 15-degree freezing range, the 'mushy zone' where the casting is neither liquid nor solid. || Halfway through, at 1190°C, the tie line runs from liquidus to solidus: C_L = (1190 − 1085)/3.7 = 28.4 wt% Ni in the liquid, C_α = (1190 − 1085)/3.2 = 32.8 wt% Ni in the solid. The solid is richer in nickel — the higher-melting component — exactly as the lens shape promised. || The alloy is 30% nickel on average, but at 1190°C no phase actually is: the liquid holds 28.4% and the solid 32.8%. Overall composition and phase composition are different numbers. Confusing them is the most common beginner error with these diagrams.",
     ideas: [
       {
-        heading: "The axes are the experiment",
+        heading: "Read composition horizontally and temperature vertically",
         body: "Composition and temperature are the two knobs a melt shop turns: the charge that went into the furnace, and the heat under it. The diagram is the equilibrium destination for every setting of those knobs — not the route, not the speed. Read it as a map of where the alloy wants to be, and note that wanting is not arriving; closing that gap is the subject of the third lesson.",
       },
       {
-        heading: "Lines are solubility limits",
+        heading: "Phase boundaries mark changes in equilibrium phases",
         body: "Above the liquidus, all liquid. Below the solidus, all solid. The solvus is the most solute the solid can hold before a second phase precipitates out. Every line answers the same question — how much of B can this phase dissolve at this temperature — and the answer usually shrinks as things cool, which is why precipitation hardens so many alloys.",
         formula: "Sn in Pb: 19.2 wt% at 183°C, ≈2 wt% near room temperature",
       },
       {
-        heading: "A tie line is a mass balance waiting to happen",
+        heading: "Tie lines give phase compositions for the lever rule",
         body: "In any two-phase field, only the tie-line ends exist as compositions — your alloy's overall composition lies somewhere along the line between them, and where it lies decides how much of each phase you get. The ends are inputs; the fractions are arithmetic. That arithmetic is the entire next lesson.",
         formula: "tie-line ends: C_L and C_α (not C₀)",
       },
@@ -84,18 +84,18 @@ export const materialsW17Lessons: Lesson[] = [
     minutes: 35,
     lede: "Deriving the lever rule from conservation of mass, and computing phase fractions from any tie line — the most-used calculation in alloy metallurgy.",
     start:
-      "A paint mixer blends a 30%-pigment base with a 60%-pigment base to hit 40%. How much of each? Nobody counts molecules — the answer falls out of the average. The blend sits one-third of the way from 30 to 60, so it is two-thirds of the 30% base. A two-phase alloy is the same weighted-average problem. || The alloy's overall composition C₀ is the weighted average of the two phase compositions: C₀ = W_L·C_L + W_α·C_α, with W_L + W_α = 1. Solve for W_L and the weights turn into segment lengths: W_L = (C_α − C₀)/(C_α − C_L). The fraction of a phase is the tie-line segment opposite it — from the alloy to the far end — divided by the whole tie line. || It looks like a lever because it is one: the alloy composition is the fulcrum, the phase compositions are the ends, and the fractions balance like weights. The phase whose composition sits farther from the alloy always gets the smaller share — the long arm carries the light weight.",
+      "In a two-phase region, the overall alloy composition is a weighted average of the two phase compositions. The lever rule is just that mass balance solved for the phase fractions. || Read the two phase compositions from the ends of the tie line, then use the segment opposite the phase you want divided by the total tie-line length. || If you forget which arm goes with which phase, derive it again from the weighted-average equation instead of memorizing the picture."
     use: "Any two-phase field on any binary diagram, whenever someone asks 'how much of each.' || Draw the tie line at your temperature and read its ends, C_left and C_right. The fraction of the left phase is the opposite segment over the whole: W_left = (C_right − C₀)/(C_right − C_left). Check yourself: the two fractions sum to 1, and the phase nearer your composition dominates. || Stop when the fractions sum to one and the dominant phase is the one your alloy sits closest to. If a fraction comes out negative or above one, your point is not between the tie-line ends — re-read the diagram.",
     example:
       "Cu–40 wt% Ni at 1220°C. The tie line: C_L = (1220 − 1085)/3.7 = 36.5 wt% Ni, C_α = (1220 − 1085)/3.2 = 42.2 wt% Ni. || W_L = (42.2 − 40)/(42.2 − 36.5) = 2.2/5.7 = 0.386 — about 39% liquid, 61% solid α. The alloy sits nearer the solid end, so solid dominates, and the arithmetic agrees. || Two divisions, no new measurements. Everything came from the diagram plus conservation of mass — that is all the lever rule ever is.",
     ideas: [
       {
-        heading: "Derived, not memorized",
+        heading: "Derive the lever rule from mass balance",
         body: "Start from C₀ = W_L·C_L + W_α·C_α with W_L + W_α = 1. Eliminate W_α: C₀ = W_L·C_L + (1 − W_L)·C_α, so W_L·(C_α − C_L) = C_α − C₀. The lever rule is one line of algebra from the definition of an average — there is nothing to memorize except that mass is conserved.",
         formula: "W_L = (C_α − C₀)/(C_α − C_L), W_α = 1 − W_L",
       },
       {
-        heading: "Opposite arm over the whole",
+        heading: "Use the opposite tie-line segment for each phase fraction",
         body: "The mnemonic that never fails: each phase's fraction is the tie-line segment on the far side from it, over the entire tie line. The alloy hangs at the fulcrum C₀; the phase farther away gets less. When the alloy sits dead center, the fractions are 50/50 — the one case you can read without arithmetic.",
       },
       {
@@ -152,18 +152,18 @@ export const materialsW17Lessons: Lesson[] = [
     minutes: 35,
     lede: "Tracing an alloy cooling through a eutectic — primary crystals, the eutectic reaction, the final microstructure — and how cooling rate rewrites the diagram's story.",
     start:
-      "Pour the same bronze into a sand mold and into a water-cooled copper mold and you get two different metals: one soft and coarse-grained, one harder and finer — from the same melt, the same chemistry. The phase diagram did not change. The cooling rate did, and the cooling rate decides how closely the alloy follows the diagram. || A phase transformation is the alloy reorganizing as temperature falls: liquid freezing to solid, one solid splitting into two. The eutectic reaction is the most dramatic: at one fixed temperature and one fixed composition, liquid transforms into two solids at once — L → α + β. The eutectoid is its solid-state twin: γ → α + Fe₃C, the reaction that makes pearlite, the backbone of steel. || The diagram shows equilibrium — the destination the alloy wants. Diffusion is the vehicle, and diffusion needs time. Cool slowly and the alloy arrives: compositions follow the solvus lines, fractions follow the lever. Cool fast and it strands partway: the solid traps the high-temperature composition — coring — and the properties follow the stranded structure, not the diagram's promise.",
+      "A phase diagram tells you the equilibrium phases, but the actual microstructure also depends on how fast the material is cooled. || Transformations require atomic rearrangement, and many of those changes need diffusion. Slow cooling gives the structure more time to approach equilibrium; rapid cooling can freeze in nonequilibrium compositions or phases. || Treat the phase diagram as the thermodynamic destination. Cooling rate determines whether the material has enough time to get there."
     use: "Cooling any alloy through a transformation, or choosing the cooling rate for a casting or heat treatment. || Drop a vertical line at your composition. Walk down in temperature: at each boundary, name what starts to form. At a eutectic, split the remaining liquid into the eutectic microconstituent, and apply the lever rule just above the eutectic temperature for primary versus eutectic fractions. Then ask the rate question: slow enough for diffusion to keep up, or fast enough to freeze the high-temperature state in? || Stop when you can sketch the room-temperature microstructure — which phases, roughly how much of each, in what arrangement — and say what changes if you quench instead.",
     example:
       "Pb–40 wt% Sn cools from 300°C. At the liquidus the first α appears; by just above 183°C the lever rule on the L + α field gives primary α: W_α = (61.9 − 40)/(61.9 − 19.2) = 21.9/42.7 = 0.513 — about 51% chunky primary α dendrites, 49% remaining liquid at the eutectic composition. || At 183°C that liquid undergoes the eutectic reaction: L → α + β, freezing into fine alternating lamellae of lead-rich α and tin-rich β. Just below 183°C the alloy is 51% primary α plus 49% eutectic microconstituent — two morphologies, only two phases (α and β), all from one cooling curve. || The numbers came from the diagram at equilibrium. A fast-cooled casting of the same alloy shows less primary α and a finer, more divorced eutectic — the same destination on the map, but the casting did not get all the way there.",
     ideas: [
       {
-        heading: "The eutectic is a fixed point",
+        heading: "Eutectic reactions occur at a fixed composition and temperature",
         body: "One temperature, one composition, three phases in equilibrium — the phase rule allows no freedom there, so the reaction runs at constant temperature, like a pure metal freezing. All liquid of eutectic composition becomes the two solids simultaneously, in an intimate lamellar mixture, because neither solid can grow without rejecting the other's solute.",
         formula: "L(61.9 wt% Sn) → α(19.2%) + β(97.5%) at 183°C",
       },
       {
-        heading: "Coring is frozen history",
+        heading: "Rapid solidification can leave composition gradients",
         body: "In Cu–Ni the first solid to freeze is nickel-rich and the last is nickel-poor; with slow cooling, solid-state diffusion evens this out as the temperature falls. Quench the casting and diffusion never gets its chance: each dendrite keeps a nickel-rich core and a nickel-poor rim — microsegregation you can etch and see. The cure is a homogenizing anneal: hold hot, and let diffusion finish the job the quench interrupted.",
         formula: "first solid ≈ 1.16 × C₀ (Ni-rich); at equilibrium everything ends at C₀, but a quench leaves the last solid below C₀ (Ni-poor rim)",
       },
