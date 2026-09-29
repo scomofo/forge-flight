@@ -14,6 +14,14 @@ export const engineeringW24Lessons: Lesson[] = [
     title: "Bending: the stress is My/I",
     minutes: 35,
     lede: "Compute the peak stress in a beam from the bending moment and the section modulus, and choose sections that put material where the stress lives.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "In beam bending, stress varies through the depth of the section. It is zero at the neutral axis and largest at the outer fibers. || Use σ = My/I, or σ = M/S when the section modulus S = I/y_max is known. || Cross-section shape matters because material placed farther from the neutral axis increases I and S much more effectively than material near the middle."
     use: "When you need a beam, bracket, or spar to survive a known bending moment without yielding. Also when comparing candidate sections — S per kilogram is the honest score. || Find the maximum bending moment M (for a cantilever with tip load P at length L, M = P·L at the wall). Get the section modulus S for your section (I/c, tabulated or computed). Divide: σ = M/S. Compare against the allowable — yield divided by your factor of safety. || Stop when the margin of safety MS = σ_allow/σ − 1 is positive for every load case, and you have checked that the section you tabulated is the section you can actually buy.",
@@ -79,6 +87,14 @@ export const engineeringW24Lessons: Lesson[] = [
     title: "Buckling and torsion: slender failure",
     minutes: 35,
     lede: "Check columns against Euler buckling — a failure that strikes far below yield — and check shafts against torsional shear and twist.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "A slender column can fail by buckling long before the compressive stress reaches the material's yield strength. || Euler buckling gives P_cr = π²EI/L_e², where the effective length depends on the end conditions. Because length is squared in the denominator, small changes in unsupported length can strongly affect the critical load. || Treat buckling as a separate failure mode from material yielding and check both."
     use: "When anything carries compression over a long, slender run — struts, legs, pushrods — and when anything transmits torque — shafts, axles, drive tubes. || Compute the slenderness: effective length over radius of gyration. Apply Euler: P_cr = π²EI/L_e², and check the buckling stress against yield — Euler only applies while the column is still elastic at P_cr. For torsion: shear stress τ = T·r/J on the outer fiber, twist φ = T·L/(G·J) along the length. || Stop when the lowest of the compressive-yield load and the buckling load clears your required load with margin, and when both the torsional stress and the twist angle meet their limits.",
@@ -144,6 +160,14 @@ export const engineeringW24Lessons: Lesson[] = [
     title: "Combined loading: add, then judge",
     minutes: 35,
     lede: "Superpose bending and torsional stresses on a shaft, judge the plane-stress state with von Mises, and iterate a diameter to a passing design.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Real parts often carry more than one type of load at the same time. In the linear-elastic range, the stress contributions from those loads can be superposed at a point. || For ductile yielding under a multiaxial stress state, the von Mises equivalent stress provides a scalar value that can be compared with a uniaxial allowable. || Superposition and von Mises each have assumptions. Use them only while the material and deformation remain within the regime they were derived for."
     use: "When a component sees bending plus torsion (shafts), axial plus bending (eccentric columns), or any multiaxial state you must clear against a uniaxial allowable. || Compute each stress component at the critical point — for a solid shaft, σ = 32M/πd³ and τ = 16T/πd³ on the outer fiber. Combine with von Mises. Compare against the allowable and iterate the size until the margin is positive. || Stop when the equivalent stress clears the allowable with margin at the worst point, and you have confirmed the worst point is actually the outer fiber (for shafts, it is — both σ and τ peak there together).",

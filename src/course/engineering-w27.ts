@@ -13,6 +13,14 @@ export const engineeringW27Lessons: Lesson[] = [
     title: "Design the experiment before you run it",
     minutes: 40,
     lede: "Name the independent, dependent, controlled, and nuisance variables of a test, lay out a 2^k factorial plan with randomization, blocking, and center points, and say what each of those defends against.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "Experiments should be planned around the question you need to answer, not around whichever variable is easiest to change first. || Define the independent variables, response variable, controlled variables, and nuisance variables. Then choose a design that can separate the effects you care about. || One-factor-at-a-time tests can miss interactions. Factorial designs are useful when the effect of one variable may depend on another."
     use: "Before you collect a single data point — when the test is still a sketch on paper. Also when a past test failed to answer its question: the failure is usually in this plan, not in the instruments. || List the factors and their two levels. Decide full or half fraction. Name the nuisance variable and block it — run each block with the same conditions. Randomize the run order inside blocks. Add center-point replicates. Write the hypothesis the data could falsify, in numbers. || Stop when a colleague can run your plan without asking you a question, and when you can say what each design choice — randomization, blocking, replication — is defending against.",
@@ -86,6 +94,14 @@ export const engineeringW27Lessons: Lesson[] = [
     title: "Five readings are data, not noise",
     minutes: 40,
     lede: "Compute the mean, sample standard deviation, and 95% confidence interval of a small sample, screen a suspect point with a Grubbs score, and report a result with honest digits.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "A small set of repeated measurements should be reported with both a central estimate and an uncertainty on that estimate. || The sample standard deviation describes the spread of individual readings. The standard error s/√n describes the uncertainty of the sample mean. For small samples, a confidence interval uses Student's t multiplier rather than a normal-distribution value. || Keep those quantities separate. A narrow standard error does not mean the individual measurements have little scatter."
     use: "Every time n is small — bench tests, destructive tests, flight data you cannot repeat. || Compute with full precision: mean, sample std (n − 1), SE, t for n − 1 degrees of freedom, half-width t·SE. Screen any suspect point with a Grubbs score |x − mean|/s against the critical value — and investigate before you ever delete. Round once, at the end: the uncertainty gets one or two significant figures, the value stops where the uncertainty starts. || Stop when the result reads “value ± interval (95% CI, n = k)”: anyone can carry that number into a margin table without corrupting it.",
@@ -161,6 +177,14 @@ export const engineeringW27Lessons: Lesson[] = [
     title: "Graphs that don't lie",
     minutes: 40,
     lede: "Read a graph's argument before its numbers, linearize a relationship to test it, judge a fit by its residuals, and structure a lab report that convinces a skeptic.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Graphs can make the same data look very different depending on axis choices, smoothing, and what uncertainty is shown. || Use axes that support the comparison you are making, label uncertainty clearly, and avoid transformations or smoothing that hide important structure. When theory predicts a linearized relation, fit it and inspect the residuals. || A high R² is not enough by itself. A pattern in the residuals usually means the model shape is missing something."
     use: "Whenever a claim rests on plotted data — your report, a vendor's datasheet, a conference slide. Also when you fit any model: the fit is not done when the parameters print, it is done when the residuals pass inspection. || Plot the raw points with stated error bars. Choose the linearization the theory demands. Fit, then plot residuals vs the independent variable and vs the fitted values. Look for curvature, fans, and runs — each has a diagnosis. || Stop when the graph could survive a hostile reading: axes labeled with units, uncertainty shown, residuals inspected, and the conclusion written with the interval attached.",

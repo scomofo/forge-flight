@@ -13,6 +13,14 @@ export const physicsW7Lessons: Lesson[] = [
     title: "Stress and strain",
     minutes: 35,
     lede: "Read stress as force per area and strain as stretch per length, connect them through Hooke's law, and size a bar from δ = FL/AE.",
+    opening: { mode: "prose", heading: "Loaded materials deform" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Stress" },
+      { kind: "idea", idea: 1, label: "Strain" },
+      { kind: "example", heading: "Check strength and stretch" },
+      { kind: "idea", idea: 2, label: "Elastic relation" },
+      { kind: "move", heading: "Check both strength and serviceability" },
+    ],
     start:
       "A loaded steel cable stretches, even if the motion is too small to see. To predict whether it will hold and how much it will elongate, start with stress and strain. || Stress is force divided by area: σ = F/A. Strain is change in length divided by original length: ε = ΔL/L. Strain has no units because it is a ratio. || For the same load, increasing the cross-sectional area reduces the stress. That is why axial members are sized by area and why doubling a circular rod's diameter cuts the stress to one quarter.",
     use: "Whenever you size a member for axial load — cable, column, tie rod. || Compute the stress σ = F/A, compare it to what the material is allowed (more on that next lesson), then compute the stretch δ = FL/AE and check it is acceptable. Force, length, area, modulus — all four have to be in SI before the arithmetic. || Stop when the stress is under the allowable and the stretch is within whatever the job tolerates. A cable that holds but stretches a meter has still failed its design.",
@@ -78,6 +86,15 @@ export const physicsW7Lessons: Lesson[] = [
     title: "Bending",
     minutes: 35,
     lede: "See why a beam bends the way it does, read the second moment of area as shape's leverage, and use δ = FL³/3EI as a scaling law before you trust it as a number.",
+    opening: { mode: "steps", heading: "Read the cross-section before the formula", labels: ["What bends", "Why shape matters", "Scaling"] },
+    readFlow: [
+      { kind: "idea", idea: 1, label: "Shape" },
+      { kind: "idea", idea: 0, label: "Stress distribution" },
+      { kind: "example", heading: "A ruler as a beam" },
+      { kind: "idea", idea: 2, label: "Deflection scaling" },
+      { kind: "aside", heading: "Model limit", body: "Once deflection is no longer small compared with span, treat the linear beam result as a trend, not an exact prediction." },
+      { kind: "move", heading: "Use scaling before trusting precise digits" },
+    ],
     start:
       "When a beam bends, one side goes into tension and the other into compression. Between them is the neutral axis, where the longitudinal bending strain is zero. || The bending stress changes with distance from that axis. The second moment of area I describes how the cross-section distributes material relative to the neutral axis. Material farther away contributes much more to bending stiffness. || That is why deep sections are so effective. For a rectangle, I = bh³/12, so increasing depth changes stiffness much more strongly than increasing width.",
     use: "When you need a beam's stiffness before you trust any single number: read the formula as a scaling law. || Deflection scales with L³ — double the span, eight times the sag. It scales inversely with h³ — double the depth, one-eighth the sag. It scales inversely with E — the material lever, the weakest of the three. || Stop trusting the number when the beam stops being slender or the deflection stops being small: δ beyond about a tenth of the span means the linear formula is leaving its range. Use the scaling law for comparisons, and don't ask the precise digits for more than the linear theory can give.",
@@ -143,6 +160,14 @@ export const physicsW7Lessons: Lesson[] = [
     title: "Factor of safety",
     minutes: 35,
     lede: "Distinguish ultimate from allowable, name what a safety factor actually covers, and practice the predict-then-measure discipline that keeps structures honest.",
+    opening: { mode: "prose", heading: "Margin is a design choice" },
+    readFlow: [
+      { kind: "example", heading: "Turn ultimate capacity into an allowable" },
+      { kind: "idea", idea: 0, label: "Allowable" },
+      { kind: "idea", idea: 1, label: "Cost of margin" },
+      { kind: "idea", idea: 2, label: "Prediction discipline" },
+      { kind: "move", heading: "Size against the allowable, then test the model" },
+    ],
     start:
       "Design values are kept below failure values because loads, materials, and models all have uncertainty. || A simple factor of safety is n = failure load / allowed working load. Equivalently, an allowable stress can be defined by dividing a failure or strength value by n. || The factor does not replace engineering judgment. It covers uncertainty within the failure mode you analysed, but other modes such as buckling, fatigue, or corrosion still need their own checks.",
     use: "When you commit to a size: divide the ultimate by the chosen n, then size against the allowable. || Pick n from the uncertainty and the consequence — ~1.5 where weight is everything and knowledge is deep (aircraft), 3–4 for ordinary structures, higher where failure is catastrophic or loads are wild guesses. || Pick it deliberately. Oversized margins cost mass and money; undersized ones cost the structure.",

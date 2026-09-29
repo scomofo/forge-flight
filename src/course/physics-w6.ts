@@ -13,6 +13,14 @@ export const physicsW6Lessons: Lesson[] = [
     title: "Torque: force with a lever arm",
     minutes: 35,
     lede: "Compute a moment as τ = rF sin θ, assign its sign by the right-hand rule, and size a wrench from a bolt's torque specification.",
+    opening: { mode: "prose", heading: "Distance from the pivot matters" },
+    readFlow: [
+      { kind: "example", heading: "Can this wrench reach the spec?" },
+      { kind: "idea", idea: 0, label: "Lever arm" },
+      { kind: "idea", idea: 1, label: "Sign" },
+      { kind: "idea", idea: 2, label: "Torque vs energy" },
+      { kind: "move", heading: "Take moments about the pivot" },
+    ],
     start:
       "A rusted bolt may not move with a short ratchet but breaks loose when you add a longer handle. The applied force may be the same; the lever arm is not. || Torque measures the turning effect of a force about a pivot: τ = rF sinθ. Only the component of force perpendicular to the lever arm contributes. A force directed straight along the handle produces no torque. || Pick a sign convention for clockwise and counterclockwise torque, then add the torques algebraically. The net torque determines the angular acceleration.",
     use: "Whenever a force acts at a distance from a pivot: wrenches, see-saws, door handles, bracket bolts, crane loads. || Identify the pivot. Measure r from the pivot to the force's point of application. Take the component of F perpendicular to r — equivalently rF sin θ, where θ is the angle between the arm and the force. Assign + for counterclockwise, − for clockwise, and sum. || Stop when you can state the net torque with sign and units (N·m). If it is zero, the body has no angular acceleration; if not, you know which way it turns.",
@@ -78,6 +86,14 @@ export const physicsW6Lessons: Lesson[] = [
     title: "Rotation: kinematics and inertia",
     minutes: 35,
     lede: "Translate between linear and angular motion with the r-map, compute moments of inertia from mass distribution, and predict spin-up under a known torque.",
+    opening: { mode: "steps", heading: "Translate linear motion into rotation", labels: ["Angular quantities", "The radius map", "Mass distribution"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Radius map" },
+      { kind: "example", heading: "Spin up a cylinder" },
+      { kind: "idea", idea: 1, label: "Moment of inertia" },
+      { kind: "idea", idea: 2, label: "Offset axis" },
+      { kind: "move", heading: "Use τ = Iα after you know the axis" },
+    ],
     start:
       "Rotational motion uses the same structure as linear motion, with angular quantities in place of linear ones. || Angle is θ, angular velocity is ω, and angular acceleration is α. For constant α, the kinematic equations have the same form as the linear ones. The radius connects angular and linear motion through s = rθ, v = ωr, and a_t = αr. || Rotational inertia is the moment of inertia I. Unlike mass alone, I depends on how the mass is distributed relative to the axis.",
     use: "Whenever something spins up, spins down, or holds a rate: flywheels, motors, gears, tossed objects. || Map the problem: write the angular quantities, use the r-map to convert any linear data, look up or compute I for the shape, then use τ = Iα exactly as you used F = ma. For composite bodies, add inertias about the same axis; for offset axes, use the parallel-axis theorem. || Stop when ω(t) or θ(t) is stated with units (rad/s, rad) and a sanity check — a 2 kg, 0.5 m-radius disk (I = 0.25 kg·m²) does not reach 100 rad/s from a 1 N·m torque in a second; it reaches 4 rad/s.",
@@ -138,6 +154,14 @@ export const physicsW6Lessons: Lesson[] = [
     title: "Static equilibrium and beam reactions",
     minutes: 35,
     lede: "Solve for support reactions with ΣF = 0 and Στ = 0, read supports as reaction promises, and choose the moment center that kills an unknown.",
+    opening: { mode: "prose", heading: "Force balance is not enough" },
+    readFlow: [
+      { kind: "move", heading: "The statics routine" },
+      { kind: "idea", idea: 1, label: "Support reactions" },
+      { kind: "example", heading: "Solve the beam reactions" },
+      { kind: "idea", idea: 2, label: "Moment point" },
+      { kind: "idea", idea: 0, label: "Equation count" },
+    ],
     start:
       "A scaffold plank rests on two supports and a painter stands closer to one end. The support loads are not determined by force balance alone; torque balance matters too. || Static equilibrium requires both ΣF = 0 and Στ = 0. In two dimensions that gives three scalar equations: ΣF_x = 0, ΣF_y = 0, and one moment equation. || Before solving, identify what reactions each support can provide. A pin provides two force components, a roller one, and a fixed support adds a reaction moment.",
     use: "For any structure at rest: bridges, brackets, shelves, crane booms. || Draw the free body (Week 3's discipline). List support reactions per the support type. Write ΣF_y = 0, then Στ = 0 about the point that eliminates the most unknowns — usually one support, so the other reaction drops out of the moment equation. Solve, then check: reactions must sum to the total load, and each must be positive (a negative reaction means your assumed direction was wrong, or the beam lifts off). || Stop when both reactions are found and the check passes. If a reaction comes out negative, flip its assumed direction and say what that means physically.",

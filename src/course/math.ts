@@ -22,6 +22,14 @@ export const mathLessons: Lesson[] = [
     title: "Ratios, units, and the factor-label method",
     minutes: 35,
     lede: "Convert units without dropping factors of ten, scale quantities by ratio, and use the units to check your own work.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     opening: { mode: "prose", heading: "Before the calculator" },
     readFlow: [
       { kind: "example", heading: "Work one first" },
@@ -96,6 +104,14 @@ export const mathLessons: Lesson[] = [
     title: "Algebra as a design tool",
     minutes: 40,
     lede: "Isolate any unknown in a formula, substitute numbers once the symbols are sorted, and check the answer by putting it back.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "The formula σ = F/A gives stress when you know force and area. In design, you often need to run it backward: the load and allowable stress are known, so what area do you need? || Rearranging a formula is just undoing the operations around the unknown while doing the same thing to both sides. || Do the symbolic rearrangement first. Once the unknown is alone, put the numbers in. That keeps the logic visible and makes the result easier to check.",
     use: "When a formula connects the quantities and you know all but one. || Identify the unknown. Undo what the formula does to it — addition and subtraction first, then multiplication and division, then powers and roots — applying each inverse operation to both sides. Substitute numbers only after the unknown stands alone. || Stop when the unknown is alone on one side. Then substitute, compute once, and check by feeding the answer back into the original form.",
@@ -161,6 +177,14 @@ export const mathLessons: Lesson[] = [
     title: "Powers and scientific notation",
     minutes: 30,
     lede: "Move between prefixes, powers of ten, and scientific notation without friction, and predict how area and volume respond to size changes.",
+    opening: { mode: "steps", heading: "Read this as a decision", labels: ["What you see", "What it means", "What to do"] },
+    readFlow: [
+      { kind: "move", heading: "The decision routine" },
+      { kind: "idea", idea: 0, label: "Criterion 1" },
+      { kind: "idea", idea: 1, label: "Criterion 2" },
+      { kind: "example", heading: "Decision example" },
+      { kind: "idea", idea: 2, label: "Criterion 3" },
+    ],
     start:
       "A stiffness calculation gives I = 2.4 × 10⁻⁹ m⁴, but the CAD tool expects mm⁴. Nothing is wrong with the value; the scale just has to change. || Scientific notation separates the significant digits from the power of ten. Metric prefixes do the same job with names: milli is 10⁻³, kilo is 10³, mega is 10⁶, and so on. || The part people usually miss is the power on the unit. If metres are raised to the fourth power, the conversion factor is raised to the fourth power too.",
     use: "When numbers span many orders of magnitude, or a unit change crosses prefixes. || Convert by shifting the exponent: each factor of 10³ moves milli↔unit↔kilo. When multiplying, add exponents; when dividing, subtract. Keep one digit before the decimal point. || Stop when the exponent and the prefix agree — 2.4 × 10³ mm⁴, and never 2.4 × 10⁻⁹ mm⁴ (the old exponent with the new label).",
@@ -222,6 +246,14 @@ export const mathLessons: Lesson[] = [
     title: "Graphs and proportional reasoning",
     minutes: 35,
     lede: "Read slope and intercept from a line, distinguish direct from inverse proportion, and turn two calibration points into a working instrument.",
+    opening: { mode: "prose", heading: "Use the example to find the pattern" },
+    readFlow: [
+      { kind: "example", heading: "Start with the example" },
+      { kind: "idea", idea: 1, label: "Pattern" },
+      { kind: "idea", idea: 0, label: "Underlying rule" },
+      { kind: "idea", idea: 2, label: "What to watch" },
+      { kind: "move", heading: "Apply it yourself" },
+    ],
     start:
       "A load cell reads 2.1 mV at 10 kg and 10.5 mV at 50 kg. If the sensor is linear, those two points let us build a calibration equation. || Slope is the change in y divided by the change in x. The intercept is the value of y when x is zero. Put them together and you get y = mx + b. || Two points define a line, but they do not prove the real system is linear. A third point is useful because it tells you whether the line actually predicts something it was not fitted to.",
     use: "When paired measurements fall on (or near) a line, or you need to classify a relationship as direct or inverse. || Compute slope from two points: m = Δy/Δx. Find b from one point: b = y − mx. Read new values off the equation, and check that the intercept makes physical sense. || Stop when the line predicts a third, held-back calibration point. If the residuals curve instead of scattering, the relationship is not linear — say so instead of forcing it.",
@@ -287,6 +319,14 @@ export const mathLessons: Lesson[] = [
     title: "Geometry, triangles, and vectors",
     minutes: 45,
     lede: "Resolve a force into components with sine and cosine, move between degrees and radians, and add vectors the way equilibrium demands.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A cable pulls a bracket with 500 N at 35° above horizontal. For the next calculation, that angled force is easier to use as a horizontal component and a vertical component. || In a right triangle, sine, cosine, and tangent connect the angle to the side ratios. The ratios do not depend on the triangle's overall size. || Resolve the vector into components first. Later equilibrium and stress calculations are almost always written along chosen axes, so this is a basic move you will keep using.",
     use: "When a force, velocity, or displacement arrives at an angle and the analysis needs axis-aligned pieces. || Draw the right triangle with the vector as the hypotenuse. The adjacent component is magnitude × cos θ, the opposite is magnitude × sin θ. Add vectors by adding their components separately, then recombine with Pythagoras. || Stop when you have (Rx, Ry) — or rebuild the magnitude and check it matches. If √(Rx² + Ry²) is not the original magnitude, a component is wrong.",

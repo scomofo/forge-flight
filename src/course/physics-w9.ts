@@ -14,6 +14,14 @@ export const physicsW9Lessons: Lesson[] = [
     title: "Oscillations and natural frequency",
     minutes: 35,
     lede: "Find a system's natural frequency from its stiffness and mass, predict its motion from any release point, and account for where the energy sits at every instant.",
+    opening: { mode: "prose", heading: "The system chooses the frequency" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Restoring force" },
+      { kind: "example", heading: "One spring-mass oscillator" },
+      { kind: "idea", idea: 1, label: "Natural frequency" },
+      { kind: "idea", idea: 2, label: "Energy exchange" },
+      { kind: "move", heading: "Separate system properties from initial conditions" },
+    ],
     start:
       "A spring-mass system and a tuning fork both tend to oscillate at a characteristic frequency set by the system itself. || For a simple spring, the restoring force is F = −kx. The minus sign tells you the force points back toward equilibrium. Combining that with Newton's second law gives m x¨ = −kx and the natural angular frequency ω = √(k/m). || Stiffness and mass set the frequency. The initial displacement and velocity set the amplitude and phase.",
     use: "Whenever something is displaced from a stable equilibrium and released — suspensions, buildings in wind, atoms in a crystal, the balance wheel in a watch. Small oscillations about any stable equilibrium look like F = −kx, which is why this one equation covers so much ground. || Write m·x¨ = −kx. Read ω = √(k/m), then f = ω/2π and T = 1/f. Get amplitude and phase from the initial conditions: x(t) = A·cos(ωt + φ). Track the energy: E = ½kA² total, sloshing between KE = ½k(A² − x²) and PE = ½kx². || Stop when you can state the period, the frequency, and the energy — and check the ledger: for undamped motion the total never changes, kinetic peaks at equilibrium, potential peaks at the extremes.",
@@ -89,6 +97,14 @@ export const physicsW9Lessons: Lesson[] = [
     title: "Resonance and waves",
     minutes: 35,
     lede: "Find where a driven system amplifies the drive instead of following it, and read any wave's speed from its frequency and wavelength.",
+    opening: { mode: "steps", heading: "Drive, response, damping", labels: ["The match", "The response", "The control"] },
+    readFlow: [
+      { kind: "example", heading: "What 5% damping looks like" },
+      { kind: "idea", idea: 0, label: "Resonance" },
+      { kind: "idea", idea: 1, label: "Damping" },
+      { kind: "idea", idea: 2, label: "Waves" },
+      { kind: "move", heading: "Move the frequency or add damping" },
+    ],
     start:
       "A periodically forced system can respond much more strongly when the drive frequency approaches its natural frequency. || The steady-state response depends on the frequency ratio r = ω_drive/ω_n and the damping ratio ζ. Near resonance, light damping can produce a large amplification compared with the static deflection. || The two main design levers are straightforward: move the natural frequency away from the forcing frequency, or add damping to reduce the peak response.",
     use: "Whenever a periodic force meets an oscillator — wind on a bridge, an unbalanced rotor, a circuit driven at line frequency. || Compute the ratio r = ω_drive/ω_n and read the magnification off the response curve: near r = 1 with light damping, expect a large multiple of the static response. Fix it by moving ω_n away from the drive (change stiffness or mass) or by adding damping — the only thing standing between the system and a large motion. || Stop when you can name the peak's location and height — and check the flanks: as r → 0 the response tends to the static deflection F₀/k, and as r → ∞ the mass cannot keep up and the response falls.",
@@ -154,6 +170,14 @@ export const physicsW9Lessons: Lesson[] = [
     title: "Thermal expansion and heat transfer",
     minutes: 35,
     lede: "Size the expansion a temperature swing demands, compute the stress when something refuses to expand, and name the three ways heat moves before you calculate any of them.",
+    opening: { mode: "prose", heading: "First ask whether the part is free to move" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Free expansion" },
+      { kind: "example", heading: "A constrained rail" },
+      { kind: "idea", idea: 1, label: "Thermal stress" },
+      { kind: "idea", idea: 2, label: "Heat-transfer mode" },
+      { kind: "move", heading: "Choose expansion or stress from the restraint" },
+    ],
     start:
       "Temperature changes make materials expand or contract. If a part is free to move, the result is a change in length. If the movement is restrained, the result can be a large thermal stress. || Free expansion is ΔL = αL₀ΔT. For a fully restrained bar in one dimension, the corresponding stress magnitude is σ = EαΔT. || Heat can also move by conduction, convection, or radiation. Identify the dominant mode before choosing an equation.",
     use: "Whenever temperature changes on a structure or a part — rails, piping runs, engine components, electronics packaging. || Compute the free expansion ΔL = αL₀ΔT and ask where it goes: joints, bends, bellows. If it has nowhere to go, compute σ = EαΔT and compare against yield — heating a constrained bar puts it in compression, cooling in tension. For heat flow, name the dominant mode first (conduction, convection, radiation), then calculate. || Stop when you can state the gap the joint needs and the stress if the gap were missing — and check the sign: constrained heating compresses, constrained cooling stretches.",

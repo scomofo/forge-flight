@@ -14,6 +14,14 @@ export const materialsW17Lessons: Lesson[] = [
     title: "Reading a phase diagram",
     minutes: 35,
     lede: "Locating any alloy on a binary phase diagram, naming the phases present at a given temperature, and drawing the tie line that shows what each phase is actually made of.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A binary phase diagram maps equilibrium phases as a function of composition and temperature. || Composition is on the horizontal axis and temperature on the vertical. A point on the diagram tells you which phases are present at equilibrium, and tie lines tell you the compositions of coexisting phases. || The diagram predicts the equilibrium destination, not how quickly the material gets there. Kinetics and cooling rate come later."
     use: "Choosing an alloy, a casting temperature, or a heat-treatment window — anywhere the question is 'what phases am I dealing with.' || Fix the composition: drop a vertical line at your alloy's weight percent. Fix the temperature: draw the horizontal line. Read the field their intersection falls in — that is your phase assemblage. In a two-phase field, extend the horizontal tie line through your point to both boundaries; its ends are the compositions of the two phases, which are generally not your alloy's composition. || Stop when you can name every phase present and the composition of each. If your point sits exactly on a boundary, say which side you mean — the line itself is a transition, not a state.",
@@ -83,6 +91,14 @@ export const materialsW17Lessons: Lesson[] = [
     title: "The lever rule",
     minutes: 35,
     lede: "Deriving the lever rule from conservation of mass, and computing phase fractions from any tie line — the most-used calculation in alloy metallurgy.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "In a two-phase region, the overall alloy composition is a weighted average of the two phase compositions. The lever rule is just that mass balance solved for the phase fractions. || Read the two phase compositions from the ends of the tie line, then use the segment opposite the phase you want divided by the total tie-line length. || If you forget which arm goes with which phase, derive it again from the weighted-average equation instead of memorizing the picture."
     use: "Any two-phase field on any binary diagram, whenever someone asks 'how much of each.' || Draw the tie line at your temperature and read its ends, C_left and C_right. The fraction of the left phase is the opposite segment over the whole: W_left = (C_right − C₀)/(C_right − C_left). Check yourself: the two fractions sum to 1, and the phase nearer your composition dominates. || Stop when the fractions sum to one and the dominant phase is the one your alloy sits closest to. If a fraction comes out negative or above one, your point is not between the tie-line ends — re-read the diagram.",
@@ -151,6 +167,14 @@ export const materialsW17Lessons: Lesson[] = [
     title: "Transformations",
     minutes: 35,
     lede: "Tracing an alloy cooling through a eutectic — primary crystals, the eutectic reaction, the final microstructure — and how cooling rate rewrites the diagram's story.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "A phase diagram tells you the equilibrium phases, but the actual microstructure also depends on how fast the material is cooled. || Transformations require atomic rearrangement, and many of those changes need diffusion. Slow cooling gives the structure more time to approach equilibrium; rapid cooling can freeze in nonequilibrium compositions or phases. || Treat the phase diagram as the thermodynamic destination. Cooling rate determines whether the material has enough time to get there."
     use: "Cooling any alloy through a transformation, or choosing the cooling rate for a casting or heat treatment. || Drop a vertical line at your composition. Walk down in temperature: at each boundary, name what starts to form. At a eutectic, split the remaining liquid into the eutectic microconstituent, and apply the lever rule just above the eutectic temperature for primary versus eutectic fractions. Then ask the rate question: slow enough for diffusion to keep up, or fast enough to freeze the high-temperature state in? || Stop when you can sketch the room-temperature microstructure — which phases, roughly how much of each, in what arrangement — and say what changes if you quench instead.",

@@ -21,6 +21,14 @@ export const materialsW20Lessons: Lesson[] = [
     title: "The synthesis method for materials",
     minutes: 40,
     lede: "Keeping an assumption ledger for every materials claim, chaining all nine weeks into one argument, and trusting a limiting case over a finished number.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A defensible material choice includes the assumptions and evidence behind it, not just the material name. || Handbook properties, load factors, manufacturing assumptions, and environmental conditions all have limits. Synthesis means carrying those limits into the final decision. || Record whether each important input is assumed, derived, or measured. When test results disagree with the prediction, use that record to decide what to investigate first."
     use: "Any problem that needs more than one week's machinery — which is every real problem. || Open the ledger first: for each claim write whether it traces to structure, processing, or test, what breaks if it is false, and which limiting case would expose it. Then chain: structure → processing → properties → performance, each handoff stated in a sentence, dimensions checked at every joint. Then test limits: E → ∞, σ → 0, d → ∞, and demand sane behavior. When prediction and measurement disagree, autopsy the ledger before the arithmetic. || Stop when every claim has a provenance, every joint has a unit check, and you can name the assumption most likely to be wrong and what would prove it.",
@@ -98,6 +106,14 @@ export const materialsW20Lessons: Lesson[] = [
     title: "The spar, end to end",
     minutes: 50,
     lede: "Running the whole block — requirements to failure checks — on one 4×6 mm spar, and finding that strength is not the constraint.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "The spar trade study combines load, bending, stiffness, allowables, durability, and manufacturing. No material wins every category. || Work through the chain in order: gust load → root moment → stress and deflection → allowable checks → fatigue and fracture → manufacturing route. || The binding requirement may not be the one you expected. Let the calculations identify what actually controls the decision."
     use: "Requirements first: name the loads, the section, and the deflection limit. || Compute the chain link by link — M = (L/2)(s/2) with L the total lift, s the half-span and the lift spread uniformly; σ = Mc/I; δ = w·s⁴/(8EI) with w = L/(2s); allowable = strength/FoS — checking units at every joint. Then run the failure sanity checks: fatigue ratio against long-life fatigue strength, critical crack size against the part's dimensions. Then price each survivor: mass, processing route, what the choice assumes. || Stop when every candidate has a strength margin, a stiffness verdict, a mass, and a named binding constraint — and the call cites its week for every link.",
@@ -171,6 +187,14 @@ export const materialsW20Lessons: Lesson[] = [
     title: "The closed-book mastery check",
     minutes: 60,
     lede: "Twelve questions, one sitting, closed book — four chain, four failure, four mixed. 70% plus corrections opens the gate to Engineering 101.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "The Materials mastery check emphasizes two skills: carrying values correctly from one model to the next, and identifying the governing failure mode. || The question bank also covers bonding, phase diagrams, selection, and mechanical properties, but chain reasoning and failure diagnosis receive extra weight because later engineering work depends on them. || Closed book does not mean memory-only. Re-derive the relationships you need from the principles you have practiced."
     use: "Sit the check in one sitting with no references — twelve questions, every one answered. || 70% (9 of 12) clears the score gate. Then file a corrected solution for every missed chain or failure item: name the error, re-derive the answer, identify the failed instinct. || The gate opens on score plus repairs. Below 70%, retake — and file the corrections regardless, because the repair is the learning.",

@@ -13,6 +13,14 @@ export const engineeringW25Lessons: Lesson[] = [
     title: "The index picks the material; the joint picks the design",
     minutes: 35,
     lede: "Watch an Ashby index crown a winner — and then let the joint disqualify it. The system property is the minimum of the member and its connections.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A material index may identify the lightest material for a member, but the assembly still has to transfer load into and out of that member. || If a material requires inserts, adhesive bonds, special fasteners, or isolation from another material, those interfaces become part of the design problem. The joint can erase the advantage suggested by the raw material property. || Compare material-plus-joint concepts, not isolated material coupons."
     use: "When a selection study hands you a winner and you need to check whether the winner survives contact with assembly. || Run the index to make the shortlist, then force each candidate through its joints: can it be joined to its neighbors, by what process, with what efficiency, at what cost? || Stop when the decision names the joint explicitly — 'CFRP' alone leaves the hardest part of the design undecided.",
@@ -93,6 +101,14 @@ export const engineeringW25Lessons: Lesson[] = [
     title: "Interfaces: bolts, welds, and glue",
     minutes: 35,
     lede: "Size the three great joint families — mechanical, fusion, adhesive — and check the two silent killers: thermal mismatch and galvanic corrosion.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Bolts, welds, and adhesive bonds transfer load in different ways and introduce different failure modes. || Size the obvious load path first: bolt shear and bearing, weld strength including heat-affected-zone effects, or adhesive area and peel sensitivity. || Then check the interface environment. Thermal-expansion mismatch and galvanic corrosion can control the design even when the static joint-strength calculation passes."
     use: "When two parts meet and you must choose how they meet. || Pick the family by disassembly, inspection, and temperature needs; size it by its own arithmetic (bearing/shear, HAZ efficiency, bond area); then run the two compatibility checks — thermal mismatch stress and galvanic gap — in the service environment. || Stop when the joint has a strength number, a mismatch number, and a named answer for corrosion. A joint with no corrosion answer will get one from the field, eventually.",
@@ -173,6 +189,14 @@ export const engineeringW25Lessons: Lesson[] = [
     title: "The materials decision as a system decision",
     minutes: 35,
     lede: "Weigh properties against cost, schedule, risk, and repairability — and write the decision record that lets the choice survive its critics.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Back to the tow-hook bracket. Three honest candidates. CFRP: lightest, stiffest per kilogram, index winner — and the joint needs bonded steel inserts, the layup needs a qualified shop, the lead time is six weeks, and one stone chip in the wrong place starts a delamination you cannot see. Aluminum 6061-T6: bolts to the steel receiver with isolated fasteners, weldable to itself, any shop can cut it, two-day turnaround. Steel 1018: heaviest by far, cheapest by far, welds to the receiver at full efficiency, every welder on earth can do it. || Now the columns the property table doesn't have: part cost (CFRP 8×, aluminum 2×, steel 1×), lead time (weeks vs days vs days), inspection (ultrasound vs visual vs visual), repairability (replace vs weld vs weld), risk (new process vs routine vs routine). The mass requirement says 'at most 4 kg' — all three pass. Nothing in the requirements pays for CFRP's lightness. || So steel wins — not on any property index, but as the best system: the joint is trivial, the cost is trivial, the risk is trivial, and no requirement rewards the mass saved. Write that down, with the losers and their causes of death, and the decision survives review. Without the record it's just 'we picked steel' — and 'we picked steel' never wins an argument with 'but composites are better'.",
     use: "When the selection study is done and someone has to sign. || List the candidates that survived the hard screens (properties, joints, environment). Score them on the soft columns: cost, schedule, supply risk, inspection, repair. Check that some requirement actually rewards the winner's advantage — lightness nobody asked for is not an advantage. || Stop when the record names the winner, the rejected options with causes of death, the joint plan, and the risks you are accepting. An unwritten decision gets argued again the moment it's inconvenient.",

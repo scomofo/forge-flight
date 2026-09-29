@@ -14,6 +14,14 @@ export const materialsW15Lessons: Lesson[] = [
     title: "The four ways to make a metal strong",
     minutes: 35,
     lede: "Name the four strengthening mechanisms, say which dislocation obstacle each one installs, and price each one in ductility, cost, and complexity.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "Repeatedly bending a metal can make further plastic deformation harder, even though the alloy chemistry has not changed. || Plastic deformation in metals is carried largely by dislocation motion. Strengthening methods work by making that motion more difficult. || The four mechanisms to know here are grain refinement, work hardening, solid-solution strengthening, and precipitation strengthening. Each raises strength in a different way and comes with tradeoffs."
     use: "A part needs more yield strength than its alloy delivers in the soft condition. || Pick the mechanism whose obstacle fits the alloy and the shop: grain refinement when you control the thermomechanical schedule, work hardening when the part is formed anyway, solid solution when the alloy already carries solutes, precipitation when the alloy has a phase to grow and you can hold a furnace schedule. Name the obstacle, name the price. || Stop when you can say which mechanism is doing the work in a given part and what was traded to buy it. If two mechanisms are active, say which one dominates — they rarely split the credit evenly.",
@@ -89,6 +97,14 @@ export const materialsW15Lessons: Lesson[] = [
     title: "Heat treatment is processing, not chemistry",
     minutes: 35,
     lede: "Distinguish recovery, recrystallization, and grain growth in an anneal; explain why quenched steel is hard and why it must be tempered; and read a TTT diagram as a race between cooling and transformation.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "A blacksmith heats a chisel to orange, plunges it into oil, and it comes out hard enough to scratch glass — and so brittle that dropping it on the forge floor can crack it. So the smith reheats it gently, far below orange, and the chisel keeps most of its hardness while stopping its habit of shattering. Two heats, opposite purposes, same piece of steel. || Heat treatment rearranges what is already there. Annealing lets the defect structure relax in three acts: recovery (dislocations untangle, strength dips slightly), recrystallization (new strain-free grains nucleate, strength falls hard), grain growth (grains coarsen, and Hall-Petch quietly lowers the yield further). Quenching does the opposite: it cools so fast the carbon cannot escape, trapping it in a distorted lattice called martensite — enormously hard, dangerously brittle. Tempering is the negotiated peace: a modest reheat that trades some hardness back for toughness. || The chemistry never changed. The arrangement did. Processing and alloying are different operations — and two parts with identical mill certificates can have nothing in common mechanically.",
     use: "You hold a part whose strength is wrong — too soft, too brittle, or full of residual stress. || Ask what the microstructure needs: soften and clean it up (anneal past recrystallization), harden it through (quench past the TTT nose, then temper to the toughness you need), or grow obstacles on schedule (solution treat, quench, age to peak hardness). Pick temperature and time from what each stage requires, not from habit. || Stop when you can draw the microstructure before and after on a napkin: defect density, grain size, and phase. If you cannot sketch what changed, you are performing ritual, not heat treatment.",
@@ -168,6 +184,14 @@ export const materialsW15Lessons: Lesson[] = [
     title: "Choosing the process",
     minutes: 35,
     lede: "Run the decision sequence — requirement numbers, hard screens, mechanism match, process, verify — and defend a process-to-property choice in a design memo.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "A purchasing manager asks for a bolt that holds 800 MPa and stretches 10% before it breaks, at commodity price, in the millions. The catalog offers a dozen alloys and twice as many tempers. No single number picks the winner: the strongest option is brittle, the cheapest is soft, the toughest is expensive. || Choosing is a sequence. First, write the requirement as numbers: floors for strength and ductility, a ceiling for cost. Second, screen: any alloy-route pair that misses a floor is out before ranking begins — a point outside the window cannot win. Third, match the mechanism to what remains: what obstacle does this alloy actually offer, and what does the shop actually control? Fourth, name the process: temperature, time, deformation. Fifth, verify against the numbers you wrote in step one. || The sequence exists because the alternative is arguing about favorite materials.",
     use: "A part has a strength floor, a ductility floor, and a cost ceiling. || Write the three numbers. Throw out every alloy-route pair that misses any of them. Among the survivors, pick the cheapest process that clears the floors with margin — and name the strengthening mechanism doing the work and what was traded away. || Stop when the memo defends itself: requirement numbers, chosen alloy and route, predicted properties with margin, the mechanism, the trade. If a stranger cannot grade it without asking you anything, it is not done.",

@@ -13,6 +13,15 @@ export const physicsW5Lessons: Lesson[] = [
     title: "Impulse and momentum",
     minutes: 35,
     lede: "Relate force and contact time to a change in momentum, and use impulse to estimate forces in impacts, catches, and launches.",
+    opening: { mode: "prose", heading: "Same momentum change, different stopping time" },
+    readFlow: [
+      { kind: "example", heading: "Compare glove and wall" },
+      { kind: "idea", idea: 0, label: "Impulse" },
+      { kind: "idea", idea: 1, label: "Signs" },
+      { kind: "aside", heading: "Important limit", body: "Average impact force is not peak force. Real contact-force traces usually peak well above the average." },
+      { kind: "idea", idea: 2, label: "Peak force" },
+      { kind: "move", heading: "Use before/after momentum to audit impact force" },
+    ],
     start:
       "If you catch a fast ball and let your hand move backward with it, the stop takes longer than if the ball hits a rigid wall. The momentum change can be the same in both cases, but the average force is not. || Impulse is force accumulated over time: J = F_avgΔt. Momentum is p = mv, and the impulse-momentum theorem says J = Δp. || For a fixed momentum change, increasing the stopping time reduces the average force. That is the basic physics behind airbags, crumple zones, padding, and bending your knees on landing.",
     use: "Whenever a force acts over a time interval and you need the resulting motion — impacts, launches, thrust. Also whenever a textbook quotes a huge force and you suspect the interval: divide the momentum change by the time to audit the claim. || Compute the momentum change Δp = m·(v − v₀) as a signed quantity — direction matters. Estimate or measure the interaction time Δt. Divide: F_avg = Δp/Δt. || Stop when you can say whether the average force is survivable, plausible, or absurd. If the time is unknown, say so and bound it — the force estimate is only as good as the time estimate.",
@@ -83,6 +92,14 @@ export const physicsW5Lessons: Lesson[] = [
     title: "Conservation and center of mass",
     minutes: 35,
     lede: "Choose the system boundary, decide whether external impulse is negligible, then use momentum conservation and center of mass to describe the motion.",
+    opening: { mode: "steps", heading: "Draw the system boundary", labels: ["The interaction", "The condition", "The boundary"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Boundary" },
+      { kind: "example", heading: "Two skaters" },
+      { kind: "idea", idea: 1, label: "Center of mass" },
+      { kind: "idea", idea: 2, label: "Approximation" },
+      { kind: "move", heading: "Conserve momentum only over the interval you can defend" },
+    ],
     start:
       "Two skaters push apart on nearly frictionless ice. Each one gains momentum, but the total momentum of the two-skater system stays the same. || Momentum is conserved when the net external impulse on the chosen system is negligible. The forces the skaters exert on each other are internal, so they redistribute momentum rather than change the total. || The important step is choosing the system. Include both skaters and their push is internal. Analyse only one skater and the other skater's push is external.",
     use: "Before solving any multi-body problem: draw the boundary and ask whether external forces act during the interval. Recoil, explosions, and collisions are the canonical cases — the interaction is fast, so external forces (friction, gravity over milliseconds) are negligible and the system is effectively isolated. || Add up m·v for everything inside, with signs. Set the total before equal to the total after. Solve for the unknown velocity. || Stop when the accounting balances: the total after must equal the total before to the precision of your data. If it doesn't, either the boundary leaked (an external force acted) or the velocities are wrong.",
@@ -153,6 +170,14 @@ export const physicsW5Lessons: Lesson[] = [
     title: "Collisions: elastic and inelastic",
     minutes: 35,
     lede: "Use momentum conservation and coefficient of restitution to solve one-dimensional collisions, then check how much kinetic energy was retained.",
+    opening: { mode: "prose", heading: "Momentum survives every isolated collision" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Equation one" },
+      { kind: "idea", idea: 1, label: "Equation two" },
+      { kind: "example", heading: "Elastic versus stick-together" },
+      { kind: "idea", idea: 2, label: "Energy check" },
+      { kind: "move", heading: "Solve velocities, then inspect the energy loss" },
+    ],
     start:
       "A steel ball in a Newton's cradle rebounds very differently from a lump of clay, but both impacts obey momentum conservation when external impulse is negligible. || Kinetic energy is conserved only in an elastic collision. The coefficient of restitution e compares separation speed after impact with approach speed before impact. e = 1 is perfectly elastic; e = 0 means no rebound along the line of impact. || For a one-dimensional two-body collision, momentum conservation plus the restitution relation gives two equations for the two outgoing velocities.",
     use: "For any 1D two-body collision: write momentum conservation, m₁v₁ + m₂v₂ = m₁u₁ + m₂u₂. Add the restitution condition, u₂ − u₁ = e·(v₁ − v₂). Solve the pair for the two unknowns — two equations, two unknowns, done. || Use e = 1 for ideal elastic (billiards, atoms), e = 0 for stick (clay, coupled railcars), and a measured e in between for everything real. || Stop when you have both outgoing velocities and have checked momentum balances. Then compute the kinetic energy lost — it is the check that the collision was what you claimed.",

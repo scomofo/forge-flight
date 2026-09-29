@@ -13,6 +13,15 @@ export const physicsW3Lessons: Lesson[] = [
     title: "Newton's laws and the models they live in",
     minutes: 35,
     lede: "State the three laws as a working contract, compute motion from net force, and name the boundaries where the contract expires.",
+    opening: { mode: "prose", heading: "Start by choosing the body" },
+    readFlow: [
+      { kind: "aside", heading: "Before the algebra", body: "Say which object you are analysing and which frame you are using. Most force mistakes start before the equation." },
+      { kind: "idea", idea: 0, label: "First law" },
+      { kind: "idea", idea: 1, label: "Second law" },
+      { kind: "example", heading: "Find the engine force" },
+      { kind: "idea", idea: 2, label: "Third law" },
+      { kind: "move", heading: "Sum forces on one body" },
+    ],
     start:
       "When a bus brakes hard, standing passengers lurch forward. Nothing has pushed them toward the front; the bus slowed under their feet while their bodies kept their previous velocity. || Newton's first law describes that tendency. The second law tells us how velocity changes when there is a net force: ΣF = ma. The third law says interactions come in pairs: if A pushes B, B pushes A back with equal magnitude and opposite direction, on a different body. || The practical habit is to choose one body, identify the forces acting on it, add them as vectors, and use ΣF = ma. That is the core calculation for this whole section.",
     use: "Whenever something moves or conspicuously does not — a car accelerating, a bridge standing, a rocket climbing. Also whenever you must decide what the system is: the laws apply to a chosen body, and choosing well is half the work. || Identify the body. List the forces on it and only it — third-law partners live on the other body and do not enter your sum. Add them as vectors to get ΣF, divide by mass, and you have the acceleration; integrate once for velocity, twice for position. Name your frame: the laws hold in inertial frames — frames moving at constant velocity. In a braking bus or a turning car you will measure phantom forces; those are the frame accelerating, not new physics. || Stop applying Newton when the model breaks: speeds near light (relativity takes over) or atomic scales (quantum mechanics). Deformable solids and turbulent fluids still obey Newton; they need richer material and flow models layered on top. For cars, bridges, gliders, and spacecraft in normal flight, Newton is exact enough that the error is in your measurements, not the law.",
@@ -93,6 +102,14 @@ export const physicsW3Lessons: Lesson[] = [
     title: "Contact forces: normal, friction, tension, springs",
     minutes: 35,
     lede: "Compute the normal force from the constraint it enforces, apply the two-regime friction model, and treat tension and spring force as force transmitters.",
+    opening: { mode: "steps", heading: "Name the interaction forces", labels: ["Contact", "Rules", "Direction"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Normal" },
+      { kind: "idea", idea: 1, label: "Friction" },
+      { kind: "example", heading: "Incline check" },
+      { kind: "idea", idea: 2, label: "Strings and springs" },
+      { kind: "move", heading: "Use the constraint to find the force" },
+    ],
     start:
       "Set a book on a table and let go. It does not accelerate downward, so the table must be pushing up on it. || That upward contact force is the normal force. Its direction is perpendicular to the surface, and its magnitude comes from whatever is required by the motion constraint. On a level table with no vertical acceleration, that happens to be N = mg. || Friction, tension, and spring force are also interaction forces. Their values depend on the situation, so do not assign them from memory before writing the force balance.",
     use: "Every statics and dynamics problem with touching parts — which is nearly all of them. || Normal force: perpendicular to the surface, magnitude from the constraint (on flat ground N = mg; on an incline N = mg·cosθ; solve ΣF⊥ = 0 in general). Static friction: fs ≤ μs·N, matching the applied push up to the limit, opposing impending slip. Kinetic friction: fk = μk·N, opposing the actual sliding, usually smaller. Tension: uniform throughout an ideal massless string, pulling away from the body along the string. Springs: F = −kx, restoring toward equilibrium. || Stop when every contact has its force named with direction and magnitude rule. If you cannot say which way friction points, ask which way the surfaces would slip without it — friction opposes that.",
@@ -173,6 +190,15 @@ export const physicsW3Lessons: Lesson[] = [
     title: "Free-body diagrams: the discipline",
     minutes: 35,
     lede: "Isolate a body, enumerate every force on it and none that are not, and resolve the diagram into solvable equations.",
+    opening: { mode: "prose", heading: "Draw first" },
+    readFlow: [
+      { kind: "move", heading: "The four-step routine" },
+      { kind: "idea", idea: 0, label: "Isolate" },
+      { kind: "aside", heading: "Force test", body: "If you cannot name the agent exerting a force, leave that arrow off the diagram." },
+      { kind: "idea", idea: 1, label: "Enumerate" },
+      { kind: "example", heading: "Two bodies, two diagrams" },
+      { kind: "idea", idea: 2, label: "Choose axes" },
+    ],
     start:
       "Most force problems become difficult because the force diagram is incomplete, not because the algebra is advanced. || Start by isolating one body. Draw every force acting on that body: weight, contact forces, tension, spring forces, or any applied push or pull. Then choose axes, resolve components, and write ΣF = ma. || Treat the diagram as part of the solution, not as decoration. Every force term in the equations should correspond to an arrow, and every arrow should appear in the equations.",
     use: "Before any force calculation with more than one force — which is to say, nearly always. || One: isolate — redraw the body alone, disconnected from everything. Two: enumerate — gravity (mg, straight down, always), normal (perpendicular to each contact), friction (parallel to each contact, opposing slip), tension (along each string, away from the body), springs and applied pushes. Three: draw — arrows starting on the body, labeled, roughly to scale. Four: resolve — pick axes (tilt them with the incline when there is one), sum components, set equal to ma. || Stop when the diagram and the equations agree on every force and you can point at each term in ΣF and name its arrow. If an equation has a term with no arrow, or an arrow with no term, the diagram is unfinished.",

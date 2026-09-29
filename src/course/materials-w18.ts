@@ -18,6 +18,14 @@ export const materialsW18Lessons: Lesson[] = [
     title: "Four families, four property packs",
     minutes: 35,
     lede: "Comparing metals, ceramics, polymers, and composites as property packs — not brand names — and which demand forces each choice, and what it costs.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "Material families come with characteristic combinations of stiffness, density, temperature capability, and failure mode. || Metals, ceramics, polymers, and composites occupy different parts of that property space because their bonding and structure differ. Processing can move a material within its family's range, but it cannot erase the family's basic limits. || Start selection with the job's non-negotiable requirements. Those usually narrow the family before you ever choose a specific grade."
     use: "When a job names its demands — conduct, stay hot, take a hit, be light, be stiff in one direction. || Read each family's envelope at its best edge, and ask which demand kills which family. The survivor is your starting point, not your answer. || Stop when you can name the winner and its price in one sentence: the family, the demand that forced it, and the property you sacrificed. If every family fails a demand, the demand itself is what needs renegotiating.",
@@ -93,6 +101,14 @@ export const materialsW18Lessons: Lesson[] = [
     title: "Direction and temperature",
     minutes: 35,
     lede: "Quantifying anisotropy with the rule of mixtures, the three mechanisms by which temperature kills a material, and designing to the weak direction and the hot limit.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "A material property quoted in a datasheet is only meaningful for the direction and temperature at which it applies. || Composites can be very stiff along the fibers and much less stiff across them. Temperature changes can soften polymers, accelerate creep in metals, or create thermal-shock problems in ceramics. || Check the weak direction and the actual service temperature before using a headline property value."
     use: "When a part carries load in a known direction or sees sustained heat. || Compute the mixture bounds for the direction you actually load; compare the service temperature against the family's killing mechanism — Tg for polymers, 0.4·Tm for metals under load, thermal shock for ceramics. || Stop when the weak-direction stiffness and the hot-limit strength both clear the demand with margin. If only the brochure direction clears it, you do not have a design.",
@@ -167,6 +183,14 @@ export const materialsW18Lessons: Lesson[] = [
     title: "Choosing under constraints",
     minutes: 35,
     lede: "Separating hard screens from soft tradeoffs, killing families against the screens, ranking the survivors — and stating the price of the winner out loud.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Material selection works best when hard constraints are separated from preferences. || A hard constraint is a requirement the material must meet: service temperature, minimum stiffness, corrosion resistance, or some other non-negotiable limit. Materials that fail a hard screen are removed before ranking. || After screening, rank the survivors on softer tradeoffs such as mass, cost, manufacturability, or repairability, and state the downside of the final choice."
     use: "When a part needs a family. || List every constraint — temperature, load, environment, shape, volume, cost. Mark each as screen (violating it kills the part) or tradeoff (it ranks survivors). Apply screens at the families' best envelope edges, so a kill is honest. || Stop when one family stands and you can state its price. If none stand, a constraint must move — and relaxing a screen is a decision someone signs off on, with the consequences named.",

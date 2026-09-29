@@ -14,6 +14,14 @@ export const engineeringW23Lessons: Lesson[] = [
     title: "Follow the load",
     minutes: 35,
     lede: "Trace a force from where it enters a structure to where it leaves, name every member that carries it, and don't design a part until you can draw its load path.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A load path is the route a force takes through the structure to the supports and ultimately to ground. || Trace that route through every member and interface before sizing individual parts. If the geometry or connection detail changes, the load path may change too, even when the applied external load stays the same. || The useful question at every interface is simple: where does the force go next, and what local part has to carry it?"
     use: "When you are sizing anything that carries force — a bolt, a bracket, a spar, a joint — or when a failure, a repair, or a design change touches a structure. || Sketch the boundary of your part, mark every place force enters and leaves, and list the members in order from entry to exit. For each interface ask: what is the load here, and what was this interface sized for? || Stop when the path is a single unbroken chain to ground and every link has a named load. A path with a gap means some load has no assigned carrier.",
@@ -94,6 +102,14 @@ export const engineeringW23Lessons: Lesson[] = [
     title: "Margins are priced insurance",
     minutes: 35,
     lede: "Factor of safety and margin of safety: compute them from applied and allowable loads, keep limit and ultimate loads distinct, and read a margin table the way a reviewer does — worst line first.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Margins compare available capability with applied demand. They are only meaningful when the load case, allowable, and failure mode are clearly defined. || Factor of safety is capability divided by demand. Margin of safety is FoS − 1. In regulated fields, limit and ultimate loads may also have precise definitions that come from the applicable standard. || Build a margin table across the relevant load cases and failure modes. The governing line is the smallest acceptable margin, not the average."
     use: "When a part is sized, or when you inherit a part and must decide whether it is good enough. || For each governing load case: applied (the honest worst the part sees), allowable (yield for the limit row, ultimate strength for the ultimate row), FoS = allowable/applied, MS = FoS − 1. Keep limit and ultimate in separate rows — different allowables, different factors. || Stop when every row has MS ≥ 0 and the thinnest rows are the ones you understand best. A negative margin anywhere means a redesign.",
@@ -169,6 +185,14 @@ export const engineeringW23Lessons: Lesson[] = [
     title: "Design against what you fear",
     minutes: 35,
     lede: "Run a failure-modes-and-effects analysis: list how each part can fail, score severity, occurrence, and detection, and spend your design effort where the risk priority number is highest.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "FMEA is a structured way to identify failure modes before the design is frozen. || For each mode, record the effect, likely cause, severity, occurrence, and detection rating. The risk-priority number S × O × D can help organize attention, but the individual severity rating still matters even when the product is not the largest. || The real value is the mitigation record: what change reduces the risk, who owns it, and what the new ratings look like after the change."
     use: "When a subsystem's design is taking shape and the failure modes are still cheap to prevent — never after the tooling is cut. || List the functions, then for each: how can it fail, what happens, why. Score severity, occurrence, detection 1–10; compute RPN = S·O·D. Attack the highest RPNs with mitigations that lower occurrence (redundancy, derating) or improve detection (tests, inspections, sensors). || Stop when the top RPNs are acceptable and every mitigation has an owner. A row with no mitigation is a risk the team has chosen to accept — write that choice down.",

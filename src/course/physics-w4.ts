@@ -13,6 +13,14 @@ export const physicsW4Lessons: Lesson[] = [
     title: "Work and the work-energy theorem",
     minutes: 35,
     lede: "Compute the work of a force as F·d·cosθ, add works with their signs, and read the net work as the change in kinetic energy.",
+    opening: { mode: "prose", heading: "Ask what part of the force acts along the motion" },
+    readFlow: [
+      { kind: "example", heading: "Jump straight from work to speed" },
+      { kind: "idea", idea: 0, label: "Projection" },
+      { kind: "idea", idea: 2, label: "Signs" },
+      { kind: "idea", idea: 1, label: "The theorem" },
+      { kind: "move", heading: "Use work when time is not the question" },
+    ],
     start:
       "A tow truck drags a car 40 m while the cable pulls at 20° above horizontal. Not all of that cable force contributes to the car's forward motion. || Work is force applied through a displacement: W = Fd cosθ. The cosine keeps only the component of force along the displacement. A force perpendicular to the motion does zero work. || The work-energy theorem says the net work on an object equals its change in kinetic energy. That gives you another way to solve motion problems: add the work done by each force, then use W_net = ΔK to find the speed.",
     use: "When a force acts over a distance and you want the resulting speed — pushes, pulls, drags, braking — or when you need to split a complicated force history into signed contributions. || Resolve each force into the component along the displacement (multiply by cosθ, with θ measured from the direction of motion). Multiply by the distance. Add all the signed works. Set the total equal to ΔK and solve for the unknown — usually a speed. || Stop when the net work equals the change in kinetic energy and every force that moved the body has its line in the ledger. If a force acted but the displacement was zero — holding a weight still — its work is zero; the tired arms are chemistry, not mechanics.",
@@ -73,6 +81,14 @@ export const physicsW4Lessons: Lesson[] = [
     title: "Potential energy and conservation",
     minutes: 35,
     lede: "Sort forces into conservative and non-conservative, bank energy as gravitational and elastic potential, and predict motion from energy alone.",
+    opening: { mode: "steps", heading: "Follow the energy", labels: ["The system", "The storage", "The balance"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Conservative forces" },
+      { kind: "example", heading: "Drop from height" },
+      { kind: "idea", idea: 2, label: "Mass cancellation" },
+      { kind: "idea", idea: 1, label: "Energy picture" },
+      { kind: "move", heading: "Name every joule" },
+    ],
     start:
       "A roller coaster climbs 20 m and then drops. You can predict its speed at the bottom without calculating every force along the track. || Gravity and ideal springs are conservative forces: their work can be represented with potential energy. For gravity near Earth's surface, U = mgh. For a spring, U = ½kx². Friction is different because it converts mechanical energy into thermal energy. || If only conservative forces act, K + U stays constant. If friction or another non-conservative force acts, include its work explicitly in the energy balance.",
     use: "When heights, stretches, or speeds trade off and you want one from the other — drops, launches, pendulums, springs — without touching a force diagram. || Choose a datum (h = 0) for gravitational potential; it is differences that matter, not the absolute. Write K₁ + U₁ = K₂ + U₂, counting gravitational and elastic potential on both sides. Put any non-conservative work (friction, drag) on the ledger as a loss: K₁ + U₁ + W_nc = K₂ + U₂. || Stop when every joule is named — kinetic, gravitational, elastic, or lost — and the total on the left equals the total on the right. If the numbers do not balance, a term is missing, not the law.",
@@ -133,6 +149,15 @@ export const physicsW4Lessons: Lesson[] = [
     title: "Power, efficiency, and energy budgets",
     minutes: 35,
     lede: "Price energy in watts, compute efficiency as useful over input, and write an energy budget that names every loss.",
+    opening: { mode: "prose", heading: "Same work, different rate" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Power" },
+      { kind: "example", heading: "Audit the hoist" },
+      { kind: "idea", idea: 1, label: "Efficiency" },
+      { kind: "aside", heading: "Sanity check", body: "If efficiency comes out above 100%, reverse the ratio or find the missing input energy." },
+      { kind: "idea", idea: 2, label: "Budget" },
+      { kind: "move", heading: "Close the energy balance" },
+    ],
     start:
       "Two cranes lift the same beam to the same height. One takes a minute and the other takes ten. They do the same amount of work, but not at the same rate. || Power is the rate of energy transfer: P = W/Δt. A watt is one joule per second. When a force acts along the motion, you can also use P = Fv. Efficiency is useful output divided by input. || In a real machine, the difference between input and useful output appears as losses such as heat, sound, friction, and deformation. A complete energy budget should account for all of it.",
     use: "When the question is how fast energy flows or where it went — motor sizing, battery life, machine efficiency, utility bills. || Compute the useful work from the task (mgh for a lift, ½mv² for a launch). Divide by the time for power, or by the input energy for efficiency. Name the losses: friction, resistance heating, air drag, sound, idle draw. || Stop when input = useful + losses, with each loss attached to a physical mechanism. If efficiency exceeds 100%, a measurement is wrong — recheck the input, which is usually where the error hides.",
