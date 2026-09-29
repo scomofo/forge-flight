@@ -13,12 +13,12 @@ export const physicsW7Lessons: Lesson[] = [
     index: 19,
     title: "Stress and strain",
     minutes: 35,
-    lede: "You will read stress as force per area and strain as stretch per length, connect them through Hooke's law, and size a bar from δ = FL/AE.",
+    lede: "Read stress as force per area and strain as stretch per length, connect them through Hooke's law, and size a bar from δ = FL/AE.",
     start:
-      "A crane picks up a two-ton steel beam on a cable no thicker than your thumb. The cable stretches — every loaded material stretches, steel included — and the engineer who sized it did not guess. She divided. || Stress, σ, is force spread over area: σ = F/A. Strain, ε, is stretch relative to length: ε = ΔL/L. The first is what the material feels; the second is how it answers. Strain has no units — it is a ratio, the dimensionless signal Week 1 taught you to respect. || Internal force has to go somewhere. It distributes over the cross-section, so a thicker cable feels less stress for the same load. That is the whole reason cables, columns, and bones are sized by area, not by vibes: double the diameter and the stress falls by four.",
-    use: "Whenever you size a member for axial load — cable, column, tie rod. || Compute the stress σ = F/A, compare it to what the material is allowed (more on that next lesson), then compute the stretch δ = FL/AE and check it is acceptable. Force, length, area, modulus — all four have to be in SI before the arithmetic. || Stop when the stress is under the allowable and the stretch is within whatever the job tolerates. A cable that holds but stretches a meter is a design failure with extra steps.",
+      "A crane picks up a two-ton steel beam on a cable no thicker than your thumb. The cable stretches — every loaded material stretches, steel included — and the engineer who sized it did not guess: she divided the load by the area. || Stress, σ, is force spread over area: σ = F/A. Strain, ε, is stretch relative to length: ε = ΔL/L. The first is what the material feels; the second is how it answers. Strain has no units — it is a ratio, the dimensionless signal Week 1 taught you to respect. || Internal force has to go somewhere. It distributes over the cross-section, so a thicker cable feels less stress for the same load. That is the whole reason cables, columns, and bones are sized by area, not by vibes: double the diameter and the stress falls by four.",
+    use: "Whenever you size a member for axial load — cable, column, tie rod. || Compute the stress σ = F/A, compare it to what the material is allowed (more on that next lesson), then compute the stretch δ = FL/AE and check it is acceptable. Force, length, area, modulus — all four have to be in SI before the arithmetic. || Stop when the stress is under the allowable and the stretch is within whatever the job tolerates. A cable that holds but stretches a meter has still failed its design.",
     example:
-      "A 10 mm diameter steel rod, 2 m long, hangs a 15 kN load. Does it hold, and how much does it stretch? || Area A = π(0.005)² = 7.85×10⁻⁵ m². Stress σ = 15000 / 7.85×10⁻⁵ = 1.91×10⁸ Pa = 191 MPa. Mild steel yields around 250 MPa, so the stress is under yield with room to spare. Stretch δ = FL/AE = 15000 × 2 / (7.85×10⁻⁵ × 200×10⁹) = 1.91×10⁻³ m. || 191 MPa — the rod holds. 1.91 mm of stretch on a 2 m rod — a strain of about 0.001, one part in a thousand. Steel feels rigid because the modulus is enormous, not because it does not stretch.",
+      "A 10 mm diameter steel rod, 2 m long, hangs a 15 kN load. Does it hold, and how much does it stretch? || Area A = π(0.005)² = 7.85×10⁻⁵ m². Stress σ = 15000 / 7.85×10⁻⁵ = 1.91×10⁸ Pa = 191 MPa. Mild steel yields around 250 MPa, so the stress is under yield with room to spare. Stretch δ = FL/AE = 15000 × 2 / (7.85×10⁻⁵ × 200×10⁹) = 1.91×10⁻³ m. || 191 MPa — the rod holds. 1.91 mm of stretch on a 2 m rod — a strain of about 0.001, one part in a thousand. Steel feels rigid because the modulus is enormous; it stretches all the same.",
     ideas: [
       {
         heading: "Stress is internal force per area",
@@ -31,7 +31,7 @@ export const physicsW7Lessons: Lesson[] = [
         formula: "ε = ΔL/L (dimensionless)",
       },
       {
-        heading: "Hooke's law is the material's voice",
+        heading: "Hooke's law: proportional stress and strain",
         body: "In the elastic range, stress and strain are proportional: σ = Eε, where E, Young's modulus, is the material's stiffness — 200 GPa for steel, 69 for aluminum, about 10 for wood along the grain. Combine with the definitions and the geometry and material separate cleanly: δ = FL/AE. F and L are your design, A is your sizing, E is your material choice.",
         formula: "δ = FL/AE",
       },
@@ -78,12 +78,12 @@ export const physicsW7Lessons: Lesson[] = [
     index: 20,
     title: "Bending",
     minutes: 35,
-    lede: "You will see why a beam bends the way it does, read the second moment of area as shape's leverage, and use δ = FL³/3EI as a scaling law before you trust it as a number.",
+    lede: "See why a beam bends the way it does, read the second moment of area as shape's leverage, and use δ = FL³/3EI as a scaling law before you trust it as a number.",
     start:
-      "Stand on a diving board and it sags. The top surface stretches, the bottom surface squeezes, and somewhere in the middle a layer does nothing at all. || Bending is differential stretch: strain varies through the depth, tension on the convex side, compression on the concave side, zero at the neutral axis. The second moment of area, I = ∫y²dA, measures how far the material sits from that axis — material far from the middle counts quadratically, because it is both more strained and has more leverage. || That is why floor joists are deep, not wide, and why an I-beam puts almost all its steel in the flanges. Depth is the cheap lever: for a rectangle, I = bh³/12, and that cube is the whole game.",
-    use: "When you need a beam's stiffness before you trust any single number: read the formula as a scaling law. || Deflection scales with L³ — double the span, eight times the sag. It scales inversely with h³ — double the depth, one-eighth the sag. It scales inversely with E — the material lever, the weakest of the three. || Stop trusting the number when the beam stops being slender or the deflection stops being small: δ beyond about a tenth of the span means the linear formula is leaving its range. Scaling laws survive; precise digits do not.",
+      "Stand on a diving board and it sags. The top surface stretches, the bottom surface squeezes, and somewhere in the middle a layer does nothing at all. || Bending is differential stretch: strain varies through the depth, tension on the convex side, compression on the concave side, zero at the neutral axis. The second moment of area, I = ∫y²dA, measures how far the material sits from that axis — material far from the middle counts quadratically, because it is both more strained and has more leverage. || That is why floor joists are deep, not wide, and why an I-beam puts almost all its steel in the flanges. Depth is the cheap lever: for a rectangle, I = bh³/12, and the cube means a little extra depth buys a lot of stiffness.",
+    use: "When you need a beam's stiffness before you trust any single number: read the formula as a scaling law. || Deflection scales with L³ — double the span, eight times the sag. It scales inversely with h³ — double the depth, one-eighth the sag. It scales inversely with E — the material lever, the weakest of the three. || Stop trusting the number when the beam stops being slender or the deflection stops being small: δ beyond about a tenth of the span means the linear formula is leaving its range. Use the scaling law for comparisons, and don't ask the precise digits for more than the linear theory can give.",
     example:
-      "A steel ruler cantilevers 300 mm off a desk: 25 mm wide, 2 mm thick, 5 N at the tip. How far does it droop? || I = bh³/12 = 0.025 × (0.002)³/12 = 1.67×10⁻¹¹ m⁴. δ = FL³/3EI = 5 × (0.3)³ / (3 × 200×10⁹ × 1.67×10⁻¹¹) = 0.0135 m. || 13.5 mm of droop — about a twentieth of the span, inside the formula's honest range. Now halve the thickness to 1 mm: I falls by eight, so δ rises eightfold to about 10.8 cm, and the small-deflection assumption is broken. The scaling law warned you; the precise number was never the point.",
+      "A steel ruler cantilevers 300 mm off a desk: 25 mm wide, 2 mm thick, 5 N at the tip. How far does it droop? || I = bh³/12 = 0.025 × (0.002)³/12 = 1.67×10⁻¹¹ m⁴. δ = FL³/3EI = 5 × (0.3)³ / (3 × 200×10⁹ × 1.67×10⁻¹¹) = 0.0135 m. || 13.5 mm of droop — about a twentieth of the span, inside the formula's honest range. Now halve the thickness to 1 mm: I falls by eight, so δ rises eightfold to about 10.8 cm, and the small-deflection assumption is broken. The scaling law warned you: halving the thickness costs eightfold. Past about δ/L = 0.1 the precise number is no longer honest, but the scaling law still is.",
     ideas: [
       {
         heading: "Bending is differential stretch",
@@ -133,7 +133,7 @@ export const physicsW7Lessons: Lesson[] = [
           "Assume the measurement is wrong",
         ],
         answer: 0,
-        why: "Predict-then-measure exists for the gap. Clamp rotation, load placement, and E scatter are the usual suspects — the error budget is the engineering.",
+        why: "Predict-then-measure exists for the gap. Clamp rotation, load placement, and E scatter are the usual suspects — budgeting those errors is what the exercise teaches.",
       },
     ],
   },
@@ -143,26 +143,26 @@ export const physicsW7Lessons: Lesson[] = [
     index: 21,
     title: "Factor of safety",
     minutes: 35,
-    lede: "You will distinguish ultimate from allowable, name what a safety factor actually covers, and practice the predict-then-measure discipline that keeps structures honest.",
+    lede: "Distinguish ultimate from allowable, name what a safety factor actually covers, and practice the predict-then-measure discipline that keeps structures honest.",
     start:
       "Every bridge you drive over was designed to hold several of you at once — not because engineers are timid, but because the world is uncertain. || The factor of safety is n = (load that breaks it) / (load you allow). The allowable stress is the ultimate divided by n, and everything gets sized against the allowable, never the ultimate. A cable with 45 kN ultimate strength and n = 3.75 carries 12 kN, and the 33 kN of unused capacity is not waste. || It is not waste because it covers four specific unknowns: loads are guesses (that truck might be overloaded), materials vary (that heat of steel is not the test coupon), models are approximate (the support is not perfectly fixed), and consequences are asymmetric (a bracket failing ruins a day; a bridge failing ruins lives).",
-    use: "When you commit to a size: divide the ultimate by the chosen n, then size against the allowable. || Pick n from the uncertainty and the consequence — ~1.5 where weight is everything and knowledge is deep (aircraft), 3–4 for ordinary structures, higher where failure is catastrophic or loads are wild guesses. || Stop when the margin covers the unknowns, not when the number feels brave. Oversized margins cost mass and money; undersized ones cost the structure. The factor is a decision, not a decoration.",
+    use: "When you commit to a size: divide the ultimate by the chosen n, then size against the allowable. || Pick n from the uncertainty and the consequence — ~1.5 where weight is everything and knowledge is deep (aircraft), 3–4 for ordinary structures, higher where failure is catastrophic or loads are wild guesses. || Pick it deliberately. Oversized margins cost mass and money; undersized ones cost the structure.",
     example:
-      "A hoist cable has an ultimate tensile strength of 45 kN and must lift 12 kN, day after day. What is the factor of safety, and what stress is the cable allowed? || n = 45/12 = 3.75. If the cable's cross-section is 60 mm², the ultimate stress is 45000/60 = 750 MPa and the allowable is 750/3.75 = 200 MPa — the working stress must stay under 200 MPa. || 3.75 on the load, 200 MPa allowable on the stress. The same n, two languages. The cable is sized by the allowable; the 45 kN ultimate is a fact about the world, not a target.",
+      "A hoist cable has an ultimate tensile strength of 45 kN and must lift 12 kN, day after day. What is the factor of safety, and what stress is the cable allowed? || n = 45/12 = 3.75. If the cable's cross-section is 60 mm², the ultimate stress is 45000/60 = 750 MPa and the allowable is 750/3.75 = 200 MPa — the working stress must stay under 200 MPa. || 3.75 on the load, 200 MPa allowable on the stress. The same n, two languages. The cable is sized by the allowable; the 45 kN ultimate just says where breaking would start.",
     ideas: [
       {
-        heading: "Allowable is ultimate divided by humility",
-        body: "No one knows the exact load, the exact strength of this particular piece, or the exact truth of the model. The factor of safety is the admission, priced in. It does not cover a different failure mode — buckling, fatigue, and corrosion each get their own analysis — it covers the unknowns inside the mode you analyzed.",
+        heading: "Allowable is ultimate divided by the unknowns",
+        body: "No one knows the exact load, the exact strength of this particular piece, or the exact truth of the model. The factor of safety covers those unknowns, priced as a ratio. It does not cover a different failure mode — buckling, fatigue, and corrosion each get their own analysis — it covers the unknowns inside the mode you analyzed.",
         formula: "σ_allow = σ_ultimate / n",
       },
       {
         heading: "Margins have a price",
-        body: "n = 10 on everything is not safer engineering, it is heavier and more expensive engineering — and weight is itself a load. Aircraft fly at n ≈ 1.5 because every kilogram costs fuel forever; they earn it with testing, inspection, and deep knowledge. The factor is negotiated against uncertainty, knowledge, and consequence — never copied blindly.",
+        body: "Designing everything to n = 10 does not buy safety for free — it buys mass and cost, and weight is itself a load. Aircraft fly at n ≈ 1.5 because every kilogram costs fuel forever; they earn it with testing, inspection, and deep knowledge. The factor is negotiated against uncertainty, knowledge, and consequence — never copied blindly.",
         formula: "n ≈ 1.5 (aircraft) · 3–4 (structures)",
       },
       {
         heading: "Predict, then measure",
-        body: "The discipline that makes margins honest: write the predicted number down before you test. A prediction of 4.2 mm against a measurement of 4.9 mm is not a failure — the 17% gap is where the education lives. Clamp compliance, load placement, material scatter: each suspect you rule out is knowledge the next design inherits. Agreement teaches nothing; the gap teaches everything.",
+        body: "The discipline that makes margins honest: write the predicted number down before you test. A prediction of 4.2 mm against a measurement of 4.9 mm is not a failure — the 17% gap is where you learn what the model missed. Clamp compliance, load placement, material scatter: each suspect you rule out is knowledge the next design inherits. Agreement with the prediction is reassuring; the gap is what teaches.",
         formula: "error % = (predicted − measured) / measured × 100",
       },
     ],

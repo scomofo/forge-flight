@@ -14,9 +14,9 @@ export const materialsW12Lessons: Lesson[] = [
     index: 4,
     title: "Crystal structures",
     minutes: 35,
-    lede: "You will count the atoms in a unit cell, compute how tightly they pack, and name which crystal structure a metal uses — and why that choice decides how it deforms.",
+    lede: "Count the atoms in a unit cell, compute how tightly they pack, and name which crystal structure a metal uses — and why that choice decides how it deforms.",
     start:
-      "A grocer stacks oranges in a pyramid without thinking about it. Every orange touches twelve neighbors, and no arrangement of equal spheres packs tighter. Metallurgists call that face-centered cubic, and copper, aluminum, nickel, and lead all use it. || A crystal is atoms sitting on a repeating lattice; the unit cell is the tile that repeats. Nearly every engineering metal uses one of four tilings: simple cubic, body-centered cubic, face-centered cubic, or hexagonal close-packed. The tiling is the structure. Everything downstream — how the metal bends, how it fails, whether you can forge it or only cast it — starts here. || Two wires can look identical and behave oppositely: one bends around your finger, the other snaps. Same idea — metal atoms — different packing. Structure → properties, before a single alloy name is spoken.",
+      "A grocer stacks oranges in a pyramid without thinking about it. Every orange touches twelve neighbors, and no arrangement of equal spheres packs tighter. Metallurgists call that face-centered cubic, and copper, aluminum, nickel, and lead all use it. || A crystal is atoms sitting on a repeating lattice; the unit cell is the tile that repeats. Nearly every engineering metal uses one of four tilings: simple cubic, body-centered cubic, face-centered cubic, or hexagonal close-packed. The tiling is the structure. Everything downstream — how the metal bends, how it fails, whether you can forge it or only cast it — starts here. || Two wires can look identical and behave oppositely: one bends around your finger, the other snaps. Same atoms, different packing — the structure decides the properties.",
     use: "When you choose a metal for forming, or explain why a part cracked instead of bending. || Count atoms per cell (a corner atom is shared by 8 cells, a face atom by 2, a body atom is whole), compute the packing efficiency, and count the slip systems — the planes and directions along which atomic layers can slide. Twelve slip systems means the metal almost always finds a way to yield: ductile. Three means it often cannot: limited ductility, watch for cracking. || Stop when you can look at a structure label — FCC, BCC, HCP — and predict “this will forge, this will need care.”",
     example:
       "Aluminum is FCC with atomic radius 143 pm. || The face diagonal holds four radii, so the cell edge is a = 2√2·r = 2√2 × 143 pm ≈ 404 pm. Corners contribute 8 × 1/8 = 1 atom, faces 6 × 1/2 = 3, for 4 atoms per cell. Density: 4 × 26.98 g/mol ÷ Avogadro's number ÷ (404×10⁻¹⁰ cm)³ ≈ 2.70 g/cm³. || That is the datasheet number, derived from the structure alone — no measurement of a block required. The call: if your computed density misses the datasheet by more than a few percent, suspect the structure assignment or the radius, not the arithmetic.",
@@ -28,12 +28,12 @@ export const materialsW12Lessons: Lesson[] = [
       },
       {
         heading: "Packing efficiency is a ceiling",
-        body: "Equal hard spheres cannot fill space completely. Simple cubic manages 52% — mostly air. BCC reaches 68%. FCC and HCP both hit 74%, the proven maximum for equal spheres. The number matters because close-packed planes are the smoothest sliding surfaces in the crystal: the tighter the packing, the easier one plane glides over another, and the more ductile the metal. Packing is structure; ductility is the property it buys.",
+        body: "Equal hard spheres cannot fill space completely. Simple cubic manages 52% — mostly air. BCC reaches 68%. FCC and HCP both hit 74%, the proven maximum for equal spheres. The number matters because close-packed planes are the smoothest sliding surfaces in the crystal: the tighter the packing, the easier one plane glides over another, and the more ductile the metal.",
         formula: "SC 52% · BCC 68% · FCC 74% · HCP 74%",
       },
       {
         heading: "Iron changes its tiling, and steel exists because of it",
-        body: "Iron is BCC at room temperature and switches to FCC at 912°C. Carbon dissolves readily in the roomy FCC octahedral sites and barely at all in BCC — so heating steel into the FCC region lets you dissolve carbon, then quenching traps it in a distorted lattice that is enormously hard. That is the entire basis of heat-treating steel: a crystal-structure phase change, exploited. Structure → processing → properties, in one of the oldest industrial tricks there is.",
+        body: "Iron is BCC at room temperature and switches to FCC at 912°C. Carbon dissolves readily in the roomy FCC octahedral sites and barely at all in BCC — so heating steel into the FCC region lets you dissolve carbon, then quenching traps it in a distorted lattice that is enormously hard. Heat-treating steel is a crystal-structure phase change, exploited: structure → processing → properties, in one of the oldest industrial tricks there is.",
         formula: "α-Fe (BCC) → 912°C → γ-Fe (FCC)",
       },
     ],
@@ -74,9 +74,9 @@ export const materialsW12Lessons: Lesson[] = [
     index: 5,
     title: "Grains, texture, and anisotropy",
     minutes: 35,
-    lede: "You will read a grain map the way a pilot reads weather: boundaries are fronts, texture is the prevailing wind, and both decide where the metal yields.",
+    lede: "Read a grain map the way a pilot reads weather: boundaries are fronts, texture is the prevailing wind, and both decide where the metal yields.",
     start:
-      "A jet-engine turbine blade spins at thousands of RPM in gas hot enough to soften most metals, pulled outward by centrifugal force for thousands of hours. Ordinary polycrystalline metal would slowly stretch along its grain boundaries — creep — and fail. So the blade is cast as one single crystal: no boundaries at all. || A real metal is a mosaic of crystal domains called grains. Inside a grain the lattice is orderly; at the boundary it has to turn, and that wall of disorder blocks the dislocations that carry plastic flow. More boundary per volume → harder to start yielding → higher strength. That is Hall–Petch. But boundaries are also where creep and corrosion like to work, so “more boundaries” is not always the answer — the turbine blade proves it. || Processing writes direction into the mosaic. Roll a sheet and the grains stretch and rotate into preferred orientations — texture — so the sheet is stronger along the rolling direction than across it. The metal remembers how it was made. Anisotropy is the receipt.",
+      "A jet-engine turbine blade spins at thousands of RPM in gas hot enough to soften most metals, pulled outward by centrifugal force for thousands of hours. Ordinary polycrystalline metal would slowly stretch along its grain boundaries — creep — and fail. So the blade is cast as one single crystal: no boundaries at all. || A real metal is a mosaic of crystal domains called grains. Inside a grain the lattice is orderly; at the boundary it has to turn, and that wall of disorder blocks the dislocations that carry plastic flow. More boundary per volume → harder to start yielding → higher strength. That is Hall–Petch. But boundaries are also where creep and corrosion like to work, so “more boundaries” is not always the answer — the turbine blade proves it. || Processing writes direction into the mosaic. Roll a sheet and the grains stretch and rotate into preferred orientations — texture — so the sheet is stronger along the rolling direction than across it. The metal carries its history: anisotropy.",
     use: "When a specification names a grain size, or a part fails along an unexpected direction. || Apply Hall–Petch — σy = σ₀ + k/√d — to predict how a grain-size change moves yield strength; check whether the load lines up with the texture direction or fights it; and for high-temperature service, ask whether boundaries are helping (strength at room temperature) or hurting (creep paths when hot). || Stop when you can point at a part and say which direction is strong, which is weak, and what processing wrote that in.",
     example:
       "Two coupons of the same steel: grain diameters 25 μm and 100 μm, with σ₀ = 100 MPa and k = 0.50 MPa·√m. || √d for 25 μm is √(25×10⁻⁶) = 0.005 √m, so σy = 100 + 0.50/0.005 = 200 MPa. For 100 μm: √(100×10⁻⁶) = 0.01 √m, σy = 100 + 0.50/0.01 = 150 MPa. || Refining the grain from 100 to 25 μm bought 50 MPa of yield — a 33% gain — with the chemistry untouched. The call: grain size is a property, so it belongs on the drawing next to the alloy name.",
@@ -88,12 +88,12 @@ export const materialsW12Lessons: Lesson[] = [
       },
       {
         heading: "Hall–Petch has limits",
-        body: "The inverse-root law holds across a wide middle range, then breaks at both ends. In very coarse single-crystal-like grains there are too few boundaries to matter; in nanocrystalline metals (grains below ~20 nm) the mechanism changes — boundaries start sliding instead of blocking, and further refinement can soften the metal. “Finer is stronger” is a working rule with an expiry date, and the expiry is written in nanometers.",
+        body: "The inverse-root law holds across a wide middle range, then breaks at both ends. In very coarse single-crystal-like grains there are too few boundaries to matter; in nanocrystalline metals (grains below ~20 nm) the mechanism changes — boundaries start sliding instead of blocking, and further refinement can soften the metal. “Finer is stronger” holds across the engineering middle; the exceptions live at the extremes.",
         formula: "Valid roughly 1 μm – 100 μm; breaks below ~20 nm",
       },
       {
         heading: "Texture is anisotropy with a paper trail",
-        body: "Rolling, forging, and drawing rotate grains toward preferred orientations, so properties differ by direction: a rolled sheet resists tension along the rolling direction better than across it, and deep-drawn cups can develop ears where the texture is uneven. This is neither a defect nor a surprise — it is the processing history made legible. Design with it (align fibers and rolling direction with the load) or specify against it (cross-rolling, annealing), but never pretend the metal is the same in every direction.",
+        body: "Rolling, forging, and drawing rotate grains toward preferred orientations, so properties differ by direction: a rolled sheet resists tension along the rolling direction better than across it, and deep-drawn cups can develop ears where the texture is uneven. None of that is a defect. It is the processing history made legible: design with it (align fibers and rolling direction with the load) or specify against it (cross-rolling, annealing), but never pretend the metal is the same in every direction.",
       },
     ],
     bench: "microinterp",
@@ -153,16 +153,16 @@ export const materialsW12Lessons: Lesson[] = [
     index: 6,
     title: "Amorphous solids and what microscopes show",
     minutes: 35,
-    lede: "You will tell glass from crystal by what atoms do with no long-range plan — and read a fracture surface like a flight recorder.",
+    lede: "Tell glass from crystal by what atoms do with no long-range plan — and read a fracture surface like a flight recorder.",
     start:
-      "Drop a steel ruler and a glass stirring rod. The ruler bends or bounces; the rod becomes shards. Both are hard, both are mostly silicon and oxygen or iron and carbon at the atomic level — the difference is not what they are made of but whether the atoms agreed on a plan. || An amorphous solid has no repeating lattice beyond a few atomic spacings: window glass, most polymers below their glass transition, and metallic glasses. Without slip planes there are no dislocations, so a metallic glass can be enormously strong with an elastic limit near 2% — ten times a crystalline alloy's. Then one shear band carries all the strain, and it fails with no warning. || Whether you get crystal or glass is a processing decision: cool a liquid fast enough and the atoms never get the time to organize — the liquid's disorder freezes in. Quench rate writes the structure. Structure → properties, again, with processing holding the pen.",
+      "Drop a steel ruler and a glass stirring rod. The ruler bends or bounces; the rod becomes shards. Both are hard, both are mostly silicon and oxygen or iron and carbon at the atomic level — the difference is not what they are made of but whether the atoms agreed on a plan. || An amorphous solid has no repeating lattice beyond a few atomic spacings: window glass, most polymers below their glass transition, and metallic glasses. Without slip planes there are no dislocations, so a metallic glass can be enormously strong with an elastic limit near 2% — ten times a crystalline alloy's. Then one shear band carries all the strain, and it fails with no warning. || Whether you get crystal or glass is a processing decision: cool a liquid fast enough and the atoms never get the time to organize — the liquid's disorder freezes in. Quench rate writes the structure, and the properties follow.",
     use: "When a part must be hard, wear-resistant, or corrosion-proof but will never be asked to bend — and whenever you look at a broken part. || Read the fracture surface: a dimpled surface means ductile microvoid coalescence (it stretched before it parted); flat, faceted cleavage means brittle fracture along crystal planes; a mirror-smooth surface with river patterns means glass. Match the surface to the failure mode before you blame the load. || Stop when you can hold a broken part and reconstruct the failure from the surface alone.",
     example:
       "A Zr-based metallic glass: yield strength ≈ 1.9 GPa, elastic strain limit ≈ 2%. A high-strength crystalline steel: ≈ 1.5 GPa, elastic limit ≈ 0.2%. || The glass is the better spring by an order of magnitude — it stores ten times the elastic energy per volume. But bend the glass past 2% and a single shear band takes the whole deformation: catastrophic, silent, total. || The call: specify metallic glass for a spring, a scalpel edge, or a golf club face — never for a bracket that must fail gracefully and warn you first.",
     ideas: [
       {
         heading: "Glass transition, not melting",
-        body: "A crystal melts at one temperature: order collapses all at once. A glass softens over a range — the glass transition — because there is no lattice to collapse, only gradually increasing atomic mobility. Below Tg the atoms are frozen mid-shuffle; above it the material creeps like an extremely viscous liquid. Window glass sags over centuries for exactly this reason. “Solid” is doing more work in that sentence than it looks.",
+        body: "A crystal melts at one temperature: order collapses all at once. A glass softens over a range — the glass transition — because there is no lattice to collapse, only gradually increasing atomic mobility. Below Tg the atoms are frozen mid-shuffle; above it the material creeps like an extremely viscous liquid. Window glass sags over centuries for exactly this reason.",
         formula: "Tg: frozen disorder → mobile disorder (no latent heat)",
       },
       {
@@ -200,7 +200,7 @@ export const materialsW12Lessons: Lesson[] = [
           "Corrosion-assisted cracking",
         ],
         answer: 0,
-        why: "Dimples are the cups left where microvoids joined: the material stretched locally before parting. Cleavage leaves flat facets; fatigue leaves striations. The surface is the flight recorder.",
+        why: "Dimples are the cups left where microvoids joined: the material stretched locally before parting. Cleavage leaves flat facets; fatigue leaves striations. Read the surface and you know the failure mode.",
       },
       {
         prompt: "The glass transition differs from melting in that…",

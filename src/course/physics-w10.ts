@@ -18,16 +18,16 @@ export const physicsW10Lessons: Lesson[] = [
     index: 28,
     title: "The synthesis method",
     minutes: 40,
-    lede: "You will write the assumption ledger before you compute, chain models across the whole block, and trust a limiting case over a finished number.",
+    lede: "Write the assumption ledger before you compute, chain models across the whole block, and trust a limiting case over a finished number.",
     start:
-      "Two engineers predict a glider's range. The first hands you 261 m. The second hands you 260 ± 30 m, a list of six things she assumed, and the two assumptions most likely to be wrong. || Synthesis is the second engineer: a number is never the deliverable — the number plus its boundaries is. Every formula from Weeks 1 through 9 arrived with an expiry date — inertial frames, small angles, negligible drag, linear elasticity. Synthesis is the discipline of carrying those dates into the calculation instead of leaving them in the chapter. || An unlisted assumption is an uninspected weld. When a prediction meets reality and they disagree, the arithmetic is the last place to look; the ledger is the first.",
+      "Two engineers predict a glider's range. The first hands you 261 m. The second hands you 260 ± 30 m, a list of six things she assumed, and the two assumptions most likely to be wrong. || Synthesis is the second engineer: the deliverable is the number plus its boundaries, not the number alone. Every formula from Weeks 1 through 9 arrived with an expiry date — inertial frames, small angles, negligible drag, linear elasticity. Synthesis is the discipline of carrying those dates into the calculation instead of leaving them in the chapter. || An assumption you never wrote down is one you never inspected. When a prediction meets reality and they disagree, the arithmetic is the last place to look; the ledger is the first.",
     use: "Any problem that needs more than one week's machinery — which is every real problem. || Open the ledger first: for each assumption write what you assume, what breaks if it is false, and which limiting case would expose it. Then chain: each step's output is the next step's input, and you check dimensions at every joint — Week 1 never retires. Then test limits: drive parameters to zero, to infinity, to equality, and demand the answer behave sanely. When prediction and measurement disagree, autopsy the ledger before the arithmetic. || Stop when every joint has a unit check, every extreme has a limit test, and you can point to the assumption most likely to be wrong and say what would prove it.",
     example:
-      "Predict how long a 20 m drop takes: t = √(2h/g) = 2.02 s. || Limit tests: g → 0 gives t → ∞ (no gravity, never lands — sane); h → 0 gives t → 0 (no drop, no time — sane). The formula survives its extremes. || The measured time is 2.3 s. The arithmetic is not wrong — the ledger is: 'air drag negligible' fails for a light crate near 20 m/s, where ½ρv²A is a real force. The disagreement was never in the algebra; it was in the assumption nobody wrote down. Write it down next time.",
+      "Predict how long a 20 m drop takes: t = √(2h/g) = 2.02 s. || Limit tests: g → 0 gives t → ∞ (no gravity, never lands — sane); h → 0 gives t → 0 (no drop, no time — sane). The formula survives its extremes. || The measured time is 2.3 s. The arithmetic is not wrong — the ledger is: 'air drag negligible' fails for a light crate near 20 m/s, where ½ρv²A is a real force. The disagreement was never in the algebra; it was in the assumption nobody wrote down. Next time, it goes in the ledger.",
     ideas: [
       {
         heading: "Assumptions are load-bearing",
-        body: "Every model stands on statements you chose not to prove. An assumption ledger makes them visible: the assumption, what breaks if it is false, which limit exposes it. The Mars Climate Orbiter's ledger had a blank line where 'both teams use newtons' should have been. Blanks are the most dangerous entries — audit for what you forgot to assume, not just what you assumed.",
+        body: "Every model stands on statements you chose not to prove. An assumption ledger makes them visible: the assumption, what breaks if it is false, which limit exposes it. The Mars Climate Orbiter's ledger had a blank line where 'both teams use newtons' should have been. Blanks are the most dangerous entries — audit for the things you never thought to assume, not just the ones you did.",
       },
       {
         heading: "Chain at the joints",
@@ -95,7 +95,7 @@ export const physicsW10Lessons: Lesson[] = [
     index: 29,
     title: "Tow launch, worked end to end",
     minutes: 45,
-    lede: "You will take one glider from the winch to the landing field, chaining tow energy, force balance, the drag polar, and kinematics — and mark exactly where the model's authority ends.",
+    lede: "Take one glider from the winch to the landing field, chaining tow energy, force balance, the drag polar, and kinematics — and mark exactly where the model's authority ends.",
     start:
       "A winch tow: the glider climbs the line, the line goes slack at 30 m, and the glider is on its own at 8 m/s. How far does it go? || No single week answers that. The tow is Week 4 (work becomes energy), the release is Week 3 (force balance), the glide is Week 8 (the drag polar), the range is Week 2 (kinematics), and the honest digits are Week 1. Synthesis is refusing to leave any of them out. || Real systems do not respect chapter boundaries. The tow line does not know it is 'an energy problem' — it is just 32.6 joules looking for somewhere to go.",
     use: "When the question spans the block: state the chain up front, then work it link by link. || 1. Tow (Week 4): the line's work becomes KE + PE at release — open the energy account. 2. Release (Week 3): steady glide means forces balance along and across the flight path; the path angle is set by D/L. 3. Polar (Week 8): CL from the wing slope at 4°, CD from parasite plus induced drag, L/D = CL/CD. 4. Range (Week 2): in still air, range = altitude × L/D. 5. Honest digits (Week 1): the least certain input rules the reported precision. || Stop when every joint carries a unit check, the energy account balances, and the final number wears only the digits its weakest input earned.",
@@ -104,7 +104,7 @@ export const physicsW10Lessons: Lesson[] = [
     ideas: [
       {
         heading: "Energy opens the account",
-        body: "The tow line does 32.6 J of work and every later step spends from that account: 3.2 J sits in speed, 29.4 J in altitude. Nothing in the glide creates energy — the polar only decides how fast the account drains. When a synthesis confuses you, find the account: who deposited, who withdraws.",
+        body: "The tow line does 32.6 J of work and every later step spends from that account: 3.2 J sits in speed, 29.4 J in altitude. Nothing in the glide creates energy — the polar only decides how fast the account drains. When a multi-week problem confuses you, find the account first: who deposited, who withdraws.",
         formula: "W_tow = ½mv² + mgh = 32.6 J",
       },
       {
@@ -175,7 +175,7 @@ export const physicsW10Lessons: Lesson[] = [
     index: 30,
     title: "The mastery check",
     minutes: 60,
-    lede: "You will sit a closed-book check over the whole block, clear 70%, and repair every missed conservation-law or free-body-diagram item before Materials 101 opens.",
+    lede: "Sit a closed-book check over the whole block, clear 70%, and repair every missed conservation-law or free-body-diagram item before Materials 101 opens.",
     start:
       "The check is closed-book because the job site is: nobody on a flight line lets you look up whether momentum is conserved — either the instinct is in you or it isn't. || Twelve questions, one sitting, no references: four on conservation laws, four on free-body diagrams — those two because they are the load-bearing skills of the entire course — and four cross-cutting the rest of the block. 70% clears the gate. Every missed conservation or FBD item gets a written corrected solution — not a retake, a repair. || The gate is not there to keep you out of Materials 101. It is there to keep a wrong conservation instinct from following you in.",
     use: "When you have finished Weeks 1–9 and the synthesis lessons. || Run the check in one sitting, closed book — derive, don't recall. Score it: 9 of 12 clears 70%. For every missed conservation or FBD item, write the correction: state the error, re-derive the right answer, name the instinct that failed. File each correction in the bench. || Stop when the score clears 70% AND every missed conservation/FBD item has a filed correction. Both conditions — a high score with unrepaired FBD errors still holds the gate.",

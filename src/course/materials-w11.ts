@@ -17,12 +17,12 @@ export const materialsW11Lessons: Lesson[] = [
     index: 1,
     title: "The four bonds",
     minutes: 30,
-    lede: "You will name the bond holding a material together, and say what that bond lets electrons and atoms do — because that decides conductivity, ductility, and melting point before any datasheet is opened.",
+    lede: "Name the bond holding a material together, and say what that bond lets electrons and atoms do — that decides conductivity, ductility, and melting point before any datasheet is opened.",
     start:
-      "A copper wire is drawn through a die and comes out thinner, still a wire. Table salt hits water and vanishes into separate ions. A diamond scratches glass; a plastic grocery bag stretches to twice its length and stays there. || Four different ways for atoms to hold on. In copper the outer electrons are not owned by any atom — they drift through the whole lattice. In salt, sodium has handed an electron to chlorine and the result is a grid of locked charges. In diamond every carbon shares electrons directionally with four neighbors. In the bag, long carbon chains grip each other only weakly. || The question is never 'what is it made of' alone. It is 'what do the bonds permit': can electrons move, can planes of atoms slide, how much energy does it take to pull the structure apart. Answer those three and the properties follow.",
-    use: "When you meet an unfamiliar material, before you look anything up. Also when a property surprises you — 'why does this conduct but that doesn't' is almost always a bonding question. || Name the bond: metallic (shared electron sea), ionic (transferred electrons, charge lattice), covalent (shared pairs, directional — network or molecular), secondary (weak, between molecules or chains). Then ask what moves: electrons? slip planes? nothing? || Stop when you can predict conductivity, ductility, and rough melting behavior from the bond alone. If you cannot, the bonding is mixed — name both bonds.",
+      "A copper wire is drawn through a die and comes out thinner, still a wire. Table salt hits water and vanishes into separate ions. A diamond scratches glass; a plastic grocery bag stretches to twice its length and stays there. || Four different ways for atoms to hold on. In copper the outer electrons are not owned by any atom — they drift through the whole lattice. In salt, sodium has handed an electron to chlorine and the result is a grid of locked charges. In diamond every carbon shares electrons directionally with four neighbors. In the bag, long carbon chains grip each other only weakly. || What matters is what the bonds permit: can electrons move, can planes of atoms slide, how much energy does it take to pull the structure apart. Answer those three and the properties follow.",
+    use: "When you meet an unfamiliar material, before you look anything up. Also when a property surprises you — 'why does this conduct but that doesn't' is almost always a bonding question. || Name the bond: metallic (shared electron sea), ionic (transferred electrons, charge lattice), covalent (shared pairs, directional — network or molecular), secondary (weak, between molecules or chains). Then ask what moves: electrons? slip planes? nothing? || Stop when you can predict conductivity, ductility, and rough melting behavior from the bond alone. If the bonding is mixed, name both bonds.",
     example:
-      "Magnesium oxide, MgO: a white powder used to line furnaces. || Magnesium gives two electrons to oxygen; the result is Mg²⁺ and O²⁻ locked in a lattice, each ion surrounded by counter-ions. No electron is free to move, so it insulates. Sliding one plane past another brings like charges face to face, so it cracks instead of yielding. Pulling the lattice apart means fighting the full charge attraction — the lattice energy is around 3800 kJ/mol — so it melts near 2850°C. || Bond named, pack predicted: insulator, brittle, very high melting. That is the whole method of this week.",
+      "Magnesium oxide, MgO: a white powder used to line furnaces. || Magnesium gives two electrons to oxygen; the result is Mg²⁺ and O²⁻ locked in a lattice, each ion surrounded by counter-ions. No electron is free to move, so it insulates. Sliding one plane past another brings like charges face to face, so it cracks instead of yielding. Pulling the lattice apart means fighting the full charge attraction — the lattice energy is around 3800 kJ/mol — so it melts near 2850°C. || Bond named, pack predicted: insulator, brittle, very high melting.",
     ideas: [
       {
         heading: "Metallic: the bond that lets go",
@@ -35,7 +35,7 @@ export const materialsW11Lessons: Lesson[] = [
         formula: "lattice energy ∝ q₁·q₂ / r — charge and closeness set the price of pulling apart",
       },
       {
-        heading: "Covalent: direction decides; secondary: weakness decides",
+        heading: "Covalent bonds: architecture does the deciding",
         body: "Shared electron pairs are directional and strong, but the architecture matters more than the bond: a continuous network (diamond, silicon carbide) must be broken wholesale to melt — high melting point, brittle. Separate molecules (S₈ rings) melt when only the weak forces between molecules yield — low melting point. And secondary bonds — van der Waals, hydrogen bonds, 1–40 kJ/mol against hundreds for primary bonds — are what actually set the softening of polymers and waxes, because the strong bonds are internal to chains that barely hold each other.",
         formula: "network: melt = break primary bonds; molecular: melt = defeat secondary bonds",
       },
@@ -76,7 +76,7 @@ export const materialsW11Lessons: Lesson[] = [
           "Diamond contains metallic bonds between the covalent ones",
         ],
         answer: 1,
-        why: "Architecture beats bond label. A network must be broken wholesale to melt; a molecular solid melts when the weak secondary bonds between molecules yield. Same bond family, two hundred degrees versus thousands.",
+        why: "A network must be broken wholesale to melt; a molecular solid melts when the weak secondary bonds between molecules yield. Same bond family, two hundred degrees versus thousands.",
       },
       {
         prompt: "A solid polymer softens at 130°C though its C–C backbone bonds are ~350 kJ/mol. The softening is governed by…",
@@ -97,12 +97,12 @@ export const materialsW11Lessons: Lesson[] = [
     index: 2,
     title: "Why properties travel together",
     minutes: 30,
-    lede: "You will read conductivity, ductility, melting point, and stiffness as four expressions of one bond — and you will stop treating any of them as an independent fact about a material.",
+    lede: "Read conductivity, ductility, melting point, and stiffness as four expressions of one bond — and stop treating any of them as an independent fact about a material.",
     start:
-      "Copper conducts, bends, and melts at 1085°C. Alumina insulates, snaps, and survives a kiln. Polyethylene insulates, stretches, and softens in hot water. || Nobody assigned these properties one by one. Each material has one bonding arrangement, and the arrangement has consequences in every direction: whether electrons can move (conduction), whether atomic planes can slide (ductility), how much thermal violence the structure survives (melting), how steeply it resists small pulls (stiffness). || The through-line of this whole block is structure → processing → properties → performance. This week lives at the structure end: the bond is the structure, and the property pack is its shadow. Processing (next weeks) rearranges the structure; the properties move with it.",
+      "Copper conducts, bends, and melts at 1085°C. Alumina insulates, snaps, and survives a kiln. Polyethylene insulates, stretches, and softens in hot water. || Nobody assigned these properties one by one. Each material has one bonding arrangement, and the arrangement has consequences in every direction: whether electrons can move (conduction), whether atomic planes can slide (ductility), how much thermal violence the structure survives (melting), how steeply it resists small pulls (stiffness). || The through-line of this whole block is structure → processing → properties → performance. This week lives at the structure end: the bond is the structure, and the properties follow from it. Processing (next weeks) rearranges the structure; the properties move with it.",
     use: "When a datasheet surprises you, or when two properties seem to 'go together' and you want to know if that is law or coincidence. Also before selecting a material: one demand usually forces the whole pack. || Take the bond, list what it permits and forbids, and check each property against that list. Expect correlation: high bond energy with high melting point, delocalized electrons with ductility. Treat every correlation as rough — graphite and the mixed cases are the test of whether you actually understand it. || Stop when you can say which property in the pack is the odd one out for a mixed-bonding material, and name both bonds responsible.",
     example:
-      "Tungsten melts at 3422°C, the highest of any metal, and it is notoriously hard to draw into wire at room temperature. || Metallic bonding with a very deep cohesive well (~850 kJ/mol): enormous thermal energy is needed to break the lattice apart, hence the melting point. But the same strong, short bonds raise the stress needed to move dislocations — slip is expensive — so room-temperature ductility is poor. || One bond, two consequences pointing in opposite directions for the engineer: the property that makes it survive heat is the property that makes it hard to shape. The pack giveth and the pack taketh away.",
+      "Tungsten melts at 3422°C, the highest of any metal, and it is notoriously hard to draw into wire at room temperature. || Metallic bonding with a very deep cohesive well (~850 kJ/mol): enormous thermal energy is needed to break the lattice apart, hence the melting point. But the same strong, short bonds raise the stress needed to move dislocations — slip is expensive — so room-temperature ductility is poor. || One bond, two consequences pointing in opposite directions: the bond strength that survives the heat also makes slip expensive.",
     ideas: [
       {
         heading: "Bond energy sets the temperature scale",
@@ -116,7 +116,7 @@ export const materialsW11Lessons: Lesson[] = [
       },
       {
         heading: "Mixed bonding means a mixed pack",
-        body: "Graphite conducts in the plane and insulates across it; it is stiff in the sheet and soft between sheets — because it is covalent in two dimensions and secondary in the third. Glass is part ionic, part covalent. Real materials routinely carry two bonds, and then the property pack splits along the bond directions. 'What is the bonding' is sometimes two answers, and the properties will tell you which bond is answering each question.",
+        body: "Graphite conducts in the plane and insulates across it; it is stiff in the sheet and soft between sheets — because it is covalent in two dimensions and secondary in the third. Glass is part ionic, part covalent. Real materials routinely carry two bonds, and then the property pack splits along the bond directions. 'What is the bonding' sometimes has two answers, and the properties will tell you which bond is answering each question.",
         formula: "two bonds → the pack splits; read each property against the bond that owns it",
       },
     ],
@@ -145,7 +145,7 @@ export const materialsW11Lessons: Lesson[] = [
           "Are caused by impurities, not bonding",
         ],
         answer: 1,
-        why: "Strong bonds resist both thermal disruption and dislocation motion. The same well depth gives the 3422°C melting point and the expensive slip. The pack giveth and taketh away.",
+        why: "Strong bonds resist both thermal disruption and dislocation motion. The same well depth gives the 3422°C melting point and the expensive slip.",
       },
       {
         prompt: "Why is 'bond energy predicts melting point' only a correlation?",
@@ -177,12 +177,12 @@ export const materialsW11Lessons: Lesson[] = [
     index: 3,
     title: "Reading a material from its bonding",
     minutes: 30,
-    lede: "You will take an unfamiliar substance, name its bonding from a structural description, and predict its conductivity, mechanical response, and thermal behavior — then check yourself and explain every miss.",
+    lede: "Take an unfamiliar substance, name its bonding from a structural description, and predict its conductivity, mechanical response, and thermal behavior — then check yourself and explain every miss.",
     start:
-      "You are handed a gray solid you have never heard of. The description says: every atom bonded tetrahedrally to four unlike neighbors, in one continuous network. || No datasheet, no brand name. But you know the move: network covalent means directional bonds everywhere, every electron spoken for, no slip planes. So you predict: hard, brittle, insulating, very high melting point. || That is silicon carbide, and the prediction holds — it is sold as an abrasive that outlasts almost everything. The method is: structure → bond → property pack → performance. Processing will later modify the structure, and the properties will move with it, but the bond sets the starting pack.",
-    use: "When selecting or troubleshooting — a part failed and you need to know whether the material was ever capable of the job, or you are choosing between candidates with no test data yet. || Read the structural description, name the bond (or bonds), read off the pack: conduction, mechanical response, thermal behavior. Write the prediction before you check. Then, for every miss, find the bond feature you ignored — mixed bonding, molecular vs network, a slip system you assumed. || Stop when your misses are all 'I missed the second bond' rather than 'I guessed'. The first kind is a method working; the second is luck.",
+      "You are handed a gray solid you have never heard of. The description says: every atom bonded tetrahedrally to four unlike neighbors, in one continuous network. || No datasheet, no brand name. The move: network covalent means directional bonds everywhere, every electron spoken for, no slip planes. So you predict: hard, brittle, insulating, very high melting point. || That is silicon carbide, and the prediction holds — it is sold as an abrasive that outlasts almost everything. The method is structure → bond → property pack → performance. Processing will later modify the structure, and the properties will move with it, but the bond sets the starting pack.",
+    use: "When selecting or troubleshooting — a part failed and you need to know whether the material was ever capable of the job, or you are choosing between candidates with no test data yet. || Read the structural description, name the bond (or bonds), read off the pack: conduction, mechanical response, thermal behavior. Write the prediction before you check. Then, for every miss, find the bond feature you ignored — mixed bonding, molecular vs network, a slip system you assumed. || Stop when every miss is 'I missed the second bond' rather than 'I guessed'. One is a method working; the other is luck.",
     example:
-      "A white crystalline solid: alternating positive and negative ions, shatters under a hammer, dissolves in water. Predict, then verify. || Bond: ionic — charge-locked lattice, no free electrons. Prediction: brittle (slip brings like charges together), insulating as a solid, high melting (strong electrostatic lattice). Bonus prediction: the melt conducts, because the ions themselves become mobile charges. || That is table salt, and every line checks out — including the bonus. The method earns trust one verified prediction at a time.",
+      "A white crystalline solid: alternating positive and negative ions, shatters under a hammer, dissolves in water. Predict, then verify. || Bond: ionic — charge-locked lattice, no free electrons. Prediction: brittle (slip brings like charges together), insulating as a solid, high melting (strong electrostatic lattice). Bonus prediction: the melt conducts, because the ions themselves become mobile charges. || That is table salt, and every line checks out — including the bonus.",
     ideas: [
       {
         heading: "The protocol: bond first, properties second",

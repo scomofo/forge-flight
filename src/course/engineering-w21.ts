@@ -13,16 +13,16 @@ export const engineeringW21Lessons: Lesson[] = [
     index: 1,
     title: "Requirements that survive contact with reality",
     minutes: 35,
-    lede: "You will write requirements as measurable demands — number, unit, pass/fail — so that a design can actually lose to them, before you fall in love with a shape.",
+    lede: "Requirements are measurable demands — number, unit, pass/fail — written so a design can actually lose to them. Write them before you fall in love with a shape.",
     start:
-      "In 1990 the Hubble Space Telescope reached orbit with a primary mirror polished to the wrong shape — spherical aberration, 2.2 micrometers off at the edge. The mirror had been figured against a null corrector that was itself misassembled by 1.3 mm. The demand on the mirror was measurable and exact; the failure was that the thing doing the measuring was never checked against an independent demand. || A stakeholder need is a mood: 'bright', 'easy', 'robust'. A requirement is a demand written so that a design can fail it: a number, a unit, and a pass/fail line. 'The carrier shall survive a 1 m drop onto concrete' can lose. 'The carrier should be easy to use' cannot lose — and a demand that cannot lose is not doing any work. The Hubble mirror met every demand it was measured against. || You write the demands before you fall in love with a shape, because requirements are how you keep the design honest later. When two requirements fight — light versus stiff, cheap versus durable — the winner changes where someone can see it, in the open, not in your head.",
-    use: "When the brief is still a mood and someone needs a spec, or when a design review needs a ground truth to argue against. || Convert each need into a requirement: subject, the verb 'shall', a number, a unit, and a pass/fail criterion. One demand per sentence — no 'and', no 'or'. Mark each one measurable, verifiable, and achievable, or rewrite it until it is. || Stop when every stakeholder need is either a requirement or explicitly discarded in writing. A requirement that cannot be verified is a wish; a wish in the spec will be argued about at the worst possible time.",
+      "In 1990 the Hubble Space Telescope reached orbit with a primary mirror polished to the wrong shape — spherical aberration, 2.2 micrometers off at the edge. The mirror had been figured against a null corrector that was itself misassembled by 1.3 mm. The demand on the mirror was measurable and exact; the failure was that the thing doing the measuring was never checked against an independent demand. || A stakeholder need is a mood: 'bright', 'easy', 'robust'. A requirement is a demand written so that a design can fail it: a number, a unit, and a pass/fail line. 'The carrier shall survive a 1 m drop onto concrete' can lose. 'The carrier should be easy to use' can't lose, so it does no work. The Hubble mirror met every demand it was measured against. || Write the demands before you fall in love with a shape, so the design stays honest later. When two requirements fight — light versus stiff, cheap versus durable — settle it in the open, on paper, not silently while sketching.",
+    use: "When the brief is still a mood and someone needs a spec, or when a design review needs a ground truth to argue against. || Convert each need into a requirement: subject, the verb 'shall', a number, a unit, and a pass/fail criterion. One demand per sentence — no 'and', no 'or'. Mark each one measurable, verifiable, and achievable, or rewrite it until it is. || Stop when every stakeholder need is either a requirement or explicitly discarded in writing. A requirement nobody can verify is a wish; wishes turn into arguments during the worst weeks of the project.",
     example:
       "A bike light brief says 'bright, long-lasting, light'. || You write: (1) 'The light shall output at least 400 lm in high mode.' (2) 'The light shall run at least 3 h in high mode from a full charge.' (3) 'The light shall have a mass of at most 150 g including mount.' Three sentences, three numbers, three ways to fail. || Run each through the quality checker: each names a number and a unit, each makes one demand, none hide behind 'bright'. A concept that weighs 200 g fails requirement 3 on day one — no debate, no taste involved.",
     ideas: [
       {
         heading: "Needs are moods; requirements are demands",
-        body: "A stakeholder hands you a need: 'the phone shouldn't break'. That is a feeling with a shape. Your job is to convert it into a demand a design can fail: 'the carrier shall hold the phone through a 1 m drop onto concrete with no visible cracking'. The conversion is the engineering. Everything downstream — concepts, tests, arguments — stands on how honestly you did this step.",
+        body: "A stakeholder hands you a need: 'the phone shouldn't break'. That's a feeling, not a spec. Your job is to convert it into a demand a design can fail: 'the carrier shall hold the phone through a 1 m drop onto concrete with no visible cracking'. The conversion is the engineering — everything downstream, concepts, tests, arguments, stands on how honestly you did this step.",
         formula: "requirement = subject + 'shall' + number + unit + pass/fail",
       },
       {
@@ -50,7 +50,7 @@ export const engineeringW21Lessons: Lesson[] = [
           "The device shall be small and light and cheap.",
         ],
         answer: 0,
-        why: "It names a subject, 'shall', a number, a unit, and a pass/fail line. The second hides behind weasel words and 'should'; the third is an instruction, not a demand; the fourth is three demands in one sentence.",
+        why: "It names a subject, 'shall', a number, a unit, and a pass/fail line. The second hides behind 'efficient' and 'user-friendly' and says 'should' instead of 'shall'; the third is an instruction aimed at the reader; the fourth packs three demands into one sentence.",
       },
       {
         prompt: "A requirement reads 'shall survive drops'. The first thing wrong with it is…",
@@ -93,9 +93,9 @@ export const engineeringW21Lessons: Lesson[] = [
     index: 2,
     title: "Verification versus validation",
     minutes: 35,
-    lede: "You will keep verification and validation apart: one asks 'did we build the thing right', the other 'did we build the right thing' — and you will plan both from the requirements.",
+    lede: "Verification asks 'did we build the thing right'; validation asks 'did we build the right thing'. Plan both from the requirements, and never let one stand in for the other.",
     start:
-      "The Hubble mirror passed verification. The mirror met its figure requirement against the null corrector it was measured with. What it failed was validation: the telescope, as a system, did not do the job it was built for, because the corrector — the measuring stick — was itself wrong, and nobody had an independent check. Verification asks 'did we build the thing right?' Validation asks 'did we build the right thing?' || Every requirement gets a verification method: test (exercise it and measure), inspection (look at it), analysis (calculate or simulate), or demonstration (operate it and watch). You choose the method when you write the requirement, not after the hardware exists — late test planning is how programs discover their requirements were untestable. || Validation is the harder sibling. It asks whether the requirements, faithfully met, add up to a product the stakeholder actually wants. No verification matrix answers that; only the stakeholder, an honest prototype, and the willingness to be wrong can.",
+      "The Hubble mirror passed verification. The mirror met its figure requirement against the null corrector it was measured with. What it failed was validation: the telescope, as a system, did not do the job it was built for, because the corrector — the measuring stick — was itself wrong, and nobody had an independent check. Verification asks 'did we build the thing right?' Validation asks 'did we build the right thing?' || Every requirement gets a verification method: test (exercise it and measure), inspection (look at it), analysis (calculate or simulate), or demonstration (operate it and watch). You choose the method when you write the requirement, not after the hardware exists — late test planning is how programs discover their requirements were untestable. || Validation is the harder check: do the requirements, faithfully met, add up to a product the stakeholder actually wants? No verification matrix answers that. Only the stakeholder and an honest prototype can — which means being willing to be wrong.",
     use: "When you turn a requirements packet into a test plan, or when a review needs to see that nothing is unverified. || Build the verification matrix: one row per requirement, one column naming the method, and a second column saying exactly how — the rig, the instrument, the procedure number. Walk every row and ask: can this test return 'fail'? If the answer is no, the requirement (not the test) is broken. || Stop when every requirement has a method and a how, and at least one row of the matrix is a validation activity — a user trial, a system-level demo — that could falsify the whole packet.",
     example:
       "A USB charger. Requirement: 'the charger shall deliver 5.0 V ± 0.25 V at up to 3.0 A'. || Verification by test: bench supply load, electronic load stepping 0→3 A, calibrated voltmeter at the connector, record at 25 °C and 40 °C ambient. Requirement: 'the enclosure shall be black'. Verification by inspection: compare against the color standard under D65 light. || The first row can fail on the bench. The second fails by eyeball against a standard, not by opinion. And validation is separate: hand the charger to ten users and ask whether their phone charged by morning — the matrix never answers that, which is why you schedule it anyway.",
@@ -112,7 +112,7 @@ export const engineeringW21Lessons: Lesson[] = [
       },
       {
         heading: "Validation can falsify the packet",
-        body: "Verification can pass 100% and the product still fails in the stakeholder's hands — Hubble's mirror proved it. So the plan always includes a validation activity that could kill the requirements themselves: a user trial, a system demo, a flight test. That row of the matrix is the one that takes courage, because it can send you back to lesson 1.",
+        body: "Verification can pass 100% and the product still fails in the stakeholder's hands — Hubble's mirror proved it. So the plan always includes a validation activity that could kill the requirements themselves: a user trial, a system demo, a flight test. That row of the matrix is the one teams are most tempted to skip, because it can send the requirements back for a rewrite.",
       },
     ],
     bench: "reqpacket",
@@ -172,12 +172,12 @@ export const engineeringW21Lessons: Lesson[] = [
     index: 3,
     title: "The assumption ledger",
     minutes: 35,
-    lede: "You will keep an assumption ledger: every number in your design carries its provenance, its confidence, and the date it stops being an assumption — so no number is ever just trusted.",
+    lede: "Every number in your design carries its provenance, its confidence, and the date it stops being an assumption. The ledger keeps them all where you can see them.",
     start:
-      "In 1999 the Mars Climate Orbiter burned up in the Martian atmosphere because one team delivered small-force telemetry in pound-force seconds while the navigation software expected newton-seconds. The conversion factor sat in an interface document. Somebody assumed the other side had read it the same way. A $125 million spacecraft, lost to an assumption nobody wrote down. || An assumption is a number you are using as if it were true without proof. The ledger is where assumptions go to die: each entry names the claim, its provenance (who said it, which document, which test), its confidence, and what would resolve it. An entry with empty provenance and low confidence is not a footnote — it is the riskiest line in your project. || The ledger is also a decision record. When the design changes six months later and someone asks why the bracket is aluminum, the ledger answers: which requirement, which analysis, which assumption — and whether that assumption has been resolved yet.",
-    use: "From the first number you borrow, through every design review, to the post-mortem. || Write every borrowed number down: the claim, where it came from, how much you trust it, and what test or document would close it. Review the ledger like a punch list: resolve entries by testing or by citing the source, and promote the ones that refuse to die into risks. || Stop when every load, material property, and interface constant in your analysis traces to a ledger entry — and every open low-confidence entry has a named owner and a date.",
+      "In 1999 the Mars Climate Orbiter burned up in the Martian atmosphere because one team delivered small-force telemetry in pound-force seconds while the navigation software expected newton-seconds. The conversion factor sat in an interface document. Somebody assumed the other side had read it the same way. A $125 million spacecraft, lost to an assumption nobody wrote down. || An assumption is a number you're using as if it were true, without proof. The ledger records each one: the claim, its provenance (who said it, which document, which test), its confidence, and what would resolve it. An entry with empty provenance and low confidence isn't a footnote — it's the riskiest line in your project. || The ledger is also a decision record. When the design changes six months later and someone asks why the bracket is aluminum, the ledger answers: which requirement, which analysis, which assumption — and whether that assumption has been resolved yet.",
+    use: "From the first number you borrow, through every design review, to the post-mortem. || Write every borrowed number down: the claim, where it came from, how much you trust it, and what test or document would close it. Review the ledger like a punch list — resolve entries by testing or citing the source, and promote the stubborn open ones into risks. || Stop when every load, material property, and interface constant in your analysis traces to a ledger entry — and every open low-confidence entry has a named owner and a date.",
     example:
-      "The Orbiter's small-forces file, ledgered honestly: Entry A-1 — 'Trajectory software expects impulse in newton-seconds.' Provenance: interface spec §4.2. Confidence: high. Resolved: yes, both teams signed the page. Entry A-2 — 'Subcontractor delivers telemetry in pound-force seconds; conversion handled.' Provenance: (empty). Confidence: low. Resolved: no. || One glance at the ledger shows the mission's riskiest line. The fix was never heroic math; it was filling in A-2's provenance cell and getting a signature. || The ledger does not prevent assumptions. It prevents assumptions from being invisible, which is the only kind that kills spacecraft.",
+      "The Orbiter's small-forces file, ledgered honestly: Entry A-1 — 'Trajectory software expects impulse in newton-seconds.' Provenance: interface spec §4.2. Confidence: high. Resolved: yes, both teams signed the page. Entry A-2 — 'Subcontractor delivers telemetry in pound-force seconds; conversion handled.' Provenance: (empty). Confidence: low. Resolved: no. || One glance at the ledger shows the mission's riskiest line. The fix wasn't a cleverer calculation; it was filling in A-2's provenance cell and getting a signature. || The ledger can't prevent assumptions. It makes them visible — and the invisible ones are what kill spacecraft.",
     ideas: [
       {
         heading: "Every number has a provenance",
@@ -186,12 +186,12 @@ export const engineeringW21Lessons: Lesson[] = [
       },
       {
         heading: "Confidence is a schedule",
-        body: "Low confidence is not shameful; it is a schedule entry. It says: this assumption gets resolved by this test, on this date, by this person. An assumption that is low-confidence and ownerless is a risk wearing a disguise. The ledger's statistics — resolution rate, open low-confidence count — are the project's honesty score.",
+        body: "Low confidence is normal; low confidence with no owner and no date is a risk nobody's managing. Give every entry an owner and a resolution date — the test that will close it, and when. The ledger's statistics — resolution rate, open low-confidence count — show whether the team is resolving things or just writing them down.",
         formula: "low confidence + no owner = risk",
       },
       {
         heading: "The ledger is the decision record",
-        body: "Design decisions are made under uncertainty and revisited under pressure. The ledger records what you knew, when you knew it, and what you assumed — so a future review can distinguish 'we decided with the data we had' from 'we never checked'. Engineers own their consequences; the ledger is how the owning is documented.",
+        body: "Design decisions are made under uncertainty and revisited under pressure. The ledger records what you knew, when you knew it, and what you assumed — so a future review can tell 'we decided with the data we had' from 'we never checked'.",
       },
     ],
     bench: "ledger",
@@ -219,7 +219,7 @@ export const engineeringW21Lessons: Lesson[] = [
           "A verification activity",
         ],
         answer: 0,
-        why: "Empty provenance plus low confidence plus unresolved is exactly the Orbiter's A-2 pattern. The correct response is to give it an owner and a resolution date, not to admire its roundness.",
+        why: "Empty provenance plus low confidence plus unresolved is the Orbiter's A-2 pattern. Give it an owner and a resolution date — a round number is not a resolution.",
       },
       {
         prompt: "When is a ledger entry resolved?",

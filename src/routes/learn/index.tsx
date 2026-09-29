@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
-import { lessonsFor, tracks } from "@/course/catalog";
+import { courseIntro, lessonsFor, tracks } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
 import { isPassed, lessonKey, PASS_AT } from "@/course/types";
 
@@ -19,10 +19,21 @@ function CoursesPage() {
       <main className="mx-auto max-w-3xl px-5 pb-24 pt-8 sm:px-8">
         <p className="font-serif text-sm text-accent">Axiom</p>
         <h1 className="mt-3 font-serif text-4xl leading-tight sm:text-5xl">All courses</h1>
-        <p className="mt-4 max-w-prose text-lg leading-relaxed text-muted">
-          Each lesson teaches from a picture before the formula, then a bench lets you try it, then
-          four questions check it. Start with the course that matches the job in front of you.
-        </p>
+        <h2 className="mt-8 font-serif text-2xl leading-snug">{courseIntro.heading}</h2>
+        {courseIntro.approach.map((paragraph, i) => (
+          <p key={i} className="mt-4 max-w-prose text-lg leading-relaxed text-muted">
+            {paragraph}
+          </p>
+        ))}
+        <h3 className="mt-8 font-serif text-xl leading-snug">Terminology</h3>
+        <dl className="mt-4 max-w-prose">
+          {courseIntro.terms.map((t) => (
+            <div key={t.term} className="mt-3">
+              <dt className="font-medium text-ink">{t.term}</dt>
+              <dd className="mt-1 text-muted">{t.body}</dd>
+            </div>
+          ))}
+        </dl>
         <ol className="mt-10 border-t border-line">
           {tracks.map((track) => {
             const trackLessons = lessonsFor(track.id);

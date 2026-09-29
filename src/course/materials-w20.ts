@@ -20,9 +20,9 @@ export const materialsW20Lessons: Lesson[] = [
     index: 28,
     title: "The synthesis method for materials",
     minutes: 40,
-    lede: "You will keep an assumption ledger for every materials claim, chain all nine weeks into one argument, and trust a limiting case over a finished number.",
+    lede: "Keeping an assumption ledger for every materials claim, chaining all nine weeks into one argument, and trusting a limiting case over a finished number.",
     start:
-      "Two engineers pick a spar material. The first hands you 'carbon fiber.' The second hands you 'balsa, provisionally' — plus six assumptions, each marked assumed, derived, or measured, and the two most likely to be wrong. || Synthesis is the second engineer: a material choice is never the deliverable — the choice plus its chain of custody is. Every number from Weeks 11 through 19 arrived with an expiry date: handbook strength, a book E, a 2.5 g gust factor. Synthesis carries those dates into the decision instead of leaving them in the chapter. || An unlisted assumption is an uninspected weld. When a prediction meets a test and they disagree, the arithmetic is the last place to look; the ledger is the first.",
+      "Two engineers pick a spar material. The first hands you 'carbon fiber.' The second hands you 'balsa, provisionally' — plus six assumptions, each marked assumed, derived, or measured, and the two most likely to be wrong. || Synthesis is the second engineer. The deliverable is not the material choice — it is the choice plus its chain of custody. Every number from Weeks 11 through 19 arrived with an expiry date: handbook strength, a book E, a 2.5 g gust factor. Synthesis carries those dates into the decision instead of leaving them in the chapter. || An unlisted assumption is an uninspected weld. When a prediction meets a test and they disagree, the arithmetic is the last place to look; the ledger is the first.",
     use: "Any problem that needs more than one week's machinery — which is every real problem. || Open the ledger first: for each claim write whether it traces to structure, processing, or test, what breaks if it is false, and which limiting case would expose it. Then chain: structure → processing → properties → performance, each handoff stated in a sentence, dimensions checked at every joint. Then test limits: E → ∞, σ → 0, d → ∞, and demand sane behavior. When prediction and measurement disagree, autopsy the ledger before the arithmetic. || Stop when every claim has a provenance, every joint has a unit check, and you can name the assumption most likely to be wrong and what would prove it.",
     example:
       "Carburizing at 950 °C for 4 h predicts a 0.80 mm case (W13: 2√(Dt)). || The measured case is 0.55 mm. The arithmetic is not wrong — the ledger is: 'furnace held 950 °C' was marked assumed, and the thermocouple read 40 °C low. Arrhenius makes D collapse with temperature, so a small lie in T becomes a large lie in depth. || The disagreement was never in the error function; it was in the assumption nobody wrote down. Write it down next time.",
@@ -33,7 +33,7 @@ export const materialsW20Lessons: Lesson[] = [
       },
       {
         heading: "Chain at the joints",
-        body: "A multi-week argument is a supply chain: Week 11's bonding sets Week 18's family, Week 15's treatment sets Week 14's curve, Week 16's toughness sets Week 19's selection. Restate each handoff in a sentence: 'the quench froze the carbon in solution, so the aged alloy yields at 505 MPa.' If you cannot say the handoff in words, you do not own the chain — you are stacking numbers.",
+        body: "A multi-week argument is a supply chain: Week 11's bonding sets Week 18's family, Week 15's treatment sets Week 14's curve, Week 16's toughness sets Week 19's selection. Restate each handoff in a sentence: 'the quench froze the carbon in solution, so the aged alloy yields at 505 MPa.' If you cannot say the handoff in words, the chain has a gap in it.",
       },
       {
         heading: "Limits are the cheapest experiment",
@@ -42,7 +42,7 @@ export const materialsW20Lessons: Lesson[] = [
     ],
     bench: "matledger",
     prompt:
-      "Pick the spar scenario and build its assumption ledger: each claim, whether it traces to structure, processing, or test, what breaks if it is false, and which limiting case would expose it. || Then name the assumption most likely to be wrong — that name is the most valuable line on the page.",
+      "Pick the spar scenario and build its assumption ledger: each claim, whether it traces to structure, processing, or test, what breaks if it is false, and which limiting case would expose it. || Then name the assumption most likely to be wrong, and what would prove it.",
     note: "The ledger persists in this browser. A ledger with three honest 'assumed' entries beats a page of arithmetic with none.",
     checks: [
       {
@@ -87,7 +87,7 @@ export const materialsW20Lessons: Lesson[] = [
           "Recompute with more precision",
         ],
         answer: 0,
-        why: "A limit failure means the model itself is wrong in that regime; precision cannot fix a wrong shape. The nominal agreement was luck, and luck does not repeat.",
+        why: "A limit failure means the model itself is wrong in that regime; precision cannot fix a wrong shape. The nominal agreement was luck, not validation.",
       },
     ],
   },
@@ -97,21 +97,21 @@ export const materialsW20Lessons: Lesson[] = [
     index: 29,
     title: "The spar, end to end",
     minutes: 50,
-    lede: "You will run the whole block — requirements to failure checks — on one 4×6 mm spar, and find that strength is not the constraint.",
+    lede: "Running the whole block — requirements to failure checks — on one 4×6 mm spar, and finding that strength is not the constraint.",
     start:
-      "The 100 g tow-launch glider pulls a 2.5 g gust and the wing spar takes the bend. Three candidates sit on the bench: balsa, 7075-T6 aluminum, unidirectional carbon. || The question is not 'which material is best' — no family wins every demand. The question is which requirement binds: which screen kills the lightest option, and what the survivors cost. The chain runs: gust load → root moment → bending stress → deflection → allowables → fatigue and fracture sanity → processing route → the call. || The surprise is waiting at the fourth link. Strength clears everywhere; the spar never comes close to yielding. Something else decides.",
+      "The 100 g tow-launch glider pulls a 2.5 g gust and the wing spar takes the bend. Three candidates sit on the bench: balsa, 7075-T6 aluminum, unidirectional carbon. || No family wins every demand, so 'which material is best' is the wrong question. The right one is which requirement binds: which screen kills the lightest option, and what the survivors cost. The chain runs: gust load → root moment → bending stress → deflection → allowables → fatigue and fracture sanity → processing route → the call. || The surprise is waiting at the fourth link. Strength clears everywhere; the spar never comes close to yielding. Something else decides.",
     use: "Requirements first: name the loads, the section, and the deflection limit. || Compute the chain link by link — M = L·s/4, σ = Mc/I, δ = wL⁴/8EI, allowable = strength/FoS — checking units at every joint. Then run the failure sanity checks: fatigue ratio against endurance, critical crack size against the part's dimensions. Then price each survivor: mass, processing route, what the choice assumes. || Stop when every candidate has a strength margin, a stiffness verdict, a mass, and a named binding constraint — and the call cites its week for every link.",
     example:
       "Gust lift: 2.45 N. Root moment: 0.153 N·m. Section 4×6 mm: I = 72 mm⁴, c = 3 mm, σ = 6.4 MPa. || Allowables: 7075-T6 at 337 MPa (margin 53×), balsa at 17.5 MPa (margin 2.7×), carbon at 800 MPa (margin 125×). Strength is not the constraint — nothing is near yielding. Deflection: balsa 11.1 mm, aluminum 0.46 mm, carbon 0.25 mm against a 5 mm limit. Balsa, the lightest at 0.96 g, fails the stiffness screen; carbon survives at 9.6 g against aluminum's 16.9 g. || The call: carbon wins, and the ledger records why — stiffness killed balsa, mass killed aluminum. Change the deflection limit and the call changes; that is the point.",
     ideas: [
       {
         heading: "The binding constraint is found, not assumed",
-        body: "Compute every margin and let the smallest one name the driver. Here strength margins run 2.7× to 125× while the stiffness screen disqualifies the lightest candidate outright. Engineers who assume the driver — 'it's a strength problem' — optimize the wrong link. The chain finds the driver; opinions do not.",
+        body: "Compute every margin and let the smallest one name the driver. Here strength margins run 2.7× to 125× while the stiffness screen disqualifies the lightest candidate outright. Assuming the driver — 'it's a strength problem' — optimizes the wrong link; the chain finds it for you.",
         formula: "σ = M·c/I, δ = w·L⁴/(8·E·I), allowable = strength / FoS",
       },
       {
         heading: "Strength is cheap here; stiffness is expensive",
-        body: "A 53× strength margin next to an 11 mm sag is the whole lesson in one spar: for light, slender structures, E governs and σ_y watches from the stands. This is why the selection indices of Week 19 exist — E/ρ and E^(1/2)/ρ rank what σ_y/ρ cannot. Match the index to the binding constraint or the ranking lies.",
+        body: "A 53× strength margin next to an 11 mm sag is the whole lesson in one spar: for light, slender structures, E governs and σ_y is along for the ride. This is why the selection indices of Week 19 exist — E/ρ and E^(1/2)/ρ rank what σ_y/ρ cannot. Match the index to the binding constraint or the ranking lies.",
       },
       {
         heading: "Every link cites its week",

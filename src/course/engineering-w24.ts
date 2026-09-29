@@ -14,12 +14,12 @@ export const engineeringW24Lessons: Lesson[] = [
     index: 10,
     title: "Bending: the stress is My/I",
     minutes: 35,
-    lede: "You will compute the peak stress in a beam from the bending moment and the section modulus, and choose sections that put material where the stress lives.",
+    lede: "Compute the peak stress in a beam from the bending moment and the section modulus, and choose sections that put material where the stress lives.",
     start:
       "Stand on the middle of a plank spanning two sawhorses and it sags; stand a ruler on edge and it barely notices you. || In bending, the stress at a point is σ = M·y/I: the bending moment M, times the distance y from the neutral axis, divided by the section's second moment I. The stress is zero at the middle and largest at the outer fibers. Engineers package I/y_max into the section modulus S, so the working formula is one division: σ = M/S. || Shape matters more than mass. Material near the middle of the section carries almost no stress — it is dead weight. A hollow tube beats a solid bar of equal mass because its material sits far from the neutral axis, where y is large.",
     use: "When you need a beam, bracket, or spar to survive a known bending moment without yielding. Also when comparing candidate sections — S per kilogram is the honest score. || Find the maximum bending moment M (for a cantilever with tip load P at length L, M = P·L at the wall). Get the section modulus S for your section (I/c, tabulated or computed). Divide: σ = M/S. Compare against the allowable — yield divided by your factor of safety. || Stop when the margin of safety MS = σ_allow/σ − 1 is positive for every load case, and you have checked that the section you tabulated is the section you can actually buy.",
     example:
-      "A workbench edge: a 40×40×3 mm aluminum square tube, cantilevered 1.2 m, with a 500 N load at the tip — someone leaning hard. || The moment at the wall is M = 500 × 1.2 = 600 N·m. The tube's section modulus is S = 5.10×10⁻⁶ m³, so σ = 600 / 5.10×10⁻⁶ = 118 MPa. Against 6061-T6's 276 MPa yield, the margin is 276/118 − 1 = 1.34 — comfortable. A solid 40×40 bar would read only 56 MPa, but at 4.32 kg/m against the tube's 1.20 kg/m, the tube carries 2.6× the stress per kilogram. || You do not need the heavier bar. The tube passes with margin, and the mass you saved is payload somewhere else.",
+      "A workbench edge: a 40×40×3 mm aluminum square tube, cantilevered 1.2 m, with a 500 N load at the tip — someone leaning hard. || The moment at the wall is M = 500 × 1.2 = 600 N·m. The tube's section modulus is S = 5.10×10⁻⁶ m³, so σ = 600 / 5.10×10⁻⁶ = 118 MPa. Against 6061-T6's 276 MPa yield, the margin is 276/118 − 1 = 1.34 — comfortable. A solid 40×40 bar would read only 56 MPa, but at 4.32 kg/m against the tube's 1.20 kg/m, the tube carries 2.6× the stress per kilogram. || The tube passes with margin at a third of the mass — you don't need the heavier bar.",
     ideas: [
       {
         heading: "σ = M/S is the whole game",
@@ -28,7 +28,7 @@ export const engineeringW24Lessons: Lesson[] = [
       },
       {
         heading: "Material at the middle is a passenger",
-        body: "Because stress scales with y, the fibers near the neutral axis contribute almost nothing to strength while costing full mass. That is why efficient bending sections are hollow or I-shaped: flanges far apart, web just thick enough to hold them there and carry shear. When a section looks skeletal, it is usually honest.",
+        body: "Because stress scales with y, the fibers near the neutral axis contribute almost nothing to strength while costing full mass. That is why efficient bending sections are hollow or I-shaped: flanges far apart, web just thick enough to hold them there and carry shear.",
         formula: "S per kg is the score",
       },
       {
@@ -79,9 +79,9 @@ export const engineeringW24Lessons: Lesson[] = [
     index: 11,
     title: "Buckling and torsion: slender failure",
     minutes: 35,
-    lede: "You will check columns against Euler buckling — a failure that strikes far below yield — and shafts against torsional shear and twist.",
+    lede: "Check columns against Euler buckling — a failure that strikes far below yield — and check shafts against torsional shear and twist.",
     start:
-      "Push down on a plastic ruler standing on end and it does not crush: it suddenly bows sideways. || A column fails in buckling when the compressive load reaches P_cr = π²·E·I / L_e², where L_e = K·L is the effective length set by the end conditions. The buckling stress P_cr/A can be a small fraction of the yield strength — the column never gets the chance to yield. K is 1.0 for pinned ends, 2.0 for one end free, 0.5 for both ends fixed: end conditions change the answer by a factor of four. || Buckling is a stiffness failure wearing a strength mask. The same I that resists bending resists buckling, which is why columns, like beams, want their material far from the axis.",
+      "Push down on a plastic ruler standing on end and it does not crush: it suddenly bows sideways. || A column fails in buckling when the compressive load reaches P_cr = π²·E·I / L_e², where L_e = K·L is the effective length set by the end conditions. The buckling stress P_cr/A can be a small fraction of the yield strength — the column never gets the chance to yield. K is 1.0 for pinned ends, 2.0 for one end free, 0.5 for both ends fixed: end conditions change the answer by a factor of four. || Buckling is governed by stiffness, not strength: the same I that resists bending resists buckling, which is why columns, like beams, put their material far from the axis.",
     use: "When anything carries compression over a long, slender run — struts, legs, pushrods — and when anything transmits torque — shafts, axles, drive tubes. || Compute the slenderness: effective length over radius of gyration. Apply Euler: P_cr = π²EI/L_e², and check the buckling stress against yield — Euler only applies while the column is still elastic at P_cr. For torsion: shear stress τ = T·r/J on the outer fiber, twist φ = T·L/(G·J) along the length. || Stop when the lowest of the compressive-yield load and the buckling load clears your required load with margin, and when both the torsional stress and the twist angle meet their limits.",
     example:
       "A tent pole: 25 mm outer diameter, 2 mm wall aluminum tube, 1.5 m long, pinned at both ends, E = 69 GPa. || I = 9.63×10⁻⁹ m⁴, so P_cr = π² × 69×10⁹ × 9.63×10⁻⁹ / 1.5² = 2914 N. The buckling stress is 2914 / 1.445×10⁻⁴ = 20.2 MPa — against a 276 MPa yield the tube would crush at forty times this load, but it buckles first, always. A 70 kg camper (686 N) gets a factor of 4.25 against buckling. || Now clamp the top end free instead of pinned: K goes 1.0 → 2.0, L_e doubles, and P_cr quarters to 728 N — barely above the camper. Same tube, same load, different ends, different verdict. End conditions are not a detail.",
@@ -98,7 +98,7 @@ export const engineeringW24Lessons: Lesson[] = [
       },
       {
         heading: "Check every mode; the lowest wins",
-        body: "A real component has several ways to fail — yield, buckle, twist too far — and it will find the cheapest one. Size against each independently and let the minimum govern. The tent pole's compressive strength was 40 kN on paper; its buckling load was 2.9 kN in reality. Paper strength is not the strength.",
+        body: "A real component has several ways to fail — yield, buckle, twist too far — and it will find the cheapest one. Size against each independently and let the minimum govern. The tent pole's compressive strength was 40 kN on paper; its buckling load was 2.9 kN. The minimum governs.",
         formula: "P_allow = min(P_yield, P_cr) / FoS",
       },
     ],
@@ -111,7 +111,7 @@ export const engineeringW24Lessons: Lesson[] = [
         prompt: "A 2 m pinned-pinned column buckles at 10 kN. The same column, 4 m long, buckles at…",
         options: ["2.5 kN", "5 kN", "10 kN", "20 kN"],
         answer: 0,
-        why: "P_cr ∝ 1/L². Doubling the length quarters the load: 10/4 = 2.5 kN. This quadratic is the single most expensive intuition in column design.",
+        why: "P_cr ∝ 1/L². Doubling the length quarters the load: 10/4 = 2.5 kN.",
       },
       {
         prompt: "Changing a column's ends from pinned-pinned to fixed-fixed changes the Euler load by a factor of…",
@@ -144,16 +144,16 @@ export const engineeringW24Lessons: Lesson[] = [
     index: 12,
     title: "Combined loading: add, then judge",
     minutes: 35,
-    lede: "You will superpose bending and torsional stresses on a shaft, judge the plane-stress state with von Mises, and iterate a diameter to a passing design.",
+    lede: "Superpose bending and torsional stresses on a shaft, judge the plane-stress state with von Mises, and iterate a diameter to a passing design.",
     start:
-      "A bicycle crank arm bends under your foot and twists the bottom bracket at the same time. A drive shaft bends under gear forces and twists under torque, every revolution. || Where the material is linear elastic, stresses from different loads simply add at a point — superposition. But a point carrying σ_x from bending and τ_xy from torsion is in plane stress, and no single component tells you whether it yields. The von Mises equivalent, σ_vm = √(σ_x² − σ_x·σ_y + σ_y² + 3τ_xy²), distills the state into one number to compare against the tensile allowable. || One number out, one comparison. That is the whole point of a failure criterion: it turns a tensor into a verdict.",
+      "A bicycle crank arm bends under your foot and twists the bottom bracket at the same time. A drive shaft bends under gear forces and twists under torque, every revolution. || Where the material is linear elastic, stresses from different loads simply add at a point — superposition. But a point carrying σ_x from bending and τ_xy from torsion is in plane stress, and no single component tells you whether it yields. The von Mises equivalent, σ_vm = √(σ_x² − σ_x·σ_y + σ_y² + 3τ_xy²), distills the state into one number to compare against the tensile allowable. || That's what a failure criterion buys you: it turns a tensor into a single number you can compare against the allowable.",
     use: "When a component sees bending plus torsion (shafts), axial plus bending (eccentric columns), or any multiaxial state you must clear against a uniaxial allowable. || Compute each stress component at the critical point — for a solid shaft, σ = 32M/πd³ and τ = 16T/πd³ on the outer fiber. Combine with von Mises. Compare against the allowable and iterate the size until the margin is positive. || Stop when the equivalent stress clears the allowable with margin at the worst point, and you have confirmed the worst point is actually the outer fiber (for shafts, it is — both σ and τ peak there together).",
     example:
       "A steel drive shaft: bending moment 200 N·m, torque 300 N·m, allowable 150 MPa. || Guess a diameter from d³ = 32·√(M² + ¾T²)/(π·σ_allow): √(200² + 0.75·300²) = 328, so d³ = 32 × 328/(π × 150×10⁶) = 2.23×10⁻⁵ and d = 28.1 mm — round up to a stock 30 mm. Check: σ = 32×200/(π×0.03³) = 75.5 MPa, τ = 16×300/(π×0.03³) = 56.6 MPa, σ_vm = √(75.5² + 3×56.6²) = 124 MPa. || 124 < 150 clears with MS = 0.21. Note the bending-only size would have been d = 25.7 mm — the torque forced two extra millimeters. Combined loading always costs something; the criterion tells you exactly how much.",
     ideas: [
       {
         heading: "Superposition is a privilege of linearity",
-        body: "Stresses add point-by-point only while the material stays linear elastic and deflections stay small. Past yield, or in contact and large-deflection problems, superposition is illegal and the sum lies. The habit to build: check linearity first, add second.",
+        body: "Stresses add point-by-point only while the material stays linear elastic and deflections stay small. Past yield, or in contact and large-deflection problems, superposition doesn't apply and the sum is wrong. Check linearity first, add second.",
         formula: "σ_total = Σσ_i  (elastic only)",
       },
       {
@@ -204,7 +204,7 @@ export const engineeringW24Lessons: Lesson[] = [
           "Add a keyway to stiffen it",
         ],
         answer: 0,
-        why: "Strength passing does not excuse a violated serviceability limit — 6° of windup mistimes gears and excites vibration. And a keyway concentrates stress; it never stiffens.",
+        why: "Strength passing doesn't excuse a violated serviceability limit — 6° of windup mistimes gears and excites vibration. A keyway concentrates stress rather than adding stiffness.",
       },
     ],
   },

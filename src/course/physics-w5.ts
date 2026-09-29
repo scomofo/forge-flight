@@ -13,10 +13,10 @@ export const physicsW5Lessons: Lesson[] = [
     index: 13,
     title: "Impulse and momentum",
     minutes: 35,
-    lede: "You will trade force against time: the same momentum change can be a hammer blow or a gentle catch, and impulse is the ledger that records the trade.",
+    lede: "Trade force against time: the same momentum change can be a hammer blow or a gentle catch, and impulse is the ledger that records the trade.",
     start:
-      "Catch a fastball barehanded and you pull your hand back with the ball; catch it against a brick wall and something breaks. The ball's velocity changes by the same amount either way. What differs is how long the change takes. || Impulse J = F_avg · Δt is force accumulated over time. Momentum p = m·v is the thing that accumulation changes: J = Δp, the impulse-momentum theorem. Stretch the stop from 10 ms to 120 ms and the average force falls by a factor of twelve, for the same Δp. || The wall does not cheat the physics — it spends the same impulse in a tenth of the time, so the force is ten times larger. Crumple zones, airbags, and bent knees are all the same trick: buy time.",
-    use: "Whenever a force acts over a time interval and you need the resulting motion — impacts, launches, thrust. Also whenever a textbook quotes a huge force and you suspect the interval: divide the momentum change by the time to audit the claim. || Compute the momentum change Δp = m·(v − v₀) as a signed quantity — direction matters. Estimate or measure the interaction time Δt. Divide: F_avg = Δp/Δt. || Stop when you can say whether the average force is survivable, plausible, or absurd. If the time is unknown, say so and bound it: the force is only as honest as the time.",
+      "Catch a fastball barehanded and you pull your hand back with the ball; catch it against a brick wall and something breaks. The ball's velocity changes by the same amount either way. What differs is how long the change takes. || Impulse J = F_avg · Δt is force accumulated over time. Momentum p = m·v is the thing that accumulation changes: J = Δp, the impulse-momentum theorem. Stretch the stop from 10 ms to 120 ms and the average force falls by a factor of twelve, for the same Δp. || The wall does not cheat the physics — it spends the same impulse in a tenth of the time, so the force is ten times larger. Crumple zones, airbags, and bent knees are all the same trick: stretch the time and the force falls.",
+    use: "Whenever a force acts over a time interval and you need the resulting motion — impacts, launches, thrust. Also whenever a textbook quotes a huge force and you suspect the interval: divide the momentum change by the time to audit the claim. || Compute the momentum change Δp = m·(v − v₀) as a signed quantity — direction matters. Estimate or measure the interaction time Δt. Divide: F_avg = Δp/Δt. || Stop when you can say whether the average force is survivable, plausible, or absurd. If the time is unknown, say so and bound it — the force estimate is only as good as the time estimate.",
     example:
       "A 0.15 kg baseball arrives at 40 m/s and the catcher's glove rides back 0.12 s. || Δp = 0.15 × (0 − 40) = −6.0 kg·m/s; the glove supplies +6.0 kg·m/s. F_avg = 6.0 / 0.12 = 50 N — about the weight of a 5 kg bag. || Now stop the same ball against a wall in 0.01 s: F_avg = 600 N. Same momentum change, twelve times the force. Time is the only variable that moved.",
     ideas: [
@@ -83,7 +83,7 @@ export const physicsW5Lessons: Lesson[] = [
     index: 14,
     title: "Conservation and center of mass",
     minutes: 35,
-    lede: "You will draw the system boundary first and compute second: momentum is conserved when the net external force is zero, and the center of mass ignores everything internal.",
+    lede: "Draw the system boundary first and compute second: momentum is conserved when the net external force is zero, and the center of mass ignores everything internal.",
     start:
       "Two skaters stand facing each other on ice and push apart. Neither was moving; now both glide away in opposite directions. No one pulled them from outside — so where did the motion come from? || Total momentum is conserved when the net external force on the system is zero. The skaters' push is internal: it redistributes momentum between them but creates none. The center of mass of the two-skater system never moved at all. || The trick is the boundary. Include both skaters and the push is internal — momentum conserved. Include only one skater and the other's push is external — momentum not conserved. Every conservation argument starts with saying what is inside the line.",
     use: "Before solving any multi-body problem: draw the boundary and ask whether external forces act during the interval. Recoil, explosions, and collisions are the canonical cases — the interaction is fast, so external forces (friction, gravity over milliseconds) are negligible and the system is effectively isolated. || Add up m·v for everything inside, with signs. Set the total before equal to the total after. Solve for the unknown velocity. || Stop when the accounting balances: the total after must equal the total before to the precision of your data. If it doesn't, either the boundary leaked (an external force acted) or the velocities are wrong.",
@@ -153,7 +153,7 @@ export const physicsW5Lessons: Lesson[] = [
     index: 15,
     title: "Collisions: elastic and inelastic",
     minutes: 35,
-    lede: "You will sort collisions by what survives: momentum always does, kinetic energy only sometimes — and the coefficient of restitution measures exactly how much.",
+    lede: "Sort collisions by what survives: momentum always does, kinetic energy only sometimes — and the coefficient of restitution measures exactly how much.",
     start:
       "A Newton's cradle clicks for a minute; a lump of clay dropped on the floor thuds once and stops. Both are collisions — masses, velocities, contact. One returns nearly all its kinetic energy; the other spends it on deformation and heat. || Momentum is conserved in both, because during the brief impact the internal contact forces dwarf everything external. Kinetic energy is conserved only in the elastic case. The coefficient of restitution e = (separation speed)/(approach speed) measures the elasticity: e = 1 is perfectly elastic, e = 0 is perfectly inelastic (they stick). || The clay and the cradle obey the same momentum equation. They differ only in e — one number that decides how much motion survives the hit.",
     use: "For any 1D two-body collision: write momentum conservation, m₁v₁ + m₂v₂ = m₁u₁ + m₂u₂. Add the restitution condition, u₂ − u₁ = e·(v₁ − v₂). Solve the pair for the two unknowns — two equations, two unknowns, done. || Use e = 1 for ideal elastic (billiards, atoms), e = 0 for stick (clay, coupled railcars), and a measured e in between for everything real. || Stop when you have both outgoing velocities and have checked momentum balances. Then compute the kinetic energy lost — it is the check that the collision was what you claimed.",
@@ -162,7 +162,7 @@ export const physicsW5Lessons: Lesson[] = [
     ideas: [
       {
         heading: "Momentum conservation is the non-negotiable",
-        body: "In an isolated collision, Σm·v before equals Σm·v after — always, elastic or not. It is the one equation you get for free. The second equation is the restitution condition, which is really a material property wearing a physics costume: it summarizes everything the collision does to kinetic energy in one measured number.",
+        body: "In an isolated collision, Σm·v before equals Σm·v after — always, elastic or not. It is the one equation you get for free. The second equation is the restitution condition, which is really a material property in disguise: it summarizes everything the collision does to kinetic energy in one measured number.",
         formula: "m₁v₁ + m₂v₂ = m₁u₁ + m₂u₂",
       },
       {
