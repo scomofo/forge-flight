@@ -45,13 +45,13 @@ export const physicsW1Lessons: Lesson[] = [
         prompt: "The dimension of force is…",
         options: ["MLT⁻²", "ML²T⁻²", "MLT⁻¹", "M²LT⁻²"],
         answer: 0,
-        why: "F = ma gives M × LT⁻² = MLT⁻². ML²T⁻² is energy — force times a distance. Confusing the two is a dimensional type error.",
+        why: "F = ma gives M × LT⁻² = MLT⁻². ML²T⁻² is energy, which is force multiplied by distance. If you got that one, you probably carried one extra L.",
       },
       {
         prompt: "A wave speed v on a string of tension F and mass per length μ. Which form is dimensionally possible?",
         options: ["v = √(F/μ)", "v = √(μ/F)", "v = F/μ", "v = F·μ"],
         answer: 0,
-        why: "[F] = MLT⁻² and [μ] = ML⁻¹, so [F/μ] = L²T⁻² and its root is LT⁻¹ — a speed. √(μ/F) gives T/L, F/μ gives the dimensions of v², and F·μ is nonsense.",
+        why: "[F] = MLT⁻² and [μ] = ML⁻¹, so [F/μ] = L²T⁻² and its square root is LT⁻¹, which is a speed. The other options land on the wrong kind of quantity.",
       },
       {
         prompt: "An equation adds ½at² to vt. Dimensionally…",
@@ -62,13 +62,13 @@ export const physicsW1Lessons: Lesson[] = [
           "Broken — the ½ carries dimensions",
         ],
         answer: 0,
-        why: "[at²] = LT⁻²·T² = L and [vt] = LT⁻¹·T = L. Pure numbers like ½ are dimensionless, and the unit system never matters to a dimensional check — only the dimensions do.",
+        why: "[at²] = LT⁻²·T² = L and [vt] = LT⁻¹·T = L, so the two terms can be added. The ½ is just a pure number and carries no dimensions.",
       },
       {
         prompt: "In the decay e^(−t/τ), the constant τ must have dimension…",
         options: ["T (time)", "T⁻¹", "Dimensionless", "L (length)"],
         answer: 0,
-        why: "The exponent must be dimensionless, so [t/τ] = 1 forces [τ] = [t] = T. τ is the time constant: the time for the quantity to fall by a factor of e.",
+        why: "Anything in an exponential must be dimensionless. Since t has units of time, τ must also have units of time so that t/τ has no units.",
       },
     ],
   },
@@ -87,7 +87,7 @@ export const physicsW1Lessons: Lesson[] = [
     ideas: [
       {
         heading: "Precision is not accuracy",
-        body: "A scale that reads 70.00 kg every time you step on it is precise. If it is miscalibrated by 5 kg, it is precisely wrong. Repeatability is a property of the instrument; truth is a property of the calibration. Random error shrinks when you average; systematic error does not — it hides inside every digit, immune to repetition. When readings cluster tightly around the wrong value, suspect the instrument, not the statistics.",
+        body: "A scale that reads 70.00 kg every time you step on it is precise. If it is miscalibrated by 5 kg, it is still wrong. Repeated measurements help with random scatter, but they do not fix a systematic offset. If the readings cluster tightly around the wrong value, check the instrument or calibration before you collect more data.",
       },
       {
         heading: "Where to stop writing digits",
@@ -109,13 +109,13 @@ export const physicsW1Lessons: Lesson[] = [
         prompt: "How many significant figures does 0.00450 have?",
         options: ["Three", "Two", "Five", "Four"],
         answer: 0,
-        why: "Leading zeros are placeholders and never count. The digits 4, 5, and the trailing 0 after the decimal point all count — the trailing zero is a claim of knowledge.",
+        why: "The leading zeros only locate the decimal point. The 4, 5, and final 0 are significant, so 0.00450 has three significant figures.",
       },
       {
         prompt: "12.3 × 4.56 = 56.088 on the calculator. Honestly reported:",
         options: ["56.1", "56.09", "56.088", "56"],
         answer: 0,
-        why: "12.3 has three significant figures — the fewest of any input — so the product keeps three: 56.1. The calculator's extra digits are not measurements.",
+        why: "12.3 has three significant figures, fewer than 4.56, so the product should be reported with three: 56.1. Keep the extra calculator digits only during the working.",
       },
       {
         prompt: "A thermometer reads 21.3, 21.4, 21.3, 21.4 °C in a room that is actually 25 °C. The readings are…",
@@ -126,13 +126,13 @@ export const physicsW1Lessons: Lesson[] = [
           "Neither",
         ],
         answer: 0,
-        why: "They repeat tightly (precise) around the wrong value (inaccurate) — a systematic offset, probably calibration. Averaging a hundred more readings will not fix it.",
+        why: "The readings are tightly grouped, so they are precise. They are also about 3.6 °C low, so they are not accurate. More repeats would not remove that systematic offset.",
       },
       {
         prompt: "A = 10.0 ± 0.2 and B = 5.0 ± 0.1 are multiplied. The relative uncertainty of AB is about…",
         options: ["3%", "2%", "1%", "4%"],
         answer: 0,
-        why: "√(2%² + 2%²) ≈ 2.8% ≈ 3%. Note it exceeds either input's uncertainty — in a product, uncertainties never cancel.",
+        why: "Each input contributes about 2% relative uncertainty. Combining them in quadrature gives √(2² + 2²)% ≈ 2.8%, which rounds to about 3%.",
       },
     ],
   },
@@ -172,7 +172,7 @@ export const physicsW1Lessons: Lesson[] = [
         prompt: "The order of magnitude of 2,300 is…",
         options: ["10³", "10⁴", "10²", "2 × 10³"],
         answer: 0,
-        why: "2,300 = 2.3 × 10³, and log₁₀(2,300) ≈ 3.4, so 10³ is the nearest power of ten either way you count. Order of magnitude names the exponent, not the coefficient.",
+        why: "2,300 = 2.3 × 10³, so its order of magnitude is 10³. The 2.3 is the coefficient; the order of magnitude is the power of ten.",
       },
       {
         prompt: "Why does decomposing into factors beat one direct guess?",
@@ -183,7 +183,7 @@ export const physicsW1Lessons: Lesson[] = [
           "It eliminates systematic error",
         ],
         answer: 0,
-        why: "Structure converts one impossible guess into several bounded ones, and independent factor errors add in log space instead of compounding wildly. Systematic error, shared across factors, is not removed — only bounded.",
+        why: "Breaking the problem apart gives you smaller quantities you can actually estimate. Some errors may cancel, but shared bias across several assumptions will still carry into the result.",
       },
       {
         prompt: "Fermi's paper-drop estimate of the Trinity yield was ~10 kt against ~20 kt measured. The lesson is…",
@@ -194,7 +194,7 @@ export const physicsW1Lessons: Lesson[] = [
           "Estimation only works for nuclear weapons",
         ],
         answer: 0,
-        why: "The displacement encoded the energy; a simple physical model decoded it to the right order of magnitude. That is what estimation is for — the exponent, fast.",
+        why: "Fermi used a simple observation and a rough model to get the right scale of the answer. That is exactly the point of a Fermi estimate.",
       },
       {
         prompt: "A detailed calculation says a bracket sees 40 N; your Fermi says ~10⁴ N. You should…",
@@ -205,7 +205,7 @@ export const physicsW1Lessons: Lesson[] = [
           "Redo the Fermi with more significant figures",
         ],
         answer: 0,
-        why: "A more-than-two-order disagreement means something structural is wrong — a missed load path, a unit slip, a wrong model. More digits on either side cannot fix that; finding the missing factor can.",
+        why: "A difference of more than two orders of magnitude is too large to ignore. Check for a missed load, a unit error, or a bad assumption before trusting either result.",
       },
     ],
   },
