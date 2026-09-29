@@ -18,6 +18,14 @@ export const materialsW11Lessons: Lesson[] = [
     title: "The four bonds",
     minutes: 30,
     lede: "Name the bond holding a material together, and say what that bond lets electrons and atoms do — that decides conductivity, ductility, and melting point before any datasheet is opened.",
+    opening: { mode: "steps", heading: "Read the materials first", labels: ["Four materials", "What changes", "What to predict"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Metallic" },
+      { kind: "idea", idea: 1, label: "Ionic" },
+      { kind: "example", heading: "Make a prediction" },
+      { kind: "idea", idea: 2, label: "Covalent" },
+      { kind: "move", heading: "Use the bond as your first clue" },
+    ],
     start:
       "Copper wire, table salt, diamond, and polyethylene behave very differently because their atoms are bonded in different ways. || Metallic, ionic, covalent, and secondary bonding each place different limits on electron motion and atomic rearrangement. Those differences show up as conductivity, ductility, stiffness, melting temperature, and failure mode. || The useful habit is to start with the bond and ask three questions: can electrons move, can atomic planes or chains move, and how much energy does it take to separate the structure?"
     use: "When you meet an unfamiliar material, before you look anything up. Also when a property surprises you — 'why does this conduct but that doesn't' is almost always a bonding question. || Name the bond: metallic (shared electron sea), ionic (transferred electrons, charge lattice), covalent (shared pairs, directional — network or molecular), secondary (weak, between molecules or chains). Then ask what moves: electrons? slip planes? nothing? || Stop when you can predict conductivity, ductility, and rough melting behavior from the bond alone. If the bonding is mixed, name both bonds.",
