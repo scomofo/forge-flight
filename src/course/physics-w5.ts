@@ -193,6 +193,7 @@ export const physicsW5Lessons: Lesson[] = [
         heading: "Restitution measures rebound speed",
         body: "The coefficient of restitution is the relative separation speed divided by the relative approach speed along the line of impact. It is usually measured. For a vertical bounce from the same surface, e can be estimated from the square root of bounce height divided by drop height.",
         formula: "e = separation speed / approach speed",
+        help: [{ concept: "coefficient-restitution" }],
       },
       {
         heading: "Missing kinetic energy became another form of energy",
