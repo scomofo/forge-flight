@@ -194,10 +194,25 @@ export type BenchId =
   | "memo"
   | LadderBenchId;
 
+export type ConceptHelpSection = {
+  heading: string;
+  body?: string;
+  items?: string[];
+};
+
+export type ConceptHelp = {
+  trigger: string;
+  title: string;
+  intro: string;
+  sections: ConceptHelpSection[];
+  caution?: string;
+};
+
 export type Idea = {
   heading: string;
   body: string;
   formula?: string;
+  help?: ConceptHelp[];
 };
 
 export type LessonOpening = {
