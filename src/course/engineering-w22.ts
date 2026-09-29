@@ -14,22 +14,22 @@ export const engineeringW22Lessons: Lesson[] = [
     minutes: 35,
     lede: "A model is a question-answering machine with a limited territory. State its claim, its assumptions, and the test that would prove it wrong — and never ask it a question outside the territory it was validated in.",
     start:
-      "In November 1940 the Tacoma Narrows Bridge tore itself apart in a 64 km/h wind. The designers had done the arithmetic: their model said the deck would hold under a steady wind far stronger than that. They were right about the model's own question — and the bridge still died, twisting in torsional flutter, a self-excited aeroelastic oscillation, not a forced resonance. || A model is a question-answering machine: inputs in, outputs out, and the answers are only as honest as the assumptions baked in. Every model has a domain — the range of cases it was actually checked against. Outside that domain, the outputs are just numbers. || 'All models are wrong, some are useful' is a reminder with teeth: useful means wrong in known ways, inside a known domain, with a stated test for when reality disagrees. That's the only kind of model an engineer is allowed to decide from.",
+      "A model answers a specific question under a specific set of assumptions. It does not automatically remain trustworthy when the operating condition changes. || Define the model's inputs, outputs, assumptions, and validation domain. Outside that domain, the software may still produce a number, but that does not make the number meaningful. || Good model use includes a plan for checking the prediction against reality and a clear statement of what the model does not include."
     use: "When you are about to decide from a calculation instead of a test — sizing a part, signing off a procedure, trusting a simulation. || Write down what the model claims, the assumptions it needs to be true, and the domain it was validated in. Check each assumption against your case, one by one, out loud. Name the measurement or experiment that would falsify the result. || Stop when the model's domain covers your question and the falsifying test exists and is affordable. If the model has never been checked against anything like your case, stop calculating and go measure. Extrapolating past the last validated case is guessing.",
     example:
       "The Tacoma Narrows design model answered one question: does the deck hold under its steady design wind, far stronger than 64 km/h? The answer was yes, with margin. || The bridge failed in a 64 km/h wind, well below the design wind, from aeroelastic flutter, an oscillation the static model had no vocabulary for. The model answered its own question correctly; it was just never asked the question that mattered. || Validation has to cover the failure mode you fear, not the one you modeled. A model validated for static loads says nothing about dynamics, regardless of how many decimal places it prints.",
     ideas: [
       {
-        heading: "A model has a domain; outside it, silence",
+        heading: "Define the model's valid domain",
         body: "Handbook formulas, finite-element runs, spreadsheet empires — each was checked against some set of cases, and that set is the model's territory. The beam formula δ = FL³/3EI is validated for small deflections of prismatic, linear-elastic beams. Aim it at a tapered composite spar deflecting 10% of its length and you've left the territory. The formula will still return a number; it just won't mean anything.",
         formula: "valid(model) ⊆ checked cases",
       },
       {
-        heading: "Assumptions are load-bearing",
+        heading: "Model assumptions limit what the result can claim",
         body: "Every formula carries silent 'if's: linear elasticity, small angles, steady flow, rigid supports, uniform temperature. The assumption ledger from Week 21 is where those 'if's live, each with a provenance and a confidence. A model result presented without its assumption list is a rumor with units. When a model surprises you, the assumptions are the first place to look — not the arithmetic.",
       },
       {
-        heading: "Validation is a test, not a feeling",
+        heading: "Validate models with evidence, not confidence",
         body: "A model earns trust when a measurement agrees with its prediction within the stated uncertainty, for cases resembling yours. One agreeing test is a hint; agreement across the whole domain is validation. And the comparison needs the uncertainty on both sides — a prediction without an error bar can't agree or disagree with anything.",
         formula: "|prediction − measurement| ≤ u_combined",
       },
@@ -93,17 +93,17 @@ export const engineeringW22Lessons: Lesson[] = [
     minutes: 40,
     lede: "Propagate uncertainties through a calculation two ways — worst-case and root-sum-square — and know which one you're entitled to quote.",
     start:
-      "A machinist reports a bore as 50.00 mm. The caliper reads to 0.01 mm, her hand adds maybe 0.02, the shop warmed up since morning for another 0.01. The honest statement is 50.00 ± 0.03 mm, and everything computed from that bore inherits the ±. Dropping the ± isn't simplification — the uncertainty is still there, silently compounding. || Uncertainty propagates. If y = f(x₁, x₂, …), each input's wobble pushes the output by (∂f/∂xᵢ)·uᵢ — the sensitivity times the input's uncertainty. Two honest ways to combine those pushes: worst case, where every error conspires in the same direction, Σ|∂f/∂xᵢ|uᵢ; and root-sum-square, √(Σ(∂f/∂xᵢ·uᵢ)²), for errors that are independent and random. || Worst case is the contract you can sign: the result can't be worse than this, as long as your ± bounds were honest. RSS is the scatter you'd expect on an ordinary Tuesday. Quote RSS when the errors are independent and random; quote worst case when they might conspire, or when safety rides on the number.",
+      "Measurements and model inputs carry uncertainty, whether or not you write it down. Derived results inherit that uncertainty. || For small uncertainties, each input contributes roughly its sensitivity multiplied by its own uncertainty. Combine contributions by worst case when errors could align or the bound must be conservative; use root-sum-square when the errors are independent and random. || State which method you used and why. The arithmetic is only as defensible as the assumptions behind the uncertainty model."
     use: "Whenever a result is computed from measured inputs — which is to say, whenever a result is computed at all. || List every input with its ±, in consistent units, at the same confidence. Work out how sensitive the output is to each input — ∂f/∂xᵢ analytically, or numerically with a small nudge. Combine: worst-case sum for the guarantee, RSS for the expectation. || Stop when you can state the result as value ± uncertainty with the method named out loud. Never let the ± quietly fall off when the number moves into the next calculation — that is how 50.00 ± 0.03 becomes 50.00, and then becomes a part that does not fit.",
     example:
       "Thrust from a pressure tap and a throat diameter: F = p·A, with p = 10.0 ± 0.1 MPa and d = 50.0 ± 0.1 mm. || A = π(0.025 m)² = 1.9635×10⁻³ m², so F = 19.635 kN. The sensitivities: ∂F/∂p = A contributes 196 N per 0.1 MPa; ∂F/∂d = pπd/2 contributes 79 N per 0.1 mm. Worst case: 196 + 79 = 275 N, ±1.40%. RSS: √(196² + 79²) = 211 N, ±1.08%. || Pressure owns 86% of the variance — the pressure gauge is the whole story. If the number needs tightening, buy the better pressure gauge; the micrometer is already fine, and upgrading it buys almost nothing.",
     ideas: [
       {
-        heading: "Every ± has a story",
+        heading: "Every uncertainty value needs a source",
         body: "Uncertainties come from instruments (the datasheet spec), from the setup (thermal drift, alignment, your hand), and from judgment (the 'maybe 0.02' you estimated). All three belong in the budget, labeled by source. An honestly estimated ± beats an omitted one: the omitted one is still there, compounding silently through every downstream calculation.",
       },
       {
-        heading: "Worst case vs RSS is a choice about conspiracy",
+        heading: "Choose worst case or RSS based on how the errors behave",
         body: "Worst case assumes every error pushes the same way at once — paranoid, but signable. RSS assumes independent random errors that mostly cancel — realistic for a Tuesday, indefensible if the errors share a cause (same uncalibrated instrument, same temperature drift). Correlated errors do not get the RSS discount. When in doubt about independence, the worst case is the honest quote.",
         formula: "u_y = √(Σ(∂f/∂xᵢ · u_xi)²)",
       },
@@ -167,13 +167,13 @@ export const engineeringW22Lessons: Lesson[] = [
     minutes: 35,
     lede: "Rank inputs by how much they move the answer, and turn the error budget into a shopping list.",
     start:
-      "Two instruments, one budget: a better pressure gauge or a better micrometer? Guessing is how labs burn money — usually on the instrument that was already fine. || The normalized sensitivity Sᵢ = (xᵢ/y)(∂y/∂xᵢ) says how many percent the output moves per percent the input moves: pure leverage, straight from the formula's shape. Multiply each leverage by its input's actual relative uncertainty and square it, and you get the input's variance share — the fraction of the output's scatter that input owns. || Rank the shares. The top of the list is where measurement money goes; the bottom is where 'good enough' lives. Recompute after every upgrade, because the ranking moves — today's dominant link is tomorrow's solved problem.",
+      "Sensitivity analysis tells you which inputs actually control the output uncertainty. That is useful when measurement time or budget is limited. || Normalized sensitivity shows the percent change in output caused by a percent change in an input. Combine that leverage with the input's actual uncertainty to estimate its contribution to the result. || Improve the dominant contributors first, then recalculate. Once one source is reduced, another may become the new limiting term."
     use: "When the uncertainty is too big, or the instrument budget too small, or someone asks 'where would better data actually help?' || Compute each input's normalized sensitivity and its variance share of the RSS total. Sort descending. Price the improvement of the top input against the uncertainty it buys back — a 3× better gauge that halves the total is a purchase; one that trims 2% isn't worth the requisition. || Stop when the dominant input is improved or priced out. Document the residual uncertainty as the honest limit of the measurement — 'this is as tight as this rig gets' is a legitimate result.",
     example:
       "Same thrust rig: p = 10.0 ± 0.1 MPa (1%), d = 50.0 ± 0.1 mm (0.2%). The leverages: S_p = 1, S_d = 2 — the diameter is twice as leveraged, because area squares it. || But leverage is not the bill: variance shares are (1×1%)² vs (2×0.2%)² — 86% pressure, 14% diameter. Halving the pressure uncertainty cuts RSS from 211 N to 126 N; halving the diameter uncertainty instead only reaches 200 N. || Spend where leverage AND sloppiness are both large. Here that is the pressure gauge, and it isn't close — the micrometer's double leverage is wasted on an input that is already tight.",
     ideas: [
       {
-        heading: "Leverage × sloppiness = priority",
+        heading: "Combine sensitivity with input uncertainty to set priorities",
         body: "The sensitivity Sᵢ comes from the formula: exponents become leverages (L³ in beam deflection makes length three times as sensitive as load). The actual uncertainty uᵢ/xᵢ comes from the world: how sloppy this input really is. Priority is the product. A huge leverage on a tightly-controlled input contributes almost nothing; a modest leverage on a sloppy input is where the scatter lives.",
       },
       {
@@ -181,7 +181,7 @@ export const engineeringW22Lessons: Lesson[] = [
         body: "Varying one input while holding the rest frozen misses interactions — inputs whose errors move together. For most engineering formulas the first-order ranking is close enough to spend money by, and a Monte Carlo run (sample everything at once, watch the output's scatter) checks it. Compare like with like: for ± bounds sampled uniformly, the Monte Carlo standard deviation should be about RSS/√3. A big departure from that means the linear approximation is breaking and the ranking needs a second look.",
       },
       {
-        heading: "The budget is the deliverable",
+        heading: "Use the uncertainty budget to decide what to improve",
         body: "An error budget is a table: each link, its nominal, its ±, its variance share, its source. That table is the evidence for this week — it says what was measured, how well, what dominates, and what was decided. File the decision with the table, or the analysis never turns into action.",
         formula: "shareᵢ = (Sᵢ·uᵢ/xᵢ)² / Σ(Sⱼ·uⱼ/xⱼ)²",
       },
