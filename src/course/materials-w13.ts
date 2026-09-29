@@ -14,6 +14,14 @@ export const materialsW13Lessons: Lesson[] = [
     title: "Defects are the material",
     minutes: 35,
     lede: "Explain why a perfect crystal should be ten to a thousand times stronger than any real metal, and name the three defect families that do the actual work.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A perfect crystal should be much stronger in shear than real metals actually are. The reason is that real crystals contain defects. || Dislocations are line defects that let plastic deformation proceed by local atomic rearrangements instead of sliding an entire atomic plane at once. That reduces the stress required for permanent deformation by orders of magnitude. || In engineering materials, defects are not simply damage. They control deformation, diffusion, hardening, and many other useful behaviors."
     use: "Whenever you ask why a metal is soft or strong: check the defect population, not the composition. || Classify by dimension: 0D point defects (vacancies, interstitials), 1D line defects (dislocations), 2D planar defects (grain boundaries, stacking faults). Vacancy site fraction obeys Boltzmann, n/N = exp(−Qv/kT). Dislocation motion is slip; blocked dislocations are strength. || Stop when you can point at a processing step and name the defect it targets — quenching freezes vacancies in, cold work multiplies dislocations, annealing sweeps both out.",
@@ -94,6 +102,14 @@ export const materialsW13Lessons: Lesson[] = [
     title: "Atoms move downhill",
     minutes: 35,
     lede: "State Fick's laws, read diffusion distance as √(Dt), and price a heat treatment in hours.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "During carburizing, carbon diffuses from a carbon-rich surface into steel. The process is slow because atoms have to move through the solid. || Fick's first law relates diffusion flux to the concentration gradient. Fick's second law describes how the concentration profile changes with time. A useful scaling result is that diffusion distance grows roughly with √(Dt). || That square-root dependence matters in practice: doubling the diffusion depth takes roughly four times as long at the same temperature."
     use: "Whenever atoms must get somewhere on a schedule: case hardening, homogenization, sintering, dopant drives. || Compute D from Arrhenius, D = D0 exp(−Q/RT); form the length 2√(Dt); read the profile. Check units first: D is m²/s, so √(Dt) is meters — a dimensional check that catches most setup errors. || Stop when you can say 'a 50 K drop costs roughly double the time' and back it with a number, not a feeling.",
@@ -164,6 +180,14 @@ export const materialsW13Lessons: Lesson[] = [
     title: "Processing is defect engineering",
     minutes: 35,
     lede: "Describe annealing, quenching, and case hardening as deliberate moves in defect populations — and predict which property moves.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Same steel bar, two histories. One quenched from 850 °C rings hard and snaps; one annealed bends. Composition identical, properties unrecognizable. || The word: annealing heals — recovery, then recrystallization, then grain growth sweep out dislocations and coarsen grains. Quenching freezes — cool so fast that diffusion cannot happen and carbon is trapped in martensite: very hard, very brittle. Tempering reheats gently to trade some of that hardness for toughness. || Why the rule has that shape: structure → processing → properties → performance. Through-hardening, annealing and tempering never touch composition — they only rearrange defects, and the properties follow. Case hardening is the exception, and changes composition only in the skin.",
     use: "When you choose or diagnose a heat treatment: ask which defect population it targets. || Anneal to soften and relieve stress; quench to harden; temper to toughen. Case-harden (carburize, nitride) for a hard skin on a tough core. A TTT diagram plots the time to transform at each hold temperature; the nose is the fastest point. Read the nose: diffusion-controlled transformations at high temperature, suppressed by speed at low. || Stop when you can look at any process step and name the defect move — 'this dissolves precipitates', 'this traps carbon', 'this grows grains' — and say which property pays for it.",
