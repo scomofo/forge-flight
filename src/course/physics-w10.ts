@@ -19,6 +19,14 @@ export const physicsW10Lessons: Lesson[] = [
     title: "The synthesis method",
     minutes: 40,
     lede: "Write the assumption ledger before you compute, chain models across the whole block, and trust a limiting case over a finished number.",
+    opening: { mode: "prose", heading: "Write the assumptions before the equations" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Ledger" },
+      { kind: "idea", idea: 2, label: "Limit checks" },
+      { kind: "example", heading: "When measurement disagrees" },
+      { kind: "idea", idea: 1, label: "Model handoffs" },
+      { kind: "move", heading: "Audit assumptions before arithmetic" },
+    ],
     start:
       "A useful engineering prediction includes more than a single number. It also states the assumptions behind the model and the conditions where the result should be trusted. || Every formula in the course came with assumptions: constant acceleration, negligible drag, linear elasticity, small deflections, and so on. Synthesis means carrying those limits into a multi-step calculation instead of forgetting them once the formula is familiar. || Write the assumptions down before you calculate. When prediction and measurement disagree, those assumptions are often the first place to look.",
     use: "Any problem that needs more than one week's machinery — which is every real problem. || Open the ledger first: for each assumption write what you assume, what breaks if it is false, and which limiting case would expose it. Then chain: each step's output is the next step's input, and you check dimensions at every joint — Week 1 never retires. Then test limits: drive parameters to zero, to infinity, to equality, and demand the answer behave sanely. When prediction and measurement disagree, autopsy the ledger before the arithmetic. || Stop when every joint has a unit check, every extreme has a limit test, and you can point to the assumption most likely to be wrong and say what would prove it.",
@@ -96,6 +104,14 @@ export const physicsW10Lessons: Lesson[] = [
     title: "Tow launch, worked end to end",
     minutes: 45,
     lede: "Take one glider from the winch to the landing field, chaining tow energy, force balance, the drag polar, and kinematics — and mark exactly where the model's authority ends.",
+    opening: { mode: "prose", heading: "One system, several models" },
+    readFlow: [
+      { kind: "move", heading: "The analysis chain" },
+      { kind: "idea", idea: 0, label: "Release energy" },
+      { kind: "idea", idea: 1, label: "Force balance" },
+      { kind: "idea", idea: 2, label: "Aerodynamic performance" },
+      { kind: "example", heading: "Reference glider, end to end" },
+    ],
     start:
       "A tow-launched glider combines several pieces of physics at once. The tow sets the energy state, the release condition sets the initial motion, the aerodynamic model sets lift and drag, and the glide geometry sets the range. || No single lesson solves the whole problem. The point of this worked example is to connect the models in the right order and check the units and assumptions at each handoff. || Treat each intermediate result as an input to the next model. If a handoff is unclear in words or units, stop there before carrying the error downstream.",
     use: "When the question spans the block: state the chain up front, then work it link by link. || 1. Tow (Week 4): the line's work becomes KE + PE at release — open the energy account. 2. Release (Week 3): steady glide means forces balance along and across the flight path; the path angle is set by D/L. 3. Polar (Week 8): CL from the wing slope at 4°, CD from parasite plus induced drag, L/D = CL/CD. 4. Range (Week 2): in still air, range = altitude × L/D. 5. Honest digits (Week 1): the least certain input rules the reported precision. || Stop when every joint carries a unit check, the energy account balances, and the final number wears only the digits its weakest input earned.",
@@ -176,6 +192,14 @@ export const physicsW10Lessons: Lesson[] = [
     title: "The mastery check",
     minutes: 60,
     lede: "Sit a closed-book check over the whole block, clear 70%, and repair every missed conservation-law or free-body-diagram item before Materials 101 opens.",
+    opening: { mode: "steps", heading: "How the gate works", labels: ["The format", "The threshold", "The repair"] },
+    readFlow: [
+      { kind: "move", heading: "Sit it once, then repair misses" },
+      { kind: "idea", idea: 0, label: "Reasoning" },
+      { kind: "idea", idea: 1, label: "Weighting" },
+      { kind: "idea", idea: 2, label: "Corrections" },
+      { kind: "example", heading: "What a useful correction looks like" },
+    ],
     start:
       "The mastery check is closed-book so you have to reconstruct the reasoning rather than search for a familiar formula. || It has twelve questions: conservation laws, free-body diagrams, and cross-cutting problems from the rest of the Physics block. A score of at least 70% clears the score requirement. Missed conservation or FBD items also require a written correction. || The correction is part of the assessment. The goal is to identify the reasoning error and repair it before moving into the next course.",
     use: "When you have finished Weeks 1–9 and the synthesis lessons. || Run the check in one sitting, closed book — derive, don't recall. Score it: 9 of 12 clears 70%. For every missed conservation or FBD item, write the correction: state the error, re-derive the right answer, name the instinct that failed. File each correction in the bench. || Stop when the score clears 70% AND every missed conservation/FBD item has a filed correction. Both conditions — a high score with unrepaired FBD errors still holds the gate.",
