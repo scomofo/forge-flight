@@ -6,84 +6,84 @@ export const ladderTracks: Track[] = [
     index: "201",
     title: "Physics",
     course: "Physics 201",
-    lede: "Rotation, a mass on a spring, and whether a block floats.",
+    lede: "Short applied lessons in rotation, oscillation, and buoyancy."
   },
   {
     id: "physics-301",
     index: "301",
     title: "Physics",
     course: "Physics 301",
-    lede: "Pressure, a pipe that narrows, drag, and a bar that is heated but not allowed to grow.",
+    lede: "Applied fluid mechanics, drag, and thermal stress with one model at a time."
   },
   {
     id: "physics-401",
     index: "401",
     title: "Physics",
     course: "Physics 401",
-    lede: "How fast a wave runs down a rod, how a beam wants to ring, why a drop is not the static weight, and what a tight turn costs.",
+    lede: "Wave speed, beam vibration, impact loading, resonance, and curved motion."
   },
   {
     id: "materials-201",
     index: "201",
     title: "Materials",
     course: "Materials 201",
-    lede: "Time, a crack through a wall, a hardness guess, metal that quietly disappears, a front that moves with the square root of time, and a broken face that names the mode.",
+    lede: "Applied lessons in creep, fracture, hardness, corrosion, diffusion, and failure evidence."
   },
   {
     id: "materials-301",
     index: "301",
     title: "Materials",
     course: "Materials 301",
-    lede: "The same chemistry, a different number. Work, a quench, a tie line, a fiber's direction, how much fiber you actually put in, and a temperature where the same steel starts to snap.",
+    lede: "Processing, phase fractions, composite directionality, and temperature-dependent material behavior."
   },
   {
     id: "materials-401",
     index: "401",
     title: "Materials",
     course: "Materials 401",
-    lede: "Which index, which notch, which temper, which damage shows up first, and a crack that also needs a chemical.",
+    lede: "Selection indices, notch effects, material condition, competing damage modes, and environmental cracking."
   },
   {
     id: "engineering-201",
     index: "201",
     title: "Engineering",
     course: "Engineering 201",
-    lede: "Stress that is not one tension. Yield under a combination, a shaft, a shell, a load that misses the center, a pin in shear, and material rubbed away.",
+    lede: "Combined stress, shafts, pressure vessels, eccentric loading, pins, and wear."
   },
   {
     id: "engineering-301",
     index: "301",
     title: "Engineering",
     course: "Engineering 301",
-    lede: "A shaft's critical speed, a gear pair, a bearing's cube, a bolt that only sees part of a new load, a coil of wire, and why a large part can break before it yields.",
+    lede: "Rotating machinery, gears, bearings, preloaded bolts, springs, and size effects."
   },
   {
     id: "engineering-401",
     index: "401",
     title: "Engineering",
     course: "Engineering 401",
-    lede: "Damage that adds, heat added to a load, the cycles an inspection buys, a last sort of how the part fails, and a life spent by creep and fatigue together.",
+    lede: "Cumulative damage, thermal-mechanical loading, inspection intervals, failure-mode selection, and combined life."
   },
   {
     id: "manufacturing-201",
     index: "201",
     title: "Manufacturing",
     course: "Manufacturing 201",
-    lede: "The force in a rolling gap, why a faster cut kills a tool, the extra metal a pattern needs, why a weld bows, and a fixture that stops six motions.",
+    lede: "Rolling force, tool life, casting allowances, weld distortion, and fixture constraint."
   },
   {
     id: "manufacturing-301",
     index: "301",
     title: "Manufacturing",
     course: "Manufacturing 301",
-    lede: "A bonus on a hole, a surface that taxes fatigue, heat along a weld, a yield that is a product, and a printed bond that is weaker than the road.",
+    lede: "GD&T bonus tolerance, surface effects, weld heat input, process yield, and printed-layer anisotropy."
   },
   {
     id: "manufacturing-401",
     index: "401",
     title: "Manufacturing",
     course: "Manufacturing 401",
-    lede: "The slow station, a tool paid for by the batch, parts you can delete, scrap you already paid for, and the pace the customer already set.",
+    lede: "Throughput, batch economics, design for assembly, scrap cost, and takt time."
   },
 ];
 
@@ -113,12 +113,12 @@ export const ladderLessons: Lesson[] = [
     example: "A lug wrench, 0.25 m long, with 40 N on the end. || At 90° to the wrench the torque is 0.25 × 40 = 10 N·m. At 30° it is half, 5 N·m, because only the perpendicular part of the lever counts. Aimed straight at the pivot, the torque is zero. || Use the perpendicular lever. The full 0.25 m is not available at a shallow angle.",
     ideas: [
       {
-        heading: "Force at an angle is two stories",
+        heading: "Only the perpendicular force component creates torque",
         body: "Only the perpendicular piece of a force turns a body about a pivot. A force aimed straight at the pivot pushes, and it does not turn. Sin of the angle is that split.",
         formula: "τ = r F sin θ",
       },
       {
-        heading: "The lever is a distance with a job",
+        heading: "Use the perpendicular lever arm",
         body: "The lever arm is the distance from the pivot to the line of the force, not merely to the point where your hand sits. Slide the force's line through the pivot and the torque is zero even if the force is large.",
       },
       {
@@ -173,12 +173,12 @@ export const ladderLessons: Lesson[] = [
     example: "A bicycle rim and a solid disk, same mass, same outer radius. || The rim is a hoop, so its inertia is mass times radius squared. The disk is half of that. The same torque spins the disk up faster. || Where the mass sits is the design. Do not rank them by mass alone.",
     ideas: [
       {
-        heading: "Distance from the axis is squared",
+        heading: "Rotational inertia weights radius squared",
         body: "Inertia grows with mass and with the square of distance from the axis. Mass near the axis hardly counts. Mass at the rim counts a lot.",
         formula: "Hoop I = MR², disk I = ½MR²",
       },
       {
-        heading: "Shape is the design lever",
+        heading: "Mass distribution controls rotational inertia",
         body: "A flywheel wants mass far out. A shaft that must spin up quickly wants mass close in. Same kilograms, different job, different place to put them.",
       },
       {
@@ -234,7 +234,7 @@ export const ladderLessons: Lesson[] = [
     example: "A skater with arms out, inertia 1.2 kg·m², spinning so the angular momentum is 4.8 kg·m²/s. || The spin is 4.8 / 1.2 = 4 rad/s. Pull the arms in until the inertia is 0.6 and the spin is 8 rad/s. Nothing twisted them. || Spin rises when the mass comes closer to the axis. Do not expect the rpm to stay put.",
     ideas: [
       {
-        heading: "No torque, momentum stays",
+        heading: "Angular momentum stays constant without external torque",
         body: "If nothing twists the body from outside, Iω does not change. Pull mass inward and the spin rises to keep the product. That is the skater, and it is a shaft whose mass moves closer to the center.",
         formula: "I₁ω₁ = I₂ω₂",
       },
@@ -289,7 +289,7 @@ export const ladderLessons: Lesson[] = [
     example: "A 1 kg mass on a 100 N/m spring, then a 2 kg mass on the same spring. || The period is 2π times the square root of 1/100, about 0.63 s. At 2 kg it is about 0.89 s, which is 1.41 times longer, not twice. || Heavier is slower, and not in proportion. Do not double the mass and expect to double the time.",
     ideas: [
       {
-        heading: "Heavier is slower, not twice as slow",
+        heading: "Period grows with the square root of mass",
         body: "Period grows with the square root of mass. Double the mass and the period grows by √2, about 1.41. People expect a doubling. The square root is the correction.",
         formula: "T = 2π √(m/k)",
       },
@@ -344,7 +344,7 @@ export const ladderLessons: Lesson[] = [
     example: "A diver's gauge at the surface, then at 10 m in a lake. || Each meter of fresh water adds 9.81 kPa. At 10 m the gauge reads about 98 kPa. The air was already pressing at the surface, so the absolute pressure is that extra plus about one atmosphere. || The gauge is not the whole pressure. The width of the lake does not appear.",
     ideas: [
       {
-        heading: "Each meter adds the same extra",
+        heading: "Hydrostatic gauge pressure increases linearly with depth",
         body: "Gauge pressure in a still liquid is density times g times depth. Fresh water adds about 9.8 kPa every meter. Ten meters is about 98 kPa, one atmosphere of extra.",
         formula: "P_gauge = ρgh",
       },
@@ -405,7 +405,7 @@ export const ladderLessons: Lesson[] = [
         formula: "P + ½ρv² = constant",
       },
       {
-        heading: "Squared speed is the surprise",
+        heading: "Dynamic-pressure terms grow with speed squared",
         body: "Double the speed and the dynamic term grows by four. A gentle flow can become a large pressure drop without looking violent. 10 m/s in water is already 50 kPa.",
         formula: "the speed term in the budget is ½ ρ v²",
       },
@@ -461,7 +461,7 @@ export const ladderLessons: Lesson[] = [
         formula: "F_d = ½ ρ v² C_d A",
       },
       {
-        heading: "Past the meeting, drag wins",
+        heading: "Terminal speed occurs when drag balances weight",
         body: "Above that speed the net force points backward. The object does not keep accelerating forever. The bench's mass is 0.2 kg, so the weight is only about 2 N, and 8 m/s of air is enough.",
       },
       {
@@ -511,12 +511,12 @@ export const ladderLessons: Lesson[] = [
     example: "A 1 m steel bar heated by 50°. || Free, it grows by about 0.60 mm and the stress is zero. Ends fixed, the growth is zero and the stress is about 120 MPa. || Report one of those, not both. The same 50° does not produce both.",
     ideas: [
       {
-        heading: "Free growth is α times length times the rise",
+        heading: "Free thermal expansion follows αLΔT",
         body: "A free bar gets longer by α L ΔT and develops no stress from the temperature itself. The bench's steel grows 0.012 mm per degree on a 1 m length.",
         formula: "δ = α L ΔT",
       },
       {
-        heading: "Fixed ends turn that growth into stress",
+        heading: "Full restraint converts thermal strain into stress",
         body: "If the ends cannot move, the bar is compressed back by the amount it wanted to grow. Stress is E α ΔT. For this steel that is 2.4 MPa per degree, 120 MPa at 50°, with no applied force. This is a bar held along its length only. A plate held in both directions is EαΔT/(1−ν).",
         formula: "σ = E α ΔT",
       },
@@ -678,7 +678,7 @@ export const ladderLessons: Lesson[] = [
     example: "A mass dropped 0.50 m onto a spring, then the same mass dropped 0.10 m. || The lost height has to fit in the spring as ½kδ². For 2 kg on 1 MN/m, the 0.50 m drop peaks at about 4.43 kN and the 0.10 m drop at about 1.98 kN, against a 20 N weight. That is 2.24 times, the square root of five, not five. || Do not size the stop for the static weight. A shorter drop is not a proportional discount.",
     ideas: [
       {
-        heading: "The energy has to fit in the spring",
+        heading: "Impact energy must be absorbed by the stopping system",
         body: "mgh becomes ½kδ² if the target is a spring and nothing is lost. The peak force is kδ, so it scales with the square root of the height. Half the height is not half the force.",
         formula: "mgh = ½ k δ²",
       },
@@ -733,7 +733,7 @@ export const ladderLessons: Lesson[] = [
     example: "A bracket whose natural frequency matches the motor, with damping ratio 0.05. || On that match the motion is about 10 times the sag the same force would cause if it were steady. Move the motor to 1.5 times the natural frequency and the motion falls below that steady sag. || Move the drive first. Damping is what you have left when the drive cannot move.",
     ideas: [
       {
-        heading: "On resonance, damping is the only cap",
+        heading: "Damping limits the resonant response",
         body: "When the drive frequency matches the natural frequency, the ideal undamped amplitude would grow without limit. Damping ζ cuts it to about 1/(2ζ) times the static sag. ζ of 0.05 is a factor of about 10.",
         formula: "magnification = 1 / √((1−r²)² + (2ζr)²)",
       },
@@ -794,12 +794,12 @@ export const ladderLessons: Lesson[] = [
     example: "A hanger at 800 K and 100 MPa, then the same hanger with the stress doubled, then with the temperature raised 50 K instead. || Doubling the stress cuts the time to 1% strain by about 32, because stress is raised to a power. The extra 50 K cuts it to about a tenth, because temperature sits in an exponential. || A small change in the inputs is a large change in the life. The room-temperature yield is the wrong chapter.",
     ideas: [
       {
-        heading: "Stress is raised to a power",
+        heading: "Creep life is highly sensitive to stress",
         body: "In this model the time to 1% strain goes with one over stress to the fifth. Double the stress and the time falls by 32. A load that looks only a bit larger can cost a large part of the life.",
         formula: "t ∝ σ^(−5) × exp[Q/R (1/T)]",
       },
       {
-        heading: "Temperature is an exponential",
+        heading: "Creep life is extremely sensitive to temperature",
         body: "Kelvin temperature sits in an exponent. Fifty degrees around 800 K is enough to drop the life to about a tenth. A datasheet at one temperature does not travel.",
       },
       {
@@ -855,7 +855,7 @@ export const ladderLessons: Lesson[] = [
     example: "A steel indentation-tested at 200 HV. || The shop estimate is 3 × 200 = 600 MPa for the ultimate tensile strength. The test did not bend the bar, so it did not measure elongation. || Say about 600 MPa, and say it was the factor of 3. You still go measure how far it stretches.",
     ideas: [
       {
-        heading: "For steels, about three times",
+        heading: "Hardness can provide a rough steel-strength estimate",
         body: "A common shop estimate puts ultimate tensile strength in MPa near 3 times the Vickers hardness. 200 HV is about 600 MPa. It is a correlation for steels, not a derivation.",
         formula: "σ_uts ≈ 3 × HV    in MPa, steels, mid-range",
       },
@@ -910,7 +910,7 @@ export const ladderLessons: Lesson[] = [
     example: "A pipe wall 8 mm thick, toughness 50 MPa√m, stress 150 MPa, with an edge crack. || The critical crack is about 28 mm, longer than the 8 mm wall, so the wall opens through and weeps while the crack is still stable. Drop the toughness to 25 and the critical crack falls to about 7.0 mm, inside the wall, so it can burst first. || Compare the critical length with the thickness. Leak and break are different calls.",
     ideas: [
       {
-        heading: "Critical length shrinks if toughness falls or stress rises",
+        heading: "Critical crack size falls as stress rises or toughness falls",
         body: "a_crit comes from KIc = Y σ √(πa). Toughness in the numerator, stress in the denominator, and a square around the whole fraction. Half the toughness, a quarter of the critical length.",
         formula: "a_crit = (1/π) (KIc / (Yσ))²",
       },
@@ -965,7 +965,7 @@ export const ladderLessons: Lesson[] = [
     example: "A flat steel link, 20 mm wide and 6 mm thick, carrying 8 kN, losing 0.10 mm a year. || Today the area is 120 mm² and the stress is about 67 MPa. After 20 years, 2 mm is gone, the area is 80 mm², and the stress is 100 MPa. The load cell still reads 8 kN. || Recompute on the thickness that will be left. The original safety factor does not survive the subtraction.",
     ideas: [
       {
-        heading: "Force over a shrinking area",
+        heading: "Corrosion raises stress by reducing the remaining area",
         body: "Stress is force over the area that is still there. A steady 8 kN on a bar that thins from 6 mm to 4 mm raises the stress from about 67 MPa to 100 MPa. The load cell would have looked calm.",
         formula: "σ = F / (width × thickness left)",
       },
@@ -1021,7 +1021,7 @@ export const ladderLessons: Lesson[] = [
     example: "One aluminum bar, annealed, and the same bar after a 40% draw. || Annealed, this page's curve says about 250 MPa and about 40% elongation. At 40% cold work the strength is near 490 MPa and the elongation is down near 4%. || Write the cold work. 'The alloy' was both of these bars.",
     ideas: [
       {
-        heading: "Dislocations are the obstacle",
+        heading: "Cold work raises strength by increasing dislocation interactions",
         body: "Cold work multiplies dislocations. They tangle and make further slip harder, so the strength rises. The metal has also used up some of the stretch it had, so elongation falls.",
         formula: "σ ≈ 250 + 6 × (% cold work) MPa    elongation ≈ 40% × e^(−% cold work / 18)",
       },
@@ -1076,7 +1076,7 @@ export const ladderLessons: Lesson[] = [
     example: "A 10 mm steel bar and a 40 mm bar, both quenched, surface hardness 550 HV. || The 10 mm bar's center reaches about 480 HV. The 40 mm bar's center only reaches about 270 HV, because the middle is insulated by the metal around it. || A hardness call says where it was measured. The surface of the thick bar is not its center.",
     ideas: [
       {
-        heading: "The surface meets the quenchant",
+        heading: "The surface cools faster than the center during quenching",
         body: "The outside of a hot bar loses heat first. Hardness there can be high even when the middle never cooled fast enough to transform the way you wanted.",
         formula: "HV_surface = 550    HV_center = 200 + 350 / (1 + (t / 20 mm)²)",
       },
@@ -1137,7 +1137,7 @@ export const ladderLessons: Lesson[] = [
     example: "An alloy held at one temperature, solid at 20% B and liquid at 80% B. || At an overall 50% B, the solid fraction is (80 − 50) / 60 = 0.50. At 30% B it is (80 − 30) / 60 = 0.83. The two phases are still 20% and 80%. || Move the overall composition to change the amounts. You do not move the ends of the tie line by wishing.",
     ideas: [
       {
-        heading: "The ends of the tie line are the two phases",
+        heading: "Tie-line endpoints give the phase compositions",
         body: "Inside a two-phase field at one temperature, the solid has one composition and the liquid has another. Here those ends are 20% B and 80% B. They do not follow your overall composition.",
         formula: "fraction solid = (C_L − C_0) / (C_L − C_S)",
       },
@@ -1192,7 +1192,7 @@ export const ladderLessons: Lesson[] = [
     example: "A unidirectional carbon plate, 900 MPa along the fiber and 40 MPa across it, with a bracket load 30° off the fiber. || The estimate 1 / (cos²30° / 900 + sin²30° / 40) is about 140 MPa. The fiber did not weaken. The load left its best direction. || Write 140 MPa at 30°, not 900 MPa. The angle is part of the requirement.",
     ideas: [
       {
-        heading: "900 MPa is a direction, not a material",
+        heading: "Composite strength depends on loading direction",
         body: "Along the fiber this laminate is about 900 MPa. Across it, about 40. Quoting 900 without the angle is quoting a different part than the one you may have built.",
         formula: "σ(θ) = 1 / (cos²θ / 900 + sin²θ / 40)",
       },
@@ -1247,7 +1247,7 @@ export const ladderLessons: Lesson[] = [
     example: "A flat panel of fixed width that must not sag, in steel and in wood. || The index is the cube root of modulus divided by density. Steel is about 0.75 and wood about 4.31, nearly six times, because the panel pays heavily for steel's density. A stiffness-limited tie rod, which wants E/ρ with no cube root, puts steel slightly ahead of wood (25.6 against 20). The panel's big lead disappears. || Use this index for the panel only. Wood winning here is not a reason to make the tie rod out of wood.",
     ideas: [
       {
-        heading: "A panel pays for density with a cube root on modulus",
+        heading: "Panel material indices depend on both stiffness and density",
         body: "For a flat panel of fixed width and bending stiffness, the mass scales as ρ / E^(1/3). The index to maximize is E^(1/3)/ρ. Wood and a composite beat steel here even though steel's modulus is higher.",
         formula: "index = E^(1/3) / ρ",
       },
@@ -1302,7 +1302,7 @@ export const ladderLessons: Lesson[] = [
     example: "A shoulder with Kt of 2.5, and a smooth-bar fatigue strength of 300 MPa. || At sensitivity 0, Kf is 1 and you keep 300 MPa. At sensitivity 0.8, Kf is 1 + 0.8 × 1.5 = 2.2, and the fatigue strength falls to about 136 MPa. The fillet did not change. || You divide by the factor the metal feels. The drawing's Kt is not automatically that factor.",
     ideas: [
       {
-        heading: "Kt is the shape. Kf is what the metal feels",
+        heading: "Distinguish geometric stress concentration from fatigue notch effect",
         body: "Kt comes from the fillet radius and the step. Kf is 1 + q(Kt − 1). q is the material. A q of zero means the notch is geometrically real and the fatigue strength ignores it. A q near 1 means the metal feels almost the whole Kt.",
         formula: "Kf = 1 + q (Kt − 1)",
       },
@@ -1357,7 +1357,7 @@ export const ladderLessons: Lesson[] = [
     example: "A purchase order that says only 6061. || Annealed, the yield is about 55 MPa and it stretches about 25%. In T6 the yield is about 275 MPa and it stretches about 12%. Both are 6061. || Write 6061-T6, or 6061-O, and the product form. The alloy number was not a strength.",
     ideas: [
       {
-        heading: "6061 is not a strength",
+        heading: "Alloy designation alone does not specify strength",
         body: "Annealed 6061 yields near 55 MPa and stretches about 25%. 6061-T6 yields near 275 MPa and stretches about 12%. A purchase order that says only 6061 has not chosen.",
         formula: "6061-O: σ_y ≈ 55 MPa, elongation ≈ 25%. 6061-T6: σ_y ≈ 275 MPa, elongation ≈ 12%",
       },
@@ -1412,7 +1412,7 @@ export const ladderLessons: Lesson[] = [
     example: "Four parts on one desk: a bolt at 600°C for a thousand hours, a polished rod reversed a million times, a scratched thin wall, and a bracket rusting outdoors for ten years. || The hot bolt is creep. The rod is fatigue. The scratch is fracture. The rust is corrosion, because the area is leaving. || Name that one before you open a yield calculation. Room-temperature yield is not impatient in any of these four.",
     ideas: [
       {
-        heading: "The datasheet yield is not always first",
+        heading: "Choose the failure mode before choosing the strength value",
         body: "A hot bolt held for a thousand hours is a creep problem. A rotating shoulder is a fatigue problem. A scratched thin wall is a fracture problem. A bracket left outdoors is a corrosion problem. Yield can be true and still be the slow one.",
         formula: "hot and held → creep. The stress returns → fatigue. A crack drives it → fracture. Area leaves over time → corrosion. Otherwise, yield",
       },
@@ -1467,7 +1467,7 @@ export const ladderLessons: Lesson[] = [
     example: "A point with 100 MPa of tension, then the same tension plus 60 MPa of shear. || With no shear, von Mises is 100 MPa. With the shear it is the square root of 100² + 3 × 60², about 144 MPa. The tension did not change. || Compare 144 MPa with the tensile yield. Checking 100 MPa alone would have passed a point that does not.",
     ideas: [
       {
-        heading: "Yield does not watch only the tension",
+        heading: "Combined normal and shear stress can trigger yielding",
         body: "A metal yields when the von Mises combination reaches the tensile yield strength. With one normal stress and one shear, that combination is the square root of σ² + 3τ². Shear is multiplied by three before the root.",
         formula: "σ_vm = √(σ² + 3τ²)",
       },
@@ -1522,7 +1522,7 @@ export const ladderLessons: Lesson[] = [
     example: "A solid shaft, 10 mm radius, carrying 200 N·m, then the same torque at 20 mm radius. || J grows with the fourth power of radius, and stress still multiplies by radius once more, so doubling the radius divides the stress by 8: about 127 MPa at 10 mm, about 16 MPa at 20 mm. || Size the radius with that power. A shoulder fillet is not inside this number.",
     ideas: [
       {
-        heading: "J grows with radius to the fourth",
+        heading: "Torsional stiffness grows strongly with shaft radius",
         body: "For a solid round shaft, J is πr⁴/2. Stress is torque times radius, over J, so the radius on top cancels one power and stress scales as 1/r³. Double the radius, eight times less stress.",
         formula: "τ = T r / J    and    J = π r⁴ / 2 for a solid round shaft",
       },
@@ -1577,7 +1577,7 @@ export const ladderLessons: Lesson[] = [
     example: "A closed tank, 4 mm wall, 200 mm radius, at 2 MPa. || Hoop stress is 2 × 200 / 4 = 100 MPa. Along the tank it is half, 50 MPa. || Size the wall from the 100 MPa. This is a thin wall. A thick wall is a different calculation.",
     ideas: [
       {
-        heading: "Hoop is pr/t",
+        heading: "Hoop stress is the governing thin-wall pressure-vessel stress",
         body: "In a thin closed shell the stress going around is pressure times radius over thickness. 2 MPa, 200 mm radius, 4 mm wall is 100 MPa. The radius and the thickness have to be in the same unit before you divide.",
         formula: "σ_hoop = p r / t",
       },
@@ -1633,7 +1633,7 @@ export const ladderLessons: Lesson[] = [
     example: "A short post carrying a compressive load on center, then the same load 20 mm off center. || On center you have only P/A. The 20 mm miss adds a bending stress, P times the offset times the distance to the edge, divided by the second moment. For 20 kN on a 40 mm square that is 12.5 + 37.5 = 50 MPa, four times the average. || Check the peak. Twenty millimeters of miss is not a small correction, and a long post still has buckling on top.",
     ideas: [
       {
-        heading: "P/A is only the centered part",
+        heading: "Eccentric load adds bending to direct stress",
         body: "A 20 kN load on a 40 mm square bar is 12.5 MPa if it passes through the center. Offset it and there is a moment Pe. Stress gains Pec/I on one face and loses it on the other.",
         formula: "σ = P/A ± P e c / I",
       },
@@ -1688,7 +1688,7 @@ export const ladderLessons: Lesson[] = [
     example: "A shaft running happily at 0.40 m long, then the same shaft stretched to 0.80 m with the motor left alone. || Critical speed is the shaft's natural frequency. It is about 7300 rpm at 0.40 m and about 2600 rpm at 0.80 m. Doubling the length divides it by about 2.8, because length is worse than linear. || Recompute the forbidden speed. Do not keep the old rpm on the longer shaft.",
     ideas: [
       {
-        heading: "Critical speed is the shaft's natural frequency",
+        heading: "Critical speed occurs when running speed meets a shaft mode",
         body: "A disk on a light shaft wants to whirl at √(k/m), written here in rpm. k for a midspan disk is 48EI/L³. Lengthen the shaft and k falls with L³, so the speed falls with L to the 1.5.",
         formula: "N_crit = (60 / 2π) √(k/m)",
       },
@@ -1743,7 +1743,7 @@ export const ladderLessons: Lesson[] = [
     example: "A 20-tooth gear driving a 60-tooth gear, 10 N·m going in, lossless for a moment. || Torque out is 30 N·m. Speed out is one third. A real mesh gives a bit less than 30 N·m after efficiency. Power is not tripled either way. || You can have the torque or the speed. You do not get both, and you do not get triple the power.",
     ideas: [
       {
-        heading: "Torque follows the teeth, then the efficiency",
+        heading: "Gear ratio trades speed for torque, with losses",
         body: "Output torque is input torque times output teeth over input teeth, times efficiency. 10 N·m into a 3:1 pair at 98% is about 29 N·m, not 30. The missing 2% is heat.",
         formula: "T_out = T_in × (N_out/N_in) × η",
       },
@@ -1805,7 +1805,7 @@ export const ladderLessons: Lesson[] = [
     example: "A ball bearing with C = 20 kN, run at 4 kN, then at 8 kN. || (20/4)³ = 125 million revolutions. At 8 kN, (20/8)³ ≈ 15.6 million, one eighth. || Reprice the life when the load changes. The catalog life was not a promise that every bearing reaches it, and it was not independent of the load.",
     ideas: [
       {
-        heading: "Life is (C/P) cubed, in millions of revolutions",
+        heading: "Ball-bearing life is strongly load-dependent",
         body: "For a ball bearing the L10 life is (C/P)³ million revolutions. C is the catalog load for a million-revolution L10. P is the load you actually apply. A ratio of 5 is a life of 125 million revolutions.",
         formula: "L10 = (C/P)³ × 10⁶ rev",
       },
@@ -1861,7 +1861,7 @@ export const ladderLessons: Lesson[] = [
     example: "A joint clamped to 15 kN. A new 10 kN load arrives, then a 20 kN load. || At 10 kN the bolt only rises to about 17 kN, because the clamped members take most of the new load. At 20 kN the joint opens and the bolt sees all 20 kN. || The preload was the design. Do not add the full external load on top of 15 kN while the joint is still closed.",
     ideas: [
       {
-        heading: "Stiffness decides the split",
+        heading: "Joint stiffness determines how external load is shared",
         body: "A new external load splits in proportion to stiffness. Here the members are four times the bolt, so the bolt takes one fifth. A 10 kN external load on a 15 kN preload raises the bolt only to 17 kN.",
         formula: "F_bolt = preload + P × k_b / (k_b + k_m)",
       },
@@ -1917,7 +1917,7 @@ export const ladderLessons: Lesson[] = [
     example: "A part with three blocks of cycles, none of which reaches its own life. || Each block spends cycles-used over cycles-allowed. If those fractions add to 1, the part is done, even though every individual block looked fine. The severe block is the one that spends the large fraction. || You add the fractions, and the order of the blocks is still left out of the sum.",
     ideas: [
       {
-        heading: "Each block spends n/N",
+        heading: "Miner's rule adds fractional fatigue damage",
         body: "If a stress level would last N cycles and you applied n of them, you spent n/N of the life. Miner says the part is done when the fractions add to 1. The bench's mild block has already spent 0.20 and the middle block another 0.20.",
         formula: "Σ n/N = 1",
       },
@@ -1972,7 +1972,7 @@ export const ladderLessons: Lesson[] = [
     example: "A fixed steel bar at 40 MPa of tension from a load, then heated 40° while the ends still cannot move. || The thermal term is E × α × 40 = 96 MPa, and heating a held bar makes it compressive. Against 40 MPa of tension the net is about 56 MPa compression. A load cell on the applied load still reads the same force. The change is in the supports' reaction. || Combine them, with signs, when the bar cannot grow. The applied-load number is not the whole story.",
     ideas: [
       {
-        heading: "They combine when the bar cannot grow",
+        heading: "Mechanical and thermal stress combine under restraint",
         body: "A mechanical tension of 40 MPa is already there. A temperature rise the ends refuse to absorb adds a thermal term of EαΔT = 96 MPa at 40°. Heating a held bar makes that term compressive, so against 40 MPa of tension the net is about 56 MPa compression. The 96 is the larger term either way. The force in the rod is not the whole stress. This is a bar held along one axis. A plate held in two directions divides the thermal term by (1−ν).",
         formula: "σ = P/A − E α ΔT    tension positive, heated bar with fixed ends",
       },
@@ -2027,7 +2027,7 @@ export const ladderLessons: Lesson[] = [
     example: "An inspector can find a crack at 0.5 mm, or only once it is 2.0 mm. || The cycles left are the integral of growth from the size you find to the size that fails. Most of those cycles are spent while the crack is short, so the 2 mm find has already spent the slow part. || Four times the crack is not four times less life.",
     ideas: [
       {
-        heading: "The integral cares most about the short crack",
+        heading: "Inspection gains the most life while cracks are still small",
         body: "For the Paris exponent 3, life from a0 to a critical length is heaviest while the crack is short. Finding the crack at 0.5 mm leaves about 0.86 million cycles at this stress. Finding it only when it is already 2 mm leaves about 0.38 million.",
         formula: "N = ∫ da / (C ΔK^m)",
       },
@@ -2082,7 +2082,7 @@ export const ladderLessons: Lesson[] = [
     example: "A long thin strut, a rotating shaft with a shoulder, a shell with a long crack, and a hanger near 0.6 of its melting temperature for a year. || The strut is buckling, even with a generous yield. The shaft is fatigue. The shell is fracture. The hanger is creep. || Name that one, then calculate it. A careful yield check on the strut is still the wrong calculation.",
     ideas: [
       {
-        heading: "Strength is not the first question",
+        heading: "Service conditions determine the governing failure mode",
         body: "A slender strut can buckle far below yield. A rotating shoulder can fatigue far below yield. A cracked shell can fracture while the hoop stress looks moderate. A hot hanger can creep for a year. The review starts by naming which of those is impatient.",
         formula: "slender and compressed → buckling. Stress returns → fatigue. A crack is present → fracture. Hot for a long time → creep. Check yield after those",
       },
@@ -2137,7 +2137,7 @@ export const ladderLessons: Lesson[] = [
     example: "A strip entering a roll and leaving at 8 mm, then a heavier pass leaving at 5 mm. || The contact length grows with the square root of the radius times the draft. The 5 mm exit is a longer bite and a higher force, and not in proportion to the extra millimeters you took. || You estimate the force from that length. Friction would add a hill this page does not draw.",
     ideas: [
       {
-        heading: "Contact length is the square root of radius times draft",
+        heading: "Rolling contact length grows with roll radius and draft",
         body: "The roll touches the strip over about √(R Δh). A bigger draft lengthens the contact, but only with the square root. The force is flow stress times width times that length.",
         formula: "L ≈ √(R Δh)",
       },
@@ -2192,7 +2192,7 @@ export const ladderLessons: Lesson[] = [
     example: "A cut at 100 m/min, then the same cut at 150 m/min. || At 100 m/min the tool lasts about 32 minutes. At 150 m/min it lasts about 4 minutes. V times T to the n stayed constant, and tool life is what changed. || You price the life you spent. You say what 'worn' meant for that constant.",
     ideas: [
       {
-        heading: "V times T to the n is a constant",
+        heading: "Taylor tool life links cutting speed and usable tool time",
         body: "Taylor's relation says cutting speed times tool life to a small power is constant. With n = 0.2, life is (C/V) to the fifth. A modest change in speed is a large change in life.",
         formula: "V T^n = C",
       },
@@ -2247,7 +2247,7 @@ export const ladderLessons: Lesson[] = [
     example: "A drawing calls for a 200 mm casting. || The metal shrinks as it cools, so the pattern is 200 mm times one plus the shrink fraction. A 1.3% aluminum needs a 202.6 mm pattern before you even add machining stock on the faces you will cut. || The cavity starts big. The pattern is never machined to the cold dimension on the drawing.",
     ideas: [
       {
-        heading: "The cavity must start big",
+        heading: "Casting patterns include shrinkage allowance",
         body: "Metal shrinks as it cools. A pattern cut to the finished length makes a short casting. For this aluminum, add 1.3%. A 200 mm part wants a 202.6 mm pattern.",
         formula: "pattern = part × (1 + shrink)",
       },
@@ -2302,7 +2302,7 @@ export const ladderLessons: Lesson[] = [
     example: "A plate with a weld bead, first at some heat, then at double the heat, then at double the thickness instead. || Double the heat and the teaching bow doubles. Double the thickness and the bow falls by about four, because the teaching formula divides by thickness squared. || Flatness comes mostly from thickness, not from a small tweak to the heat. The coefficient on this page is a teaching stand-in, not a measured weld.",
     ideas: [
       {
-        heading: "Heat wants to shrink a strip that is stuck to cold plate",
+        heading: "Uneven weld heating and cooling creates distortion",
         body: "The weld metal and the hot band want to contract and the cold plate holds them. The compromise is a bow. More heat, more bow. In this model the bow is proportional to heat per length.",
       },
       {
@@ -2357,7 +2357,7 @@ export const ladderLessons: Lesson[] = [
     example: "A hole whose tightest allowed size is 10.0 mm, with a position tolerance, and a real hole that measures 10.2 mm. || If the drawing grants a bonus, the extra 0.2 mm of size is added to the position tolerance. At 10.0 mm there is no bonus. || A larger hole may sit farther off center. You do not grant the 0.2 mm on a drawing that never said so.",
     ideas: [
       {
-        heading: "Maximum material is the tightest fit",
+        heading: "Maximum-material condition is the tightest permitted fit",
         body: "A hole at its smallest, 10.0 mm here, is the maximum-material condition. The stated position tolerance, 0.20 mm, applies there. A larger hole has more clearance to give away.",
       },
       {
@@ -2417,7 +2417,7 @@ export const ladderLessons: Lesson[] = [
         formula: "fatigue strength = 300 MPa × factor    polished 1, machined 0.8, forged 0.5",
       },
       {
-        heading: "Roughness is a field of small notches",
+        heading: "Surface roughness reduces fatigue strength",
         body: "Tool marks and scale are ready-made intrusions. They skip part of the crack's birth. That is why the factor shows up in fatigue and not in a single tensile test of a thick bar.",
       },
       {
@@ -2467,7 +2467,7 @@ export const ladderLessons: Lesson[] = [
     example: "A weld at 20 V and 150 A, traveling at 300 mm/min, then at 150 mm/min. || Heat per length is the power spread over the travel. Halving the travel doubles the heat on each millimeter. Current and voltage never moved. || Check the speed before you turn the current up.",
     ideas: [
       {
-        heading: "Heat per length is power divided by speed",
+        heading: "Weld heat input per length rises as travel speed falls",
         body: "Voltage times current is power. Spread over the millimeters you travel in a minute, it is heat per length. Slow down and each millimeter receives more. 20 V, 150 A, 300 mm/min is 0.60 kJ/mm.",
         formula: "HI = V I / travel speed",
       },
@@ -2522,7 +2522,7 @@ export const ladderLessons: Lesson[] = [
     example: "A part through 10 steps that each keep 98% of what they receive, then the same part through 40 steps. || Ten steps ship about 82% the first time, because 0.98 to the 10th is about 0.82. Forty steps ship about 45% — multiplication, not an average of 98%. || Every step you add multiplies in another chance of failure. Removing a step often beats tightening all of them a little.",
     ideas: [
       {
-        heading: "Each step keeps 98%",
+        heading: "First-pass yield multiplies across process steps",
         body: "A 2% chance of a defect at one step leaves 98% good. Ten independent steps keep 0.98¹⁰, about 82%. Forty steps keep about 45%. No single step looked bad.",
         formula: "FPY = (1 − p)^n",
       },
@@ -2577,7 +2577,7 @@ export const ladderLessons: Lesson[] = [
     example: "Three stations at 20 s, 45 s, and 30 s. || The line makes 3600/45 = 80 parts an hour. Cut the 20 s station to 10 s and you still make 80. Cut the 45 s station to 25 s and the rate finally moves, and the 30 s station is now the slow one. || Speed the constraint — a station that was already waiting is the wrong one to work on.",
     ideas: [
       {
-        heading: "Throughput is the slowest station",
+        heading: "The bottleneck sets line throughput",
         body: "Stations in series run at the pace of the slowest. 20 s, 45 s, and 30 s make 3600/45 = 80 parts an hour. The 20 s station is idle part of the time. Speeding it to 10 s still leaves the 45 s station in charge.",
         formula: "rate = 3600 / slowest",
       },
@@ -2632,7 +2632,7 @@ export const ladderLessons: Lesson[] = [
     example: "A die that costs 8000, material 4, and 2.40 of cycle time on every part. || At 100 parts the tool is 80 each, so the part is 86.40. At 10000 parts the tool is 0.80, so the part is 7.20. The press did not get faster. || An expensive die is a bad idea at 100 and a fine idea at 10000. You compare processes at the quantity you will actually make.",
     ideas: [
       {
-        heading: "Material and minutes are there at any quantity",
+        heading: "Unit cost combines recurring cost with amortized tooling",
         body: "Four for material and 2.40 for the cycle are on every part. Tooling of 8000 is not. It is divided by how many parts share it. At 100 parts the tool adds 80. At 10000 it adds 0.80.",
         formula: "unit cost = 6.40 + 8000 / N",
       },
@@ -2688,7 +2688,7 @@ export const ladderLessons: Lesson[] = [
     example: "A housing in 6 parts, each extra part costing 8 s of handling on top of a 20 s base. || Six parts take 20 + 5 × 8 = 60 s. Three parts take 20 + 2 × 8 = 36 s. The 16 s is real only if the three-part version still does the job. || Delete a part the function does not need — but not a fastener whose loss fails the joint.",
     ideas: [
       {
-        heading: "Every extra part costs a handling",
+        heading: "Part count drives assembly handling time",
         body: "One essential part takes 20 s. Each additional part adds 8 s. Six parts take 60 s. Three parts take 36 s. The formula counts parts, not function.",
         formula: "time = 20 s + 8 s × (parts − 1)",
       },
@@ -2801,7 +2801,7 @@ export const ladderLessons: Lesson[] = [
     example: "A pine block at 500 kg/m³ in a lake, and a steel block of the same size. || Pine over 1000 is 0.50, so half the block is under and the displaced water weighs the same as the pine. Steel is several times 1000, so even fully under the water weighs less than the block. || Pine floats at half draft. Steel sinks. You stop using the floating fraction once it would pass 1.",
     ideas: [
       {
-        heading: "The water pushes with the weight of what was displaced",
+        heading: "Buoyant force equals displaced-fluid weight",
         body: "Buoyancy is the weight of the water the block pushes aside, not the weight of the block. A denser block weighs more but gets no bigger push until it sinks deeper.",
         formula: "Fb = ρ_water × V_displaced × g",
       },
@@ -2857,7 +2857,7 @@ export const ladderLessons: Lesson[] = [
     example: "A ventilation duct that must pass 0.010 m³ of air each second, wide and then necked down. || At 0.010 m² the air moves at 1 m/s. At 0.005 m² it moves at 2 m/s. The fan did not get stronger. || You doubled the speed by halving the area. You still do not know the pressure. That is a different page.",
     ideas: [
       {
-        heading: "What enters must leave, if nothing is stored",
+        heading: "Steady incompressible flow conserves volume rate",
         body: "The pipe does not fill up and it does not leak. The cubic meters per second in the wide part are the cubic meters per second in the throat. Speed is that quantity divided by area.",
         formula: "v = Q / A",
       },
@@ -2913,7 +2913,7 @@ export const ladderLessons: Lesson[] = [
     example: "A camera on a 2 m boom, swung at a steady 10 m/s, then the same speed on a 1 m boom. || Inward acceleration is 10² / 2 = 50 m/s², then 10² / 1 = 100 m/s². The speed number never changed. The direction did. || A tighter boom costs double the acceleration, pointed at the pivot. Steady speed is not zero acceleration.",
     ideas: [
       {
-        heading: "The same speed on a tighter curve needs more acceleration",
+        heading: "Centripetal acceleration rises as turn radius shrinks",
         body: "Acceleration toward the center is speed squared over radius. The speed on this bench stays 10 m/s. At 2 m the acceleration is 50 m/s². At 1 m it is 100 m/s².",
         formula: "a = v² / r",
       },
@@ -2968,7 +2968,7 @@ export const ladderLessons: Lesson[] = [
     example: "A carburizing front that has reached 1 mm in 4 hours. The drawing needs 2 mm, and the furnace temperature stays put. || Distance follows the square root of time, so twice the distance is four times the time. You allow 16 hours, not 8. || Doubling the time would only get you to about 1.4 mm. If someone raises the furnace temperature, this 16 hours is no longer the answer, because the diffusivity changed.",
     ideas: [
       {
-        heading: "Distance grows with the square root of time",
+        heading: "Diffusion distance scales with √t",
         body: "With D fixed at 0.25 mm²/h, four hours carry the front 1 mm. Sixteen hours carry it 2 mm. Time was multiplied by four. Distance was multiplied by two.",
         formula: "x = √(D t)",
       },
@@ -3024,7 +3024,7 @@ export const ladderLessons: Lesson[] = [
     example: "A ski spar, 60% carbon fiber by volume in epoxy, pulled along the fibers. Fiber is 230 GPa, epoxy is 3.5 GPa. || 0.60 × 230 + 0.40 × 3.5 = 138 + 1.4 = 139.4 GPa. With no fiber at all you have 3.5 GPa, which is just the epoxy. || Almost all of the 139 is the fiber. A pull across the spar does not get to use 139.",
     ideas: [
       {
-        heading: "Along the fibers, the two stiffnesses share the load by volume",
+        heading: "Longitudinal composite stiffness follows the rule of mixtures",
         body: "The fiber is 230 GPa. The epoxy is 3.5 GPa. At 60% fiber the longitudinal modulus is 0.60×230 + 0.40×3.5 = 139.4 GPa. The epoxy is still in the sum. It is just the small term.",
         formula: "E = Ef Vf + Em (1 − Vf)",
       },
@@ -3080,7 +3080,7 @@ export const ladderLessons: Lesson[] = [
     example: "An 8 mm clevis pin carrying a 4000 N cable across one face, then a 16 mm pin in the same single lug. || The 8 mm circle is about 50 mm², so the shear stress is 4000 / 50, about 80 MPa, more precisely 79.6. The 16 mm pin has four times the area and 19.9 MPa. || Doubling the pin quarters the stress. If the cable is held between two lugs, you have two faces and this number is the wrong joint.",
     ideas: [
       {
-        heading: "One shear plane carries the whole load",
+        heading: "Single-shear pin stress uses one shear area",
         body: "The load is 4000 N. It crosses one circular face. Stress is that load divided by πd²/4. At 8 mm the area is small and the stress is 79.6 MPa. At 16 mm the stress is 19.9 MPa.",
         formula: "τ = F / (π d² / 4)",
       },
@@ -3137,7 +3137,7 @@ export const ladderLessons: Lesson[] = [
     example: "A return spring in 2 mm wire, 20 mm mean diameter, 8 active coils, in steel. Then the same spring wound in 4 mm wire. || The 2 mm spring rates at 2500 N/m. The 4 mm spring rates at 40000 N/m, sixteen times, because the wire diameter is to the fourth. || A wire that looks twice as thick gave a spring sixteen times as stiff. Rate says nothing about whether that wire yields.",
     ideas: [
       {
-        heading: "Rate cares about the wire much more than about the coil count",
+        heading: "Spring rate is especially sensitive to wire diameter",
         body: "Steel's shear modulus is held at 80 GPa. Eight active coils sit on a 20 mm mean diameter. At 2 mm wire the rate is 2500 N/m. At 4 mm wire it is 40000 N/m.",
         formula: "k = G d⁴ / (8 D³ N)",
       },
@@ -3193,7 +3193,7 @@ export const ladderLessons: Lesson[] = [
     example: "A rectangular block in a milling vise. You have placed 3 contacts on the base, 2 on the side, and 1 on the end. || That is 6, and a free part only had 6 motions, so nothing is left to rattle. A fourth contact on the base does not remove a seventh motion. There is not one. || You stop at 3, 2, and 1. The extra dot argues with the base contacts already there.",
     ideas: [
       {
-        heading: "A free part can move in six ways",
+        heading: "Fixture design must constrain six rigid-body freedoms",
         body: "Three slides and three turns. The base can take three of them, a side can take two, and an end can take one. Three, two, and one is a finished fixture. Nothing is left to rattle.",
         formula: "motions left = 6 − min(base, 3) − min(side, 2) − min(end, 1)",
       },
@@ -3249,7 +3249,7 @@ export const ladderLessons: Lesson[] = [
     example: "A printed bracket, 40 MPa along a road of plastic, with a knockdown of 2, and a load that peels one layer off the next. || The road is still 40 MPa. The bond is 40 / 2 = 20 MPa. Knockdown 1 would claim the bond equals the road, which you only say if you measured it. || The peel uses 20 MPa. Quoting 40 MPa for that pull is the wrong direction.",
     ideas: [
       {
-        heading: "Along a road and between roads are different materials in practice",
+        heading: "Printed strength differs along roads and between layers",
         body: "The plastic in the road is 40 MPa in this model. The bond between layers is 40 divided by the knockdown. At a knockdown of 2 the bond is 20 MPa. The road is still 40.",
         formula: "strength between layers = strength along / knockdown",
       },
@@ -3304,7 +3304,7 @@ export const ladderLessons: Lesson[] = [
     example: "A shift with 400 minutes, owing 50 parts, and one station that takes 4 minutes. Then the same shift owing 200 parts. || Takt at 50 is 400 / 50 = 8 minutes, so the station has 4 minutes of slack. At 200, takt is 2 minutes, and every part is 2 minutes late. || Compare the station with the pace the demand already set. Speeding a station inside an 8-minute takt does not serve the 50-part day.",
     ideas: [
       {
-        heading: "Takt is the customer's pace, not the station's",
+        heading: "Takt time comes from demand, not machine speed",
         body: "Four hundred minutes are available. Demand is the slider. At 50 parts, takt is 8 minutes each. At 200 parts, takt is 2 minutes each. The station still takes 4.",
         formula: "takt = available minutes / demand",
       },
@@ -3360,7 +3360,7 @@ export const ladderLessons: Lesson[] = [
     example: "A shaft face with a smooth thumbnail and beach marks over two thirds, and a dull fibrous patch over the last third. || The thumbnail grew by fatigue. The dull patch is the final overload, after the crack was large enough to tear the rest. || You write fatigue, not ductile. The last patch is how it finished, not how it spent its life.",
     ideas: [
       {
-        heading: "Dimples mean it stretched, then tore",
+        heading: "Dimples indicate ductile fracture",
         body: "A cup-and-cone break is dull because the surface is a field of tiny dimples. Each dimple was a void that grew in the neck and joined its neighbors. The metal used up its ductility. This is overload, not a crack that lived for a million cycles.",
         formula: "dull dimples, a neck → ductile overload",
       },
@@ -3422,7 +3422,7 @@ export const ladderLessons: Lesson[] = [
         formula: "below the transition → cleavage. Above it → ductile tear",
       },
       {
-        heading: "The energy falls off a shelf",
+        heading: "Impact toughness can drop sharply through the transition range",
         body: "On this page the lower shelf is 15 J and the upper shelf is 85 J, with the rise centered at 0°C. At −20°C you are near 20 J. At 20°C you are near 80 J. The middle of the rise is the worst place to quote a single number.",
         formula: "energy climbs from the lower shelf to the upper shelf across the transition",
       },
@@ -3473,7 +3473,7 @@ export const ladderLessons: Lesson[] = [
     example: "A stainless tube at 200 MPa. || In dry air the growth on this page is 0. With the corrodent present it is 0.04 mm per year. Drop the stress under 120 MPa and the wet tube stops as well. || You needed both. A stress check alone, or a corrosion coupon with no stress, would have missed it.",
     ideas: [
       {
-        heading: "Neither one is sufficient",
+        heading: "Stress-corrosion cracking needs both stress and the susceptible environment",
         body: "Stress corrosion is a partnership. The tension opens the tip. The chemical keeps the tip from blunting the way a ductile metal wants to. Remove the chemical and you have a static stress. Remove the stress and you have a surface film. Neither of those, alone, is this crack.",
         formula: "rate = 0 unless the environment is present and the stress is over the threshold",
       },
@@ -3529,7 +3529,7 @@ export const ladderLessons: Lesson[] = [
     example: "A dry slider, wear coefficient 10⁻⁴, 200 N, 1000 m of travel, hardness 1000 MPa. || In mm³ the page uses 1000 × 10⁻⁴ × 200 × 1000 / 1000 = 20. Double the hardness and you lose 10 mm³. Double the distance and you lose 40 mm³. || Hardness, load, and distance are the three levers. The yield strength was not one of them.",
     ideas: [
       {
-        heading: "The pile of debris has a volume",
+        heading: "Wear can be modeled as material-volume loss",
         body: "Archard's rule says the volume removed is proportional to the load and to how far you slid, and inversely proportional to the hardness of the softer face. On this page the dimensionless coefficient is 10⁻⁴, a dry teaching pair.",
         formula: "V in mm³ = 1000 × k × F × s / H    k = 10⁻⁴, H in MPa",
       },
@@ -3585,7 +3585,7 @@ export const ladderLessons: Lesson[] = [
     example: "A metal with KIc of 80 MPa√m and yield of 400 MPa. || (80 / 400) squared is 0.04 m, which is 40 mm. A 10 mm ligament is under that length, so it yields through. A 200 mm member is over it, so fracture can arrive first. || Same metal, two modes. The coupon was the small one.",
     ideas: [
       {
-        heading: "Toughness and yield set a length",
+        heading: "Toughness and yield strength set a characteristic fracture length",
         body: "KIc over yield has units of square root of meters. Squared, it is a length. On this page that length is the border between a part that runs out of strength and a part that runs out of crack stability.",
         formula: "L = (KIc / σ_y)²",
       },
@@ -3641,7 +3641,7 @@ export const ladderLessons: Lesson[] = [
     example: "A disk that has used 0.40 of its fatigue life and 0.70 of its creep-rupture life. || 0.40 + 0.70 = 1.10. Each clock alone would have said there was life left. Together they have passed 1. || Retire it. A fatigue-only folder and a creep-only folder would each have passed it.",
     ideas: [
       {
-        heading: "Each mechanism spends the same life",
+        heading: "Creep and fatigue each consume a fraction of total life",
         body: "Cycles use up n/N, as in the Miner sum. Time at temperature uses up t/t_r, the fraction of the rupture life. Both draw on the same life.",
         formula: "D = n/N + t / t_r",
       },
