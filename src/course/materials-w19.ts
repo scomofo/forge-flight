@@ -18,6 +18,14 @@ export const materialsW19Lessons: Lesson[] = [
     title: "Screen, then rank",
     minutes: 35,
     lede: "Screening a material set on hard constraints, ranking the survivors by the property index the job actually needs, and writing the trade study that names what you rejected and why.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "Material comparisons become much clearer when you separate screening from ranking. || First remove every option that violates a hard requirement such as strength, mass, temperature, or cost. Then rank only the survivors. || The ranking metric has to come from the actual design objective. Different jobs lead to different material indices, so choosing the index is part of the engineering."
     use: "Whenever you choose a material before you know the answer. || List the non-negotiables first — strength floor, density ceiling, temperature, corrosion, cost — and delete every candidate that fails any one of them. Then derive the index from the objective and the constraint: write mass as a function of the free variable, eliminate the free variable with the constraint, and read off the material group. || Stop when two or three survivors remain and the ranking is close. Close rankings are decided by the columns the index ignored: cost, corrosion, embodied energy, fatigue. That decision, written down with the rejects named, is the trade study.",
@@ -87,6 +95,14 @@ export const materialsW19Lessons: Lesson[] = [
     title: "Corrosion is a design load",
     minutes: 35,
     lede: "Reading a corrosion failure from its morphology, naming the mechanism, and choosing the protection that actually interrupts it.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Corrosion requires an electrochemical path: anodic dissolution, a cathodic reaction, and an electrolyte connecting them. Geometry and environment can make that process highly localized. || A material that passes a static strength check can still fail if corrosion, sustained stress, and cracking interact. Stress-corrosion cracking is one example where environment becomes part of the load case. || Include corrosion exposure and joint geometry in the design assumptions rather than treating them as maintenance details added later."
     use: "Whenever metal meets environment — which is every part that leaves the building. || Identify the cell: the anode (the metal that dissolves — the more negative one in the galvanic series), the electrolyte (seawater, road salt, condensate), and the amplifier (small anode area, a crevice starved of oxygen, sustained tensile stress). Match the morphology to the mechanism: pits, crevice attack at joints, branched cracks under stress. || Stop treating when you have broken the cell — drained the electrolyte, isolated the couple, or removed the tensile stress — and named the inspection that watches the spot you could not protect.",
@@ -166,6 +182,14 @@ export const materialsW19Lessons: Lesson[] = [
     title: "Embodied impacts and repair",
     minutes: 35,
     lede: "Putting embodied energy and CO₂ on the selection table next to stiffness and cost, and arguing repair against replace with numbers.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Primary production and recycled production can have very different energy and emissions burdens. Those differences belong in the same selection table as cost and mechanical properties. || End-of-life design also matters. A recyclable material is only useful if the product can actually be separated and recovered. || In many products, extending service life through repair or replacement of subcomponents can save more impact than optimizing the material alone."
     use: "Whenever the brief mentions lifetime cost, carbon, or “sustainable” — and defensively, whenever it does not. || Add embodied energy and CO₂ per kilogram to the candidate table, multiply by the part mass, and compare against the use phase: a lighter part that saves fuel for ten years can repay a heavy embodied debt, and a disposable part never does. Then ask the repair questions: can it be disassembled, are the wear parts separable, does the joint outlive the product? || Stop when the recommendation names the end of life — recycle stream, remanufacture path, or landfill — and the design feature that makes that path real.",
