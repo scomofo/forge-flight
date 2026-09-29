@@ -19,6 +19,14 @@ export const materialsW14Lessons: Lesson[] = [
     title: "Reading a stress-strain curve",
     minutes: 40,
     lede: "Locate stiffness, yield, ultimate strength, and fracture on a real tensile curve — and keep stiffness, strength, and hardness as three different words.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "A tensile machine pulls a steel bar and records two numbers: the pull per unit area, and the stretch per unit length. The plot of the first against the second is the material's mechanical autobiography. || Engineering stress is σ = F/A₀, load over the original cross-section. Engineering strain is ε = ΔL/L₀, extension over the original length. Both use original dimensions — a simplification you will revisit in the allowables lesson, which makes every curve comparable for now. || The curve has landmarks, and each landmark is a different property. The initial slope is stiffness. The stress where the curve leaves the straight line is where strength starts to matter. The peak is the most stress the bar ever carried. The strain where it ends is how far it went. Confusing any two of these is the most common error in the subject.",
     use: "Someone hands you a tensile curve — a datasheet plot, a lab printout, a paper figure. || Read, in order: the initial slope (E, stiffness), the 0.2%-offset yield (σy, where permanent deformation begins), the maximum (σuts, ultimate tensile strength), and the fracture strain (ductility). Then state each in its own units: E in GPa, strengths in MPa, strain dimensionless. || Stop when you can point at each landmark and name it without reaching for 'strong' as a blanket word. If the curve is a straight line to fracture, say so: that is a brittle material, and yield never happened.",
@@ -95,6 +103,14 @@ export const materialsW14Lessons: Lesson[] = [
     title: "Ductility and toughness",
     minutes: 35,
     lede: "Quantify how far a material stretches before breaking, integrate the area under its curve, and see why strength and ductility trade against each other.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Two bars, same cross-section. One is high-strength steel: it carries 1500 MPa and snaps at 3% elongation. The other is mild steel: it yields at 350 MPa and stretches to 36% before breaking. Drop a weight on each. || The high-strength bar absorbs the energy of a tall, thin spike. The mild steel absorbs the energy of a long, broad curve — roughly 140 MJ/m³ versus about 40. The 'weaker' bar absorbs over three times the energy; the 'stronger' one breaks first. || Toughness is the area under the stress–strain curve: stress (force per area) times strain (distance per length) is energy per volume. Ductility is the width of that area. Strength is only its height.",
     use: "You are choosing a material for impact, crash, or anything that must fail gracefully. || Read elongation (or reduction of area) for ductility, and integrate — or estimate — the area under the curve for toughness. Compare candidates by area, not by peak. || Stop when you can rank three materials for a crash structure and defend the ranking with areas, not adjectives.",
@@ -175,6 +191,14 @@ export const materialsW14Lessons: Lesson[] = [
     title: "From curve to design allowable",
     minutes: 40,
     lede: "Turn a noisy tensile record into E, yield, and UTS, account for scatter, and convert a characteristic strength into a number you are allowed to design to.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "A real tensile record is not the clean curves of the curve-reading lesson. The load cell hums, the extensometer slips a few microns, and the initial slope wobbles. Three bars from the same heat give yield strengths of 342, 358, and 349 MPa. || The extraction procedure is the same — slope for E, offset line for yield, peak for UTS — but now it runs on noisy data, and the answer comes with scatter. You fit the slope through the linear prefix and stop where the points leave the line; you let the offset construction find the crossing. The method's own error is a few percent, and you report it. || Then comes the step the curve alone cannot take: turn the scatter into an allowable. A characteristic value from the low tail of the scatter, divided by a factor of safety. The curve gives you properties; judgment plus statistics gives you an allowable.",
     use: "You have tensile data and a part to size. || Extract E, σy, σuts from the record; estimate the scatter across specimens; pick a characteristic strength that the scatter justifies; divide by the factor of safety the consequence of failure demands. || Stop when you can write: 'Allowable 390 MPa = 585 MPa characteristic / 1.5', and say where each number came from.",
