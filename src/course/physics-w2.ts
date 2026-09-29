@@ -14,6 +14,15 @@ export const physicsW2Lessons: Lesson[] = [
     title: "Vectors by components",
     minutes: 35,
     lede: "Resolve any vector into components, add vectors component-wise, and use the dot product to project one vector onto another.",
+    opening: { mode: "steps", heading: "Build the arrow in pieces", labels: ["The situation", "The split", "Why it helps"] },
+    readFlow: [
+      { kind: "example", heading: "Resolve one completely" },
+      { kind: "idea", idea: 0, label: "Coordinate choice" },
+      { kind: "idea", idea: 1, label: "Addition rule" },
+      { kind: "aside", heading: "Common mistake", body: "Do not add vector magnitudes unless the vectors are parallel. Add components first." },
+      { kind: "idea", idea: 2, label: "Projection" },
+      { kind: "move", heading: "Use components when directions differ" },
+    ],
     start:
       "A survey crew marks one corner 40 m east and 30 m north of a benchmark, then another 25 m west and 10 m north of that. If you want the straight-line displacement, adding the distances walked is not enough. || A vector has both magnitude and direction. Once you choose perpendicular axes, you can describe it with two signed components: x = |v|cosθ and y = |v|sinθ. Change the axes and the component numbers change, but the vector itself does not. || Components are useful because they turn geometry into ordinary arithmetic. Add the x-components, add the y-components, and then rebuild the magnitude and direction at the end.",
     use: "Whenever vectors must be combined — forces on a bracket, a boat in a current, displacements on a map — or when only the part of a vector along some direction matters. || Write each vector as (x, y). Add component-wise: R = (Ax+Bx, Ay+By). Recover magnitude |R| = √(Rx² + Ry²) and direction θ = atan2(Ry, Rx). For the part of A along B, take A·B = AxBx + AyBy = |A||B|cosφ and divide by |B|. || Stop when you can state the result as magnitude and direction in the frame the problem uses. Never add magnitudes unless the vectors are parallel — the sum of the lengths is only an upper bound.",
@@ -79,6 +88,15 @@ export const physicsW2Lessons: Lesson[] = [
     title: "Reading motion graphs",
     minutes: 35,
     lede: "Read velocity as the slope of a position–time graph, acceleration as the slope of velocity–time, and displacement as the signed area under velocity–time.",
+    opening: { mode: "prose", heading: "Read the graph before reaching for a formula" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Slope" },
+      { kind: "example", heading: "Reconstruct the motion" },
+      { kind: "idea", idea: 1, label: "Area" },
+      { kind: "aside", heading: "Tell the story", body: "Before calculating, describe the motion in words: stopped, cruising, speeding up, slowing down, or reversing." },
+      { kind: "idea", idea: 2, label: "Curvature" },
+      { kind: "move", heading: "Choose slope, area, or value from the axes" },
+    ],
     start:
       "Suppose a van's GPS records position once per second. From that position log, you can work out when the van was moving quickly, when it slowed down, and how far it travelled over a time interval. || Velocity is the slope of a position-time graph. Acceleration is the slope of a velocity-time graph. Going the other way, the signed area under a velocity-time graph gives displacement. || The main skill is translating between the graphs. Read the axes first, then ask whether the question wants a slope, an area, or simply a value from the graph.",
     use: "Whenever motion is recorded or plotted — lab sensors, telemetry, timestamped video. || Average velocity between samples: Δx/Δt, the secant slope. Instantaneous velocity from samples: the central difference (x[i+1]−x[i−1])/(t[i+1]−t[i−1]) — it centers the estimate instead of attributing one interval's slope to its endpoint. Displacement: area under v–t, by geometry for straight segments. Curvature of x–t: concave up means a > 0, concave down a < 0, straight means a = 0. || Stop when you can narrate the motion — 'cruised, then braked, then waited' — and back every verb with a slope or an area.",
@@ -139,6 +157,14 @@ export const physicsW2Lessons: Lesson[] = [
     title: "Constant acceleration and projectiles",
     minutes: 35,
     lede: "Derive the constant-acceleration equations from the geometry of the v–t graph, and solve projectile motion by treating the two axes as independent motions.",
+    opening: { mode: "steps", heading: "Separate the two motions", labels: ["The model", "The equations", "The limit"] },
+    readFlow: [
+      { kind: "idea", idea: 1, label: "Horizontal vs vertical" },
+      { kind: "example", heading: "Solve one projectile end to end" },
+      { kind: "idea", idea: 0, label: "Where the equations come from" },
+      { kind: "idea", idea: 2, label: "Assumption check" },
+      { kind: "move", heading: "Use one shared time for two axes" },
+    ],
     start:
       "For constant acceleration, the velocity-time graph is a straight line. That picture is enough to build the standard equations instead of memorizing them cold. || The line starts at v₀ and has slope a, so v = v₀ + at. The area under it is a rectangle plus a triangle: v₀t + ½at², which gives the displacement. Eliminating time gives v² = v₀² + 2aΔx. || These equations are reliable when acceleration is constant. If the acceleration changes with speed, time, or position, switch tools rather than forcing these formulas to fit.",
     use: "Falling bodies, cars braking at steady deceleration, any motion with constant a — and projectiles, which are two such motions at right angles. || Horizontal: no acceleration (drag ignored), so x = x₀ + v₀ₓt with v₀ₓ = v₀cosθ. Vertical: a = −g, so y = y₀ + v₀ᵧt − ½gt² with v₀ᵧ = v₀sinθ. Solve the vertical equation for the flight time, feed it to the horizontal one. Flat-ground range: R = v₀²sin2θ/g. || Stop when each axis has its own equation and time is the only variable they share. If acceleration isn't constant — drag, thrust curves — these equations are the wrong tool; integrate numerically instead.",
