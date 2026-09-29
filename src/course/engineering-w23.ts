@@ -15,23 +15,23 @@ export const engineeringW23Lessons: Lesson[] = [
     minutes: 35,
     lede: "Trace a force from where it enters a structure to where it leaves, name every member that carries it, and don't design a part until you can draw its load path.",
     start:
-      "In July 1981 two walkways in Kansas City's Hyatt Regency collapsed during a tea dance, killing 114 people. The design called for continuous hanger rods running through both walkways, each walkway's nut carrying only its own deck. The fabricator changed it to two offset rod segments, so the lower walkway now hung from the upper walkway's box beam — one nut carrying the load of both decks. The rods were fine. The rod-to-box-beam connection, now carrying both decks, was not: the nut pulled through the beam. The load went somewhere nobody traced. || A load path is the chain of members a force travels: rope → hook → lug → bracket → frame → ground. Force cannot teleport. It flows through whatever is stiff enough to carry it, and if you don't trace the route, some part of the route carries a load it was never sized for. || You trace the path before you size anything, because sizing the wrong member is precision wasted. The Hyatt rods were strong enough for the load they were drawn for. The load they actually carried was drawn by someone else.",
+      "A load path is the route a force takes through the structure to the supports and ultimately to ground. || Trace that route through every member and interface before sizing individual parts. If the geometry or connection detail changes, the load path may change too, even when the applied external load stays the same. || The useful question at every interface is simple: where does the force go next, and what local part has to carry it?"
     use: "When you are sizing anything that carries force — a bolt, a bracket, a spar, a joint — or when a failure, a repair, or a design change touches a structure. || Sketch the boundary of your part, mark every place force enters and leaves, and list the members in order from entry to exit. For each interface ask: what is the load here, and what was this interface sized for? || Stop when the path is a single unbroken chain to ground and every link has a named load. A path with a gap means some load has no assigned carrier.",
     example:
       "A glider tow hook rated for a 2 kN release load. || You trace: tow rope (2 kN tension) → release hook → lug (2 kN through the pin hole) → two bracket bolts (1 kN shear each) → fuselage frame → longerons to the wing. The path is unbroken and every link sees a known 2 kN or less. || The lug was sized for 2 kN through the hole — check bearing stress against the allowable. The bolts were sized for 1 kN each — check shear. Nobody sizes anything until the list exists — the list tells you what to size.",
     ideas: [
       {
-        heading: "Force cannot teleport",
+        heading: "Trace the load continuously through the structure",
         body: "Between the point where a load enters and the ground where it leaves, every newton passes through real material. Draw the chain — rope, hook, lug, bracket, frame — and you have the map of everything that must be strong. A member that is not on the map gets no strength budget; a load that is not on the map gets no member at all.",
         formula: "entry → members in order → exit (ground)",
       },
       {
-        heading: "Interfaces are where paths break",
+        heading: "Check every interface in the load path",
         body: "Members rarely fail mid-span. They fail at pins, bolts, welds, and every other interface — because the interface is where the load changes hands and where design changes land. When a fabrication shop 'simplifies' a connection, it rewrites the load path. Trace the path again after every change, however minor it looks.",
         formula: "changed interface ⇒ re-traced path",
       },
       {
-        heading: "Free-body thinking at system scale",
+        heading: "Use free-body diagrams at assembly scale",
         body: "A free-body diagram cuts one part free and lists every force on it. A load path does the same for the whole assembly: cut the structure into members, balance each one, and the reactions of one become the loads of the next. The discipline is identical; only the boundary is bigger.",
         formula: "ΣF = 0 at every link, in order",
       },
@@ -95,13 +95,13 @@ export const engineeringW23Lessons: Lesson[] = [
     minutes: 35,
     lede: "Factor of safety and margin of safety: compute them from applied and allowable loads, keep limit and ultimate loads distinct, and read a margin table the way a reviewer does — worst line first.",
     start:
-      "Every aircraft you have flown in was designed so that its structure can carry one and a half times the worst load it is ever expected to see — and then proven by breaking a wing on a test rig. The 1.5 is not a guess; it is the price of everything the analysis could not know: a gust stronger than the model, a fastener torqued less than the drawing, a material batch at the low end of its scatter. || Factor of safety is the ratio: FoS = allowable / applied. Margin of safety is what is left over: MS = FoS − 1, the fraction of spare capacity. Limit load is the worst the design is expected to meet in service and must be carried without permanent damage. Ultimate load is limit × the ultimate factor — 1.5 for aircraft — and the structure must not break under it. A margin table lists every load case, applied against allowable, and the table is only as good as its worst line. || You buy margin with mass and money, so you do not buy it evenly. Thin margins belong where the loads are well known and the consequences are low; fat margins belong where the load is a guess, the analysis is a simplification, or the consequence is a wing coming off.",
+      "Margins compare available capability with applied demand. They are only meaningful when the load case, allowable, and failure mode are clearly defined. || Factor of safety is capability divided by demand. Margin of safety is FoS − 1. In regulated fields, limit and ultimate loads may also have precise definitions that come from the applicable standard. || Build a margin table across the relevant load cases and failure modes. The governing line is the smallest acceptable margin, not the average."
     use: "When a part is sized, or when you inherit a part and must decide whether it is good enough. || For each governing load case: applied (the honest worst the part sees), allowable (yield for the limit row, ultimate strength for the ultimate row), FoS = allowable/applied, MS = FoS − 1. Keep limit and ultimate in separate rows — different allowables, different factors. || Stop when every row has MS ≥ 0 and the thinnest rows are the ones you understand best. A negative margin anywhere means a redesign.",
     example:
       "A tow-hook lug: 100 mm² cross-section, limit load 12 kN in tension. || Applied limit stress = 12 000 N / 100 mm² = 120 MPa. 6061-T6 yields at 276 MPa, and limit load must not yield, so FoS = 276/120 = 2.30, MS = 1.30. Ultimate load = 12 × 1.5 = 18 kN, applied 180 MPa against the 310 MPa ultimate strength: FoS = 1.72, MS = 0.72. || The ultimate row governs with MS 0.72: the 1.5 factor raised the load more than the step from 276 to 310 MPa raised the allowable. It passes. A reviewer reads the worst line first; yours is fine.",
     ideas: [
       {
-        heading: "FoS is a ratio; MS is what's left",
+        heading: "Keep factor of safety and margin of safety distinct",
         body: "FoS = allowable / applied tells you how many times over the part is. MS = FoS − 1 tells you the spare capacity as a fraction. MS = 0 means the design exactly consumes the allowable; MS < 0 means it fails the case. Report margins: a margin of 0.72 says 'seventy-two percent spare' in a way a factor of 1.72 doesn't.",
         formula: "FoS = allowable / applied;  MS = FoS − 1",
       },
@@ -111,7 +111,7 @@ export const engineeringW23Lessons: Lesson[] = [
         formula: "ultimate = 1.5 × limit  (aircraft convention)",
       },
       {
-        heading: "The table is only as good as its worst line",
+        heading: "The lowest margin controls the design",
         body: "A margin table with ten rows at MS 0.8 and one row at MS −0.02 is a failed design with a good average. Reviewers read the minimum, not the mean. When you add margin, add it to the governing line — thickening a member that is already at MS 1.2 buys nothing.",
         formula: "table verdict = min over rows of MS",
       },
@@ -170,13 +170,13 @@ export const engineeringW23Lessons: Lesson[] = [
     minutes: 35,
     lede: "Run a failure-modes-and-effects analysis: list how each part can fail, score severity, occurrence, and detection, and spend your design effort where the risk priority number is highest.",
     start:
-      "In the 1970s the Ford Pinto could rupture its fuel tank in a rear-end collision. The failure mode was not a mystery — engineers had identified it, and a fix existed. What was missing was a disciplined way to force the scary combination — severe effect, plausible occurrence, hard to detect — to the top of the design agenda ahead of cost and schedule. An FMEA does exactly that, on paper, before the part exists. || For each failure mode you name the effect and the cause, then score three things 1–10: severity (how bad if it happens), occurrence (how likely), detection (how likely you are to catch it before it matters — 10 means it will slip through). Risk priority number = S × O × D. The highest RPNs get the mitigations: make the failure rarer, or make it easier to catch. Recompute; the delta is the value of your design change. || Run it before the design freezes, while the drawing can still change. The value is the conversation it forces: naming the failure mode the team was politely not mentioning.",
+      "FMEA is a structured way to identify failure modes before the design is frozen. || For each mode, record the effect, likely cause, severity, occurrence, and detection rating. The risk-priority number S × O × D can help organize attention, but the individual severity rating still matters even when the product is not the largest. || The real value is the mitigation record: what change reduces the risk, who owns it, and what the new ratings look like after the change."
     use: "When a subsystem's design is taking shape and the failure modes are still cheap to prevent — never after the tooling is cut. || List the functions, then for each: how can it fail, what happens, why. Score severity, occurrence, detection 1–10; compute RPN = S·O·D. Attack the highest RPNs with mitigations that lower occurrence (redundancy, derating) or improve detection (tests, inspections, sensors). || Stop when the top RPNs are acceptable and every mitigation has an owner. A row with no mitigation is a risk the team has chosen to accept — write that choice down.",
     example:
       "The glider tow release: failure mode 'fails to release under load'. || Effect: the glider cannot separate from the tow plane — severity 9. Cause: spring corrosion after a wet season — occurrence 3. Detection: the preflight pull-test would probably catch a weak spring, detection 5. RPN = 9 × 3 × 5 = 135. || Mitigation: a redundant release spring and a documented spring-replacement interval, plus a load-cell release check at each annual inspection — occurrence drops to 1, detection to 2. New RPN = 9 × 1 × 2 = 18. The delta of 117 is the case for the second spring, in numbers.",
     ideas: [
       {
-        heading: "RPN = severity × occurrence × detection",
+        heading: "Use severity, occurrence, and detection to structure the risk discussion",
         body: "Three 1–10 scores multiply into a risk priority number up to 1000. Severity is the effect's gravity — a 10 is loss of life or the mission. Occurrence is the cause's likelihood. Detection is your chance to catch it first, and note the inversion: 10 means it will slip through unseen. Multiply, rank, attack the top.",
         formula: "RPN = S × O × D  (1–10 each, higher is worse)",
       },
@@ -186,7 +186,7 @@ export const engineeringW23Lessons: Lesson[] = [
         formula: "ΔRPN = RPN_before − RPN_after",
       },
       {
-        heading: "The conversation is the product",
+        heading: "The mitigation record matters more than the score alone",
         body: "An FMEA's value is the conversation it forces: naming the failure mode the team was politely not mentioning, while the drawing can still change. Run it early, keep it alive through design changes, and treat a row with no mitigation as an accepted risk with its name written down — not a row you forgot.",
         formula: "unmitigated row = accepted risk, in writing",
       },

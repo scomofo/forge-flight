@@ -15,23 +15,23 @@ export const engineeringW29Lessons: Lesson[] = [
     minutes: 35,
     lede: "Read a factor of safety as a priced statement about uncertainty and consequence — not as a property of the steel — and choose one you can defend.",
     start:
-      "A crane hook the size of your fist is rated for five times the load it will ever see. An airliner wing is built to 1.5 times its worst expected load. Same metals, same physics, wildly different numbers. || The factor of safety is not in the material. It is the engineer's answer to two questions: how much of this do I not know, and who gets hurt if I am wrong? FoS = capability ÷ demand. A crane's loads are sloppy and its inspections are rare, so the number is 5. An airliner's loads are measured to the newton and the wing is inspected on a schedule, so 1.5 is honest. || You choose the number before you choose the section. And the number you choose says, in public, how much uncertainty you are willing to bet someone else's safety on.",
+      "A factor of safety is not a universal material constant. It is part of the design basis. || Choose it from the applicable standard, uncertainty in loads and strength, inspection and maintenance assumptions, and the consequence of failure. FoS = capability / demand only has meaning when both terms are clearly defined. || Record where the chosen factor came from. An unexplained safety factor is difficult to review and easy to misuse."
     use: "When you are about to size a part and the spreadsheet is asking for an allowable stress, or when a review asks why this number and not a smaller one. || Name the consequence class: low (property only), moderate (minor injury), high (serious injury), catastrophic (loss of life). Read the factor of safety off that class, adjusted for how well you know the loads and how often the part is inspected. Write the consequence class next to the number, every time. || Stop when the factor of safety, the consequence, and the inspection plan all appear on the same page. A bare number with no consequence attached is a guess, and no reviewer can check a guess.",
     example:
       "A tow-bar lug for a light trailer, demand 12 kN, material yield 250 MPa. || The consequence is moderate — the trailer has a safety chain, so a lug failure means a dropped hitch at low speed, not a runaway trailer; the loads are ordinary highway loads. The class says FoS 2.0. Allowable stress = 250 ÷ 2.0 = 125 MPa. Required area = 12,000 N ÷ 125 MPa = 96 mm². The designer picks 100 mm² and writes 'FoS 2.0, consequence moderate, inspected at each service' on the drawing. || The area is arithmetic. The 2.0 is the ethics: it says 'I do not trust my knowledge of pothole loads enough to bet a highway on 1.4.'",
     ideas: [
       {
-        heading: "FoS = capability ÷ demand, and both are estimates",
+        heading: "Define both capability and demand before quoting a factor of safety",
         body: "The capability side carries material scatter, manufacturing variation, and the strength model you chose. The demand side carries load scatter, misuse, and the environment. The factor of safety covers what you cannot see on either side. That is why a well-instrumented, well-inspected part honestly earns a smaller number than a guessed-at one.",
         formula: "FoS = capability / demand · margin of safety MS = FoS − 1",
       },
       {
-        heading: "The number prices the consequence, not the material",
+        heading: "Safety factors reflect uncertainty and consequence, not just material choice",
         body: "Low consequence and well-known loads: 1.5. Moderate: 2.0. High with uncertain loads: 3.0. Catastrophic: 5.0. These are starting points, not verdicts: well-known loads plus scheduled inspection can justify less. An airliner wing carries lives at 1.5 ultimate because its loads are measured and its inspections are mandated. Nor are they material constants — the same alloy gets all four numbers depending on whose life is underneath it. When someone asks 'why 3?', the answer is the consequence class and the inspection plan, never 'that is what we always use.'",
         formula: "FoS ← consequence class × load knowledge × inspection",
       },
       {
-        heading: "An unsigned number is not a safety factor",
+        heading: "Document the source and approval for the chosen safety factor",
         body: "A factor of safety that appears in a calculation with no consequence class, no named loads, and no inspection plan is decoration. The review in lesson 3 will reject a package whose safety factors are orphans. Write the three lines: the number, the consequence it prices, and how you will know if reality disagrees.",
         formula: "a defensible FoS = number + consequence + watch plan",
       },
@@ -95,23 +95,23 @@ export const engineeringW29Lessons: Lesson[] = [
     minutes: 35,
     lede: "Read a standard the way a reviewer does — scope, shall-statements, and evidence — and keep a paper trail that outlives your memory of the project.",
     start:
-      "In 1905 a boiler exploded in a shoe factory in Brockton, Massachusetts, and killed 58 people. It was one of hundreds of boiler explosions a year in America. A decade later ASME published its first Boiler Code, and the explosions fell away — not because steam got safer, but because every designer now had to meet rules written from the wreckage. || A standard is the memory of every failure before you, written down so you do not have to repeat it. It says: scope (what this covers), normative references (what it stands on), and shall-statements — the demands. Everything else is commentary. A 'shall' is a requirement with the force of the code behind it; a 'should' is advice; an appendix is guidance. || You read a standard by hunting shalls and asking, for each one: what evidence would prove this? If you cannot name the evidence, you haven't really read the clause yet.",
+      "Codes and standards convert accumulated experience into explicit design and verification requirements. || Start with scope and applicability, then identify the normative requirements and referenced documents. In standards language, words such as shall, should, and may have different force, so read them carefully. || For every applicable requirement, identify the evidence that will show compliance. A clause without a verification plan is not yet integrated into the design."
     use: "When a project says 'comply with' anything, or when you inherit a design and need to know what it was promised. || Read scope first — if your part is outside it, the standard does not apply and citing it is theater. Then list every shall that touches your part. For each shall, write the evidence: the test, the calculation, the inspection. || Stop when every shall has an evidence entry or an explicit waiver with a signature. A shall with no evidence is an unkept promise; the review in lesson 3 treats it as a finding.",
     example:
       "Tow-bar standard §4.2: 'The tow bar shall withstand three times the rated tow load without permanent deformation.' || That is one shall. The evidence: a pull test at 3× rated load, measured for permanent set — or a calculation traceable to a validated model, if the code allows analysis. The 'should be tested at room temperature' in the same paragraph is a should: advice, not a demand. Appendix A's fixture guidance is informative. || The compliance table has one row for the shall with the test report number, and nothing for the shoulds. Mixing them up — treating guidance as demand, or a shall as advice — is how designs fail audits.",
     ideas: [
       {
-        heading: "Shall, should, may — three different legal weights",
+        heading: "Read requirement words according to the standard's definitions",
         body: "'Shall' is a demand: break it and the design does not comply. 'Should' is a recommendation: break it and you owe an explanation. 'May' is permission. Appendices and guidance are informative unless the shall points at them. Reading a standard is mostly the discipline of not promoting a should to a shall, or demoting a shall to a should.",
         formula: "shall = demand · should = recommendation · may = permission",
       },
       {
-        heading: "Every shall wants evidence",
+        heading: "Connect every applicable requirement to compliance evidence",
         body: "A shall without evidence is a wish with a citation. The compliance table is the standard's shadow: one row per shall, one column for the evidence (test report, calculation, inspection record). When the reviewer asks 'where is §4.2?', the answer is a document number, not a paragraph of reassurance.",
         formula: "compliance = Σ (shallᵢ × evidenceᵢ)",
       },
       {
-        heading: "The paper trail is the product",
+        heading: "Keep the compliance record with the design",
         body: "You forget the project. The next engineer wasn't in the room. The drawing notes, the calculation references, the assumption ledger entries — that trail is what makes the design maintainable, auditable, and defensible in court. Documentation isn't overhead on the engineering; for the second owner of the design, it's what lets them pick it up and keep going.",
         formula: "design value = hardware + retrievable reasoning",
       },
@@ -175,23 +175,23 @@ export const engineeringW29Lessons: Lesson[] = [
     minutes: 40,
     lede: "Run a design review like an institution: find the findings, grade their severity, issue a verdict the findings support — and sign it.",
     start:
-      "Every failed structure you have met in this course — the walkway, the mirror, the O-ring — passed through rooms full of smart people who did not catch it. A design review is the institution that exists because individuals miss things. || The roles: the presenter defends the design and brings the evidence. The reviewers attack the design, never the designer — the question is always 'what breaks this?', not 'who did this?'. The scribe records findings, not opinions. The findings get severities: critical (someone could die, or the mission is lost — stop), major (must be fixed or the design does not proceed as drawn), minor (fix, but it does not gate the verdict), observation (a note for the record). || The review ends in a verdict the findings support: approve, approve-with-conditions, or reject. Then someone signs. The signature says: I looked, I found what I found, and this verdict is mine.",
+      "A design review is a structured attempt to find problems while they are still cheap to fix. || The presenter brings the evidence, reviewers challenge the design and assumptions, and the scribe records actionable findings. Grade findings by consequence and by whether they block release. || The final review verdict should follow from the unresolved findings, and the record should show who accepted that disposition."
     use: "When a design is about to be built, bought, or flown — any point of no return. || The presenter walks the package: requirements, calculations, drawings, assumption ledger. Reviewers file findings against requirements and shalls, each with a severity and a location. The scribe keeps the list. The chair issues the verdict the open findings demand: any open critical is a rejection, any open major is conditional approval at best. || Stop when every finding is addressed or explicitly accepted as a risk with a signature, and the memo — what was reviewed, what was found, why this verdict — is written while the memory is fresh. A review with no written memo did not happen.",
     example:
       "The Week-29 bench hands you a tow-bar package: two sheets, three calculations. || You find six planted issues. The worst: one shear pin carries the full tow load — a single-point failure, severity critical, breaking the 'no single-point failure' requirement. A lug at FoS 1.4 against a 2.0 drawing note — major. No corrosion plan for saltwater service — major. A missing torque value — minor. Mixed units on one sheet — observation. An unstated fatigue-life assumption — major. || The verdict writes itself: open critical, so reject. The memo says what was reviewed, lists the six findings with severities, and states the conditions for re-review. You sign it. The signature is not a formality — it is the moment the review becomes yours.",
     ideas: [
       {
-        heading: "Attack the design, never the designer",
+        heading: "Challenge the design and evidence, not the person presenting it",
         body: "Reviews die two ways: politeness that files no findings, and blame that files no second review because nobody brings a design anymore. The working rule is spoken out loud at the start: we are here to break the design while it is still paper. A finding is a gift — it is cheaper than the failure it names.",
         formula: "good review = findings filed + designers return",
       },
       {
-        heading: "Severity is about consequence, and it drives the verdict",
+        heading: "Finding severity should drive disposition and release decisions",
         body: "Critical: stop — someone could die or the mission is lost. Major: fix before proceeding as drawn. Minor: fix, but it does not gate. Observation: for the record. The verdict is not a vote and not a mood; it is arithmetic on the open findings. An open critical is a rejection no matter how much schedule pressure is in the room.",
         formula: "open critical → reject · open major → conditional · else → approve",
       },
       {
-        heading: "The signature is the product of the review",
+        heading: "Record who accepted the review verdict",
         body: "Hardware can be rebuilt; the memo is what proves the review happened and what it concluded. It names what was reviewed, what was found, and why the verdict follows from the findings. And it is signed — because an unsigned judgment belongs to no one, and a judgment that belongs to no one will be quietly ignored.",
         formula: "review = findings + verdict + signature",
       },
