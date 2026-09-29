@@ -14,6 +14,14 @@ export const materialsW12Lessons: Lesson[] = [
     title: "Crystal structures",
     minutes: 35,
     lede: "Count the atoms in a unit cell, compute how tightly they pack, and name which crystal structure a metal uses — and why that choice decides how it deforms.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "Crystalline metals arrange their atoms in repeating patterns. The repeating building block is the unit cell. || The common metallic structures are body-centered cubic, face-centered cubic, and hexagonal close-packed. The geometry affects packing, available slip systems, and therefore deformation behavior. || Do not treat crystal structure as decoration. It is part of the explanation for why metals with similar chemistry can respond differently to load and processing."
     use: "When you choose a metal for forming, or explain why a part cracked instead of bending. || Count atoms per cell (a corner atom is shared by 8 cells, a face atom by 2, a body atom is whole), compute the packing efficiency, and count the slip systems — the planes and directions along which atomic layers can slide. FCC's twelve close-packed slip systems mean the metal almost always finds a way to yield: ductile. BCC also has 12+, but they need thermal help, so it can turn brittle when cold. Three means it often cannot: limited ductility, watch for cracking. || Stop when you can look at a structure label — FCC, BCC, HCP — and predict “this will forge, this will need care.”",
@@ -75,6 +83,14 @@ export const materialsW12Lessons: Lesson[] = [
     title: "Grains, texture, and anisotropy",
     minutes: 35,
     lede: "Read a grain map the way a pilot reads weather: boundaries are fronts, texture is the prevailing wind, and both decide where the metal yields.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Most engineering metals are polycrystalline: they contain many grains with different crystal orientations. || Grain boundaries impede dislocation motion, so reducing grain size often raises yield strength. The same boundaries can also become weak paths for high-temperature creep or corrosion, so finer is not automatically better in every service condition. || Processing can also create texture, meaning preferred grain orientations. That produces anisotropy: properties can depend on direction."
     use: "When a specification names a grain size, or a part fails along an unexpected direction. || Apply Hall–Petch — σy = σ₀ + k/√d — to predict how a grain-size change moves yield strength; check whether the load lines up with the texture direction or fights it; and for high-temperature service, ask whether boundaries are helping (strength at room temperature) or hurting (creep paths when hot). || Stop when you can point at a part and say which direction is strong, which is weak, and what processing wrote that in.",
@@ -154,6 +170,14 @@ export const materialsW12Lessons: Lesson[] = [
     title: "Amorphous solids and what microscopes show",
     minutes: 35,
     lede: "Tell glass from crystal by what atoms do with no long-range plan — and read a fracture surface like a flight recorder.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "An amorphous solid lacks long-range crystalline order. That changes the available deformation mechanisms. || Without a regular lattice, dislocation slip does not operate in the usual way. Metallic glasses can therefore be very strong, but plastic deformation may localize into narrow shear bands and lead to abrupt failure. || Whether a material crystallizes or becomes amorphous can depend strongly on cooling rate. Processing controls the resulting structure."
     use: "When a part must be hard, wear-resistant, or corrosion-proof but will never be asked to bend — and whenever you look at a broken part. || Read the fracture surface: a dimpled surface means ductile microvoid coalescence (it stretched before it parted); flat, faceted cleavage means brittle fracture along crystal planes; a mirror-smooth surface with river patterns means glass. Match the surface to the failure mode before you blame the load. || Stop when you can hold a broken part and reconstruct the failure from the surface alone.",
