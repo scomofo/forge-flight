@@ -22,6 +22,14 @@ export const engineeringW30Lessons: Lesson[] = [
     title: "The full cycle is the course",
     minutes: 40,
     lede: "Run requirement → model → test → mismatch → justified revision as one discipline, and learn why a simulation score alone can never pass the gate.",
+    opening: { mode: "prose", heading: "Start with the physical situation" },
+    readFlow: [
+      { kind: "example", heading: "Work one case" },
+      { kind: "idea", idea: 0, label: "First idea" },
+      { kind: "idea", idea: 1, label: "Second idea" },
+      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "move", heading: "When to use it" },
+    ],
     start:
       "The full engineering cycle is requirement → model → test → mismatch → justified revision. A model result by itself is not the end of the work. || State the requirement, make a prediction with documented assumptions, test the real system, compare prediction with measurement, and make a revision that addresses the evidence. || The capstone requires every part of that chain because each one checks a different failure mode in the engineering process."
     use: "Any design you are asked to defend — which is every design that matters. || Write the requirement first, as a demand with a number and a pass/fail line. Build the model to predict the test outcome before the test runs, and ledger the assumptions. Measure with a stated uncertainty so agreement or disagreement means something. When they disagree, autopsy the ledger — assumptions first, arithmetic last. Change one thing, say why that thing and not another, and re-check every margin the change touches. || Stop when all five sections score at least a 1 and the total reaches 70% — and you can name the assumption most likely to be wrong and what would prove it.",
@@ -100,6 +108,14 @@ export const engineeringW30Lessons: Lesson[] = [
     title: "The glider, end to end",
     minutes: 50,
     lede: "Run the whole course — requirements to trade study — on the 100 g glider, and watch the full cycle catch what any single week would miss.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "The glider capstone combines the earlier tools around one requirement and one test. || The beam model predicts stress and deflection; the uncertainty budget identifies sensitive measurements; the margin table checks capacity; the joint and tolerance work check the assembly; the trade study records the choice. || When the measured deflection differs from the model, use the full record to decide whether the likely cause is loading, boundary condition, material property, geometry, or measurement."
     use: "A design that must survive a review — which is every design you sign. || State the requirement as a demand that can lose. Chain the model link by link — loads, stress, deflection, allowables — checking dimensions at every joint. Budget the uncertainty and spend the next dollar on the dominant link. Tabulate the margins and name the governing line. Decide the joints and the materials as one decision. Stack the tolerances against the clearance that matters. Run the trade study with the baseline getting no home-field advantage. Then test, name the mismatch, and revise one thing for a stated reason. || Stop when every week has had its say and the binding constraint is named by the chain, not assumed.",
@@ -178,6 +194,14 @@ export const engineeringW30Lessons: Lesson[] = [
     title: "The final gate",
     minutes: 45,
     lede: "Sit the 12-question closed-book check for the whole course: 70% to pass, and every missed full-cycle item gets a filed correction before you are done.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "The final mastery check covers the full engineering cycle, cross-week reasoning, and the major tools from the course. || A score of at least 70% satisfies the score gate, but missed full-cycle items still require written corrections. || The correction should identify the reasoning error, rebuild the correct chain, and state what you will do differently next time."
     use: "One sitting, closed book, no bench open beside you. || Answer all twelve. Score at least 70%. For every missed full-cycle item, file the correction: the right reasoning, where yours left the cycle, the sentence you carry forward. || You are done when the gate passes and the corrections are filed. Then — and only then — the course is complete.",
