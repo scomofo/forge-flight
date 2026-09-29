@@ -15,13 +15,13 @@ export const materialsW13Lessons: Lesson[] = [
     minutes: 35,
     lede: "Explain why a perfect crystal should be ten to a thousand times stronger than any real metal, and name the three defect families that do the actual work.",
     start:
-      "In 1926 Frenkel estimated the shear strength of a perfect crystal: slide one atomic plane over another, and the stress needed is about G/2π, where G is the shear modulus — ~13 GPa for iron. Refined models give ~G/30, about 2.7 GPa. Real iron yields at a few hundred MPa or less: 10–1000× lower, depending on purity. || The word: a dislocation is a line defect — an extra half-plane of atoms wedged into the crystal. Moving a dislocation is a small local shuffle, not a whole-plane slide, so the stress it needs is ten to a thousand times smaller. In 1934 Taylor, Orowan, and Polanyi proposed this independently to close exactly Frenkel's gap. || Why the rule has that shape: calling defects 'damage' gets it backwards. They are the machinery that every useful property runs on — strength, hardening, diffusion itself. A perfect crystal would be a curiosity, not an engineering material.",
+      "A perfect crystal should be much stronger in shear than real metals actually are. The reason is that real crystals contain defects. || Dislocations are line defects that let plastic deformation proceed by local atomic rearrangements instead of sliding an entire atomic plane at once. That reduces the stress required for permanent deformation by orders of magnitude. || In engineering materials, defects are not simply damage. They control deformation, diffusion, hardening, and many other useful behaviors."
     use: "Whenever you ask why a metal is soft or strong: check the defect population, not the composition. || Classify by dimension: 0D point defects (vacancies, interstitials), 1D line defects (dislocations), 2D planar defects (grain boundaries, stacking faults). Vacancy site fraction obeys Boltzmann, n/N = exp(−Qv/kT). Dislocation motion is slip; blocked dislocations are strength. || Stop when you can point at a processing step and name the defect it targets — quenching freezes vacancies in, cold work multiplies dislocations, annealing sweeps both out.",
     example:
       "Copper, vacancy formation energy Qv ≈ 0.9 eV. What fraction of sites are empty at 1000 K — and at room temperature? || n/N = exp(−0.9 / (8.617×10⁻⁵ × 1000)) = exp(−10.44) ≈ 2.9×10⁻⁵ at 1000 K. At 300 K: exp(−34.8) ≈ 7.6×10⁻¹⁶. || Heating from room temperature to 1000 K multiplies the equilibrium vacancy population by roughly 4×10¹⁰. Quench from high temperature and you freeze that far-from-equilibrium population into the metal — and it drives diffusion, aging, and precipitation from the inside.",
     ideas: [
       {
-        heading: "Perfect is weak",
+        heading: "Real crystals deform through defects",
         body: "Frenkel's whole-plane shear estimate is τ ≈ G/2π (~13 GPa for iron); refined models give ~G/30 (~2.7 GPa). Real yield is 10–1000× lower, depending on purity. The resolution is not a better estimate — it is a different mechanism. Dislocations let a crystal shear one atomic row at a time, like moving a rug by pushing a wrinkle across it instead of dragging the whole rug.",
         formula: "τ_theoretical ≈ G/2π (refined: ~G/30),  τ_measured ≪ τ_theoretical",
       },
@@ -95,18 +95,18 @@ export const materialsW13Lessons: Lesson[] = [
     minutes: 35,
     lede: "State Fick's laws, read diffusion distance as √(Dt), and price a heat treatment in hours.",
     start:
-      "Carburize a gear: hang steel in a carbon-rich atmosphere at 950 °C, and carbon atoms walk into the surface. After four hours the hard case is about 0.7 mm deep. Nobody placed those atoms; they diffused. || The word: Fick's first law, J = −D ∂C/∂x — flux runs down the concentration gradient, and the minus sign is the whole content. Fick's second, ∂C/∂t = D ∂²C/∂x². For a constant surface concentration the solution is an error function: (Cs − C)/(Cs − C0) = erf(x / (2√(Dt))). || Why the rule has that shape: distance goes as the square root of time, so the economics are brutal — doubling case depth costs four times the hours. Every carburizing schedule ever written is a negotiation with that square root.",
+      "During carburizing, carbon diffuses from a carbon-rich surface into steel. The process is slow because atoms have to move through the solid. || Fick's first law relates diffusion flux to the concentration gradient. Fick's second law describes how the concentration profile changes with time. A useful scaling result is that diffusion distance grows roughly with √(Dt). || That square-root dependence matters in practice: doubling the diffusion depth takes roughly four times as long at the same temperature."
     use: "Whenever atoms must get somewhere on a schedule: case hardening, homogenization, sintering, dopant drives. || Compute D from Arrhenius, D = D0 exp(−Q/RT); form the length 2√(Dt); read the profile. Check units first: D is m²/s, so √(Dt) is meters — a dimensional check that catches most setup errors. || Stop when you can say 'a 50 K drop costs roughly double the time' and back it with a number, not a feeling.",
     example:
       "Carburize at 950 °C: Cs = 1.1 wt%, C0 = 0.2 wt%. How deep does 0.4 wt% reach in 4 hours? || D = 2.3×10⁻⁵ exp(−148000/(8.314×1223)) ≈ 1.10×10⁻¹¹ m²/s. 4 h = 14400 s, so 2√(Dt) = 0.80 mm. Need (1.1 − 0.4)/(1.1 − 0.2) = 0.778 = erf(z), giving z ≈ 0.86, so x ≈ 0.86 × 0.80 ≈ 0.69 mm. || Four hours at 950 °C buys a 0.7 mm case. Drop to 900 °C and D falls to 5.9×10⁻¹² m²/s — the same profile now costs 7.4 hours. That is the time–temperature trade, priced to the hour.",
     ideas: [
       {
-        heading: "Flux runs downhill",
+        heading: "Diffusion follows concentration gradients",
         body: "J = −D ∂C/∂x. No gradient, no flux — no matter how high the concentration is. Atoms do not care about absolute concentration, only about which way is down. The minus sign is the second law of thermodynamics showing up in a materials equation, and every diffusion profile in this course is its consequence.",
         formula: "J = −D ∂C/∂x",
       },
       {
-        heading: "Distance is root-time",
+        heading: "Diffusion distance scales with the square root of time",
         body: "The error-function solution decays over the length 2√(Dt). Double the depth, quadruple the time; ten times the depth, a hundred times the hours. This is why diffusion is a surface treatment on human timescales — carburized cases are millimeters, not centimeters — and why homogenizing a casting takes a furnace, not a lunch break.",
         formula: "x ~ √(Dt)",
       },
@@ -171,7 +171,7 @@ export const materialsW13Lessons: Lesson[] = [
       "4140 steel, three thermal histories. || Annealed: ~200 HB — soft, machinable, the baseline. Quenched from 850 °C: ~58 HRC — hard enough to scratch glass, brittle enough to fear. Quenched and tempered at 400 °C: ~42 HRC with real toughness — the working compromise. || Same chemistry, three different materials. The performance gap between a gear that lasts and one that spalls is not composition; it is the thermal history written into the defect structure.",
     ideas: [
       {
-        heading: "Annealing is forgetting",
+        heading: "Annealing reduces stored defect structure",
         body: "Recovery lets dislocations rearrange and annihilate; recrystallization nucleates fresh strain-free grains; grain growth coarsens them. Stress relieves, ductility returns. But over-annealing coarsens grains past the point of usefulness, and Hall–Petch collects the bill: coarse grains are soft grains. Annealing is controlled forgetting — forget too much and you lose the strength you meant to keep.",
         formula: "recovery → recrystallization → grain growth",
       },
