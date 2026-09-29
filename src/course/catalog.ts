@@ -40,21 +40,21 @@ export const tracks: Track[] = [
     index: "01",
     title: "Physics",
     course: "Physics 101",
-    lede: "Start here. Vectors, motion, force, energy, momentum, and waves — the laws the later checks are built on.",
+    lede: "Core mechanics and physical reasoning: vectors, motion, force, energy, momentum, structures, fluids, waves, and heat."
   },
   {
     id: "materials",
     index: "02",
     title: "Materials",
     course: "Materials 101",
-    lede: "Next. Why a family bends, snaps, or sags, and how to compare materials against a job instead of a vibe.",
+    lede: "How bonding, structure, processing, and environment control material properties and failure."
   },
   {
     id: "engineering",
     index: "03",
     title: "Engineering",
     course: "Engineering 101",
-    lede: "Then the decisions. Requirements, balance, stress, sag, tradeoffs, and failure. The shelf at the end uses these.",
+    lede: "Turn requirements and models into design decisions, verification evidence, margins, trade studies, and reviews."
   },
   manufacturingTrack,
   ...ladderTracks,
@@ -103,10 +103,10 @@ export type CourseTerm = { term: string; body: string };
 export const courseIntro: { heading: string; approach: string[]; terms: CourseTerm[] } = {
   heading: "How this course works",
   approach: [
-    "This course has one student. It assumes your shop: drawings in millimeters, a stock list priced by the inch, a mill whose DRO reads in inches. Every lesson starts from something you can picture — a bracket called out on a drawing, that DRO, a glider on a windy day — and the formula comes after the picture, never before. Each lesson follows the same shape: the picture and what it means, when the idea applies and when to stop, one worked case with the arithmetic shown, three key ideas, then a bench where you try it yourself, and four checks. Three out of four passes, except on the Math Runway, where it’s four out of four.",
-    "The Math Runway comes first, because everything later assumes you can convert units, rearrange a formula, and read a graph. You don’t have to take all of it. The diagnostic is 24 questions, open-resource, about 45 minutes, and it assigns only the modules you need — test out of the rest. It never hands you a pass/fail label.",
-    "Two habits run through the whole course. First, units are part of the number: every quantity carries its unit from the first line to the last, and the benches speak SI — meters, kilograms, seconds, newtons. Second, estimate before you compute: round to one digit, do it in your head, and let the rough answer catch the wrong ones before they cost you.",
-    "After the runway: Physics, then Materials, then Engineering, then Manufacturing. Each one assumes the ones before it. The 201, 301, and 401 tracks go deeper wherever you want more.",
+    "The course is built around concrete engineering situations: drawings, shop measurements, structures, gliders, joints, tests, and design decisions. The examples usually start with the physical picture and introduce the formula after the problem is clear. Each lesson includes a worked example, key ideas, an interactive bench, and four checks. Most lessons pass at three out of four; the Math Runway requires four out of four."
+    "The Math Runway comes first because later lessons assume you can convert units, rearrange formulas, work with powers, read graphs, and resolve simple vectors. You do not have to take every module. The diagnostic assigns only the topics that need review."
+    "Two habits run through the whole course. Keep units attached to quantities throughout the calculation, and do a rough estimate before trusting the exact arithmetic. Those two checks catch a surprising number of mistakes early."
+    "After the runway, the core sequence is Physics, Materials, Engineering, and Manufacturing. The 201, 301, and 401 tracks are shorter applied extensions for topics you want to take further."
   ],
   terms: [
     { term: "DRO", body: "Digital readout: the position display on the mill or lathe. It reads in inches or millimeters depending on how it’s set. The stock list prices by the inch, and the mill’s DRO reads in inches — while your drawing says millimeters." },
