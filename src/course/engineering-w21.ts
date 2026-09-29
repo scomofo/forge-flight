@@ -13,6 +13,15 @@ export const engineeringW21Lessons: Lesson[] = [
     title: "Requirements that survive contact with reality",
     minutes: 35,
     lede: "Requirements are measurable demands — number, unit, pass/fail — written so a design can actually lose to them. Write them before you fall in love with a shape.",
+    opening: { mode: "prose", heading: "A requirement has to be able to fail" },
+    readFlow: [
+      { kind: "aside", heading: "Quick test", body: "If two reasonable people could disagree about whether the requirement passed, it still needs work." },
+      { kind: "idea", idea: 0, label: "Write the demand" },
+      { kind: "example", heading: "Turn a vague need into a testable statement" },
+      { kind: "idea", idea: 1, label: "Quality check" },
+      { kind: "move", heading: "Write requirements before designing" },
+      { kind: "idea", idea: 2, label: "Keep tradeoffs visible" },
+    ],
     start:
       "A useful requirement has to be specific enough that a design can clearly pass or fail it. || Stakeholder needs often begin as words such as light, robust, quiet, or easy to use. Engineering turns those needs into measurable statements with a quantity, unit, condition, and acceptance limit. || Write the requirements before choosing the design. That makes tradeoffs visible and prevents the solution from quietly redefining the problem."
     use: "When the brief is still a mood and someone needs a spec, or when a design review needs a ground truth to argue against. || Convert each need into a requirement: subject, the verb 'shall', a number, a unit, and a pass/fail criterion. One demand per sentence — no 'and', no 'or'. Mark each one measurable, verifiable, and achievable, or rewrite it until it is. || Stop when every stakeholder need is either a requirement or explicitly discarded in writing. A requirement nobody can verify is a wish; wishes turn into arguments during the worst weeks of the project.",
