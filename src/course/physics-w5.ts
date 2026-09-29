@@ -12,26 +12,26 @@ export const physicsW5Lessons: Lesson[] = [
     index: 13,
     title: "Impulse and momentum",
     minutes: 35,
-    lede: "Trade force against time: the same momentum change can be a hammer blow or a gentle catch, and impulse is the ledger that records the trade.",
+    lede: "Relate force and contact time to a change in momentum, and use impulse to estimate forces in impacts, catches, and launches.",
     start:
-      "Catch a fastball barehanded and you pull your hand back with the ball; catch it against a brick wall and something breaks. The ball's velocity changes by the same amount either way. What differs is how long the change takes. || Impulse J = F_avg · Δt is force accumulated over time. Momentum p = m·v is the thing that accumulation changes: J = Δp, the impulse-momentum theorem. Stretch the stop from 10 ms to 120 ms and the average force falls by a factor of twelve, for the same Δp. || The wall does not cheat the physics — it spends the same impulse in a twelfth of the time, so the force is twelve times larger. Crumple zones, airbags, and bent knees are all the same trick: stretch the time and the force falls.",
+      "If you catch a fast ball and let your hand move backward with it, the stop takes longer than if the ball hits a rigid wall. The momentum change can be the same in both cases, but the average force is not. || Impulse is force accumulated over time: J = F_avgΔt. Momentum is p = mv, and the impulse-momentum theorem says J = Δp. || For a fixed momentum change, increasing the stopping time reduces the average force. That is the basic physics behind airbags, crumple zones, padding, and bending your knees on landing.",
     use: "Whenever a force acts over a time interval and you need the resulting motion — impacts, launches, thrust. Also whenever a textbook quotes a huge force and you suspect the interval: divide the momentum change by the time to audit the claim. || Compute the momentum change Δp = m·(v − v₀) as a signed quantity — direction matters. Estimate or measure the interaction time Δt. Divide: F_avg = Δp/Δt. || Stop when you can say whether the average force is survivable, plausible, or absurd. If the time is unknown, say so and bound it — the force estimate is only as good as the time estimate.",
     example:
       "A 0.15 kg baseball arrives at 40 m/s and the catcher's glove rides back 0.12 s. || Δp = 0.15 × (0 − 40) = −6.0 kg·m/s; the glove supplies +6.0 kg·m/s. F_avg = 6.0 / 0.12 = 50 N — about the weight of a 5 kg bag. || Now stop the same ball against a wall in 0.01 s: F_avg = 600 N. Same momentum change, twelve times the force. Time is the only variable that moved.",
     ideas: [
       {
-        heading: "Impulse is the time-side of Newton's second law",
-        body: "F = ma already contains impulse if you integrate it: ∫F dt = m·Δv = Δp. The theorem is not a new law; it is the second law with time as the independent variable instead of distance. That is why it handles impacts so cleanly — you rarely know the force profile of a crash, but you often know the time and the before/after velocities.",
+        heading: "Impulse connects force, time, and momentum",
+        body: "Impulse is the area under a force-time curve. If you only need the average force, use J = F_avgΔt. The same impulse is also the momentum change, so before-and-after velocities often let you solve an impact without knowing the detailed force history.",
         formula: "J = F_avg·Δt = Δp = m(v − v₀)",
       },
       {
-        heading: "Momentum is a vector, so signs are physics",
-        body: "A ball that bounces straight back at the same speed did not have zero momentum change — its Δp is 2·m·v, twice the magnitude of stopping it. Getting the sign wrong here is the single most common error in collision problems: draw the axis, write both velocities with their signs, then subtract. The algebra of impulse problems is bookkeeping, and bookkeeping fails silently on unsigned numbers.",
+        heading: "Momentum needs a sign convention",
+        body: "Choose a positive direction before you calculate. A ball that rebounds at the same speed has a larger momentum change than a ball that simply stops, because its final velocity has the opposite sign. Write Δp = p_after − p_before with signed velocities.",
         formula: "Δp = p_after − p_before (signed)",
       },
       {
-        heading: "Average force is a lower bound on peak force",
-        body: "F_avg = Δp/Δt tells you the mean over the interval, but real impacts spike. For a roughly triangular force profile the peak is twice the average; for sharper profiles it is worse. When someone quotes an average deceleration as survivable, double it before you agree — the peak is what breaks bones and parts.",
+        heading: "Average force is not peak force",
+        body: "F_avg = Δp/Δt gives the mean over the contact interval. Real force-time traces usually rise and fall, so the peak force can be much larger than the average. Do not treat an average-force calculation as a peak-load result.",
         formula: "F_peak ≈ 2·F_avg for a triangular pulse",
       },
     ],
@@ -82,26 +82,26 @@ export const physicsW5Lessons: Lesson[] = [
     index: 14,
     title: "Conservation and center of mass",
     minutes: 35,
-    lede: "Draw the system boundary first and compute second: momentum is conserved when the net external force is zero, and the center of mass ignores everything internal.",
+    lede: "Choose the system boundary, decide whether external impulse is negligible, then use momentum conservation and center of mass to describe the motion.",
     start:
-      "Two skaters stand facing each other on ice and push apart. Neither was moving; now both glide away in opposite directions. No one pulled them from outside — so where did the motion come from? || Total momentum is conserved when the net external force on the system is zero. The skaters' push is internal: it redistributes momentum between them but creates none. The center of mass of the two-skater system never moved at all. || The trick is the boundary. Include both skaters and the push is internal — momentum conserved. Include only one skater and the other's push is external — momentum not conserved. Every conservation argument starts with saying what is inside the line.",
+      "Two skaters push apart on nearly frictionless ice. Each one gains momentum, but the total momentum of the two-skater system stays the same. || Momentum is conserved when the net external impulse on the chosen system is negligible. The forces the skaters exert on each other are internal, so they redistribute momentum rather than change the total. || The important step is choosing the system. Include both skaters and their push is internal. Analyse only one skater and the other skater's push is external.",
     use: "Before solving any multi-body problem: draw the boundary and ask whether external forces act during the interval. Recoil, explosions, and collisions are the canonical cases — the interaction is fast, so external forces (friction, gravity over milliseconds) are negligible and the system is effectively isolated. || Add up m·v for everything inside, with signs. Set the total before equal to the total after. Solve for the unknown velocity. || Stop when the accounting balances: the total after must equal the total before to the precision of your data. If it doesn't, either the boundary leaked (an external force acted) or the velocities are wrong.",
     example:
       "A 70 kg skater and a 50 kg skater push apart from rest on frictionless ice; the 70 kg skater glides off at +2.0 m/s. || Total momentum starts at 0, so 0 = 70 × 2.0 + 50 × v₂, giving v₂ = −2.8 m/s. The lighter skater leaves faster, opposite direction. || Check the center of mass: it started stationary and stays stationary. The motion appeared from nowhere only because you were watching one skater instead of the system.",
     ideas: [
       {
-        heading: "The boundary decides what is conserved",
-        body: "Conservation of momentum is a conditional statement: if ΣF_external = 0, then dp_total/dt = 0. It is not a magic property of collisions; it is Newton's third law summed over a chosen set of bodies, with the internal pairs canceling. Choose the system so the interaction you care about is internal, and the conservation law does the solving for you.",
+        heading: "Choose the system before using conservation",
+        body: "Momentum conservation depends on what you include in the system. Internal forces come in third-law pairs and cancel in the total. External forces do not. State the system and the time interval before writing Σp_before = Σp_after.",
         formula: "Σp_before = Σp_after when ΣF_ext = 0",
       },
       {
-        heading: "Center of mass moves like the total mass would",
-        body: "x_cm = Σm·x / Σm is the balance point of the system, and it moves at constant velocity whenever the net external force is zero — regardless of how violently the parts rearrange themselves. A firecracker's fragments scatter, but their center of mass keeps the original parabolic arc. Internal forces cancel in pairs; they cannot accelerate the whole.",
+        heading: "External force controls the center of mass",
+        body: "The center of mass is the mass-weighted average position. Internal forces can move the parts around, but they cannot change the motion of the center of mass. Only a net external force can accelerate it.",
         formula: "x_cm = Σ mᵢxᵢ / Σ mᵢ",
       },
       {
-        heading: "Fast and isolated beats slow and leaky",
-        body: "Real systems are never perfectly isolated — friction and gravity always act. The conservation approximation works when the interaction is brief and the internal forces are huge compared to the external ones: a millisecond collision, a sudden explosion. Over seconds, friction eats momentum and the accounting fails. State the interval your conservation claim covers, and distrust it outside that interval.",
+        heading: "Momentum conservation is often an approximation",
+        body: "Real systems usually have some external force. In a short collision or explosion, the external impulse during the interaction may be small enough to neglect. Over a longer interval, that approximation may fail. State the interval you are analysing.",
         formula: "J_ext ≪ Δp_internal ⇒ isolated is a good model",
       },
     ],
@@ -152,26 +152,26 @@ export const physicsW5Lessons: Lesson[] = [
     index: 15,
     title: "Collisions: elastic and inelastic",
     minutes: 35,
-    lede: "Sort collisions by what survives: momentum always does, kinetic energy only sometimes — and the coefficient of restitution measures exactly how much.",
+    lede: "Use momentum conservation and coefficient of restitution to solve one-dimensional collisions, then check how much kinetic energy was retained.",
     start:
-      "A Newton's cradle clicks for a minute; a lump of clay dropped on the floor thuds once and stops. Both are collisions — masses, velocities, contact. One returns nearly all its kinetic energy; the other spends it on deformation and heat. || Momentum is conserved in both, because during the brief impact the internal contact forces dwarf everything external. Kinetic energy is conserved only in the elastic case. The coefficient of restitution e = (separation speed)/(approach speed) measures the elasticity: e = 1 is perfectly elastic, e = 0 is perfectly inelastic (they stick). || The clay and the cradle obey the same momentum equation. They differ only in e — one number that decides how much motion survives the hit.",
+      "A steel ball in a Newton's cradle rebounds very differently from a lump of clay, but both impacts obey momentum conservation when external impulse is negligible. || Kinetic energy is conserved only in an elastic collision. The coefficient of restitution e compares separation speed after impact with approach speed before impact. e = 1 is perfectly elastic; e = 0 means no rebound along the line of impact. || For a one-dimensional two-body collision, momentum conservation plus the restitution relation gives two equations for the two outgoing velocities.",
     use: "For any 1D two-body collision: write momentum conservation, m₁v₁ + m₂v₂ = m₁u₁ + m₂u₂. Add the restitution condition, u₂ − u₁ = e·(v₁ − v₂). Solve the pair for the two unknowns — two equations, two unknowns, done. || Use e = 1 for ideal elastic (billiards, atoms), e = 0 for stick (clay, coupled railcars), and a measured e in between for everything real. || Stop when you have both outgoing velocities and have checked momentum balances. Then compute the kinetic energy lost — it is the check that the collision was what you claimed.",
     example:
       "A 2 kg cart at 4 m/s strikes a 3 kg cart at rest, head-on. Elastic first: u₁ = (2−3)/5 × 4 = −0.8 m/s, u₂ = (2×2)/5 × 4 = 3.2 m/s — the light cart rebounds, the heavy one walks away at 3.2 m/s, and the 16 J of kinetic energy is all still there. || If they stick instead: v = (2 × 4)/5 = 1.6 m/s shared, and the kinetic energy falls to ½ × 5 × 1.6² = 6.4 J. || 9.6 J went to deformation and heat — momentum kept every kg·m/s, energy spent 60% of the budget. Same impact, different e.",
     ideas: [
       {
-        heading: "Momentum conservation is the non-negotiable",
-        body: "In an isolated collision, Σm·v before equals Σm·v after — always, elastic or not. It is the one equation you get for free. The second equation is the restitution condition, which is really a material property in disguise: it summarizes everything the collision does to kinetic energy in one measured number.",
+        heading: "Momentum conservation is the first equation",
+        body: "For an isolated collision, total momentum before equals total momentum after whether the collision is elastic or inelastic. That gives one equation. The restitution relation provides the second equation needed to solve for two unknown outgoing velocities.",
         formula: "m₁v₁ + m₂v₂ = m₁u₁ + m₂u₂",
       },
       {
-        heading: "e measures what the hit gives back",
-        body: "e = (u₂ − u₁)/(v₁ − v₂): relative speed after over relative speed before, along the line of impact. A tennis ball on concrete is e ≈ 0.75; steel on steel approaches 0.95; clay is 0. It is measured, not derived — drop the ball, measure the bounce height, and e = √(h_bounce/h_drop), since height goes as v².",
+        heading: "Restitution measures rebound speed",
+        body: "The coefficient of restitution is the relative separation speed divided by the relative approach speed along the line of impact. It is usually measured. For a vertical bounce from the same surface, e can be estimated from the square root of bounce height divided by drop height.",
         formula: "e = separation speed / approach speed",
       },
       {
-        heading: "Lost kinetic energy has an address",
-        body: "Energy never vanishes; 'lost' means converted — to heat, sound, and permanent deformation. The perfectly inelastic collision maximizes the loss for given masses: the pair keeps only the kinetic energy of the center-of-mass motion, ½(m₁+m₂)v_cm². That minimum surviving energy is why coupling railcars is violent and billiards is not.",
+        heading: "Missing kinetic energy became another form of energy",
+        body: "If kinetic energy decreases in a collision, the energy has been converted into deformation, heat, sound, or other internal energy. Momentum can still be conserved at the same time. Always check the before-and-after kinetic energy after solving the velocities.",
         formula: "K_lost = K_before − K_after ≥ 0",
       },
     ],
