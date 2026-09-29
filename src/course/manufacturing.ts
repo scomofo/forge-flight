@@ -5,7 +5,7 @@ export const manufacturingTrack: Track = {
   index: "04",
   title: "Manufacturing",
   course: "Manufacturing theory",
-  lede: "After you can specify a part. The act that makes it, what the chip costs, why a bend opens, why a riser must freeze last, why the weld's neighbor is the weak line, and why a process is a spread.",
+  lede: "How process choice changes geometry, cost, material condition, tolerance capability, and quality."
 };
 
 export const manufacturingLessons: Lesson[] = [
@@ -24,21 +24,21 @@ export const manufacturingLessons: Lesson[] = [
       { kind: "move", heading: "Make the first process cut" },
       { kind: "idea", idea: 2, label: "Then check what the process does to the material" },
     ],
-    start: "An ice-cube tray, a stamped plate, a sawed board, a weld, and a stack of glued layers make shape in five different ways. Nobody has named a brand of machine yet. || The act is one of these: freeze a liquid, deform a solid, cut a chip away, join two pieces, or add material. A saw and a mill are the same act. A closed tunnel that no tool can reach rules out cutting; it has to be added, cast around a core, or joined from halves. || Name the act from the shape and from what the act does to the material. The machine is just which tool carries the act out.",
+    start: "Manufacturing processes differ first in what they do to the material: solidify it, deform it, remove it, join it, or add to it. || Start by identifying which of those actions can produce the required geometry and material condition. A feature that a cutting tool cannot reach, for example, may need to be cast, printed, or assembled from separate pieces. || Choose the process family before choosing a specific machine or brand.",
     use: "A shape has to be made, and someone is naming a machine. || Name the act first: freeze, deform, cut, join, or add. Let the geometry rule acts out before cost gets a say. || The constraint picked the act, not the brand. Naming the machine first is how a simple bar turns into a five-axis story.",
     example: "You need 500 identical brackets with a pocket a drill can enter, and one lattice with a tunnel no tool can reach. || The brackets are a cut, or a deform, once the tool has a path in and out. The lattice is an add, because a rigid tool cannot get into the tunnel. The machine brand has not come up yet. || The geometry voted first. Name the act, then the machine.",
     ideas: [
       {
-        heading: "Name the act, not the brand",
+        heading: "Choose the process family before the machine",
         body: "A process makes shape by one physical act: freeze a liquid, deform a solid, cut a chip, join two pieces, or add material. A mill, a lathe, and a saw are the same act wearing different tooling. Arguing about the brand before you name the act is how a simple bar turns into a five-axis story.",
         formula: "the act is freeze, deform, cut, join, or add. The machine only carries out the act",
       },
       {
-        heading: "The geometry votes first",
+        heading: "Let the geometry eliminate impossible process families",
         body: "A void a tool cannot enter, a bend repeated a million times, or a tunnel in a one-off lattice each rules out acts before cost gets a say. Cutting needs a path in and a path out. A rigid die cannot release an undercut. A mold is the wrong first cost if you will only ever make one.",
       },
       {
-        heading: "The act changes the material",
+        heading: "Each process also changes the material condition",
         body: "The strength you specified is the strength of a process history, not of a name on a datasheet. A casting freezes its grains in place. A bend leaves residual stress and springback. A weld rewrites the metal next door. Specify the part, then ask what the act does to it.",
       },
     ],
@@ -99,21 +99,21 @@ export const manufacturingLessons: Lesson[] = [
     title: "The chip",
     minutes: 10,
     lede: "Predict how cutting force and power move when the uncut chip or the speed changes.",
-    start: "A potato peeler cuts a thicker strip if you set it deeper. Pushing it faster along the potato does not thicken the strip. It only makes your hand work harder each second. || The uncut thickness is how thick a layer the edge lifts per pass (in turning, set by the feed, not the depth of cut). That sets the area being sheared off, so it sets the force. Power is that force times how fast the surface is moving past the edge. || A deeper cut raises the force. A faster cut, at the same depth, raises the power and not the force. They are different knobs.",
+    start: "Machining force and machining power are related, but they are not controlled by exactly the same variables. || The uncut chip thickness and width set the area being sheared and therefore strongly influence cutting force. Cutting speed then turns that force into power through P = Fv. || Increasing chip load tends to raise force. Increasing cutting speed at the same chip geometry mainly raises power and heat generation.",
     use: "You are about to take a heavier chip or a faster cut. || Force follows the uncut area. Power is that force times the cutting speed. || You can say which one moved, and why. Do not expect the force to rise just because the spindle got faster.",
     example: "A steel cut 3 mm wide with an uncut chip 0.10 mm thick. Steel's u is 2500 N/mm², so F = 2500 × 3 × 0.10 = 750 N. || Double that thickness and the cutting force doubles to 1500 N, because the shear area doubled. Leave the thickness and raise the surface speed, and the force stays while the power rises. || You say which knob you turned. A faster spindle is not automatically a harder cut.",
     ideas: [
       {
-        heading: "The chip is born in shear",
+        heading: "Chip formation is a shear process",
         body: "The tool does not split the metal the way an axe splits wood. Metal ahead of the edge is driven up a thin shear zone and leaves as a chip. Rake, friction, and that zone set the details. The first useful model skips them and still gets the scaling right.",
       },
       {
-        heading: "Force follows the uncut area",
+        heading: "Cutting force follows the uncut chip area",
         body: "Cutting force is specific energy times the uncut cross-section, width times uncut thickness. Double the thickness and this model doubles the force. A metal with higher specific energy costs more force at the same area. Sharpness is not in the formula, and that is a warning: the formula is about the chip, not about a fresh edge.",
         formula: "F = u × b × h",
       },
       {
-        heading: "Speed rides along in the power",
+        heading: "Cutting speed strongly affects power demand",
         body: "Power is force times cutting speed. In this model, speed does not change the force, and it does change the power. Twice the speed at the same chip is the same push and twice the watts. That is why a light fast cut and a heavy slow cut can be different problems for the same motor.",
         formula: "P = F × v",
       },
@@ -170,16 +170,16 @@ export const manufacturingLessons: Lesson[] = [
     title: "Springback",
     minutes: 10,
     lede: "Predict which way a bend opens after you let go, and which material opens more.",
-    start: "Bend a strip of aluminum in your hands and let go. It opens back a little. The angle you bent to is not the angle that stays. || Part of every bend is like a spring, and that part comes back. The recovery is larger when the metal stays elastic up to a high stress and is not very stiff. Titanium opens more than aluminum for that reason. || Overbend on purpose. Do not set the tool to the angle printed on the drawing.",
+    start: "Sheet metal springs back after forming because part of the deformation remains elastic. || The amount of springback depends on the material's yield behavior, stiffness, geometry, and forming conditions. High yield strength relative to elastic modulus generally means more recovery. || Tooling therefore has to compensate for springback. The tool angle is not necessarily the final part angle.",
     use: "A bend has to hold an angle after you let go. || Compare yield with modulus. The higher that ratio, the more the bend opens. || Predict which material opens more before you switch it. Do not set the die to the angle on the drawing.",
     example: "A 1 mm aluminum sheet bent over a 15 mm radius, then the same bend in titanium. || Aluminum (270 MPa, 70 GPa): the quick estimate 3 × 270 / (70,000 × 1) = 0.0116 per mm is close to the exact 0.0115 per mm the bench uses. The radius grows to about 18.1 mm and a 90° bend opens about 15.6°. Titanium (880 MPa, 110 GPa) gives back 0.0235 per mm: about 23.2 mm, and it opens about 31.8°. || Do not set the die to the angle on the drawing. Overbend the one that opens more.",
     ideas: [
       {
-        heading: "The bend is partly elastic",
+        heading: "Elastic recovery causes springback",
         body: "Under the punch the sheet is bent to a radius. Some of that bend is plastic and stays. Some of it is elastic and comes back when you unload. The part opens. If you wanted 90°, you have to have bent past 90°, or the die has to hold it there.",
       },
       {
-        heading: "Yield over modulus sets the recovery",
+        heading: "Yield strength relative to modulus strongly affects springback",
         body: "For a sharp bend in pure bending, the curvature you lose on unloading is close to 3 times yield strength divided by modulus and thickness. That is the large-bend approximation. The bench solves the strip exactly: with κ = 1/R and first-yield curvature κ_y = 2 σ_y / (E t), the curvature left is κ − 1.5 κ_y + 0.5 κ_y³ / κ². High yield and low modulus give the elastic strain more to recover. Thin sheet and a large radius give that recovery a bigger share of the bend.",
         formula: "1/R − 1/Rf ≈ 3 σ_y / (E t)  (sharp bends)",
       },
@@ -245,17 +245,17 @@ export const manufacturingLessons: Lesson[] = [
     title: "Freeze last",
     minutes: 10,
     lede: "Size a riser so it freezes after the plate, using volume over surface.",
-    start: "A shallow puddle freezes before a deep pool. The last liquid place is where a shrinkage hole gets stuck. || A casting freezes from the outside. Chunky regions, lots of volume for their skin, stay liquid longer. The feeder, the riser, has to be that chunky region, so the hole ends up in the feeder instead of the part. Time grows with the square of volume divided by surface. || Make the riser the last place to freeze. Do not feed a thick section from a thin one.",
+    start: "Castings usually solidify from the mold walls inward. Thick regions with a high volume-to-surface ratio stay liquid longer and are more vulnerable to shrinkage cavities. || Chvorinov-style reasoning relates solidification time to a power of V/A. A riser is designed to remain liquid longer than the casting section it feeds. || The goal is directional solidification: feed the shrinking casting from liquid metal and leave the final shrinkage cavity in the riser, not the part.",
     use: "The shrinkage has to happen in the riser, not in the part. || Compare solidification time through volume over area. The riser must be the slower one to freeze. || The riser stays liquid longest. Do not feed a thick section from a thin one.",
     example: "A 120 × 80 × 20 mm plate fed by a riser whose height equals its diameter. || The plate's V/A is 192,000 / 27,200 = 7.06 mm. The riser's V/A is D/6, so D has to beat 42 mm. A 60 mm riser gives 10 mm and freezes about (10 / 7.06)² ≈ 2.0 times later than the plate. A 30 mm riser gives 5 mm, freezes first, and leaves the shrinkage hollow in the plate. || The riser has to be the last liquid. Do not feed a thick section from a thin one.",
     ideas: [
       {
-        heading: "Time follows the square of the modulus",
+        heading: "Solidification time grows strongly with section modulus V/A",
         body: "Chvorinov's rule says a shape's solidification time is a mold constant times the square of volume over surface area. V/A is called the casting modulus. A chunky shape, high V/A, freezes late. A thin plate, low V/A, freezes early. The constant depends on the metal and the mold. It cancels when both shapes sit in the same mold.",
         formula: "t_s = C (V/A)²",
       },
       {
-        heading: "The riser has to be the last liquid",
+        heading: "The riser should solidify after the casting section it feeds",
         body: "Metal shrinks as it freezes. The last liquid place is where the shrinkage void ends up. Put that place in the riser, which you will cut off, not in the plate, which is the part. The riser must have a larger V/A than the plate. A decorative knob on top is not a riser if it freezes first.",
       },
       {
@@ -315,16 +315,16 @@ export const manufacturingLessons: Lesson[] = [
     title: "Beside the weld",
     minutes: 9,
     lede: "Separate filler strength from joint strength, and watch the weak line move into the heat-affected zone.",
-    start: "You can make a clean-looking joint and still ruin the metal right next to it. || Beside a weld sits a band that got hot enough to change the metal but not hot enough to melt. That band is the heat-affected zone. More heat lingering on each millimeter makes the band wider, and usually weaker than the filler you added. || Judge the joint by the neighbor, not by the filler rod. Turning the heat up does not make the neighbor stronger.",
+    start: "A weld affects more than the deposited filler metal. The surrounding base metal experiences a thermal cycle that can change its microstructure and properties. || That altered region is the heat-affected zone. Heat input, travel speed, material, and prior condition all influence its width and severity. || Evaluate the joint as a system: weld metal, fusion boundary, HAZ, and base material.",
     use: "A weld is being judged by the filler metal. || The weak line is the band beside the bead. More heat per length makes that band wider and weaker. || The filler strength says little about the joint. Do not turn the heat up and call the joint stronger.",
     example: "A fillet weld judged by a filler that is stronger than the plate. || Once the joint actually fuses, the weak line is the band beside the bead, where the heat rewrote the metal. More heat per length widens that band. || The filler strength says little about the joint. Turning the heat up does not make the neighbor stronger.",
     ideas: [
       {
-        heading: "The filler is not the joint",
+        heading: "The weld metal is only one part of the joint",
         body: "A weld is a small casting poured between two plates, plus every millimeter of plate the heat touched. Matching the filler so it is stronger than the plate does not make the joint that strong. The joint fails at its weakest strip, and that strip is often beside the bead, not in it.",
       },
       {
-        heading: "Heat writes a new material next door",
+        heading: "The heat-affected zone can have different properties from the base material",
         body: "The heat-affected zone never melted, and it was still hot enough to grow grains or undo a heat treatment. More heat per length of weld widens that band. A wide band of coarse or softened metal is a long weak line with the part's name on it.",
         formula: "Wider band as √(heat per length) (thick-plate model)",
       },
@@ -390,21 +390,21 @@ export const manufacturingLessons: Lesson[] = [
     title: "The spread",
     minutes: 10,
     lede: "Tell Cp from Cpk, and see what a shift of the mean does to a capable spread.",
-    start: "A pile of cut dowels sits between a too-short mark and a too-long mark. If the pile is narrow and centered, almost all pass. Slide the whole pile toward one mark. The pile is the same width, and more of them fail. || Cp compares the width of the pile with the width of the allowed window. Cpk asks how close the pile sits to the nearer wall. Sliding the pile leaves Cp alone and changes Cpk. || A narrow process can still miss the window. Do not quote the width as proof the parts are inside the marks.",
+    start: "Process capability has two separate questions: how wide is the process variation, and where is the process centered relative to the specification limits? || Cp compares process spread with specification width. Cpk also accounts for how close the mean is to the nearest specification limit. || A process can have good repeatability and still make bad parts if it is off-center. Check both spread and centering.",
     use: "A process makes a pile of parts, and the drawing has two limits. || Width against the window is one number. Distance to the nearer limit is the other. A shift of the mean can fail a pile that was narrow enough. || A capable width can still miss. Do not quote the width as proof the parts are in the window.",
     example: "Pins aimed at 10.00 mm, limits ±0.10 mm. With σ = 0.025 mm, Cp = 0.20 / 0.15 = 1.33 while it is centered. || Shift the mean by 0.06 mm and Cp stays 1.33, because the pile is the same width. Cpk = 0.04 / 0.075 = 0.53, because the pile walked toward one wall. || A capable width can still miss. Do not quote Cp as proof the pins are in the window.",
     ideas: [
       {
-        heading: "A drawing is a window, a process is a pile",
+        heading: "Compare the process distribution with the specification window",
         body: "The drawing allows 10.00 mm ± 0.10 mm. That is a window. The process makes a pile of parts with a mean and a spread. A perfect nominal on the drawing does not put the pile in the middle, and a tight window does not shrink the pile. Both numbers have to be true at once.",
       },
       {
-        heading: "Cp sees the width, not the aim",
+        heading: "Cp measures spread, not centering",
         body: "Cp compares the window to six standard deviations. It asks only whether the pile could fit if it were centered. A process drifted against one wall can still post a handsome Cp. The pile fits the window in width and misses it in location.",
         formula: "Cp = (USL − LSL) / (6σ)",
       },
       {
-        heading: "Cpk uses the nearer wall",
+        heading: "Cpk includes distance to the nearest specification limit",
         body: "Cpk takes the distance from the mean to the nearer limit and divides by three standard deviations. Shift the mean and Cp stays. Cpk falls. A common shop gate is 1.33, about four standard deviations from the nearer wall. That gate is a policy, not a law of nature. Name it as a policy when you use it.",
         formula: "Cpk = (nearer limit distance) / (3σ)",
       },
@@ -461,22 +461,22 @@ export const manufacturingLessons: Lesson[] = [
     title: "The stack",
     minutes: 9,
     lede: "Add three tolerances as a worst case and as a root sum square, and name which bet you are making.",
-    start: "Three blocks are each allowed to be a little long. If all three come out as long as they are allowed, the stack misses by the sum. Most days they do not all land on the bad side together. || Worst case adds every tolerance: a promise that every assembly fits, including the unlucky one. Root sum square is a smaller number that bets the errors will not all point the same way. || Those are two different promises. Say which promise you are making. Do not average the two numbers and call it a pass.",
+    start: "Tolerance stacks can be evaluated in more than one way, and the methods answer different questions. || Worst-case analysis adds the full unfavorable contribution from every dimension and guarantees the stack if the individual tolerances are met. RSS gives a statistical estimate when the variations are independent and random. || Choose the method based on the required assurance and the validity of the statistical assumptions. Do not blend the two methods into an arbitrary middle value.",
     use: "Three tolerances have to fit inside one allowance. || Add them if you need every stack to fit. Combine them as a root sum square only if you accept that they will not all land the same way. || Say which bet you are making. Do not average the two answers into a pass.",
     example: "Three blocks, each ±0.20 mm, have to stack inside a ±0.50 mm allowance. || Worst case is ±0.60 mm, and it does not fit. Root sum square is 0.20 × √3, about ±0.35 mm, and it does fit. || Say which bet you are making. Do not average 0.60 and 0.35 into a pass.",
     ideas: [
       {
-        heading: "Worst case adds",
+        heading: "Worst-case stacking adds the full unfavorable tolerance",
         body: "Three parts at ±0.20 mm can land 0.60 mm long if each one is long. That sum is the promise: every assembly fits, including the unlucky one. It is expensive, and it is the only one that does not depend on luck.",
         formula: "Worst case = n × tolerance",
       },
       {
-        heading: "Root sum square is a bet",
+        heading: "RSS relies on independent random variation",
         body: "If the errors are independent and centered, they rarely all point the same way. The statistical stack is the tolerance times the square root of the count, not the count itself. For three parts that is √3, about 1.73, instead of 3. The number is smaller because you gave up the promise.",
         formula: "RSS = tolerance × √n",
       },
       {
-        heading: "Do not average the two answers into a pass",
+        heading: "Choose the stack method explicitly rather than averaging methods",
         body: "If worst case misses and root sum square fits, you are betting, not discovering. Say so. If both miss the allowance, tighten a part or open the allowance. The spread lesson was one dimension. A stack is that lesson with neighbors.",
       },
     ],
