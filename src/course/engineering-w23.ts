@@ -120,6 +120,7 @@ export const engineeringW23Lessons: Lesson[] = [
         heading: "Keep factor of safety and margin of safety distinct",
         body: "FoS = allowable / applied tells you how many times over the part is. MS = FoS − 1 tells you the spare capacity as a fraction. MS = 0 means the design exactly consumes the allowable; MS < 0 means it fails the case. Report margins: a margin of 0.72 says 'seventy-two percent spare' in a way a factor of 1.72 doesn't.",
         formula: "FoS = allowable / applied;  MS = FoS − 1",
+        help: [{ concept: "factor-of-safety" }],
       },
       {
         heading: "Limit is 'must not bend'; ultimate is 'must not break'",
@@ -203,6 +204,7 @@ export const engineeringW23Lessons: Lesson[] = [
         heading: "Use severity, occurrence, and detection to structure the risk discussion",
         body: "Three 1–10 scores multiply into a risk priority number up to 1000. Severity is the effect's gravity — a 10 is loss of life or the mission. Occurrence is the cause's likelihood. Detection is your chance to catch it first, and note the inversion: 10 means it will slip through unseen. Multiply, rank, attack the top.",
         formula: "RPN = S × O × D  (1–10 each, higher is worse)",
+        help: [{ concept: "fmea" }],
       },
       {
         heading: "Mitigate by occurrence or detection",

@@ -41,6 +41,7 @@ export const materialsW17Lessons: Lesson[] = [
         heading: "Tie lines give phase compositions for the lever rule",
         body: "In any two-phase field, only the tie-line ends exist as compositions — your alloy's overall composition lies somewhere along the line between them, and where it lies decides how much of each phase you get. The ends are inputs; the fractions are arithmetic. That arithmetic is the entire next lesson.",
         formula: "tie-line ends: C_L and C_α (not C₀)",
+        help: [{ concept: "phase-diagram" }],
       },
     ],
     bench: "phaseset",
@@ -109,6 +110,7 @@ export const materialsW17Lessons: Lesson[] = [
         heading: "Derive the lever rule from mass balance",
         body: "Start from C₀ = W_L·C_L + W_α·C_α with W_L + W_α = 1. Eliminate W_α: C₀ = W_L·C_L + (1 − W_L)·C_α, so W_L·(C_α − C_L) = C_α − C₀. The lever rule is one line of algebra from the definition of an average — there is nothing to memorize except that mass is conserved.",
         formula: "W_L = (C_α − C₀)/(C_α − C_L), W_α = 1 − W_L",
+        help: [{ concept: "lever-rule" }],
       },
       {
         heading: "Use the opposite tie-line segment for each phase fraction",

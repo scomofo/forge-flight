@@ -119,11 +119,13 @@ export const engineeringW26Lessons: Lesson[] = [
         heading: "Worst-case stacking assumes all tolerances align unfavorably",
         body: "Add every tolerance at its absolute extreme, all in the same direction: T = Σ|tᵢ|. It answers 'what is the worst assembly that can legally ship?' Use it when the consequence of interference is scrap, rework you cannot afford, or a safety function. It is conservative by construction — that is the point.",
         formula: "T_worst = Σ |tᵢ|",
+        help: [{ concept: "tolerance-stack", trigger: "Why worst case?" }],
       },
       {
         heading: "RSS estimates independent random stack variation",
         body: "When variations are independent and centered, they add in quadrature: T = √(Σtᵢ²). Three ±0.1 contributors stack to ±0.17, not ±0.3 — the extremes rarely coincide. But RSS is a loan against statistics: it assumes independence, centered processes, and enough parts for the law of large numbers to show up. Two parts from the same shifted batch are not independent.",
         formula: "T_rss = √(Σ tᵢ²)  — independence required",
+        help: [{ concept: "tolerance-stack", trigger: "Why RSS?" }],
       },
       {
         heading: "Fits are stacks with names",

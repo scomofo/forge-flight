@@ -442,11 +442,13 @@ export const manufacturingLessons: Lesson[] = [
         heading: "Cp measures spread, not centering",
         body: "Cp compares the window to six standard deviations. It asks only whether the pile could fit if it were centered. A process drifted against one wall can still post a handsome Cp. The pile fits the window in width and misses it in location.",
         formula: "Cp = (USL − LSL) / (6σ)",
+        help: [{ concept: "cp-cpk", trigger: "Cp vs Cpk?" }],
       },
       {
         heading: "Cpk includes distance to the nearest specification limit",
         body: "Cpk takes the distance from the mean to the nearer limit and divides by three standard deviations. Shift the mean and Cp stays. Cpk falls. A common shop gate is 1.33, about four standard deviations from the nearer wall. That gate is a policy, not a law of nature. Name it as a policy when you use it.",
         formula: "Cpk = (nearer limit distance) / (3σ)",
+        help: [{ concept: "cp-cpk", trigger: "Why does centering matter?" }],
       },
     ],
     bench: "spread",
@@ -517,11 +519,13 @@ export const manufacturingLessons: Lesson[] = [
         heading: "Worst-case stacking adds the full unfavorable tolerance",
         body: "Three parts at ±0.20 mm can land 0.60 mm long if each one is long. That sum is the promise: every assembly fits, including the unlucky one. It is expensive, and it is the only one that does not depend on luck.",
         formula: "Worst case = n × tolerance",
+        help: [{ concept: "tolerance-stack", trigger: "Worst case or RSS?" }],
       },
       {
         heading: "RSS relies on independent random variation",
         body: "If the errors are independent and centered, they rarely all point the same way. The statistical stack is the tolerance times the square root of the count, not the count itself. For three parts that is √3, about 1.73, instead of 3. The number is smaller because you gave up the promise.",
         formula: "RSS = tolerance × √n",
+        help: [{ concept: "tolerance-stack", trigger: "Why √n?" }],
       },
       {
         heading: "Choose the stack method explicitly rather than averaging methods",

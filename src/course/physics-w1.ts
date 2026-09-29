@@ -33,6 +33,7 @@ export const physicsW1Lessons: Lesson[] = [
         heading: "Why SI helps",
         body: "SI gives everyone the same starting point. Mechanics mostly lives on metre, kilogram, and second; units such as newtons, joules, watts, and pascals are built from them. You do not need to love SI. You need to be able to combine two measurements without first wondering what unit convention the other person used.",
         formula: "1 N = 1 kg·m/s²",
+        help: [{ concept: "dimensional-analysis", trigger: "How do dimensions help?" }],
       },
       {
         heading: "A fast way to catch nonsense",
@@ -107,6 +108,7 @@ export const physicsW1Lessons: Lesson[] = [
         heading: "Your inputs set the ceiling",
         body: "A calculation cannot manufacture better measurements. For products, combine relative uncertainties in quadrature; for sums, combine absolute uncertainties. If one input contributes most of the uncertainty, improving a different instrument will barely move the final result. This is useful when you are deciding what actually needs a better measurement.",
         formula: "δ(AB)/AB = √((δA/A)² + (δB/B)²)",
+        help: [{ concept: "quadrature" }],
       },
     ],
     bench: "memo",
@@ -160,6 +162,7 @@ export const physicsW1Lessons: Lesson[] = [
     ideas: [
       {
         heading: "Break the question apart",
+        help: [{ concept: "fermi-estimate" }],
         body: "A direct guess at “piano tuners in Chicago” has nowhere to stand. Households, piano ownership, tuning frequency, and jobs per tuner are all easier to think about. If one of those still feels impossible to estimate, split it again. The useful part of a Fermi estimate is often the structure you choose before you enter any numbers.",
       },
       {

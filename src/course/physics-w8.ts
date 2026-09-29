@@ -120,6 +120,7 @@ export const physicsW8Lessons: Lesson[] = [
         heading: "Bernoulli only works inside its assumptions",
         body: "p + ½ρv² + ρgh = constant along a streamline — energy per unit volume, conserved because nothing in the ideal model adds or removes it. The four assumptions are the price of admission: steady, incompressible, inviscid, one streamline. Across a pump or a turbine the constant changes (work crosses the boundary); in a boundary layer viscosity eats the budget; above roughly Mach 0.3 density stops being constant.",
         formula: "p + ½ρv² + ρgh = const",
+        help: [{ concept: "bernoulli" }],
       },
       {
         heading: "Do not use the equal-transit explanation for lift",

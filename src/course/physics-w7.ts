@@ -31,6 +31,7 @@ export const physicsW7Lessons: Lesson[] = [
         heading: "Stress is force distributed over area",
         body: "Cut the bar mentally and ask what holds the two halves together: internal forces, spread over the cross-section. σ = F/A in pascals — newtons per square meter. A megapascal is one newton per square millimeter, which is why MPa is the working unit: a 10 mm rod at 191 MPa carries about 15 kN, numbers you can hold in your head.",
         formula: "σ = F/A, 1 MPa = 1 N/mm²",
+        help: [{ concept: "stress-strain", trigger: "Stress vs strain?" }],
       },
       {
         heading: "Strain compares deformation with original length",
@@ -41,6 +42,7 @@ export const physicsW7Lessons: Lesson[] = [
         heading: "Hooke's law links stress and strain in the elastic range",
         body: "In the elastic range, stress and strain are proportional: σ = Eε, where E, Young's modulus, is the material's stiffness — 200 GPa for steel, 69 for aluminum, about 10 for wood along the grain. Combine with the definitions and the geometry and material separate cleanly: δ = FL/AE. F and L are your design, A is your sizing, E is your material choice.",
         formula: "δ = FL/AE",
+        help: [{ concept: "youngs-modulus" }],
       },
     ],
     bench: "stressstrain",
@@ -110,6 +112,10 @@ export const physicsW7Lessons: Lesson[] = [
         heading: "Second moment of area measures bending geometry",
         body: "The second moment of area is not an area and not a moment of inertia — it is the cross-section's geometric resistance to bending, in m⁴. The y² inside the integral is the whole design lesson: moving material away from the neutral axis pays quadratically, which is why hollow tubes and I-sections dominate structures. Two sections of equal area can differ tenfold in I.",
         formula: "I = ∫y²dA, rectangle: bh³/12",
+        help: [
+          { concept: "second-moment-area" },
+          { concept: "neutral-axis" },
+        ],
       },
       {
         heading: "Read the beam formula as a scaling law",
@@ -178,6 +184,7 @@ export const physicsW7Lessons: Lesson[] = [
         heading: "Allowable values sit below failure values",
         body: "No one knows the exact load, the exact strength of this particular piece, or the exact truth of the model. The factor of safety covers those unknowns, priced as a ratio. It does not cover a different failure mode — buckling, fatigue, and corrosion each get their own analysis — it covers the unknowns inside the mode you analyzed.",
         formula: "σ_allow = σ_ultimate / n",
+        help: [{ concept: "factor-of-safety" }],
       },
       {
         heading: "Larger safety factors have costs",

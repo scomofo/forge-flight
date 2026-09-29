@@ -32,6 +32,10 @@ export const engineeringW24Lessons: Lesson[] = [
         heading: "Use section modulus to turn moment into peak bending stress",
         body: "The bending stress formula σ = My/I says stress grows linearly from the neutral axis. The section modulus S = I/y_max collapses the geometry into one number, so sizing a beam is one division and one comparison against the allowable. Every beam table in every steel catalog is, at heart, a table of S.",
         formula: "σ = M/S,  S = I/y_max",
+        help: [
+          { concept: "second-moment-area", trigger: "Where do I and S come from?" },
+          { concept: "neutral-axis" },
+        ],
       },
       {
         heading: "Material farther from the neutral axis contributes more to bending resistance",
@@ -183,6 +187,7 @@ export const engineeringW24Lessons: Lesson[] = [
         heading: "Use von Mises to compare a multiaxial state with a tensile allowable",
         body: "Yielding is driven by distortional energy — the part of the stress state that changes shape rather than volume. Von Mises extracts exactly that into one scalar. For pure shear it predicts yield at 0.577× tensile; for the shaft's bending-plus-torsion it weights the shear at √3. Use it for ductile metals; brittle materials want a different criterion.",
         formula: "σ_vm = √(σ_x² − σ_xσ_y + σ_y² + 3τ_xy²)",
+        help: [{ concept: "von-mises" }],
       },
       {
         heading: "Sizing is iteration with a stopping rule",

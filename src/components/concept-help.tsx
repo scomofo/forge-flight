@@ -1,12 +1,26 @@
 import * as Popover from "@radix-ui/react-popover";
-import type { ConceptHelp as ConceptHelpContent } from "@/course/types";
+import { getConceptHelp } from "@/course/concept-help";
+import type { ConceptHelp as ConceptHelpContent, IdeaHelp } from "@/course/types";
 
-export function ConceptHelp({ help }: { help: ConceptHelpContent[] }) {
-  if (!help.length) return null;
+function resolveHelp(item: IdeaHelp): ConceptHelpContent | null {
+  if ("title" in item) return item;
+  const base = getConceptHelp(item.concept);
+  if (!base) return null;
+  return {
+    ...base,
+    trigger: item.trigger ?? base.trigger,
+    sections: [...base.sections, ...(item.addSections ?? [])],
+    caution: item.addCaution ?? base.caution,
+  };
+}
+
+export function ConceptHelp({ help }: { help: IdeaHelp[] }) {
+  const resolved = help.map(resolveHelp).filter((item): item is ConceptHelpContent => item !== null);
+  if (!resolved.length) return null;
 
   return (
     <div className="mt-4 flex flex-wrap gap-2">
-      {help.map((item) => (
+      {resolved.map((item) => (
         <Popover.Root key={item.title}>
           <Popover.Trigger asChild>
             <button

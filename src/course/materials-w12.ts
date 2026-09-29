@@ -101,6 +101,7 @@ export const materialsW12Lessons: Lesson[] = [
         heading: "Grain boundaries interrupt the lattice",
         body: "A grain boundary is a two-dimensional defect: the lattice on one side does not line up with the lattice on the other. Dislocations — the line defects whose motion is plastic deformation — pile up against it instead of gliding through. The finer the grains, the more wall per volume, the later yielding starts. Etch a polished sample and the boundaries appear as dark lines, because the disordered boundary corrodes faster than the ordered grain interior. That is what a micrograph is actually showing you.",
         formula: "σy = σ₀ + k / √d",
+        help: [{ concept: "hall-petch" }],
       },
       {
         heading: "Hall–Petch has limits",

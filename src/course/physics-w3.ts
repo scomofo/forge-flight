@@ -37,6 +37,10 @@ export const physicsW3Lessons: Lesson[] = [
         heading: "Use ΣF = ma component by component",
         body: "ΣF = ma is a vector equation, so solve it separately along your chosen axes. If the forces are known, it predicts acceleration. If acceleration is measured, the same equation tells you the net force that must have acted.",
         formula: "ΣF = ma, component by component",
+        help: [
+          { concept: "summation" },
+          { concept: "newtons-second-law" },
+        ],
       },
       {
         heading: "Third-law pairs act on different bodies",
@@ -120,11 +124,13 @@ export const physicsW3Lessons: Lesson[] = [
         heading: "Find the normal force from the motion constraint",
         body: "Do not assume N = mg automatically. Write the force balance perpendicular to the surface. If the object stays in contact with the surface, its perpendicular acceleration is usually zero, and that equation gives the normal force.",
         formula: "N from ΣF⊥ = ma⊥, with a⊥ = 0 for a surface the body stays on",
+        help: [{ concept: "normal-force" }],
       },
       {
         heading: "Static friction adjusts; kinetic friction has a set model",
         body: "Static friction can take any value from zero up to μsN, whatever is needed to prevent slipping. Once sliding starts, use fk = μkN in the direction opposite the relative motion. If you are unsure which way friction points, ask which way the surfaces would move relative to each other without it.",
         formula: "fs ≤ μs·N (matches the need); fk = μk·N (opposes the slide)",
+        help: [{ concept: "static-friction" }],
       },
       {
         heading: "Ideal strings and springs have simple force rules",
