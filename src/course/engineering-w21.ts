@@ -102,6 +102,14 @@ export const engineeringW21Lessons: Lesson[] = [
     title: "Verification versus validation",
     minutes: 35,
     lede: "Verification asks 'did we build the thing right'; validation asks 'did we build the right thing'. Plan both from the requirements, and never let one stand in for the other.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Verification and validation answer different questions. Verification asks whether the design meets its stated requirements. Validation asks whether those requirements produce something that actually meets the stakeholder's need. || Assign a verification method when the requirement is written: test, inspection, analysis, or demonstration. If you cannot say how a requirement will be checked, the requirement is not finished. || Validation usually needs realistic use or stakeholder feedback, because a perfectly verified design can still solve the wrong problem."
     use: "When you turn a requirements packet into a test plan, or when a review needs to see that nothing is unverified. || Build the verification matrix: one row per requirement, one column naming the method, and a second column saying exactly how — the rig, the instrument, the procedure number. Walk every row and ask: can this test return 'fail'? If the answer is no, the requirement (not the test) is broken. || Stop when every requirement has a method and a how, and at least one row of the matrix is a validation activity — a user trial, a system-level demo — that could falsify the whole packet.",
@@ -181,6 +189,14 @@ export const engineeringW21Lessons: Lesson[] = [
     title: "The assumption ledger",
     minutes: 35,
     lede: "Every number in your design carries its provenance, its confidence, and the date it stops being an assumption. The ledger keeps them all where you can see them.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Engineering work is full of assumptions: loads, material properties, interface conventions, environmental conditions, and estimates that are being used before they are fully verified. || An assumption ledger records the claim, where it came from, how confident you are, and what evidence would resolve it. Low-confidence assumptions with weak provenance deserve attention early. || The same record also helps explain later decisions: what was believed at the time, why the design choice followed, and whether the assumption was eventually confirmed."
     use: "From the first number you borrow, through every design review, to the post-mortem. || Write every borrowed number down: the claim, where it came from, how much you trust it, and what test or document would close it. Review the ledger like a punch list — resolve entries by testing or citing the source, and promote the stubborn open ones into risks. || Stop when every load, material property, and interface constant in your analysis traces to a ledger entry — and every open low-confidence entry has a named owner and a date.",
