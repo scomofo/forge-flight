@@ -5,7 +5,7 @@ export const manufacturingTrack: Track = {
   index: "04",
   title: "Manufacturing",
   course: "Manufacturing theory",
-  lede: "After you can specify a part. The act that makes it, what the chip costs, why a bend opens, why a riser must freeze last, why the weld's neighbor is the weak line, and why a process is a spread.",
+  lede: "How process choice changes geometry, cost, material condition, tolerance capability, and quality."
 };
 
 export const manufacturingLessons: Lesson[] = [
@@ -16,7 +16,7 @@ export const manufacturingLessons: Lesson[] = [
     title: "The act",
     minutes: 9,
     lede: "Pick the physical act that makes a shape, and name the constraint that ruled the others out.",
-    start: "Manufacturing processes differ first in what they do to the material: solidify it, deform it, remove it, join it, or add to it. || Start by identifying which of those actions can produce the required geometry and material condition. A feature that a cutting tool cannot reach, for example, may need to be cast, printed, or assembled from separate pieces. || Choose the process family before choosing a specific machine or brand."
+    start: "Manufacturing processes differ first in what they do to the material: solidify it, deform it, remove it, join it, or add to it. || Start by identifying which of those actions can produce the required geometry and material condition. A feature that a cutting tool cannot reach, for example, may need to be cast, printed, or assembled from separate pieces. || Choose the process family before choosing a specific machine or brand.",
     use: "A shape has to be made, and someone is naming a machine. || Name the act first: freeze, deform, cut, join, or add. Let the geometry rule acts out before cost gets a say. || The constraint picked the act, not the brand. Naming the machine first is how a simple bar turns into a five-axis story.",
     example: "You need 500 identical brackets with a pocket a drill can enter, and one lattice with a tunnel no tool can reach. || The brackets are a cut, or a deform, once the tool has a path in and out. The lattice is an add, because a rigid tool cannot get into the tunnel. The machine brand has not come up yet. || The geometry voted first. Name the act, then the machine.",
     ideas: [
