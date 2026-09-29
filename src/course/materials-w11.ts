@@ -106,6 +106,14 @@ export const materialsW11Lessons: Lesson[] = [
     title: "Why properties travel together",
     minutes: 30,
     lede: "Read conductivity, ductility, melting point, and stiffness as four expressions of one bond — and stop treating any of them as an independent fact about a material.",
+    opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Start here" },
+      { kind: "example", heading: "See it in numbers" },
+      { kind: "idea", idea: 1, label: "What changes" },
+      { kind: "move", heading: "Use the rule" },
+      { kind: "idea", idea: 2, label: "One more consequence" },
+    ],
     start:
       "Copper, alumina, and polyethylene do not need separate stories for every property. Their bonding already explains a great deal. || Electron mobility affects conductivity. The ease of atomic or molecular rearrangement affects ductility. Bond strength affects stiffness and temperature limits. || Throughout Materials 101, keep the same chain in view: structure → processing → properties → performance. Bonding is the starting structure.",
     use: "When a datasheet surprises you, or when two properties seem to 'go together' and you want to know if that is law or coincidence. Also before selecting a material: one demand usually forces the whole pack. || Take the bond, list what it permits and forbids, and check each property against that list. Expect correlation: high bond energy with high melting point, delocalized electrons with ductility. Treat every correlation as rough — graphite and the mixed cases are the test of whether you actually understand it. || Stop when you can say which property in the pack is the odd one out for a mixed-bonding material, and name both bonds responsible.",
@@ -186,6 +194,14 @@ export const materialsW11Lessons: Lesson[] = [
     title: "Reading a material from its bonding",
     minutes: 30,
     lede: "Take an unfamiliar substance, name its bonding from a structural description, and predict its conductivity, mechanical response, and thermal behavior — then check yourself and explain every miss.",
+    opening: { mode: "prose", heading: "Get the rule on the table first" },
+    readFlow: [
+      { kind: "idea", idea: 0, label: "Rule" },
+      { kind: "idea", idea: 1, label: "Why it matters" },
+      { kind: "example", heading: "Now apply it" },
+      { kind: "idea", idea: 2, label: "Boundary or extension" },
+      { kind: "move", heading: "Practical use" },
+    ],
     start:
       "Suppose all you know about an unfamiliar solid is that its atoms form a continuous tetrahedral network. You can still make useful property predictions. || Directional covalent bonding suggests strong resistance to bond stretching, limited easy slip, and poor electron mobility. That points toward high stiffness and hardness, brittleness, electrical insulation, and a high temperature capability. || Silicon carbide is one example. The point is not to memorize the name; it is to practice moving from structure to likely properties before looking at a datasheet."
     use: "When selecting or troubleshooting — a part failed and you need to know whether the material was ever capable of the job, or you are choosing between candidates with no test data yet. || Read the structural description, name the bond (or bonds), read off the pack: conduction, mechanical response, thermal behavior. Write the prediction before you check. Then, for every miss, find the bond feature you ignored — mixed bonding, molecular vs network, a slip system you assumed. || Stop when every miss is 'I missed the second bond' rather than 'I guessed'. One is a method working; the other is luck.",
