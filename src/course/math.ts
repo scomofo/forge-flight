@@ -5,7 +5,7 @@ export const mathTrack: Track = {
   index: "00",
   title: "Math",
   course: "Math Runway",
-  lede: "The tools, repaired first. Ratios and units, algebra, powers, graphs, and triangles — the moves every later check assumes you can make. Take the diagnostic; keep only the modules it assigns you.",
+  lede: "A short runway for the math the rest of the course expects: units, algebra, powers, graphs, and triangles. Take the diagnostic first and work only the modules you actually need.",
 };
 
 /**
@@ -23,14 +23,14 @@ export const mathLessons: Lesson[] = [
     minutes: 35,
     lede: "Convert units without dropping factors of ten, scale quantities by ratio, and use the units to check your own work.",
     start:
-      "The drawing says 240 mm. The stock list prices by the inch, and the mill's digital readout (DRO) shows inches. Somewhere between the drawing and the invoice, millimeters have to become inches — in the right direction. || A unit factor is a conversion written as a fraction: 25.4 mm / 1 in. Top and bottom are the same length, so the fraction equals one — multiplying by it changes the unit, not the quantity. (25.4 is exact: the inch is defined that way. Most other factors, like 2.20462 lb per kg, are rounded.) || Units multiply and cancel the same way numbers do. If the old unit is still in your setup at the end, the setup is wrong. Fix it before you trust the number.",
-    use: "Any time a quantity has to change units — or a recipe, a drawing, or a load has to scale by a ratio. || Write the starting quantity with its unit attached. Choose factors that cancel each unit you don't want. Do it on every line, not just the first — most mistakes creep in on the lines people skip. || Stop when the only unit left is the one you asked for, then check the size roughly. 9.4 inches is the neighborhood. If you get about 6100, you went the wrong way through the factor. If you get 94, you slipped a decimal.",
+      "The drawing says 240 mm. The stock list is in inches. This is the kind of conversion that seems trivial right up until a factor gets flipped. || Write the conversion as a fraction: 1 in / 25.4 mm. The numerator and denominator represent the same length, so multiplying by the fraction changes the unit without changing the quantity. || Keep the units on the page and cancel them just like algebraic factors. If the unit you are trying to remove is still there at the end, the setup is wrong. Fix that before you calculate.",
+    use: "Use this whenever you convert units or scale a quantity by a ratio. || Start with the number and its unit. Multiply by conversion factors arranged so the unwanted units cancel. Keep the units visible on every line. || When only the target unit remains, do a rough size check. For 240 mm, something near 10 inches makes sense. Something near 100 or 6000 does not.",
     example:
       "Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.449 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.055 lb, so 7.055 lb × ($4.10 / 1 lb) = $28.92. Keep the extra digits until the last line; round only the answer. || Call it 9.4 in and $29. The 3.2 kg only has two digits, so two or three digits is all any answer can honestly claim. In every line the starting unit cancelled and the target unit survived. Flip the factor to (25.4 mm / 1 in) and you get 6096 mm²/in, which is meaningless — you'll spot the mistake before any money is involved.",
     ideas: [
       {
-        heading: "Units are part of the number",
-        body: "A bare number is a rumor. “9.4” could be inches or millimeters, and those differ by a factor of 25. So every quantity in this course carries its unit from the first line to the last. The unit is what tells you the setup is pointed the right way. The factor-label method is just that discipline written out: arrange the multiplications so the unwanted units cancel, and whatever unit is left is your answer's unit.",
+        heading: "Keep the unit attached",
+        body: "A number without a unit is incomplete. 9.4 inches and 9.4 millimetres are not close to the same thing. Carry the unit through the working so it can act as a check on the setup. In the factor-label method, the unwanted units should cancel and the target unit should be left behind.",
         formula: "240 mm × (1 in / 25.4 mm) = 9.4 in",
       },
       {
@@ -39,8 +39,8 @@ export const mathLessons: Lesson[] = [
         formula: "lengths ×k ⇒ areas ×k² ⇒ volumes ×k³",
       },
       {
-        heading: "Estimate before you compute",
-        body: "A calculator will happily give you six digits of a wrong answer. Before you trust it, round everything to one digit and do it in your head. 240 mm is about a quarter of a meter, a meter is about 40 inches, so the answer should land near 10 inches. 9.4 passes. 94 doesn't, and neither does 6100. Estimation is the cheapest error detector you have, and it works on every formula in this course.",
+        heading: "Do a rough check first",
+        body: "Before you trust the exact result, ask what range would make sense. 240 mm is about a quarter of a metre, and a metre is about 40 inches, so the answer should be around 10 inches. That quick check catches a flipped conversion factor or a lost decimal faster than redoing the arithmetic.",
       },
     ],
     bench: "units",
@@ -75,7 +75,7 @@ export const mathLessons: Lesson[] = [
         prompt: "Every linear dimension of a steel bracket doubles. Its mass changes by a factor of…",
         options: ["2", "4", "8", "16"],
         answer: 2,
-        why: "Mass follows volume when density is constant, and volume scales as k³: 2³ = 8. Scaling something up is never as simple as it sounds.",
+        why: "With the same material, mass follows volume. Doubling every length multiplies volume by 2³ = 8, so the mass also goes up by a factor of 8.",
       },
     ],
     passAt: RUNWAY_PASS_AT,
@@ -88,24 +88,24 @@ export const mathLessons: Lesson[] = [
     minutes: 40,
     lede: "Isolate any unknown in a formula, substitute numbers once the symbols are sorted, and check the answer by putting it back.",
     start:
-      "σ = F/A gives stress from load and area. The shop usually asks the reverse: the load is fixed and the allowable stress is fixed — what area do you need? The relationship is the same; the unknown moved. || Rearranging a formula means undoing the operations around the unknown, in reverse order, doing the identical thing to both sides. || The formula does not change either way. Algebra just picks which quantity you solve for, without rewriting the relationship.",
+      "The formula σ = F/A gives stress when you know force and area. In design, you often need to run it backward: the load and allowable stress are known, so what area do you need? || Rearranging a formula is just undoing the operations around the unknown while doing the same thing to both sides. || Do the symbolic rearrangement first. Once the unknown is alone, put the numbers in. That keeps the logic visible and makes the result easier to check.",
     use: "When a formula connects the quantities and you know all but one. || Identify the unknown. Undo what the formula does to it — addition and subtraction first, then multiplication and division, then powers and roots — applying each inverse operation to both sides. Substitute numbers only after the unknown stands alone. || Stop when the unknown is alone on one side. Then substitute, compute once, and check by feeding the answer back into the original form.",
     example:
       "Allowable stress 150 MPa, tensile load 12 kN. What cross-sectional area is required? || A = F/σ = 12,000 N / (150 × 10⁶ N/m²) = 8.0 × 10⁻⁵ m² = 80 mm². A 10 × 8 mm bar lands exactly on the line — take the next size up. || Check by substitution: F/A = 12,000 / (80 × 10⁻⁶) = 150 × 10⁶ Pa = 150 MPa. Putting the answer back into the original form confirms it.",
     ideas: [
       {
-        heading: "Same operation, both sides",
-        body: "An equation is a balance. Adding, subtracting, multiplying, or dividing one side tips it; doing the identical thing to the other side keeps it level. Everything in algebra rests on this one rule. When a step feels illegal, it is almost always because one side got special treatment.",
+        heading: "Treat both sides the same",
+        body: "Whatever operation you apply to one side of an equation, apply to the other side as well. That is the whole rule. If a rearrangement goes wrong, check whether one side received an operation the other did not.",
         formula: "a = b  ⇒  a + c = b + c",
       },
       {
-        heading: "Unwrap in reverse",
-        body: "The unknown is usually buried under layers: added constants, multiplied coefficients, exponents. Peel them in the reverse of the order of operations — undo addition and subtraction first, then multiplication and division, then powers and roots. Each peel is one inverse operation applied to both sides, and after each peel the equation is still true.",
+        heading: "Undo the operations in reverse",
+        body: "If the unknown has several operations wrapped around it, remove them in reverse order. Undo addition or subtraction, then multiplication or division, then powers or roots as needed. Work one step at a time so you can see exactly what changed.",
         formula: "y = kx² + c  ⇒  x = ±√((y − c)/k)",
       },
       {
-        heading: "Substitute late",
-        body: "Waiting until the last step means one rounding instead of five, and it leaves a reusable result: A = F/σ answers every load, not just 12 kN. The symbols also show their work, and the units check themselves.",
+        heading: "Put the numbers in last",
+        body: "Keeping the formula symbolic until the unknown is isolated reduces rounding and leaves you with a reusable relationship. A = F/σ is useful for every load case, not only the one in the example.",
       },
     ],
     bench: "rearrange",
@@ -153,14 +153,14 @@ export const mathLessons: Lesson[] = [
     minutes: 30,
     lede: "Move between prefixes, powers of ten, and scientific notation without friction, and predict how area and volume respond to size changes.",
     start:
-      "A stiffness calculation hands you a second moment of area, I = 2.4 × 10⁻⁹ m⁴. The CAD tool wants mm⁴. The significant digits are fine; the scale needs moving. || Scientific notation splits a number into its digits (a, between 1 and 10) and its scale (10ⁿ). Prefixes — milli, micro, kilo, mega — are the same idea with names. || Powers of ten are unit factors in disguise: 10³ mm = 1 m says exactly what 25.4 mm = 1 in says. The exponent just counts the zeros so you do not have to.",
+      "A stiffness calculation gives I = 2.4 × 10⁻⁹ m⁴, but the CAD tool expects mm⁴. Nothing is wrong with the value; the scale just has to change. || Scientific notation separates the significant digits from the power of ten. Metric prefixes do the same job with names: milli is 10⁻³, kilo is 10³, mega is 10⁶, and so on. || The part people usually miss is the power on the unit. If metres are raised to the fourth power, the conversion factor is raised to the fourth power too.",
     use: "When numbers span many orders of magnitude, or a unit change crosses prefixes. || Convert by shifting the exponent: each factor of 10³ moves milli↔unit↔kilo. When multiplying, add exponents; when dividing, subtract. Keep one digit before the decimal point. || Stop when the exponent and the prefix agree — 2.4 × 10³ mm⁴, and never 2.4 × 10⁻⁹ mm⁴ (the old exponent with the new label).",
     example:
       "An aluminum bracket measures 80 × 50 × 6 mm. Estimate its mass. || Volume = 80 × 50 × 6 = 24,000 mm³ = 2.4 × 10⁴ mm³. Since 1 m = 10³ mm, 1 m³ = 10⁹ mm³, so V = 2.4 × 10⁻⁵ m³. Mass = 2700 kg/m³ × 2.4 × 10⁻⁵ m³ = 6.48 × 10⁻² kg ≈ 65 g. || A 65-gram bracket is plausible; a 65-kilogram one means the exponent slipped somewhere. The size check agrees: a palm-sized aluminum part should weigh tens of grams.",
     ideas: [
       {
-        heading: "Prefixes are powers with names",
-        body: "Milli = 10⁻³, micro = 10⁻⁶, nano = 10⁻⁹, kilo = 10³, mega = 10⁶, giga = 10⁹. Engineering lives in these six. Convert between them by shifting the exponent in steps of 3: 150 MPa = 150 × 10⁶ Pa = 1.5 × 10⁸ Pa. The prefix step is the 10⁶. Putting one digit before the point is a separate step: 150 × 10⁶ → 1.5 × 10⁸.",
+        heading: "Know the common prefixes",
+        body: "Milli = 10⁻³, micro = 10⁻⁶, nano = 10⁻⁹, kilo = 10³, mega = 10⁶, and giga = 10⁹. You will see these constantly. For example, 150 MPa = 150 × 10⁶ Pa = 1.5 × 10⁸ Pa. Converting the prefix and rewriting in standard scientific notation are two separate steps.",
         formula: "1 GPa = 10⁹ Pa,   1 mm = 10⁻³ m",
       },
       {
@@ -169,8 +169,8 @@ export const mathLessons: Lesson[] = [
         formula: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ",
       },
       {
-        heading: "Scale laws are exponent laws",
-        body: "Double every length (k = 2): area goes ×4, volume ×8. These are the k²/k³ rules from the ratios lesson, now visible as exponent arithmetic. A part ten times longer in every direction has a thousand times the mass, so scaling up means rechecking everything that mass touches.",
+        heading: "Scaling changes area and volume faster",
+        body: "If every length doubles, area goes up by 2² = 4 and volume by 2³ = 8. A geometrically similar part that is ten times larger in every direction has a thousand times the volume and, at the same density, a thousand times the mass.",
         formula: "L → kL  ⇒  A → k²A,  V → k³V",
       },
     ],
@@ -214,14 +214,14 @@ export const mathLessons: Lesson[] = [
     minutes: 35,
     lede: "Read slope and intercept from a line, distinguish direct from inverse proportion, and turn two calibration points into a working instrument.",
     start:
-      "A load cell reads 2.1 mV with 10 kg on it and 10.5 mV with 50 kg. Two points determine a line, and that line turns every future voltage into a weight. || Slope is rise over run — how many units of y each unit of x buys. Intercept is the value of y when x is zero. Together they are the whole line: y = mx + b. || A straight line means the rate never changes. Where the relationship really is linear, two points are enough. Where it is not, more points will not help — you need a different model.",
+      "A load cell reads 2.1 mV at 10 kg and 10.5 mV at 50 kg. If the sensor is linear, those two points let us build a calibration equation. || Slope is the change in y divided by the change in x. The intercept is the value of y when x is zero. Put them together and you get y = mx + b. || Two points define a line, but they do not prove the real system is linear. A third point is useful because it tells you whether the line actually predicts something it was not fitted to.",
     use: "When paired measurements fall on (or near) a line, or you need to classify a relationship as direct or inverse. || Compute slope from two points: m = Δy/Δx. Find b from one point: b = y − mx. Read new values off the equation, and check that the intercept makes physical sense. || Stop when the line predicts a third, held-back calibration point. If the residuals curve instead of scattering, the relationship is not linear — say so instead of forcing it.",
     example:
       "Calibrate the load cell: (10 kg, 2.1 mV) and (50 kg, 10.5 mV). What weight gives 6.93 mV? || m = (10.5 − 2.1)/(50 − 10) = 8.4/40 = 0.21 mV/kg. b = 2.1 − 0.21×10 = 0. So V = 0.21·W, and W = 6.93/0.21 = 33 kg. || The zero intercept is a good sign — no load, no signal. And 33 kg sits between the calibration points, where interpolation is safest. Extrapolating far past 50 kg would be a claim the data does not support.",
     ideas: [
       {
-        heading: "Slope is a rate with units",
-        body: "m = Δy/Δx carries units of y per x — here millivolts per kilogram, which is the point: each kilogram buys 0.21 mV. Steeper line, more y per x; negative slope, y falls as x rises.",
+        heading: "Slope tells you the rate of change",
+        body: "The units of slope are y-units per x-unit. Here that is millivolts per kilogram, so a slope of 0.21 mV/kg means each additional kilogram changes the signal by 0.21 mV. A negative slope simply means y decreases as x increases.",
         formula: "m = Δy/Δx,   y = mx + b",
       },
       {
@@ -230,8 +230,8 @@ export const mathLessons: Lesson[] = [
         formula: "direct: y = kx   ·   inverse: y = k/x",
       },
       {
-        heading: "Noisy data, honest lines",
-        body: "Real points scatter. A calibration line should split the difference so the misses look random — some above, some below, no curve. If the residuals arc, the line was the wrong model. Two points define a line exactly; three or more tell you whether a line was the right idea.",
+        heading: "Real data will not sit perfectly on the line",
+        body: "Measured points usually scatter around the fitted line. What matters is the pattern of the misses. Random-looking residuals are compatible with a linear model; a curve or trend in the residuals suggests the model is missing something.",
       },
     ],
     bench: "slope",
@@ -279,14 +279,14 @@ export const mathLessons: Lesson[] = [
     minutes: 45,
     lede: "Resolve a force into components with sine and cosine, move between degrees and radians, and add vectors the way equilibrium demands.",
     start:
-      "A cable pulls a bracket with 500 N at 35° above the horizontal. The bolt does not feel “500 N at an angle” — it feels a horizontal shear trying to slide the bracket and a vertical tension trying to lift it. || In a right triangle, sine, cosine, and tangent are three fixed ratios: opposite over hypotenuse, adjacent over hypotenuse, opposite over adjacent. For a given angle they never change, which is what makes them dependable. || Components convert one diagonal demand into two axis-aligned demands — the exact form that equilibrium, stress, and every later check are written in.",
+      "A cable pulls a bracket with 500 N at 35° above horizontal. For the next calculation, that angled force is easier to use as a horizontal component and a vertical component. || In a right triangle, sine, cosine, and tangent connect the angle to the side ratios. The ratios do not depend on the triangle's overall size. || Resolve the vector into components first. Later equilibrium and stress calculations are almost always written along chosen axes, so this is a basic move you will keep using.",
     use: "When a force, velocity, or displacement arrives at an angle and the analysis needs axis-aligned pieces. || Draw the right triangle with the vector as the hypotenuse. The adjacent component is magnitude × cos θ, the opposite is magnitude × sin θ. Add vectors by adding their components separately, then recombine with Pythagoras. || Stop when you have (Rx, Ry) — or rebuild the magnitude and check it matches. If √(Rx² + Ry²) is not the original magnitude, a component is wrong.",
     example:
       "Resolve the 500 N cable pull at 35° above horizontal. || Fx = 500·cos 35° ≈ 500 × 0.819 = 410 N. Fy = 500·sin 35° ≈ 500 × 0.574 = 287 N. || Check: √(410² + 287²) = √(168100 + 82369) = √250469 ≈ 500 N. The components recombine to the original magnitude, so the split is consistent.",
     ideas: [
       {
-        heading: "SOH CAH TOA, without mystique",
-        body: "Sine = opposite/hypotenuse, cosine = adjacent/hypotenuse, tangent = opposite/adjacent — three fixed ratios. sin 30° = 0.5 means that in any 30° right triangle, the opposite side is exactly half the hypotenuse. Pick the ratio that connects the side you know with the side you want.",
+        heading: "Pick the ratio that uses what you know",
+        body: "Sine is opposite over hypotenuse, cosine is adjacent over hypotenuse, and tangent is opposite over adjacent. Draw the triangle and label the sides before choosing a function. That is usually faster than trying to remember a rule in the abstract.",
         formula: "sin θ = opp/hyp,   cos θ = adj/hyp,   tan θ = opp/adj",
       },
       {
@@ -295,8 +295,8 @@ export const mathLessons: Lesson[] = [
         formula: "π rad = 180°,   s = rθ (θ in radians)",
       },
       {
-        heading: "Vectors add head to tail",
-        body: "Place vectors tip-to-tail and the resultant runs from the first tail to the last tip. In components it is bookkeeping: Rx = Ax + Bx, Ry = Ay + By, then R = √(Rx² + Ry²) and θ = atan2(Ry, Rx) (atan2 is the arctangent that uses the signs of Ry and Rx to pick the correct quadrant). Equilibrium is the statement that the components sum to zero.",
+        heading: "Add components, then rebuild the vector",
+        body: "For calculations, add x-components together and y-components together. Then rebuild the resultant with Pythagoras and use atan2 for its direction. In equilibrium problems, the same bookkeeping ends with both component sums equal to zero.",
         formula: "Rx = ΣAx,   Ry = ΣAy,   R = √(Rx² + Ry²)",
       },
     ],
