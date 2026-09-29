@@ -19,23 +19,23 @@ export const physicsW8Lessons: Lesson[] = [
     minutes: 35,
     lede: "Compute pressure as force per unit area, find the pressure at any depth in a fluid at rest, and say exactly why a steel ship floats.",
     start:
-      "Lie on a bed of nails and you walk away; step on one nail and it goes through your foot. Same weight, different area. || Pressure is force per unit area, p = F/A. In a fluid at rest it pushes equally in every direction, and it grows with depth: p = p₀ + ρgh, where p₀ is the pressure at the surface. A fluid is anything that flows — water, air, mercury — and at rest it cannot sustain a shear, so the only thing it can do to a surface is push straight into it. || The depth term is just stacked weight. The fluid at depth h must hold up the column of fluid above it, and that weight per unit area is ρgh — the pressure at any depth is the weight of the column above.",
+      "The same force can create very different pressure depending on the area carrying it. || Pressure is force per unit area, p = F/A. In a fluid at rest, pressure acts normal to surfaces and increases with depth according to p = p₀ + ρgh. || The ρgh term comes from the weight of the fluid above the point you are considering. Deeper points support a taller fluid column, so the pressure is higher.",
     use: "Whenever you need the force on a submerged surface, the load on a dam face, a manometer reading, or whether an object floats. || Compute ρgh for the gauge pressure — gauge, because the atmosphere pushes on both sides of most real problems and cancels. Add atmospheric pressure only when absolute pressure is actually asked for. Multiply by area when you need force. For floating: compare average density to fluid density, not material to fluid. || Stop when you can state gauge versus absolute without hesitation, and point to the weight that a given pressure is supporting.",
     example:
       "Ten meters down in fresh water, what pushes on you? || p = ρgh = 1000 × 9.81 × 10 = 98,100 Pa — about 98 kPa gauge, roughly one more atmosphere. Your eardrums feel it because the water above is heavy, not because the water is 'pressurized' in some mysterious way. || Now the steel ship. A hull displacing 2.0 m³ of seawater feels a buoyant force of ρgV = 1025 × 9.81 × 2.0 = 20,100 N — enough to support just over two tonnes of ship. The steel never floats; the displaced water does the lifting. Average density is what matters: a ship is mostly air wearing a steel skin.",
     ideas: [
       {
-        heading: "Pressure is force per area",
+        heading: "Pressure depends on force and area",
         body: "The SI unit is the pascal: one newton per square meter. A sharp knife cuts because the same force lands on a tiny area. Fluids at rest push normal to every surface — no sideways component, because a fluid at rest cannot sustain shear. That fact, plus pressure growing with depth, is why dams are thick at the bottom and why your eardrums are a depth gauge.",
         formula: "p = F/A, 1 Pa = 1 N/m²",
       },
       {
-        heading: "Hydrostatic pressure grows linearly with depth",
+        heading: "Hydrostatic pressure increases with depth",
         body: "p = p₀ + ρgh. The ρgh term is the weight of the fluid column above, per unit area — nothing more. Gauge pressure drops p₀ and measures only the excess over atmosphere, which is what most instruments and most problems actually want. In mercury, thirteen times denser than water, the same pressure needs thirteen times less column: that is why barometers are short.",
         formula: "p = p₀ + ρgh",
       },
       {
-        heading: "Buoyancy is displaced weight",
+        heading: "Buoyant force equals displaced fluid weight",
         body: "Archimedes' principle: the buoyant force equals the weight of the fluid the object pushes aside, F_b = ρ_fluid·g·V_displaced. An object floats when its average density — total mass over total volume, air pockets included — is below the fluid's. Steel ships, concrete canoes, and hot-air balloons are all the same trick: enclose enough nothing to bring the average down.",
         formula: "F_b = ρgV_displaced; floats if ρ_avg < ρ_fluid",
       },
@@ -89,23 +89,23 @@ export const physicsW8Lessons: Lesson[] = [
     minutes: 35,
     lede: "Use continuity to find speeds in a constriction, apply Bernoulli where its assumptions hold, and name the places where the textbook story breaks down.",
     start:
-      "Put your thumb over a garden hose and the water jets farther. You did not add a pump; you narrowed the exit. || In steady flow, mass cannot pile up inside a pipe: what flows in must flow out. So A·v is constant along the pipe — halve the area, double the speed. That is continuity: mass conservation for a steady flow. Bernoulli's equation goes one step further: along a streamline in steady, incompressible, inviscid flow, p + ½ρv² + ρgh is constant — pressure energy, kinetic energy, and elevation energy trading with each other, per unit volume. || Where the pipe narrows, the fluid speeds up, and something must have pushed it — that something is a pressure drop. Bernoulli is the ledger that says the push came from the pressure term.",
+      "Narrowing a pipe changes the flow speed because the same mass flow has to pass through a smaller area. || For steady incompressible flow, continuity gives A₁v₁ = A₂v₂. Bernoulli's equation relates pressure, speed, and elevation along a streamline when the flow is steady, incompressible, and effectively inviscid. || In a horizontal constriction, the speed rises and the static pressure falls. Use Bernoulli only after checking its assumptions rather than treating that pressure-speed relation as universal.",
     use: "Venturi meters, pitot tubes, carburetors, any steady flow that changes section. || First check the four assumptions: steady, incompressible, inviscid, and all on one streamline. Then write the constant: p₁ + ½ρv₁² + ρgh₁ = p₂ + ½ρv₂² + ρgh₂. Solve for the unknown — usually a pressure from two speeds. || Stop when you can recite the four assumptions and name one real situation where each fails: a pump (not the same streamline energy — work is added), honey (viscous), a transonic wing (compressible), gusty flow (unsteady).",
     example:
       "A horizontal water pipe narrows from 10 cm to 5 cm diameter. Water enters at 1.0 m/s. || Area scales with diameter squared, so the throat area is a quarter of the inlet: continuity gives v₂ = 4 × 1.0 = 4.0 m/s. Bernoulli (same elevation): p₁ − p₂ = ½ρ(v₂² − v₁²) = 0.5 × 1000 × (16 − 1) = 7,500 Pa. || The throat runs 7.5 kPa below the inlet pressure — a Venturi meter reads flow rate from exactly this drop. And the honesty check: this says nothing about why wings lift. The popular 'equal transit time' story — air over the top travels farther in the same time, so it speeds up — is false; measurements show the top air arrives at the trailing edge before the bottom air. Lift comes from the wing turning the airflow downward. Bernoulli describes the resulting pressure field accurately — it just doesn't explain where the downward turn comes from.",
     ideas: [
       {
-        heading: "Continuity is mass conservation",
+        heading: "Continuity comes from mass conservation",
         body: "Steady flow means the mass inside any section is unchanging, so ρAv is the same at every cross-section — and for incompressible flow, Av alone. Narrow the pipe and the fluid must speed up; there is nowhere else for the mass to go. This is the whole content of the thumb-on-the-hose trick, and it needs no energy argument at all.",
         formula: "A₁v₁ = A₂v₂ (steady, incompressible)",
       },
       {
-        heading: "Bernoulli, with its assumptions attached",
+        heading: "Bernoulli only works inside its assumptions",
         body: "p + ½ρv² + ρgh = constant along a streamline — energy per unit volume, conserved because nothing in the ideal model adds or removes it. The four assumptions are the price of admission: steady, incompressible, inviscid, one streamline. Across a pump or a turbine the constant changes (work crosses the boundary); in a boundary layer viscosity eats the budget; above roughly Mach 0.3 density stops being constant.",
         formula: "p + ½ρv² + ρgh = const",
       },
       {
-        heading: "The equal-transit story is wrong",
+        heading: "Do not use the equal-transit explanation for lift",
         body: "Textbooks used to claim the air over a wing must travel a longer path in the same time as the air below, forcing it faster and — by Bernoulli — to lower pressure. There is no physical law requiring equal transit time, and experiment contradicts it. The honest account: a wing turns airflow downward (Newton's third law pushes back up), and the resulting pressure field — which Bernoulli describes fine — integrates to lift. Bernoulli correctly relates pressure and speed; it just doesn't say why the air speeds up in the first place.",
       },
     ],
@@ -163,23 +163,23 @@ export const physicsW8Lessons: Lesson[] = [
     minutes: 40,
     lede: "Predict a glider's stall speed from its wing loading, read a lift curve up to and past stall, and compute the static margin that decides whether the glider flies itself.",
     start:
-      "Throw two paper airplanes: one nose-heavy, one tail-heavy. The nose-heavy one glides; the tail-heavy one tumbles. Same paper, same air — the difference is where the weight sits. || Lift and drag both scale with the dynamic pressure q = ½ρv², the wing area S, and a dimensionless coefficient that packs in all the geometry: L = qS·C_L, D = qS·C_D. C_L grows with angle of attack until the airflow lets go of the wing — stall — and then it falls. Static margin is the stability number: (x_NP − x_CG) divided by the mean chord, where x_NP is the neutral point and x_CG the center of gravity, both measured from the nose. Positive means a nose-up gust creates a nose-down restoring moment. || q is the kinetic energy per unit volume of the air you are flying through — it is the only speed scale in the problem, which is why every aerodynamic force goes as v². Stability, by contrast, is geometry alone: it does not depend on speed at all.",
+      "A glider can have enough wing area to make lift and still be unpleasant or impossible to fly if its center of gravity is in the wrong place. || Lift and drag scale with dynamic pressure q = ½ρv², wing area S, and the coefficients C_L and C_D. C_L increases with angle of attack until stall, after which lift falls and drag rises. || Static margin compares the center of gravity with the neutral point. A positive margin gives a restoring tendency after a small pitch disturbance; a negative margin is statically unstable.",
     use: "Sizing a wing, checking a design's stability number, reading Glider Lab's verdicts instead of taking them on faith. || Compute wing loading W/S — the single number that sets stall speed. Compute v_stall = √(2W/(ρS·C_Lmax)): below this speed, level flight is impossible at any angle of attack. Compute the static margin and demand roughly 0.05–0.25: below 0.05 the glider is twitchy, negative is unflyable, far above 0.25 it is nose-heavy and mushy. || Stop when you can predict the stall speed from wing loading alone and call stable/marginal/unstable from the margin without touching a simulator.",
     example:
       "A balsa glider: mass 0.25 kg, wing area 0.06 m², C_Lmax 1.1. || Stall speed: v = √(2 × 0.25 × 9.81 / (1.225 × 0.06 × 1.1)) = √(4.905 / 0.08085) = √60.67 ≈ 7.79 m/s. Fly slower than ~7.8 m/s and no angle of attack will hold it up — the wing simply cannot make enough lift. Static margin: neutral point 0.30 m from the nose, CG at 0.27 m, mean chord 0.12 m → SM = (0.30 − 0.27)/0.12 = 0.25, right at the top of the stable band. || Now the force balance at cruise. At 9 m/s with C_L = 0.6: q = ½ × 1.225 × 81 = 49.6 Pa, L = 49.6 × 0.06 × 0.6 = 1.79 N against a weight of 2.45 N — short. The glider must fly faster or at a higher angle of attack; the numbers say so before the bench does. And that lift is not free: the 0.12 m chord on 0.06 m² means a 0.50 m span, so AR = b²/S = 0.25/0.06 = 4.17. The lift slope is a = 2π × 4.17/(4.17 + 2) = 4.25 per radian, and with e = 0.85 the induced drag at C_L = 0.6 is C_Di = 0.36/(π × 4.17 × 0.85) = 0.0324 — about 49.6 × 0.06 × 0.0324 = 0.096 N of drag spent just making lift.",
     ideas: [
       {
-        heading: "Dynamic pressure is the only speed scale",
+        heading: "Aerodynamic forces scale with dynamic pressure",
         body: "q = ½ρv² has units of pressure — it is the kinetic energy per unit volume of the airstream. Every aerodynamic force is q times an area times a dimensionless coefficient, which is why doubling speed quadruples the forces. Coefficients C_L and C_D carry the geometry and the angle of attack; q carries the flight condition. Separate them and the numbers stay small and honest.",
         formula: "L = qS·C_L, D = qS·C_D, q = ½ρv²",
       },
       {
-        heading: "The lift curve: its slope, its price, its stall",
+        heading: "Lift rises with angle of attack until stall",
         body: "C_L climbs roughly linearly with angle of attack, and the wing's shape sets how steeply. Aspect ratio AR = b²/S (span squared over area — span/chord for a rectangular wing) is the shape number: the finite-wing lift slope is a = 2π·AR/(AR+2) per radian, so a long, skinny wing climbs its lift curve faster than a short, stubby one. Lift has a price, too: the wingtips shed vortices that tilt the lift backward into induced drag, C_Di = C_L²/(π·AR·e), where e is the span efficiency (0.85 is the classroom constant). Double AR at the same C_L and the induced drag halves. Then the airflow lets go of the upper surface, the wing stops turning air downward efficiently, and lift falls while drag spikes — stall. The glider model's teaching polar does exactly this: linear to a 12° stall, then a straight decay. Past stall, pulling back harder makes things worse. Recovery is always the same: lower the nose, get the flow reattached, trade altitude for speed.",
         formula: "AR = b²/S,  a = 2π·AR/(AR+2) per rad,  C_Di = C_L²/(π·AR·e),  v_stall = √(2W / (ρS·C_Lmax))",
       },
       {
-        heading: "Static margin is the stability number",
+        heading: "Static margin is a quick stability check",
         body: "The neutral point is where the wing-plus-tail lift effectively acts; the CG is where the weight acts. If the CG sits ahead of the neutral point, a nose-up disturbance increases lift behind the CG and pushes the nose back down — restoring. Static margin = (x_NP − x_CG)/MAC measures that lever arm in chord lengths. The Glider Lab wants 0.05–0.25: enough authority to self-correct, not so much the glider plows nose-down through every gust.",
         formula: "SM = (x_NP − x_CG) / MAC",
       },
