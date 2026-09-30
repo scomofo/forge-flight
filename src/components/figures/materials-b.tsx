@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Arrow, Axes, C, DimH, Figure, Label, plotBox, type FigureMap } from "./kit";
+import { Axes, C, DimH, Label, plotBox, type FigureMap } from "./kit";
 import { AnimatedFigure, clamp, GrowArrow, lerp, op, partial, Reveal, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
@@ -580,7 +580,7 @@ function Transformations() {
   return (
     <AnimatedFigure
       height={300}
-      duration={5.1}
+      duration={5.4}
       alt="Lead–tin eutectic phase diagram with the Pb–40 wt% Sn alloy cooling from 300°C; just above 183°C the tie line from 19.2 to 61.9 wt% Sn gives 51% primary α and 49% liquid, which becomes lamellar α + β eutectic — shown in a microstructure circle of α blobs in striped eutectic."
       steps={[
         {
@@ -589,13 +589,17 @@ function Transformations() {
           caption: "Pb–40 wt% Sn cools from 300°C; at the liquidus the first α appears.",
         },
         {
-          at: 1.6,
+          at: 1.5,
           label: "Primary α",
-          caption:
-            "Just above 183°C the lever rule gives W_α = 21.9/42.7 = 0.51: 51% primary α dendrites, 49% liquid at the eutectic composition.",
+          caption: "Cooling on through the L + α field, chunky primary α dendrites grow.",
         },
         {
-          at: 3.9,
+          at: 2.7,
+          label: "Lever rule",
+          caption: "Just above 183°C the lever rule gives W_α = 21.9/42.7 = 0.51: 51% primary α, 49% liquid at the eutectic composition.",
+        },
+        {
+          at: 4.2,
           label: "Eutectic",
           caption:
             "Cool Pb–40 Sn: α dendrites grow first, then at 183°C the leftover 49% liquid freezes all at once into fine α + β lamellae.",
@@ -604,8 +608,8 @@ function Transformations() {
     >
       {({ t }) => {
         // The alloy's vertical grows down as it cools: to the liquidus, to just above 183°C, then through it.
-        const yEnd = lerp(lerp(lerp(yTop, b.py(tStart), seg(t, 0.4, 1.2)), b.py(190), seg(t, 1.6, 2.3)), base, seg(t, 3.9, 4.4));
-        const tie = seg(t, 2.4, 3);
+        const yEnd = lerp(lerp(lerp(yTop, b.py(tStart), seg(t, 0.4, 1.2)), b.py(190), seg(t, 1.6, 2.4)), base, seg(t, 4.2, 4.7));
+        const tie = seg(t, 2.8, 3.4);
         const inset = op(seg(t, 1.5, 2));
         return (
           <>
@@ -646,30 +650,30 @@ function Transformations() {
             {tie > 0.02 ? (
               <line x1={lerp(b.px(40), b.px(19.2), tie)} y1={b.py(190)} x2={lerp(b.px(40), b.px(61.9), tie)} y2={b.py(190)} stroke={C.accent} strokeWidth={4} />
             ) : null}
-            <Reveal t={t} at={2.9} dur={0.4}>
+            <Reveal t={t} at={3.3} dur={0.4}>
               <Dot x={b.px(19.2)} y={b.py(190)} />
               <Dot x={b.px(61.9)} y={b.py(190)} />
             </Reveal>
-            <Reveal t={t} at={3}>
+            <Reveal t={t} at={3.4}>
               <Guide x1={b.px(61.9)} y1={b.py(183)} x2={b.px(61.9)} y2={base} />
               <Guide x1={b.px(19.2)} y1={b.py(183)} x2={b.px(19.2)} y2={base} />
             </Reveal>
-            <Reveal t={t} at={4.1}>
+            <Reveal t={t} at={4.4}>
               <Guide x1={b.px(97.5)} y1={b.py(183)} x2={b.px(97.5)} y2={base} />
             </Reveal>
 
-            <Reveal t={t} at={2.2}>
+            <Reveal t={t} at={2.7}>
               <YTick x={b.x} y={b.py(183)} label="183" tone="accent" />
             </Reveal>
             <YTick x={b.x} y={b.py(300)} label="300" />
-            <Reveal t={t} at={3}>
+            <Reveal t={t} at={3.4}>
               <XTick x={b.px(19.2)} y={base} label="19.2" />
             </Reveal>
             <XTick x={b.px(40)} y={base} label="40" tone="accent" />
-            <Reveal t={t} at={3}>
+            <Reveal t={t} at={3.4}>
               <XTick x={b.px(61.9)} y={base} label="61.9" />
             </Reveal>
-            <Reveal t={t} at={4.1}>
+            <Reveal t={t} at={4.4}>
               <XTick x={b.px(97.5)} y={base} label="97.5" />
             </Reveal>
             <Label x={b.x + b.w / 2} y={base + 44} tone="muted" size={15}>
@@ -679,7 +683,7 @@ function Transformations() {
             {/* microstructure inset: α blobs grow first, the lamellae freeze at 183°C */}
             <g clipPath="url(#mb-tr-clip)">
               <rect x={cx - r} y={cy - r} width={2 * r} height={2 * r} fill={C.surface} opacity={inset} />
-              <g opacity={op(seg(t, 4.1, 4.6))}>{lam}</g>
+              <g opacity={op(seg(t, 4.4, 4.9))}>{lam}</g>
               {blobs.map(([dx, dy, rx, ry, rot], i) => {
                 const g = seg(t, 1.7 + 0.1 * i, 2.3 + 0.1 * i);
                 return g > 0 ? (
@@ -698,16 +702,16 @@ function Transformations() {
               })}
             </g>
             <circle cx={cx} cy={cy} r={r} fill="none" stroke={C.ink} strokeWidth={2} opacity={inset} />
-            <Label x={cx} y={cy - r - 14} size={15} tone="muted" opacity={op(seg(t, 4.2, 4.7))}>
+            <Label x={cx} y={cy - r - 14} size={15} tone="muted" opacity={op(seg(t, 4.5, 5))}>
               below 183°C
             </Label>
-            <Label x={cx} y={cy + r + 18} size={15} tone="accent" weight={600} opacity={op(seg(t, 3.1, 3.6))}>
+            <Label x={cx} y={cy + r + 18} size={15} tone="accent" weight={600} opacity={op(seg(t, 3.5, 4))}>
               51% primary α
             </Label>
-            <Label x={cx} y={cy + r + 38} size={15} opacity={op(seg(t, 4.4, 4.9))}>
+            <Label x={cx} y={cy + r + 38} size={15} opacity={op(seg(t, 4.7, 5.2))}>
               49% eutectic
             </Label>
-            <Label x={cx} y={cy + r + 56} size={15} tone="muted" opacity={op(seg(t, 4.4, 4.9))}>
+            <Label x={cx} y={cy + r + 56} size={15} tone="muted" opacity={op(seg(t, 4.7, 5.2))}>
               (α + β lamellae)
             </Label>
           </>
@@ -973,52 +977,94 @@ function ScreenRank() {
   const b = plotBox({ x: 70, y: 40, w: 360, h: 190, xMin: 0, xMax: 1, yMin: 1, yMax: Math.log10(300) });
   const base = b.y + b.h;
   const pt = (rho: number, E: number) => [b.px(Math.log10(rho)), b.py(Math.log10(E))] as const;
-  const idx = (M: number, r0: number, r1: number) => b.path([[Math.log10(r0), Math.log10(M * r0)], [Math.log10(r1), Math.log10(M * r1)]]);
+  /** Index line E/ρ = M from ρ = r0 to r1, drawn to the fraction p. */
+  const idx = (M: number, r0: number, r1: number, p = 1) =>
+    b.path([
+      [Math.log10(r0), Math.log10(M * r0)],
+      [lerp(Math.log10(r0), Math.log10(r1), p), lerp(Math.log10(M * r0), Math.log10(M * r1), p)],
+    ]);
   const steel = pt(7.85, 200);
   const al = pt(2.7, 69);
   const cf = pt(1.55, 140);
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.9}
       alt="Log-log chart of stiffness E against density ρ with steel, aluminum and carbon fiber plotted; steel and aluminum lie on the same index line E/ρ ≈ 25.5, carbon fiber on a higher line near 90, but carbon is struck out by the $10/kg cost screen and bare steel by the outdoor corrosion screen, leaving aluminum."
-      caption="The index line says steel and aluminum tie and carbon wins. The screens strike carbon (cost) and bare steel (corrosion): the shortlist is aluminum."
+      steps={[
+        {
+          at: 0,
+          label: "Plot",
+          caption: "A 1 m tie rod must hit a stiffness target: place steel, aluminum and carbon fiber on log E against log ρ.",
+        },
+        {
+          at: 1.1,
+          label: "Index",
+          caption: "Constant E/ρ is a line of slope 1: steel (25.5) and aluminum (25.6) share one, and carbon fiber sits far ahead at 90.3.",
+        },
+        {
+          at: 2.4,
+          label: "Screens",
+          caption: "The cost screen kills carbon at $80/kg against a $10 ceiling; the corrosion screen kills bare steel outdoors.",
+        },
+        {
+          at: 3.9,
+          label: "Shortlist",
+          caption:
+            "The index line says steel and aluminum tie and carbon wins. The screens strike carbon (cost) and bare steel (corrosion): the shortlist is aluminum.",
+        },
+      ]}
     >
-      <Axes box={b} xLabel="" yLabel="E (GPa, log)" />
-      <path d={idx(25.5, 1, 10)} fill="none" stroke={C.muted} strokeWidth={2} strokeDasharray="7 5" />
-      <path d={idx(90.3, 1, 300 / 90.3)} fill="none" stroke={C.muted} strokeWidth={2} strokeDasharray="7 5" />
-      <Label x={b.px(Math.log10(1.15))} y={b.py(Math.log10(25.5 * 1.15)) + 20} anchor="start" tone="muted" size={15}>
-        E/ρ = 25.5
-      </Label>
-      <Label x={b.px(Math.log10(300 / 90.3)) + 8} y={b.y + 4} anchor="start" tone="muted" size={15}>
-        E/ρ = 90
-      </Label>
+      {({ t }) => {
+        const drawn = seg(t, 1.2, 1.9);
+        const ring = seg(t, 4, 4.5);
+        return (
+          <>
+            <Axes box={b} xLabel="" yLabel="E (GPa, log)" />
+            {drawn > 0.02 ? <path d={idx(25.5, 1, 10, drawn)} fill="none" stroke={C.muted} strokeWidth={2} strokeDasharray="7 5" /> : null}
+            {drawn > 0.02 ? <path d={idx(90.3, 1, 300 / 90.3, drawn)} fill="none" stroke={C.muted} strokeWidth={2} strokeDasharray="7 5" /> : null}
+            <Label x={b.px(Math.log10(1.15))} y={b.py(Math.log10(25.5 * 1.15)) + 20} anchor="start" tone="muted" size={15} opacity={op(seg(t, 1.7, 2.2))}>
+              E/ρ = 25.5
+            </Label>
+            <Label x={b.px(Math.log10(300 / 90.3)) + 8} y={b.y + 4} anchor="start" tone="muted" size={15} opacity={op(seg(t, 1.7, 2.2))}>
+              E/ρ = 90
+            </Label>
 
-      <Dot x={steel[0]} y={steel[1]} tone="ink" r={7} />
-      <Cross x={steel[0]} y={steel[1]} s={10} />
-      <Label x={464} y={steel[1] + 34} anchor="end" size={15} tone="alarm">
-        bare steel: rusts
-      </Label>
-      <Dot x={cf[0]} y={cf[1]} tone="ink" r={7} />
-      <Cross x={cf[0]} y={cf[1]} s={10} />
-      <Label x={cf[0] + 16} y={cf[1] + 16} anchor="start" size={15} tone="alarm">
-        carbon: $80/kg
-      </Label>
-      <circle cx={al[0]} cy={al[1]} r={12} fill="none" stroke={C.accent} strokeWidth={3} />
-      <Dot x={al[0]} y={al[1]} r={7} />
-      <Label x={al[0] + 18} y={al[1] + 16} anchor="start" size={16} tone="accent" weight={600}>
-        6061 Al: shortlist
-      </Label>
+            <Reveal t={t} at={0.3} dur={0.4}>
+              <Dot x={steel[0]} y={steel[1]} tone="ink" r={7} />
+            </Reveal>
+            <Cross x={steel[0]} y={steel[1]} s={10} p={seg(t, 3, 3.4)} />
+            <Label x={464} y={steel[1] + 34} anchor="end" size={15} tone="alarm" opacity={op(seg(t, 3.2, 3.7))}>
+              bare steel: rusts
+            </Label>
+            <Reveal t={t} at={0.45} dur={0.4}>
+              <Dot x={cf[0]} y={cf[1]} tone="ink" r={7} />
+            </Reveal>
+            <Cross x={cf[0]} y={cf[1]} s={10} p={seg(t, 2.5, 2.9)} />
+            <Label x={cf[0] + 16} y={cf[1] + 16} anchor="start" size={15} tone="alarm" opacity={op(seg(t, 2.7, 3.2))}>
+              carbon: $80/kg
+            </Label>
+            {ring > 0 ? <circle cx={al[0]} cy={al[1]} r={lerp(7, 12, ring)} fill="none" stroke={C.accent} strokeWidth={3} opacity={op(ring)} /> : null}
+            <Reveal t={t} at={0.6} dur={0.4}>
+              <Dot x={al[0]} y={al[1]} r={7} />
+            </Reveal>
+            <Label x={al[0] + 18} y={al[1] + 16} anchor="start" size={16} tone="accent" weight={600} opacity={op(seg(t, 4.2, 4.7))}>
+              6061 Al: shortlist
+            </Label>
 
-      {[1, 3, 10].map((v) => (
-        <XTick key={v} x={b.px(Math.log10(v))} y={base} label={String(v)} />
-      ))}
-      {[10, 30, 100, 300].map((v) => (
-        <YTick key={v} x={b.x} y={b.py(Math.log10(v))} label={String(v)} />
-      ))}
-      <Label x={b.x + b.w / 2} y={base + 44} tone="muted" size={15}>
-        density ρ (g/cm³, log)
-      </Label>
-    </Figure>
+            {[1, 3, 10].map((v) => (
+              <XTick key={v} x={b.px(Math.log10(v))} y={base} label={String(v)} />
+            ))}
+            {[10, 30, 100, 300].map((v) => (
+              <YTick key={v} x={b.x} y={b.py(Math.log10(v))} label={String(v)} />
+            ))}
+            <Label x={b.x + b.w / 2} y={base + 44} tone="muted" size={15}>
+              density ρ (g/cm³, log)
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1026,71 +1072,110 @@ function ScreenRank() {
 function Corrosion() {
   const drops = [70, 110, 150, 300, 340, 380, 420];
   return (
-    <Figure
+    <AnimatedFigure
       height={280}
+      duration={4.9}
       alt="Cross-section of a steel bolt through an aluminum cleat on a deck, under salt spray; aluminum at −0.75 V is the anode and steel at −0.60 V the cathode, electrons flow from the aluminum into the bolt, and pits start in the crevice under the bolt head."
-      caption="Aluminum is 0.15 V more negative, so it dissolves to protect the bolt — and the crevice under the head, starved of oxygen and full of chloride, is where the pits start."
+      steps={[
+        {
+          at: 0,
+          label: "Joint",
+          caption: "A steel bolt fastens an aluminum cleat on a boat, and salt spray is a given.",
+        },
+        {
+          at: 1.4,
+          label: "Anode",
+          caption: "In seawater aluminum sits near −0.75 V and carbon steel near −0.60 V, so aluminum is the anode by 0.15 V.",
+        },
+        {
+          at: 2.7,
+          label: "Current",
+          caption: "Electrons flow from the aluminum into the bolt: the aluminum dissolves to protect it.",
+        },
+        {
+          at: 3.8,
+          label: "Crevice",
+          caption:
+            "Aluminum is 0.15 V more negative, so it dissolves to protect the bolt — and the crevice under the head, starved of oxygen and full of chloride, is where the pits start.",
+        },
+      ]}
     >
-      {drops.map((x, i) => (
-        <path
-          key={x}
-          d={`M${x},${60 + (i % 2) * 12} q-6,10 0,14 q6,-4 0,-14 z`}
-          fill={C.muted}
-        />
-      ))}
-      <Label x={240} y={20} tone="muted" size={15}>
-        salt spray = electrolyte
-      </Label>
+      {({ t }) => (
+        <>
+          {drops.map((x, i) => {
+            const fall = seg(t, 0.3 + 0.08 * i, 0.9 + 0.08 * i);
+            return fall > 0 ? (
+              <path
+                key={x}
+                d={`M${x},${60 + (i % 2) * 12} q-6,10 0,14 q6,-4 0,-14 z`}
+                fill={C.muted}
+                transform={fall < 1 ? `translate(0,${(-30 * (1 - fall)).toFixed(1)})` : undefined}
+                opacity={op(fall)}
+              />
+            ) : null;
+          })}
+          <Label x={240} y={20} tone="muted" size={15} opacity={op(seg(t, 0.7, 1.2))}>
+            salt spray = electrolyte
+          </Label>
 
-      {/* deck */}
-      <rect x={40} y={176} width={400} height={30} fill={C.line} stroke={C.muted} strokeWidth={1.5} />
-      {/* aluminum cleat */}
-      <rect x={110} y={116} width={260} height={60} rx={4} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      {/* bolt shank, head, nut */}
-      <rect x={228} y={100} width={24} height={128} fill={C.muted} stroke={C.ink} strokeWidth={2} />
-      <rect x={204} y={96} width={72} height={20} rx={3} fill={C.muted} stroke={C.ink} strokeWidth={2} />
-      <rect x={210} y={206} width={60} height={20} rx={3} fill={C.muted} stroke={C.ink} strokeWidth={2} />
-      {/* pits in the crevice at the head's edges */}
-      {[200, 206, 274, 280].map((x) => (
-        <circle key={x} cx={x} cy={117} r={4} fill={C.alarm} />
-      ))}
+          {/* deck */}
+          <rect x={40} y={176} width={400} height={30} fill={C.line} stroke={C.muted} strokeWidth={1.5} />
+          {/* aluminum cleat */}
+          <rect x={110} y={116} width={260} height={60} rx={4} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+          {/* bolt shank, head, nut */}
+          <rect x={228} y={100} width={24} height={128} fill={C.muted} stroke={C.ink} strokeWidth={2} />
+          <rect x={204} y={96} width={72} height={20} rx={3} fill={C.muted} stroke={C.ink} strokeWidth={2} />
+          <rect x={210} y={206} width={60} height={20} rx={3} fill={C.muted} stroke={C.ink} strokeWidth={2} />
+          {/* pits in the crevice at the head's edges */}
+          {[200, 206, 274, 280].map((x, i) => {
+            const pit = seg(t, 3.9 + 0.08 * i, 4.3 + 0.08 * i);
+            return pit > 0 ? <circle key={x} cx={x} cy={117} r={4 * pit} fill={C.alarm} /> : null;
+          })}
 
-      <Label x={150} y={146} size={16} weight={600}>
-        Al
-      </Label>
-      <Label x={330} y={146} size={16} weight={600}>
-        Al
-      </Label>
-      <Arrow x1={172} y1={158} x2={222} y2={158} width={2.5} />
-      <Label x={196} y={146} tone="accent" size={15}>
-        e⁻
-      </Label>
+          <Label x={150} y={146} size={16} weight={600}>
+            Al
+          </Label>
+          <Label x={330} y={146} size={16} weight={600}>
+            Al
+          </Label>
+          <GrowArrow p={seg(t, 2.8, 3.3)} x1={172} y1={158} x2={222} y2={158} width={2.5} />
+          <Label x={196} y={146} tone="accent" size={15} opacity={op(seg(t, 3, 3.5))}>
+            e⁻
+          </Label>
 
-      <Label x={20} y={98} anchor="start" size={15} weight={600}>
-        anode
-      </Label>
-      <Label x={20} y={118} anchor="start" size={15} tone="muted">
-        −0.75 V
-      </Label>
-      <line x1={78} y1={112} x2={112} y2={130} stroke={C.muted} strokeWidth={1.5} />
+          <Reveal t={t} at={1.4}>
+            <Label x={20} y={98} anchor="start" size={15} weight={600}>
+              anode
+            </Label>
+            <Label x={20} y={118} anchor="start" size={15} tone="muted">
+              −0.75 V
+            </Label>
+            <line x1={78} y1={112} x2={112} y2={130} stroke={C.muted} strokeWidth={1.5} />
+          </Reveal>
 
-      <Label x={460} y={228} anchor="end" size={15} weight={600}>
-        steel bolt: cathode
-      </Label>
-      <Label x={460} y={248} anchor="end" size={15} tone="muted">
-        −0.60 V
-      </Label>
-      <line x1={330} y1={226} x2={272} y2={216} stroke={C.muted} strokeWidth={1.5} />
+          <Reveal t={t} at={1.7}>
+            <Label x={460} y={228} anchor="end" size={15} weight={600}>
+              steel bolt: cathode
+            </Label>
+            <Label x={460} y={248} anchor="end" size={15} tone="muted">
+              −0.60 V
+            </Label>
+            <line x1={330} y1={226} x2={272} y2={216} stroke={C.muted} strokeWidth={1.5} />
+          </Reveal>
 
-      <Label x={460} y={88} anchor="end" size={15} tone="alarm" weight={600}>
-        crevice: pits
-      </Label>
-      <line x1={400} y1={98} x2={286} y2={114} stroke={C.alarm} strokeWidth={1.5} />
+          <Reveal t={t} at={4.1}>
+            <Label x={460} y={88} anchor="end" size={15} tone="alarm" weight={600}>
+              crevice: pits
+            </Label>
+            <line x1={400} y1={98} x2={286} y2={114} stroke={C.alarm} strokeWidth={1.5} />
+          </Reveal>
 
-      <Label x={100} y={250} size={18} serif tone="accent" weight={600}>
-        ΔV = 0.15 V
-      </Label>
-    </Figure>
+          <Label x={100} y={250} size={18} serif tone="accent" weight={600} opacity={op(seg(t, 2.1, 2.6))}>
+            ΔV = 0.15 V
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -1098,54 +1183,96 @@ function Corrosion() {
 function Sustain() {
   const x0 = 150;
   const sx = (v: number) => (v / 400) * 290;
-  const Bar = ({ y, v, fill, text, inside }: { y: number; v: number; fill: string; text: string; inside?: boolean }) => (
+  /** `shown` is how much of the bar is drawn so far (MJ); `lit` fades its value in. */
+  const Bar = ({ y, v, fill, text, inside, shown = v, lit = 1 }: { y: number; v: number; fill: string; text: string; inside?: boolean; shown?: number; lit?: number }) => (
     <g>
-      <rect x={x0} y={y - 13} width={sx(v)} height={26} rx={2} fill={fill} />
+      {shown > 0 ? <rect x={x0} y={y - 13} width={sx(shown)} height={26} rx={2} fill={fill} /> : null}
       {inside ? (
-        <text x={x0 + sx(v) - 10} y={y} textAnchor="end" dominantBaseline="middle" fontSize={15} fontWeight={600} fill={C.surface}>
+        <text x={x0 + sx(v) - 10} y={y} textAnchor="end" dominantBaseline="middle" fontSize={15} fontWeight={600} fill={C.surface} opacity={op(lit)}>
           {text}
         </text>
       ) : (
-        <Label x={x0 + sx(v) + 8} y={y} anchor="start" size={15}>
+        <Label x={x0 + sx(v) + 8} y={y} anchor="start" size={15} opacity={op(lit)}>
           {text}
         </Label>
       )}
     </g>
   );
+  // At the gate the bars fill at one rate, 400 MJ over 0.4–1.5 s; on the road, 200,000 km plays over 3.5–4.7 s.
+  const gate = (t: number) => 400 * clamp((t - 0.4) / 1.1);
+  const km = (t: number) => 200000 * clamp((t - 3.5) / 1.2);
   return (
-    <Figure
+    <AnimatedFigure
       height={310}
+      duration={5.5}
       alt="Bar chart of embodied energy: at the factory gate a 2 kg primary aluminum bracket is 400 MJ, a 3 kg steel bracket 90 MJ and a recycled aluminum bracket 20 MJ; over 200,000 km in a vehicle the steel bracket's extra kilogram costs about 300 MJ of fuel, bringing it to 390 MJ against aluminum's 400 MJ."
-      caption="At the gate, primary aluminum is over four times worse than steel and recycled aluminum beats both. In a vehicle for 200,000 km, the fuel for steel's extra kilogram brings them to about break-even."
+      steps={[
+        {
+          at: 0,
+          label: "Gate",
+          caption: "At the factory gate a 2 kg primary aluminum bracket carries 2 × 200 = 400 MJ; a 3 kg steel one, 3 × 30 = 90 MJ.",
+        },
+        {
+          at: 1.9,
+          label: "Recycled",
+          caption: "Made from recycled aluminum, 2 × 10 = 20 MJ, it beats the steel's 90 MJ before it moves at all.",
+        },
+        {
+          at: 2.9,
+          label: "Drive",
+          caption: "In a vehicle, steel's extra kilogram costs roughly 1.5 MJ of fuel per 1,000 km: ~300 MJ over 200,000 km.",
+        },
+        {
+          at: 4.8,
+          label: "Break-even",
+          caption:
+            "At the gate, primary aluminum is over four times worse than steel and recycled aluminum beats both. In a vehicle for 200,000 km, the fuel for steel's extra kilogram brings them to about break-even.",
+        },
+      ]}
+      readouts={(t) => [
+        { label: "distance", value: `${(Math.round(km(t) / 1000) * 1000).toLocaleString("en-US")} km` },
+        { label: "fuel for the extra kg", value: `${Math.round((1.5 * km(t)) / 1000)} MJ`, tone: "ink" },
+      ]}
     >
-      <Label x={20} y={22} anchor="start" tone="muted" size={15} weight={600}>
-        at the factory gate
-      </Label>
-      <Label x={x0 - 10} y={52} anchor="end" size={15}>Al, primary 2 kg</Label>
-      <Bar y={52} v={400} fill={C.ink} text="400 MJ" inside />
-      <Label x={x0 - 10} y={88} anchor="end" size={15}>steel 3 kg</Label>
-      <Bar y={88} v={90} fill={C.muted} text="90 MJ" />
-      <Label x={x0 - 10} y={124} anchor="end" size={15} tone="accent">Al, recycled</Label>
-      <Bar y={124} v={20} fill={C.accent} text="20 MJ" />
+      {({ t }) => {
+        const made = gate(t);
+        const road = op(seg(t, 2.9, 3.4));
+        const fuel = (1.5 * km(t)) / 1000;
+        return (
+          <>
+            <Label x={20} y={22} anchor="start" tone="muted" size={15} weight={600}>
+              at the factory gate
+            </Label>
+            <Label x={x0 - 10} y={52} anchor="end" size={15}>Al, primary 2 kg</Label>
+            <Bar y={52} v={400} fill={C.ink} text="400 MJ" inside shown={made} lit={seg(t, 1.4, 1.9)} />
+            <Label x={x0 - 10} y={88} anchor="end" size={15}>steel 3 kg</Label>
+            <Bar y={88} v={90} fill={C.muted} text="90 MJ" shown={Math.min(made, 90)} lit={seg(t, 0.7, 1.2)} />
+            <Label x={x0 - 10} y={124} anchor="end" size={15} tone="accent">Al, recycled</Label>
+            <Bar y={124} v={20} fill={C.accent} text="20 MJ" shown={lerp(0, 20, seg(t, 2, 2.3))} lit={seg(t, 2.2, 2.7)} />
 
-      <line x1={20} y1={152} x2={460} y2={152} stroke={C.line} strokeWidth={1.5} />
-      <Label x={20} y={174} anchor="start" tone="muted" size={15} weight={600}>
-        after 200,000 km in a vehicle
-      </Label>
-      <Label x={x0 - 10} y={206} anchor="end" size={15}>Al, primary</Label>
-      <Bar y={206} v={400} fill={C.ink} text="400 MJ" inside />
-      <Label x={x0 - 10} y={242} anchor="end" size={15}>steel</Label>
-      <rect x={x0} y={229} width={sx(90)} height={26} rx={2} fill={C.muted} />
-      <rect x={x0 + sx(90)} y={229} width={sx(300)} height={26} rx={2} fill={C.brass} />
-      <text x={x0 + sx(390) - 10} y={242} textAnchor="end" dominantBaseline="middle" fontSize={15} fontWeight={600} fill={C.surface}>
-        90 + ~300 fuel ≈ 390
-      </text>
-      <line x1={x0} y1={40} x2={x0} y2={134} stroke={C.ink} strokeWidth={1.5} />
-      <line x1={x0} y1={194} x2={x0} y2={256} stroke={C.ink} strokeWidth={1.5} />
-      <Label x={x0 + sx(390) } y={278} anchor="end" tone="muted" size={15}>
-        extra 1 kg × 1.5 MJ/kg per 1,000 km
-      </Label>
-    </Figure>
+            <g opacity={road}>
+              <line x1={20} y1={152} x2={460} y2={152} stroke={C.line} strokeWidth={1.5} />
+              <Label x={20} y={174} anchor="start" tone="muted" size={15} weight={600}>
+                after 200,000 km in a vehicle
+              </Label>
+              <Label x={x0 - 10} y={206} anchor="end" size={15}>Al, primary</Label>
+              <Bar y={206} v={400} fill={C.ink} text="400 MJ" inside />
+              <Label x={x0 - 10} y={242} anchor="end" size={15}>steel</Label>
+              <rect x={x0} y={229} width={sx(90)} height={26} rx={2} fill={C.muted} />
+            </g>
+            {fuel > 0 ? <rect x={x0 + sx(90)} y={229} width={sx(fuel)} height={26} rx={2} fill={C.brass} /> : null}
+            <text x={x0 + sx(390) - 10} y={242} textAnchor="end" dominantBaseline="middle" fontSize={15} fontWeight={600} fill={C.surface} opacity={op(seg(t, 4.8, 5.3))}>
+              90 + ~300 fuel ≈ 390
+            </text>
+            <line x1={x0} y1={40} x2={x0} y2={134} stroke={C.ink} strokeWidth={1.5} />
+            <line x1={x0} y1={194} x2={x0} y2={256} stroke={C.ink} strokeWidth={1.5} opacity={road} />
+            <Label x={x0 + sx(390) } y={278} anchor="end" tone="muted" size={15} opacity={op(seg(t, 3.2, 3.7))}>
+              extra 1 kg × 1.5 MJ/kg per 1,000 km
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1159,51 +1286,91 @@ function MatMethod() {
   const mm = 200; // units per mm
   const meas = top + 0.55 * mm;
   const pred = top + 0.8 * mm;
+  // 4 h in the furnace plays over 1.9–3.1 s; the case front advances as √t (2√(Dt)).
+  const hours = (t: number) => 4 * clamp((t - 1.9) / 1.2);
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={5.5}
       alt="Cross-section of a carburized steel part: the measured case depth of 0.55 mm is shaded, the predicted 0.80 mm is a dashed line below it; beside it an assumption-ledger card shows 'furnace 950 °C' marked assumed and the actual ~890 °C from a thermocouple reading 60 °C high."
-      caption="The square root was right; the input was not. The ledger line marked 'assumed' is where the missing 0.25 mm went."
+      steps={[
+        {
+          at: 0,
+          label: "Predict",
+          caption: "Carburizing at 950 °C for 4 h predicts a 0.80 mm diffusion length from 2√(Dt).",
+        },
+        {
+          at: 1.8,
+          label: "Measure",
+          caption: "The measured depth, on the same basis, is 0.55 mm.",
+        },
+        {
+          at: 3.4,
+          label: "Ledger",
+          caption: "The arithmetic is not wrong; the ledger is: 'furnace held 950 °C' was marked assumed.",
+        },
+        {
+          at: 4.5,
+          label: "Actual",
+          caption: "The square root was right; the input was not. The ledger line marked 'assumed' is where the missing 0.25 mm went.",
+        },
+      ]}
+      readouts={(t) => [
+        { label: "t", value: `${hours(t).toFixed(1)} h` },
+        { label: "case depth", value: `${(0.55 * Math.sqrt(hours(t) / 4)).toFixed(2)} mm`, tone: "accent" },
+      ]}
     >
-      {/* part */}
-      <rect x={bx} y={top} width={bw} height={210} fill={C.surface} stroke={C.ink} strokeWidth={2} />
-      <rect x={bx} y={top} width={bw} height={meas - top} fill={C.soft} />
-      <line x1={bx} y1={meas} x2={bx + bw} y2={meas} stroke={C.accent} strokeWidth={3} />
-      <line x1={bx} y1={pred} x2={bx + bw} y2={pred} stroke={C.muted} strokeWidth={2} strokeDasharray="7 5" />
-      <line x1={bx} y1={top} x2={bx + bw} y2={top} stroke={C.ink} strokeWidth={3} />
-      {[240, 300, 360, 420].map((x) => (
-        <Arrow key={x} x1={x} y1={22} x2={x} y2={top - 6} tone="muted" width={2} />
-      ))}
-      <Label x={bx + bw / 2} y={14} tone="muted" size={15}>
-        carbon in, 4 h
-      </Label>
-      <Label x={bx + bw - 10} y={(top + meas) / 2} anchor="end" tone="accent" size={16} weight={600}>
-        measured 0.55 mm
-      </Label>
-      <Label x={bx + bw - 10} y={pred - 16} anchor="end" tone="muted" size={15}>
-        predicted 0.80 mm
-      </Label>
+      {({ t }) => {
+        const h = hours(t);
+        const front = h >= 4 ? meas : top + 0.55 * Math.sqrt(h / 4) * mm;
+        return (
+          <>
+            {/* part */}
+            <rect x={bx} y={top} width={bw} height={210} fill={C.surface} stroke={C.ink} strokeWidth={2} />
+            {front > top ? <rect x={bx} y={top} width={bw} height={front - top} fill={C.soft} /> : null}
+            {front > top ? <line x1={bx} y1={front} x2={bx + bw} y2={front} stroke={C.accent} strokeWidth={3} /> : null}
+            <line x1={bx} y1={pred} x2={bx + bw} y2={pred} stroke={C.muted} strokeWidth={2} strokeDasharray="7 5" opacity={op(seg(t, 0.9, 1.4))} />
+            <line x1={bx} y1={top} x2={bx + bw} y2={top} stroke={C.ink} strokeWidth={3} />
+            {[240, 300, 360, 420].map((x, i) => (
+              <GrowArrow key={x} p={seg(t, 0.3 + 0.08 * i, 0.8 + 0.08 * i)} x1={x} y1={22} x2={x} y2={top - 6} tone="muted" width={2} />
+            ))}
+            <Label x={bx + bw / 2} y={14} tone="muted" size={15} opacity={op(seg(t, 0.4, 0.9))}>
+              carbon in, 4 h
+            </Label>
+            <Label x={bx + bw - 10} y={(top + meas) / 2} anchor="end" tone="accent" size={16} weight={600} opacity={op(seg(t, 3, 3.5))}>
+              measured 0.55 mm
+            </Label>
+            <Label x={bx + bw - 10} y={pred - 16} anchor="end" tone="muted" size={15} opacity={op(seg(t, 1.1, 1.6))}>
+              predicted 0.80 mm
+            </Label>
 
-      {/* ledger card */}
-      <rect x={12} y={64} width={174} height={170} rx={6} fill={C.surface} stroke={C.muted} strokeWidth={1.5} />
-      <Label x={24} y={86} anchor="start" size={15} weight={600} tone="muted">
-        LEDGER
-      </Label>
-      <line x1={24} y1={100} x2={174} y2={100} stroke={C.line} strokeWidth={1.5} />
-      <Label x={24} y={122} anchor="start" size={15}>
-        furnace 950 °C
-      </Label>
-      <rect x={24} y={136} width={76} height={22} rx={11} fill="none" stroke={C.alarm} strokeWidth={1.5} />
-      <Label x={62} y={147} size={15} tone="alarm">
-        assumed
-      </Label>
-      <Label x={24} y={180} anchor="start" size={15} tone="muted">
-        TC reads 60 °C high
-      </Label>
-      <Label x={24} y={210} anchor="start" size={16} tone="accent" weight={600}>
-        actual ~890 °C
-      </Label>
-    </Figure>
+            {/* ledger card */}
+            <Reveal t={t} at={3.4}>
+              <rect x={12} y={64} width={174} height={170} rx={6} fill={C.surface} stroke={C.muted} strokeWidth={1.5} />
+              <Label x={24} y={86} anchor="start" size={15} weight={600} tone="muted">
+                LEDGER
+              </Label>
+              <line x1={24} y1={100} x2={174} y2={100} stroke={C.line} strokeWidth={1.5} />
+              <Label x={24} y={122} anchor="start" size={15}>
+                furnace 950 °C
+              </Label>
+            </Reveal>
+            <Reveal t={t} at={3.8}>
+              <rect x={24} y={136} width={76} height={22} rx={11} fill="none" stroke={C.alarm} strokeWidth={1.5} />
+              <Label x={62} y={147} size={15} tone="alarm">
+                assumed
+              </Label>
+            </Reveal>
+            <Label x={24} y={180} anchor="start" size={15} tone="muted" opacity={op(seg(t, 4.5, 5))}>
+              TC reads 60 °C high
+            </Label>
+            <Label x={24} y={210} anchor="start" size={16} tone="accent" weight={600} opacity={op(seg(t, 4.8, 5.3))}>
+              actual ~890 °C
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1218,51 +1385,77 @@ function SparSynth() {
     { name: "carbon", mass: "9.6 g", d: 0.25, fill: C.accent, verdict: "passes, lighter", tone: "accent" },
   ];
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.8}
       alt="Bar chart of spar tip deflection against a 5 mm limit: balsa 11.1 mm fails, 7075-T6 aluminum 0.46 mm and carbon 0.25 mm pass; masses are balsa 0.96 g, aluminum 16.9 g and carbon 9.6 g, so carbon is the call."
-      caption="Every candidate is far from yielding; the 5 mm deflection limit kills balsa, and mass then picks carbon over aluminum."
+      steps={[
+        {
+          at: 0,
+          label: "Strength",
+          caption: "The 2.45 N gust lift gives a root stress of 6.4 MPa: strength margins run 2.7× to 125×, so nothing is near yielding.",
+        },
+        {
+          at: 1.2,
+          label: "Stiffness",
+          caption: "Against the 5 mm deflection limit, balsa sags 11.1 mm; aluminum at 0.46 mm and carbon at 0.25 mm pass.",
+        },
+        {
+          at: 3.4,
+          label: "Mass",
+          caption: "Every candidate is far from yielding; the 5 mm deflection limit kills balsa, and mass then picks carbon over aluminum.",
+        },
+      ]}
     >
-      <Label x={x0} y={20} anchor="start" tone="muted" size={15}>
-        tip deflection at the 2.5 g gust (mm)
-      </Label>
-      <line x1={lim} y1={36} x2={lim} y2={220} stroke={C.alarm} strokeWidth={2.5} strokeDasharray="7 5" />
-      <Label x={lim} y={234} tone="alarm" size={15} weight={600}>
-        limit 5 mm
-      </Label>
-      <line x1={x0} y1={40} x2={x0} y2={210} stroke={C.ink} strokeWidth={1.5} />
-      {rows.map((r, i) => {
-        const y = 66 + i * 56;
+      {({ t }) => {
+        const drop = seg(t, 1.2, 1.7);
+        const sag = lerp(0, 11.1, seg(t, 1.8, 3)); // tip deflection swept so far, mm
         return (
-          <g key={r.name}>
-            <Label x={x0 - 10} y={y - 9} anchor="end" size={16} weight={600} tone={r.tone === "muted" ? "ink" : r.tone}>
-              {r.name}
+          <>
+            <Label x={x0} y={20} anchor="start" tone="muted" size={15}>
+              tip deflection at the 2.5 g gust (mm)
             </Label>
-            <Label x={x0 - 10} y={y + 11} anchor="end" size={15} tone="muted">
-              {r.mass}
+            {drop > 0.02 ? <line x1={lim} y1={36} x2={lim} y2={lerp(36, 220, drop)} stroke={C.alarm} strokeWidth={2.5} strokeDasharray="7 5" /> : null}
+            <Label x={lim} y={234} tone="alarm" size={15} weight={600} opacity={op(seg(t, 1.4, 1.9))}>
+              limit 5 mm
             </Label>
-            <rect x={x0} y={y - 13} width={Math.max(sx(r.d) - x0, 3)} height={26} rx={2} fill={r.fill} />
-            {r.d > 5 ? (
-              <text x={sx(r.d) - 10} y={y} textAnchor="end" dominantBaseline="middle" fontSize={15} fontWeight={600} fill={C.surface}>
-                11.1 mm — too soft
-              </text>
-            ) : (
-              <>
-                <Label x={sx(r.d) + 8} y={y} anchor="start" size={15}>
-                  {`${r.d} mm`}
-                </Label>
-                <Label x={lim + 12} y={y} anchor="start" size={15} tone={r.tone} weight={r.tone === "accent" ? 600 : undefined}>
-                  {r.verdict}
-                </Label>
-              </>
-            )}
-          </g>
+            <line x1={x0} y1={40} x2={x0} y2={210} stroke={C.ink} strokeWidth={1.5} />
+            {rows.map((r, i) => {
+              const y = 66 + i * 56;
+              const p = clamp(sag / r.d);
+              return (
+                <g key={r.name}>
+                  <Label x={x0 - 10} y={y - 9} anchor="end" size={16} weight={600} tone={r.tone === "muted" ? "ink" : r.tone}>
+                    {r.name}
+                  </Label>
+                  <Label x={x0 - 10} y={y + 11} anchor="end" size={15} tone="muted" opacity={op(seg(t, 3.5 + 0.15 * i, 4 + 0.15 * i))}>
+                    {r.mass}
+                  </Label>
+                  {p > 0 ? <rect x={x0} y={y - 13} width={Math.max(sx(r.d) - x0, 3) * p} height={26} rx={2} fill={r.fill} /> : null}
+                  {r.d > 5 ? (
+                    <text x={sx(r.d) - 10} y={y} textAnchor="end" dominantBaseline="middle" fontSize={15} fontWeight={600} fill={C.surface} opacity={op(seg(t, 2.9, 3.4))}>
+                      11.1 mm — too soft
+                    </text>
+                  ) : (
+                    <>
+                      <Label x={sx(r.d) + 8} y={y} anchor="start" size={15} opacity={op(seg(t, 2, 2.5))}>
+                        {`${r.d} mm`}
+                      </Label>
+                      <Label x={lim + 12} y={y} anchor="start" size={15} tone={r.tone} weight={r.tone === "accent" ? 600 : undefined} opacity={op(seg(t, 3.6 + 0.2 * i, 4.1 + 0.2 * i))}>
+                        {r.verdict}
+                      </Label>
+                    </>
+                  )}
+                </g>
+              );
+            })}
+            <Label x={240} y={272} tone="muted" size={15} opacity={op(seg(t, 0.3, 0.8))}>
+              root stress 6.4 MPa: strength margins 2.7× to 125×
+            </Label>
+          </>
         );
-      })}
-      <Label x={240} y={272} tone="muted" size={15}>
-        root stress 6.4 MPa: strength margins 2.7× to 125×
-      </Label>
-    </Figure>
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1280,63 +1473,92 @@ function MatMastery() {
   const x0 = (480 - (3 * gw + 2 * gg)) / 2;
   const ty = 56;
   return (
-    <Figure
+    <AnimatedFigure
       height={280}
+      duration={4.9}
       alt="Twelve question tiles in three groups of four — chain, failure, mixed — with one miss in each group; the chain and failure misses each lead to a filed correction, and the gate reads 9 of 12 = 75%, at least 70%, plus corrections, so it opens."
-      caption="Nine of twelve clears the score; the gate also wants a filed correction for every missed chain or failure item."
+      steps={[
+        {
+          at: 0,
+          label: "Sit",
+          caption: "Twelve questions in one closed-book sitting: four chain, four failure, four mixed.",
+        },
+        {
+          at: 1.9,
+          label: "Score",
+          caption: "Nine of twelve is 75%, which clears the 70% score gate.",
+        },
+        {
+          at: 2.9,
+          label: "Repairs",
+          caption: "Every missed chain or failure item needs a filed correction: name the error, re-derive the answer, identify the failed instinct.",
+        },
+        {
+          at: 4.1,
+          label: "Gate",
+          caption: "Nine of twelve clears the score; the gate also wants a filed correction for every missed chain or failure item.",
+        },
+      ]}
     >
-      {groups.map((g, gi) => {
-        const gx = x0 + gi * (gw + gg);
-        return (
-          <g key={g.name}>
-            <Label x={gx + gw / 2} y={ty - 20} size={15} weight={600} tone={g.needsFix ? "ink" : "muted"}>
-              {g.name}
-            </Label>
-            {[0, 1, 2, 3].map((k) => {
-              const x = gx + k * (t + gap);
-              const missed = k === g.miss;
-              return (
-                <g key={k}>
-                  <rect x={x} y={ty} width={t} height={t} rx={4} fill={missed ? C.surface : C.soft} stroke={missed ? C.alarm : C.accent} strokeWidth={2} />
-                  <Label x={x + t / 2} y={ty + t / 2 + 1} size={16} tone={missed ? "alarm" : "accent"} weight={700}>
-                    {missed ? "✗" : "✓"}
-                  </Label>
-                  {missed && g.needsFix && (
-                    <g>
-                      <Arrow x1={x + t / 2} y1={ty + t + 4} x2={x + t / 2} y2={ty + t + 30} tone="accent" width={2} />
-                      <path
-                        d={`M${x - 4},${ty + t + 36} h30 l8,8 v34 h-38 z`}
-                        fill={C.surface}
-                        stroke={C.accent}
-                        strokeWidth={2}
-                      />
-                      {[48, 56, 64].map((dy) => (
-                        <line key={dy} x1={x + 2} y1={ty + t + dy} x2={x + 26} y2={ty + t + dy} stroke={C.accent} strokeWidth={1.5} />
-                      ))}
+      {({ t: time }) => (
+        <>
+          {groups.map((g, gi) => {
+            const gx = x0 + gi * (gw + gg);
+            return (
+              <g key={g.name}>
+                <Label x={gx + gw / 2} y={ty - 20} size={15} weight={600} tone={g.needsFix ? "ink" : "muted"}>
+                  {g.name}
+                </Label>
+                {[0, 1, 2, 3].map((k) => {
+                  const x = gx + k * (t + gap);
+                  const missed = k === g.miss;
+                  const graded = 0.3 + 0.1 * (gi * 4 + k); // tiles are marked one by one
+                  return (
+                    <g key={k} opacity={op(seg(time, graded, graded + 0.4))}>
+                      <rect x={x} y={ty} width={t} height={t} rx={4} fill={missed ? C.surface : C.soft} stroke={missed ? C.alarm : C.accent} strokeWidth={2} />
+                      <Label x={x + t / 2} y={ty + t / 2 + 1} size={16} tone={missed ? "alarm" : "accent"} weight={700}>
+                        {missed ? "✗" : "✓"}
+                      </Label>
+                      {missed && g.needsFix && (
+                        <g>
+                          <GrowArrow p={seg(time, 3, 3.4)} x1={x + t / 2} y1={ty + t + 4} x2={x + t / 2} y2={ty + t + 30} tone="accent" width={2} />
+                          <Reveal t={time} at={3.3}>
+                            <path
+                              d={`M${x - 4},${ty + t + 36} h30 l8,8 v34 h-38 z`}
+                              fill={C.surface}
+                              stroke={C.accent}
+                              strokeWidth={2}
+                            />
+                            {[48, 56, 64].map((dy) => (
+                              <line key={dy} x1={x + 2} y1={ty + t + dy} x2={x + 26} y2={ty + t + dy} stroke={C.accent} strokeWidth={1.5} />
+                            ))}
+                          </Reveal>
+                        </g>
+                      )}
+                      {missed && !g.needsFix && (
+                        <Label x={x + t} y={ty + t + 22} anchor="end" size={15} tone="muted" opacity={op(seg(time, 3.2, 3.7))}>
+                          no repair needed
+                        </Label>
+                      )}
                     </g>
-                  )}
-                  {missed && !g.needsFix && (
-                    <Label x={x + t} y={ty + t + 22} anchor="end" size={15} tone="muted">
-                      no repair needed
-                    </Label>
-                  )}
-                </g>
-              );
-            })}
-          </g>
-        );
-      })}
-      <Label x={x0 + gw / 2 + (gw + gg) / 2} y={ty + t + 96} size={15} tone="accent">
-        corrections filed
-      </Label>
-      <line x1={20} y1={196} x2={460} y2={196} stroke={C.line} strokeWidth={1.5} />
-      <Label x={240} y={222} size={18} serif weight={600}>
-        9 / 12 = 75% ≥ 70%
-      </Label>
-      <Label x={240} y={254} size={16} tone="accent" weight={600}>
-        + repairs filed → gate opens
-      </Label>
-    </Figure>
+                  );
+                })}
+              </g>
+            );
+          })}
+          <Label x={x0 + gw / 2 + (gw + gg) / 2} y={ty + t + 96} size={15} tone="accent" opacity={op(seg(time, 3.6, 4.1))}>
+            corrections filed
+          </Label>
+          <line x1={20} y1={196} x2={460} y2={196} stroke={C.line} strokeWidth={1.5} />
+          <Label x={240} y={222} size={18} serif weight={600} opacity={op(seg(time, 1.9, 2.4))}>
+            9 / 12 = 75% ≥ 70%
+          </Label>
+          <Label x={240} y={254} size={16} tone="accent" weight={600} opacity={op(seg(time, 4.2, 4.7))}>
+            + repairs filed → gate opens
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 

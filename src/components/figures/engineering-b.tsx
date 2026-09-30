@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Arrow, Axes, C, DimH, Figure, Label, WallV, plotBox, type FigureMap } from "./kit";
+import { Arrow, Axes, C, DimH, Label, WallV, plotBox, type FigureMap } from "./kit";
 import { AnimatedFigure, GrowArrow, clamp, lerp, op, partial, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
@@ -671,51 +671,92 @@ function TradeStudy() {
   ];
   const ay = 62;
   return (
-    <Figure
+    <AnimatedFigure
       height={320}
+      duration={4.6}
       alt="Top: a mass scale from 45 g scoring 1 to 160 g scoring 0, with printed nylon at 60 g scoring 0.87. Bottom: weighted totals as bars, printed nylon 0.694, CNC aluminum 0.632, steel weldment 0.505, CFRP layup 0.500."
-      caption="Each criterion is stretched to 0–1 between the best and worst observed before the weights touch it. Under this brief, nylon wins by being cheap, fast and light."
+      steps={[
+        {
+          at: 0,
+          label: "Normalize",
+          caption: "Less mass is better, so the lightest observed, 45 g, scores 1 and the heaviest, 160 g, scores 0.",
+        },
+        { at: 1.2, label: "Score", caption: "Printed nylon's 60 g normalizes to (160 − 60) ÷ (160 − 45) = 0.87." },
+        {
+          at: 2.4,
+          label: "Weigh",
+          caption:
+            "Each criterion is stretched to 0–1 between the best and worst observed before the weights touch it. Under this brief, nylon wins by being cheap, fast and light.",
+        },
+      ]}
     >
-      <Label x={ax0} y={20} anchor="start" size={15} tone="muted">
-        normalize mass (less is better)
-      </Label>
-      <line x1={ax0} y1={ay} x2={ax1} y2={ay} stroke={C.ink} strokeWidth={2} />
-      {[45, 160].map((g) => (
-        <g key={g}>
-          <line x1={mx(g)} y1={ay - 8} x2={mx(g)} y2={ay + 8} stroke={C.ink} strokeWidth={2} />
-          <Label x={mx(g)} y={ay + 22} size={15}>
-            {g} g
-          </Label>
-          <Label x={mx(g)} y={ay + 42} size={15} tone="muted">
-            {g === 45 ? "score 1" : "score 0"}
-          </Label>
-        </g>
-      ))}
-      <circle cx={mx(60)} cy={ay} r={7} fill={C.accent} />
-      <Arrow x1={mx(60) + 60} y1={ay - 22} x2={mx(60) + 10} y2={ay - 6} tone="accent" width={1.5} />
-      <Label x={mx(60) + 66} y={ay - 24} anchor="start" size={15} tone="accent" weight={600}>
-        nylon 60 g → 0.87
-      </Label>
-
-      <line x1={20} y1={126} x2={460} y2={126} stroke={C.line} strokeWidth={1} />
-      <Label x={20} y={146} anchor="start" size={15} tone="muted">
-        weighted total (0.30 · 0.25 · 0.20 · 0.15 · 0.10)
-      </Label>
-      {bars.map(([name, v, win], i) => {
-        const y = 170 + i * 36;
+      {({ t }) => {
+        const pin = seg(t, 1.3, 1.7); // nylon's 60 g placed on the scale
         return (
-          <g key={name}>
-            <Label x={bx - 10} y={y + 12} anchor="end" size={15} tone={win ? "accent" : "ink"} weight={win ? 700 : undefined}>
-              {name}
+          <>
+            <Label x={ax0} y={20} anchor="start" size={15} tone="muted">
+              normalize mass (less is better)
             </Label>
-            <rect x={bx} y={y} width={v * bw} height={24} fill={win ? C.accent : C.line} />
-            <Label x={bx + v * bw + 8} y={y + 12} anchor="start" size={15} weight={win ? 700 : undefined} tone={win ? "accent" : "ink"}>
-              {v.toFixed(3)}
+            <line x1={ax0} y1={ay} x2={ax1} y2={ay} stroke={C.ink} strokeWidth={2} />
+            {[45, 160].map((g, i) => (
+              <g key={g}>
+                <line x1={mx(g)} y1={ay - 8} x2={mx(g)} y2={ay + 8} stroke={C.ink} strokeWidth={2} />
+                <Label x={mx(g)} y={ay + 22} size={15}>
+                  {g} g
+                </Label>
+                <Label x={mx(g)} y={ay + 42} size={15} tone="muted" opacity={op(seg(t, 0.4 + 0.25 * i, 0.9 + 0.25 * i))}>
+                  {g === 45 ? "score 1" : "score 0"}
+                </Label>
+              </g>
+            ))}
+            <circle cx={mx(60)} cy={lerp(ay - 16, ay, pin)} r={7} fill={C.accent} opacity={op(pin)} />
+            <GrowArrow p={seg(t, 1.6, 2)} x1={mx(60) + 60} y1={ay - 22} x2={mx(60) + 10} y2={ay - 6} tone="accent" width={1.5} />
+            <Label x={mx(60) + 66} y={ay - 24} anchor="start" size={15} tone="accent" weight={600} opacity={op(seg(t, 1.8, 2.3))}>
+              nylon 60 g → 0.87
             </Label>
-          </g>
+
+            <g opacity={op(seg(t, 2.5, 3))}>
+              <line x1={20} y1={126} x2={460} y2={126} stroke={C.line} strokeWidth={1} />
+              <Label x={20} y={146} anchor="start" size={15} tone="muted">
+                weighted total (0.30 · 0.25 · 0.20 · 0.15 · 0.10)
+              </Label>
+            </g>
+            {bars.map(([name, v, win], i) => {
+              const y = 170 + i * 36;
+              const a = 2.8 + 0.25 * i;
+              const grow = seg(t, a, a + 0.6); // each weighted total grows out to its value
+              return (
+                <g key={name}>
+                  <Label
+                    x={bx - 10}
+                    y={y + 12}
+                    anchor="end"
+                    size={15}
+                    tone={win ? "accent" : "ink"}
+                    weight={win ? 700 : undefined}
+                    opacity={op(seg(t, a, a + 0.4))}
+                  >
+                    {name}
+                  </Label>
+                  {grow > 0 ? <rect x={bx} y={y} width={lerp(0, v * bw, grow)} height={24} fill={win ? C.accent : C.line} /> : null}
+                  <Label
+                    x={bx + v * bw + 8}
+                    y={y + 12}
+                    anchor="start"
+                    size={15}
+                    weight={win ? 700 : undefined}
+                    tone={win ? "accent" : "ink"}
+                    opacity={op(seg(t, a + 0.5, a + 0.9))}
+                  >
+                    {v.toFixed(3)}
+                  </Label>
+                </g>
+              );
+            })}
+          </>
         );
-      })}
-    </Figure>
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -727,55 +768,107 @@ function ParamSweep() {
   const pts: Array<[number, number]> = [];
   for (let h = hStart; h <= 80.001; h += 0.5) pts.push([h, d(h)]);
   pts.unshift([hStart, 10]);
+  // The sweep steps depth from 20 to 80 mm at a steady rate (off scale until hStart), then walks
+  // back along the curve to the smallest passing depth.
+  const hEnd = pts[pts.length - 1][0];
+  const reach = (h: number) => 0.4 + ((h - 20) / 60) * 2.8; // when the sweep reaches depth h
+  const swept = (t: number) => Math.min(hEnd, 20 + 60 * clamp((t - 0.4) / 2.8));
+  const probe = (t: number) => {
+    const back = seg(t, 3.4, 4.1);
+    return back > 0 ? lerp(hEnd, 53, back) : swept(t);
+  };
+  const drawn = (h: number): Array<[number, number]> => (h >= hEnd ? pts : [...pts.filter(([x]) => x < h), [h, d(h)]]);
+  const at40 = reach(40);
+  const at52 = reach(52);
   return (
-    <Figure
+    <AnimatedFigure
       height={300}
+      duration={4.5}
       alt="Tip deflection of a 1 m aluminum cantilever falling as one over depth cubed as depth sweeps from 20 to 80 mm, crossing the 2 mm limit between 52 mm at 2.03 mm and 53 mm at 1.92 mm."
-      caption="Deflection falls as 1/h³: the first millimeters of depth buy enormously, the last buy almost nothing. The smallest passing depth, 53 mm, is the design point."
+      steps={[
+        {
+          at: 0,
+          label: "Sweep",
+          caption: "Sweep the 1 m cantilever's depth from 20 to 80 mm: at 20 mm the tip sags 35.7 mm, at 40 mm only 4.46.",
+        },
+        { at: 1.9, label: "Limit", caption: "52 mm still fails at 2.03 mm; 53 mm is the first depth under the 2 mm limit, at 1.92." },
+        {
+          at: 3.4,
+          label: "Design point",
+          caption:
+            "Deflection falls as 1/h³: the first millimeters of depth buy enormously, the last buy almost nothing. The smallest passing depth, 53 mm, is the design point.",
+        },
+      ]}
+      readouts={(t) => {
+        const h = Math.round(probe(t)); // the sweep's 1 mm steps
+        const v = d(h);
+        return [
+          { label: "depth h", value: `${h} mm` },
+          { label: "tip deflection", value: `${v.toFixed(v >= 10 ? 1 : 2)} mm`, tone: v > 2 ? "alarm" : "accent" },
+        ];
+      }}
     >
-      <Axes box={b} xLabel="" yLabel="tip deflection (mm)" />
-      <Label x={b.x + b.w} y={b.y + b.h + 44} anchor="end" size={15} tone="muted">
-        beam depth h (mm)
-      </Label>
-      {[20, 40, 60, 80].map((t) => (
-        <g key={t}>
-          <line x1={b.px(t)} y1={b.y + b.h} x2={b.px(t)} y2={b.y + b.h + 6} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.px(t)} y={b.y + b.h + 20} size={15} tone="muted">
-            {t}
-          </Label>
-        </g>
-      ))}
-      {[2, 5, 10].map((t) => (
-        <g key={t}>
-          <line x1={b.x - 6} y1={b.py(t)} x2={b.x} y2={b.py(t)} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.x - 10} y={b.py(t)} anchor="end" size={15} tone="muted">
-            {t}
-          </Label>
-        </g>
-      ))}
-      <line x1={b.x} y1={b.py(2)} x2={b.x + b.w} y2={b.py(2)} stroke={C.alarm} strokeWidth={2} strokeDasharray="6 5" />
-      <Label x={b.x + b.w} y={b.py(2) - 14} anchor="end" size={15} tone="alarm">
-        limit 2 mm
-      </Label>
-      <path d={b.path(pts)} stroke={C.ink} strokeWidth={3} fill="none" />
-      <Arrow x1={b.px(hStart)} y1={b.py(9.4)} x2={b.px(hStart)} y2={b.y - 6} tone="muted" width={1.5} />
-      <Label x={b.px(hStart) + 24} y={b.y + 6} anchor="start" size={15} tone="muted">
-        20 mm sags 35.7 (off scale)
-      </Label>
-      <circle cx={b.px(40)} cy={b.py(4.46)} r={5} fill={C.ink} />
-      <Label x={b.px(40) - 8} y={b.py(4.46) + 18} anchor="end" size={15}>
-        40 mm: 4.46
-      </Label>
-      <circle cx={b.px(52)} cy={b.py(2.03)} r={5} fill={C.surface} stroke={C.alarm} strokeWidth={2} />
-      <circle cx={b.px(53)} cy={b.py(1.92)} r={6} fill={C.accent} />
-      <line x1={b.px(53) + 4} y1={b.py(2.2)} x2={b.px(53) + 24} y2={b.py(4.2)} stroke={C.muted} strokeWidth={1.5} />
-      <Label x={b.px(53) + 28} y={b.py(5.6)} anchor="start" size={15} tone="alarm">
-        52 mm: 2.03 fails
-      </Label>
-      <Label x={b.px(53) + 28} y={b.py(4.4)} anchor="start" size={15} tone="accent" weight={600}>
-        53 mm: 1.92 passes
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const hs = swept(t);
+        const hp = probe(t);
+        const gone = seg(t, 4.05, 4.35); // the probe settles onto the design point
+        return (
+          <>
+            <Axes box={b} xLabel="" yLabel="tip deflection (mm)" />
+            <Label x={b.x + b.w} y={b.y + b.h + 44} anchor="end" size={15} tone="muted">
+              beam depth h (mm)
+            </Label>
+            {[20, 40, 60, 80].map((t) => (
+              <g key={t}>
+                <line x1={b.px(t)} y1={b.y + b.h} x2={b.px(t)} y2={b.y + b.h + 6} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.px(t)} y={b.y + b.h + 20} size={15} tone="muted">
+                  {t}
+                </Label>
+              </g>
+            ))}
+            {[2, 5, 10].map((t) => (
+              <g key={t}>
+                <line x1={b.x - 6} y1={b.py(t)} x2={b.x} y2={b.py(t)} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.x - 10} y={b.py(t)} anchor="end" size={15} tone="muted">
+                  {t}
+                </Label>
+              </g>
+            ))}
+            <line x1={b.x} y1={b.py(2)} x2={b.x + b.w} y2={b.py(2)} stroke={C.alarm} strokeWidth={2} strokeDasharray="6 5" />
+            <Label x={b.x + b.w} y={b.py(2) - 14} anchor="end" size={15} tone="alarm">
+              limit 2 mm
+            </Label>
+            {hs > hStart ? <path d={b.path(drawn(hs))} stroke={C.ink} strokeWidth={3} fill="none" /> : null}
+            <g opacity={op(seg(t, 0.4, 0.9))}>
+              <Arrow x1={b.px(hStart)} y1={b.py(9.4)} x2={b.px(hStart)} y2={b.y - 6} tone="muted" width={1.5} />
+              <Label x={b.px(hStart) + 24} y={b.y + 6} anchor="start" size={15} tone="muted">
+                20 mm sags 35.7 (off scale)
+              </Label>
+            </g>
+            <g opacity={op(seg(t, at40, at40 + 0.4))}>
+              <circle cx={b.px(40)} cy={b.py(4.46)} r={5} fill={C.ink} />
+              <Label x={b.px(40) - 8} y={b.py(4.46) + 18} anchor="end" size={15}>
+                40 mm: 4.46
+              </Label>
+            </g>
+            <circle cx={b.px(52)} cy={b.py(2.03)} r={5} fill={C.surface} stroke={C.alarm} strokeWidth={2} opacity={op(seg(t, at52, at52 + 0.4))} />
+            <circle cx={b.px(53)} cy={b.py(1.92)} r={6} fill={C.accent} opacity={op(seg(t, at52 + 0.05, at52 + 0.45))} />
+            <g opacity={op(seg(t, at52 + 0.1, at52 + 0.6))}>
+              <line x1={b.px(53) + 4} y1={b.py(2.2)} x2={b.px(53) + 24} y2={b.py(4.2)} stroke={C.muted} strokeWidth={1.5} />
+              <Label x={b.px(53) + 28} y={b.py(5.6)} anchor="start" size={15} tone="alarm">
+                52 mm: 2.03 fails
+              </Label>
+              <Label x={b.px(53) + 28} y={b.py(4.4)} anchor="start" size={15} tone="accent" weight={600}>
+                53 mm: 1.92 passes
+              </Label>
+            </g>
+            {hp > hStart && gone < 1 ? (
+              <circle cx={b.px(hp)} cy={b.py(d(hp))} r={6} fill={C.surface} stroke={C.ink} strokeWidth={2} opacity={op(1 - gone)} />
+            ) : null}
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -787,56 +880,105 @@ function Convergence() {
     [1.5, 1.9, "54 → 53"],
   ];
   const bw = 64;
+  const barAt = [1.4, 2.5]; // each refinement's bar grows as its step of the history is written
+  // The history is wiped on left to right: "60 → 54" with the first bar, "→ 53 mm" with the second.
+  // Edges are the measured glyph extents of the title (it spans about x 158–322).
+  const wipe = (t: number) => (t < 2.4 ? lerp(150, 234, seg(t, 1.3, 1.8)) : lerp(234, 330, seg(t, 2.4, 2.9)));
   return (
-    <Figure
+    <AnimatedFigure
       height={300}
+      duration={4.4}
       alt="Iteration history of the minimal passing beam depth, 60 then 54 then 53 mm, with bars of relative change 11% and 1.9% against a dashed 5% tolerance line, and a dashed third refinement labeled as swallowed by the ±0.5 mm stock tolerance."
-      caption="Each refinement moved the answer less. The next step would only split 52.5 from 53.0 mm, which the ±0.5 mm stock tolerance swallows, so stop at 53 mm and write that down."
+      steps={[
+        {
+          at: 0,
+          label: "Rule",
+          caption: "Write the tolerance before iterating: each refinement's relative change is judged against 5%.",
+        },
+        { at: 1.2, label: "Refine", caption: "The first refinement moved the minimal passing depth from 60 to 54 mm, an 11% change." },
+        { at: 2.3, label: "Converge", caption: "The next refinement, 54 → 53 mm, changed it only 1.9%, under the 5% line." },
+        {
+          at: 3.3,
+          label: "Stop",
+          caption:
+            "Each refinement moved the answer less. The next step would only split 52.5 from 53.0 mm, which the ±0.5 mm stock tolerance swallows, so stop at 53 mm and write that down.",
+        },
+      ]}
     >
-      <Label x={240} y={24} size={20} serif>
-        60 → 54 → <tspan fill={C.accent} fontWeight={600}>53 mm</tspan>
-      </Label>
-      <Axes box={b} xLabel="" yLabel="relative change (%)" />
-      {[5, 10].map((t) => (
-        <g key={t}>
-          <line x1={b.x - 6} y1={b.py(t)} x2={b.x} y2={b.py(t)} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.x - 10} y={b.py(t)} anchor="end" size={15} tone="muted">
-            {t}
-          </Label>
-        </g>
-      ))}
-      {bars.map(([x, v, lab], i) => (
-        <g key={lab}>
-          <rect x={b.px(x) - bw / 2} y={b.py(v)} width={bw} height={b.py(0) - b.py(v)} fill={i ? C.accent : C.line} />
-          <Label x={b.px(x)} y={b.py(v) - 14} size={15} weight={600} tone={i ? "accent" : "ink"}>
-            {v.toFixed(1).replace(".0", "")}%
-          </Label>
-          <Label x={b.px(x)} y={b.y + b.h + 20} size={15} tone="muted">
-            {lab}
-          </Label>
-        </g>
-      ))}
-      <rect
-        x={b.px(2.5) - bw / 2}
-        y={b.py(1)}
-        width={bw}
-        height={b.py(0) - b.py(1)}
-        fill="none"
-        stroke={C.muted}
-        strokeWidth={1.5}
-        strokeDasharray="4 3"
-      />
-      <Label x={b.px(2.5)} y={b.y + b.h + 20} size={15} tone="muted">
-        52.5?
-      </Label>
-      <Label x={b.px(2.5)} y={b.y + b.h + 42} size={15} tone="muted">
-        lost in ±0.5 stock
-      </Label>
-      <line x1={b.x} y1={b.py(5)} x2={b.x + b.w} y2={b.py(5)} stroke={C.alarm} strokeWidth={2} strokeDasharray="6 5" />
-      <Label x={b.x + b.w} y={b.py(5) - 14} anchor="end" size={15} tone="alarm">
-        tolerance 5%
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const edge = wipe(t);
+        const wiping = edge < 330;
+        return (
+          <>
+            {wiping ? (
+              <clipPath id="fig-convergence-history">
+                <rect x={0} y={0} width={edge} height={44} />
+              </clipPath>
+            ) : null}
+            <g clipPath={wiping ? "url(#fig-convergence-history)" : undefined}>
+              <Label x={240} y={24} size={20} serif>
+                60 → 54 → <tspan fill={C.accent} fontWeight={600}>53 mm</tspan>
+              </Label>
+            </g>
+            <Axes box={b} xLabel="" yLabel="relative change (%)" />
+            {[5, 10].map((t) => (
+              <g key={t}>
+                <line x1={b.x - 6} y1={b.py(t)} x2={b.x} y2={b.py(t)} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.x - 10} y={b.py(t)} anchor="end" size={15} tone="muted">
+                  {t}
+                </Label>
+              </g>
+            ))}
+            {bars.map(([x, v, lab], i) => {
+              const a = barAt[i];
+              const h = lerp(0, v, seg(t, a, a + 0.6));
+              return (
+                <g key={lab}>
+                  <rect x={b.px(x) - bw / 2} y={b.py(h)} width={bw} height={b.py(0) - b.py(h)} fill={i ? C.accent : C.line} />
+                  <Label x={b.px(x)} y={b.py(v) - 14} size={15} weight={600} tone={i ? "accent" : "ink"} opacity={op(seg(t, a + 0.4, a + 0.8))}>
+                    {v.toFixed(1).replace(".0", "")}%
+                  </Label>
+                  <Label x={b.px(x)} y={b.y + b.h + 20} size={15} tone="muted" opacity={op(seg(t, a, a + 0.4))}>
+                    {lab}
+                  </Label>
+                </g>
+              );
+            })}
+            <rect
+              x={b.px(2.5) - bw / 2}
+              y={b.py(1)}
+              width={bw}
+              height={b.py(0) - b.py(1)}
+              fill="none"
+              stroke={C.muted}
+              strokeWidth={1.5}
+              strokeDasharray="4 3"
+              opacity={op(seg(t, 3.4, 3.9))}
+            />
+            <Label x={b.px(2.5)} y={b.y + b.h + 20} size={15} tone="muted" opacity={op(seg(t, 3.5, 4))}>
+              52.5?
+            </Label>
+            <Label x={b.px(2.5)} y={b.y + b.h + 42} size={15} tone="muted" opacity={op(seg(t, 3.7, 4.2))}>
+              lost in ±0.5 stock
+            </Label>
+            {t > 0.4 ? (
+              <line
+                x1={b.x}
+                y1={b.py(5)}
+                x2={lerp(b.x, b.x + b.w, seg(t, 0.4, 0.9))}
+                y2={b.py(5)}
+                stroke={C.alarm}
+                strokeWidth={2}
+                strokeDasharray="6 5"
+              />
+            ) : null}
+            <Label x={b.x + b.w} y={b.py(5) - 14} anchor="end" size={15} tone="alarm" opacity={op(seg(t, 0.6, 1.1))}>
+              tolerance 5%
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -848,52 +990,85 @@ function SafetyFactor() {
   const cx = 300;
   const cw = 34;
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.9}
       alt="A tow-bar lug pulled by 12 kN beside a stress column: yield at 250 MPa, divided by a factor of safety of 2.0 to an allowable 125 MPa, with the lug's actual 120 MPa filling the column just under the allowable line."
-      caption="The area is arithmetic; the 2.0 is the judgment. Half the yield strength is held back for loads nobody measured, and the drawing says so."
+      steps={[
+        { at: 0, label: "Demand", caption: "A tow-bar lug must carry a 12 kN demand, and its material yields at 250 MPa." },
+        {
+          at: 1.6,
+          label: "Factor",
+          caption: "The consequence is moderate, so the class says FoS 2.0: allowable stress = 250 ÷ 2.0 = 125 MPa.",
+        },
+        { at: 2.8, label: "Area", caption: "Required area = 12,000 N ÷ 125 MPa = 96 mm², and the designer picks 100 mm²." },
+        {
+          at: 3.7,
+          label: "Stress",
+          caption:
+            "The area is arithmetic; the 2.0 is the judgment. Half the yield strength is held back for loads nobody measured, and the drawing says so.",
+        },
+      ]}
     >
-      {/* lug */}
-      <WallV x={36} y={100} h={80} side="left" />
-      <path d="M36,112 L180,112 A28,28 0 0 1 180,168 L36,168 Z" fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <circle cx={180} cy={140} r={13} fill={C.surface} stroke={C.ink} strokeWidth={2} />
-      <circle cx={186} cy={140} r={8} fill={C.ink} />
-      <Arrow x1={194} y1={140} x2={252} y2={140} tone="accent" width={4} />
-      <Label x={224} y={116} tone="accent" weight={600}>
-        12 kN
-      </Label>
-      <Label x={110} y={196} size={15}>
-        area 100 mm²
-      </Label>
-      <Label x={110} y={216} size={15} tone="muted">
-        (96 required)
-      </Label>
-      <Label x={110} y={82} size={15} tone="muted">
-        tow-bar lug
-      </Label>
+      {({ t }) => {
+        const yieldIn = seg(t, 1, 1.5);
+        const allow = seg(t, 2.2, 2.7);
+        const fill = lerp(0, 120, seg(t, 3.8, 4.5)); // the lug's stress rises in the column
+        return (
+          <>
+            {/* lug */}
+            <WallV x={36} y={100} h={80} side="left" />
+            <path d="M36,112 L180,112 A28,28 0 0 1 180,168 L36,168 Z" fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <circle cx={180} cy={140} r={13} fill={C.surface} stroke={C.ink} strokeWidth={2} />
+            <circle cx={186} cy={140} r={8} fill={C.ink} />
+            <GrowArrow p={seg(t, 0.4, 0.9)} x1={194} y1={140} x2={252} y2={140} tone="accent" width={4} />
+            <Label x={224} y={116} tone="accent" weight={600} opacity={op(seg(t, 0.6, 1.1))}>
+              12 kN
+            </Label>
+            <Label x={110} y={196} size={15} opacity={op(seg(t, 2.9, 3.4))}>
+              area 100 mm²
+            </Label>
+            <Label x={110} y={216} size={15} tone="muted" opacity={op(seg(t, 3.1, 3.6))}>
+              (96 required)
+            </Label>
+            <Label x={110} y={82} size={15} tone="muted">
+              tow-bar lug
+            </Label>
 
-      {/* stress column */}
-      <rect x={cx} y={sy(250)} width={cw} height={250 * 0.8} fill={C.surface} stroke={C.ink} strokeWidth={1.5} />
-      <rect x={cx} y={sy(120)} width={cw} height={120 * 0.8} fill={C.accent} />
-      <line x1={cx - 6} y1={sy(250)} x2={cx + cw + 6} y2={sy(250)} stroke={C.alarm} strokeWidth={3} />
-      <line x1={cx - 6} y1={sy(125)} x2={cx + cw + 6} y2={sy(125)} stroke={C.ink} strokeWidth={2.5} strokeDasharray="5 3" />
-      <Label x={cx + cw + 12} y={sy(250)} anchor="start" size={15} tone="alarm" weight={600}>
-        yield 250 MPa
-      </Label>
-      <Label x={cx + cw + 12} y={sy(125)} anchor="start" size={15} weight={600}>
-        allowable 125
-      </Label>
-      <Label x={cx + cw + 12} y={sy(60)} anchor="start" size={15} tone="accent">
-        lug 120
-      </Label>
-      <Arrow x1={cx + cw + 30} y1={sy(240)} x2={cx + cw + 30} y2={sy(135)} tone="muted" width={1.5} />
-      <Label x={cx + cw + 40} y={sy(188)} anchor="start" size={15} tone="muted">
-        ÷ FoS 2.0
-      </Label>
-      <Label x={cx + cw / 2} y={sy(0) + 20} size={15} tone="muted">
-        stress
-      </Label>
-    </Figure>
+            {/* stress column */}
+            <rect x={cx} y={sy(250)} width={cw} height={250 * 0.8} fill={C.surface} stroke={C.ink} strokeWidth={1.5} />
+            {fill > 0 ? <rect x={cx} y={sy(fill)} width={cw} height={fill * 0.8} fill={C.accent} /> : null}
+            <line x1={cx - 6} y1={sy(250)} x2={cx + cw + 6} y2={sy(250)} stroke={C.alarm} strokeWidth={3} opacity={op(yieldIn)} />
+            <line
+              x1={cx - 6}
+              y1={sy(125)}
+              x2={cx + cw + 6}
+              y2={sy(125)}
+              stroke={C.ink}
+              strokeWidth={2.5}
+              strokeDasharray="5 3"
+              opacity={op(allow)}
+            />
+            <Label x={cx + cw + 12} y={sy(250)} anchor="start" size={15} tone="alarm" weight={600} opacity={op(yieldIn)}>
+              yield 250 MPa
+            </Label>
+            <Label x={cx + cw + 12} y={sy(125)} anchor="start" size={15} weight={600} opacity={op(allow)}>
+              allowable 125
+            </Label>
+            <Label x={cx + cw + 12} y={sy(60)} anchor="start" size={15} tone="accent" opacity={op(seg(t, 4.2, 4.7))}>
+              lug 120
+            </Label>
+            <GrowArrow p={seg(t, 1.7, 2.2)} x1={cx + cw + 30} y1={sy(240)} x2={cx + cw + 30} y2={sy(135)} tone="muted" width={1.5} />
+            <Label x={cx + cw + 40} y={sy(188)} anchor="start" size={15} tone="muted" opacity={op(seg(t, 1.9, 2.4))}>
+              ÷ FoS 2.0
+            </Label>
+            <Label x={cx + cw / 2} y={sy(0) + 20} size={15} tone="muted">
+              stress
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -905,45 +1080,77 @@ function Standards() {
     { tag: "App. A", text: "fixture guidance", out: "informative: no row", tone: "muted", row: false },
   ];
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.6}
       alt="Three clauses from a tow-bar standard: the shall-statement to withstand three times rated load maps to a compliance-table row with a pull-test report, while the should about room temperature and the Appendix A fixture guidance map to no row."
-      caption="Hunt the shalls: each one earns a row in the compliance table and a named piece of evidence. Shoulds and appendices are advice, and get no row."
+      steps={[
+        {
+          at: 0,
+          label: "Clauses",
+          caption:
+            "Tow-bar standard §4.2: the bar shall withstand 3× rated load, should be tested at room temperature, and Appendix A adds fixture guidance.",
+        },
+        { at: 1.5, label: "Shall", caption: "The shall is a demand, so it earns a compliance row and named evidence: the pull-test report." },
+        { at: 2.5, label: "Should", caption: "A should is advice: break it and you owe an explanation, but it gets no row." },
+        {
+          at: 3.5,
+          label: "Appendix",
+          caption:
+            "Hunt the shalls: each one earns a row in the compliance table and a named piece of evidence. Shoulds and appendices are advice, and get no row.",
+        },
+      ]}
     >
-      <Label x={20} y={22} anchor="start" size={15} tone="muted">
-        tow-bar standard §4.2
-      </Label>
-      <Label x={290} y={22} anchor="start" size={15} tone="muted">
-        compliance table
-      </Label>
-      <rect x={16} y={40} width={236} height={236} fill="none" stroke={C.line} strokeWidth={1.5} />
-      {rows.map((r, i) => {
-        const y = 52 + i * 76;
-        return (
-          <g key={r.tag}>
-            <Chip x={28} y={y} w={76} tone={r.tone} filled={r.row}>
-              {r.tag}
-            </Chip>
-            <Label x={30} y={y + 46} anchor="start" size={15} tone={r.row ? "ink" : "muted"}>
-              {r.text}
-            </Label>
-            <Arrow x1={242} y1={y + 30} x2={282} y2={y + 30} tone={r.row ? "accent" : "muted"} width={r.row ? 2.5 : 1.5} dashed={!r.row} />
-            {r.row ? (
-              <g>
-                <rect x={290} y={y + 12} width={174} height={38} fill={C.soft} stroke={C.accent} strokeWidth={2} />
-                <Label x={377} y={y + 31} size={15} weight={600}>
-                  {r.out}
-                </Label>
+      {({ t }) => (
+        <>
+          <Label x={20} y={22} anchor="start" size={15} tone="muted">
+            tow-bar standard §4.2
+          </Label>
+          <Label x={290} y={22} anchor="start" size={15} tone="muted">
+            compliance table
+          </Label>
+          <rect x={16} y={40} width={236} height={236} fill="none" stroke={C.line} strokeWidth={1.5} />
+          {rows.map((r, i) => {
+            const y = 52 + i * 76;
+            const a = 1.5 + i; // this clause's verdict: shall, then should, then the appendix
+            return (
+              <g key={r.tag}>
+                <g opacity={op(seg(t, 0.4 + 0.25 * i, 0.85 + 0.25 * i))}>
+                  <Chip x={28} y={y} w={76} tone={r.tone} filled={r.row}>
+                    {r.tag}
+                  </Chip>
+                  <Label x={30} y={y + 46} anchor="start" size={15} tone={r.row ? "ink" : "muted"}>
+                    {r.text}
+                  </Label>
+                </g>
+                <GrowArrow
+                  p={seg(t, a + 0.1, a + 0.5)}
+                  x1={242}
+                  y1={y + 30}
+                  x2={282}
+                  y2={y + 30}
+                  tone={r.row ? "accent" : "muted"}
+                  width={r.row ? 2.5 : 1.5}
+                  dashed={!r.row}
+                />
+                {r.row ? (
+                  <g opacity={op(seg(t, a + 0.4, a + 0.9))}>
+                    <rect x={290} y={y + 12} width={174} height={38} fill={C.soft} stroke={C.accent} strokeWidth={2} />
+                    <Label x={377} y={y + 31} size={15} weight={600}>
+                      {r.out}
+                    </Label>
+                  </g>
+                ) : (
+                  <Label x={292} y={y + 31} anchor="start" size={15} tone="muted" opacity={op(seg(t, a + 0.4, a + 0.9))}>
+                    {r.out}
+                  </Label>
+                )}
               </g>
-            ) : (
-              <Label x={292} y={y + 31} anchor="start" size={15} tone="muted">
-                {r.out}
-              </Label>
-            )}
-          </g>
-        );
-      })}
-    </Figure>
+            );
+          })}
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -961,41 +1168,65 @@ function DesignReview() {
   const dy = 34;
   const endY = top + f.length * dy;
   return (
-    <Figure
+    <AnimatedFigure
       height={330}
+      duration={4.5}
       alt="Six review findings listed by severity: one critical single-point shear pin, three majors, one minor and one observation, with an arrow from the open critical to a reject verdict."
-      caption="The verdict is arithmetic on the open findings: one open critical means reject, however good the other five pages look. Then someone signs it."
+      steps={[
+        {
+          at: 0,
+          label: "Critical",
+          caption: "The worst finding: one shear pin carries the full tow load, a single-point failure, so it is graded critical.",
+        },
+        { at: 1, label: "Findings", caption: "Three majors, a minor and an observation complete the six findings." },
+        { at: 2.5, label: "Verdict", caption: "An open critical is a rejection no matter how much schedule pressure is in the room." },
+        {
+          at: 3.5,
+          label: "Sign",
+          caption:
+            "The verdict is arithmetic on the open findings: one open critical means reject, however good the other five pages look. Then someone signs it.",
+        },
+      ]}
     >
-      {f.map(([sev, tone, filled, text], i) => {
-        const y = top + i * dy;
-        return (
-          <g key={text}>
-            <Chip x={20} y={y} w={96} tone={tone} filled={filled}>
-              {sev}
-            </Chip>
-            <Label x={130} y={y + 14} anchor="start" size={15} tone={i === 0 ? "alarm" : "ink"} weight={i === 0 ? 600 : undefined}>
-              {text}
+      {({ t }) => (
+        <>
+          {f.map(([sev, tone, filled, text], i) => {
+            const y = top + i * dy;
+            const a = i ? 1.1 + 0.2 * (i - 1) : 0.4; // the critical first, then the rest in order
+            return (
+              <g key={text} opacity={op(seg(t, a, a + 0.45))}>
+                <Chip x={20} y={y} w={96} tone={tone} filled={filled}>
+                  {sev}
+                </Chip>
+                <Label x={130} y={y + 14} anchor="start" size={15} tone={i === 0 ? "alarm" : "ink"} weight={i === 0 ? 600 : undefined}>
+                  {text}
+                </Label>
+              </g>
+            );
+          })}
+          <line x1={20} y1={endY + 6} x2={460} y2={endY + 6} stroke={C.line} strokeWidth={1.5} />
+          <Label x={20} y={endY + 32} anchor="start" size={15} tone="muted">
+            open critical → reject
+          </Label>
+          <Label x={20} y={endY + 54} anchor="start" size={15} tone="muted">
+            open major → conditional
+          </Label>
+          <GrowArrow p={seg(t, 2.6, 3)} x1={210} y1={endY + 32} x2={286} y2={endY + 32} tone="alarm" width={2.5} />
+          <g opacity={op(seg(t, 2.9, 3.4))}>
+            <rect x={294} y={endY + 14} width={150} height={40} rx={4} fill={C.alarm} />
+            <Label x={369} y={endY + 35} size={18} weight={700}>
+              <tspan fill={C.surface}>REJECT</tspan>
             </Label>
           </g>
-        );
-      })}
-      <line x1={20} y1={endY + 6} x2={460} y2={endY + 6} stroke={C.line} strokeWidth={1.5} />
-      <Label x={20} y={endY + 32} anchor="start" size={15} tone="muted">
-        open critical → reject
-      </Label>
-      <Label x={20} y={endY + 54} anchor="start" size={15} tone="muted">
-        open major → conditional
-      </Label>
-      <Arrow x1={210} y1={endY + 32} x2={286} y2={endY + 32} tone="alarm" width={2.5} />
-      <rect x={294} y={endY + 14} width={150} height={40} rx={4} fill={C.alarm} />
-      <Label x={369} y={endY + 35} size={18} weight={700}>
-        <tspan fill={C.surface}>REJECT</tspan>
-      </Label>
-      <line x1={294} y1={endY + 84} x2={444} y2={endY + 84} stroke={C.ink} strokeWidth={1.5} />
-      <Label x={369} y={endY + 70} size={16} serif tone="muted">
-        signed: reviewer
-      </Label>
-    </Figure>
+          {t > 3.6 ? (
+            <line x1={294} y1={endY + 84} x2={lerp(294, 444, seg(t, 3.6, 4.1))} y2={endY + 84} stroke={C.ink} strokeWidth={1.5} />
+          ) : null}
+          <Label x={369} y={endY + 70} size={16} serif tone="muted" opacity={op(seg(t, 3.8, 4.3))}>
+            signed: reviewer
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -1017,52 +1248,80 @@ function CapMethod() {
     }
     return pts.join(" ");
   };
-  const spiral = () => {
-    const pts: string[] = [];
-    for (let i = 0; i <= 60; i++) {
-      const t = (i / 60) * Math.PI * 4;
-      const rr = 3 + (i / 60) * 12;
-      pts.push(`${i ? "L" : "M"}${(x0 + rr * Math.cos(t)).toFixed(1)},${(y0 + rr * Math.sin(t)).toFixed(1)}`);
-    }
-    return pts.join(" ");
-  };
+  // The root spring: two turns about the root, drawn out from the centre.
+  const coil: Array<[number, number]> = [];
+  for (let i = 0; i <= 60; i++) {
+    const a = (i / 60) * Math.PI * 4;
+    const rr = 3 + (i / 60) * 12;
+    coil.push([x0 + rr * Math.cos(a), y0 + rr * Math.sin(a)]);
+  }
+  const spiral = (pts: Array<[number, number]>) => pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.5}
       alt="A spar cantilevered from a wall under upward gust lift: the model with a clamped root predicts 0.46 mm tip deflection, the test measures 0.61 mm, and the revision adds a torsional spring at the glued root so the whole beam starts with a rotation."
-      caption="Deflection exaggerated. The model clamps the root; the build glues it into a socket that rotates a little. One change, a root spring, explains the 33% gap."
+      steps={[
+        { at: 0, label: "Requirement", caption: "The requirement: at most 5 mm of tip deflection under the 2.5 g gust." },
+        { at: 1.2, label: "Model", caption: "The uniform-beam model, with its root clamped, predicts 0.46 mm at the tip." },
+        {
+          at: 2.4,
+          label: "Test",
+          caption: "The static rig measures 0.61 ± 0.05 mm: a 33% mismatch, and the uncertainty bars do not touch.",
+        },
+        {
+          at: 3.1,
+          label: "Revision",
+          caption:
+            "Deflection exaggerated. The model clamps the root; the build glues it into a socket that rotates a little. One change, a root spring, explains the 33% gap.",
+        },
+      ]}
     >
-      <WallV x={x0} y={y0 - 70} h={110} side="left" />
-      <line x1={x0} y1={y0} x2={x1} y2={y0} stroke={C.line} strokeWidth={2} strokeDasharray="5 4" />
-      <path d={curve(0.46, 0)} stroke={C.ink} strokeWidth={2.5} fill="none" strokeDasharray="7 5" />
-      <path d={curve(0.46, 0.15)} stroke={C.accent} strokeWidth={4} fill="none" />
-      <path d={spiral()} stroke={C.accent} strokeWidth={2} fill="none" />
-      {[180, 230, 280].map((x) => (
-        <Arrow key={x} x1={x} y1={y0 + 48} x2={x} y2={y0 + 14} tone="muted" width={2} />
-      ))}
-      <Label x={230} y={y0 + 66} size={15} tone="muted">
-        2.5 g gust lift
-      </Label>
-      {/* tip readouts */}
-      <line x1={x1} y1={y0 - 0.61 * k} x2={x1 + 16} y2={y0 - 0.61 * k} stroke={C.accent} strokeWidth={2} />
-      <line x1={x1} y1={y0 - 0.46 * k} x2={x1 + 16} y2={y0 - 0.46 * k} stroke={C.ink} strokeWidth={2} />
-      <Label x={x1 + 24} y={y0 - 0.61 * k - 4} anchor="start" size={15} tone="accent" weight={600}>
-        test 0.61 ± 0.05 mm
-      </Label>
-      <Label x={x1 + 24} y={y0 - 0.46 * k + 6} anchor="start" size={15}>
-        model 0.46 mm
-      </Label>
-      <Label x={x1 + 24} y={y0 - 0.46 * k + 26} anchor="start" size={15} tone="muted">
-        (clamped root)
-      </Label>
-      <Label x={x0 + 20} y={y0 + 34} anchor="start" size={15} tone="accent" weight={600}>
-        root spring
-      </Label>
-      <Label x={x0 + 4} y={34} anchor="start" size={15} tone="muted">
-        glued socket: root rotates
-      </Label>
-      <line x1={x0 + 10} y1={44} x2={x0 + 6} y2={y0 - 20} stroke={C.muted} strokeWidth={1.5} />
-    </Figure>
+      {({ t }) => {
+        const bend = seg(t, 1.3, 2); // the clamped model takes the gust
+        const model = seg(t, 1.8, 2.3);
+        const test = seg(t, 2.5, 3);
+        const glued = seg(t, 3.2, 3.7); // the suspect: the root is glued, not clamped
+        const wind = seg(t, 3.4, 3.9); // modelled as a torsional spring
+        const lift = seg(t, 3.6, 4.3); // which rotates the whole beam up to the test value
+        return (
+          <>
+            <WallV x={x0} y={y0 - 70} h={110} side="left" />
+            <line x1={x0} y1={y0} x2={x1} y2={y0} stroke={C.line} strokeWidth={2} strokeDasharray="5 4" />
+            {bend > 0 ? <path d={curve(0.46 * bend, 0)} stroke={C.ink} strokeWidth={2.5} fill="none" strokeDasharray="7 5" /> : null}
+            {lift > 0 ? (
+              <path d={curve(0.46, 0.15 * lift)} stroke={C.accent} strokeWidth={4} fill="none" opacity={op(seg(t, 3.6, 3.9))} />
+            ) : null}
+            {wind > 0 ? <path d={spiral(partial(coil, wind))} stroke={C.accent} strokeWidth={2} fill="none" /> : null}
+            {[180, 230, 280].map((x, i) => (
+              <GrowArrow key={x} p={seg(t, 0.4 + 0.1 * i, 0.8 + 0.1 * i)} x1={x} y1={y0 + 48} x2={x} y2={y0 + 14} tone="muted" width={2} />
+            ))}
+            <Label x={230} y={y0 + 66} size={15} tone="muted" opacity={op(seg(t, 0.6, 1.1))}>
+              2.5 g gust lift
+            </Label>
+            {/* tip readouts */}
+            <line x1={x1} y1={y0 - 0.61 * k} x2={x1 + 16} y2={y0 - 0.61 * k} stroke={C.accent} strokeWidth={2} opacity={op(test)} />
+            <line x1={x1} y1={y0 - 0.46 * k} x2={x1 + 16} y2={y0 - 0.46 * k} stroke={C.ink} strokeWidth={2} opacity={op(model)} />
+            <Label x={x1 + 24} y={y0 - 0.61 * k - 4} anchor="start" size={15} tone="accent" weight={600} opacity={op(test)}>
+              test 0.61 ± 0.05 mm
+            </Label>
+            <Label x={x1 + 24} y={y0 - 0.46 * k + 6} anchor="start" size={15} opacity={op(model)}>
+              model 0.46 mm
+            </Label>
+            <Label x={x1 + 24} y={y0 - 0.46 * k + 26} anchor="start" size={15} tone="muted" opacity={op(model)}>
+              (clamped root)
+            </Label>
+            <Label x={x0 + 20} y={y0 + 34} anchor="start" size={15} tone="accent" weight={600} opacity={op(seg(t, 3.5, 4))}>
+              root spring
+            </Label>
+            <Label x={x0 + 4} y={34} anchor="start" size={15} tone="muted" opacity={op(glued)}>
+              glued socket: root rotates
+            </Label>
+            <line x1={x0 + 10} y1={44} x2={x0 + 6} y2={y0 - 20} stroke={C.muted} strokeWidth={1.5} opacity={op(glued)} />
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1081,31 +1340,56 @@ function GliderSynth() {
   ];
   const top = 14;
   const dy = 32;
+  // Each link joins in cycle order; the spine grows down to meet it in the 0.3 s before it lands.
+  const rowAt = [0, 0.6, 1.4, 1.7, 2, 2.3, 2.6, 3.2, 4];
+  const spine = (t: number) => rowAt.reduce((n, a, i) => (i ? n + clamp((t - (a - 0.3)) / 0.3) : n), 0);
   return (
-    <Figure
+    <AnimatedFigure
       height={310}
+      duration={4.6}
       alt="A vertical chain of the glider's engineering package: requirement 5 mm, model 0.46 mm, error budget, margins MS 52, bonded root joint, tolerance stack 0.25 over 0.20, trade study aluminum, test 0.61 mm, and the root-spring revision."
-      caption="Every week adds one link to the same spar. The test at the bottom disagrees with the model near the top, and only the full chain can say why."
+      steps={[
+        { at: 0, label: "Predict", caption: "The requirement allows δ ≤ 5 mm, and the beam model predicts δ = 0.46 mm." },
+        {
+          at: 1.1,
+          label: "Chain",
+          caption: "Error budget, margins, joints, tolerance stack and trade study each add their link to the same spar.",
+        },
+        { at: 2.9, label: "Test", caption: "The test measures 0.61 ± 0.05 mm: a 33% mismatch with the model, bars not touching." },
+        {
+          at: 3.7,
+          label: "Revision",
+          caption:
+            "Every week adds one link to the same spar. The test at the bottom disagrees with the model near the top, and only the full chain can say why.",
+        },
+      ]}
     >
-      <line x1={50} y1={top + 13} x2={50} y2={top + (rows.length - 1) * dy + 13} stroke={C.line} strokeWidth={3} />
-      {rows.map(([wk, name, val, tone], i) => {
-        const y = top + i * dy;
-        const strong = tone !== "ink";
+      {({ t }) => {
+        const n = spine(t);
         return (
-          <g key={name}>
-            <Chip x={22} y={y} w={56} tone={tone === "ink" ? "muted" : tone} filled={strong}>
-              {wk}
-            </Chip>
-            <Label x={94} y={y + 14} anchor="start" size={15} tone={strong ? tone : "ink"} weight={strong ? 600 : undefined}>
-              {name}
-            </Label>
-            <Label x={460} y={y + 14} anchor="end" size={15} tone={strong ? tone : "muted"} weight={strong ? 600 : undefined}>
-              {val}
-            </Label>
-          </g>
+          <>
+            {n > 0 ? <line x1={50} y1={top + 13} x2={50} y2={top + n * dy + 13} stroke={C.line} strokeWidth={3} /> : null}
+            {rows.map(([wk, name, val, tone], i) => {
+              const y = top + i * dy;
+              const strong = tone !== "ink";
+              return (
+                <g key={name} opacity={i ? op(seg(t, rowAt[i], rowAt[i] + 0.4)) : undefined}>
+                  <Chip x={22} y={y} w={56} tone={tone === "ink" ? "muted" : tone} filled={strong}>
+                    {wk}
+                  </Chip>
+                  <Label x={94} y={y + 14} anchor="start" size={15} tone={strong ? tone : "ink"} weight={strong ? 600 : undefined}>
+                    {name}
+                  </Label>
+                  <Label x={460} y={y + 14} anchor="end" size={15} tone={strong ? tone : "muted"} weight={strong ? 600 : undefined}>
+                    {val}
+                  </Label>
+                </g>
+              );
+            })}
+          </>
         );
-      })}
-    </Figure>
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1119,43 +1403,77 @@ function CapMastery() {
   ];
   const top = 100;
   const dy = 44;
+  const optAt = [0.6, 1.1, 1.6, 2.6]; // the three tempting answers, then the cycle's
+  /** The branch from the question to answer row y, grown along its length: down, then across. */
+  const branch = (y: number, p: number) => {
+    const down = y + 16 - 64;
+    const s = p * (down + 16);
+    return s <= down ? `M60,64 L60,${64 + s}` : `M60,64 L60,${y + 16} L${60 + (s - down)},${y + 16}`;
+  };
   return (
-    <Figure
+    <AnimatedFigure
       height={320}
+      duration={4.3}
       alt="A decision fork from the question 'measured 0.61 mm against predicted 0.46 mm, first move?' to four answers: recheck arithmetic, average, and rebuild stiffer are crossed out; reading the assumption ledger, where the root clamp is marked assumed, is ticked."
-      caption="Three tempting answers reach for numbers or hardware; the cycle reaches for the assumption ledger first. That sentence is what a filed correction carries forward."
+      steps={[
+        { at: 0, label: "Question", caption: "The test measured 0.61 mm against the model's 0.46 mm. What is the first move?" },
+        {
+          at: 0.6,
+          label: "Tempting",
+          caption: "The tempting answers: recheck the arithmetic (checked twice), average the two (theology), rebuild it stiffer (a patch).",
+        },
+        { at: 2.5, label: "Ledger", caption: "The cycle's answer is the assumption ledger, where the root clamp is marked assumed." },
+        {
+          at: 3.5,
+          label: "Correction",
+          caption:
+            "Three tempting answers reach for numbers or hardware; the cycle reaches for the assumption ledger first. That sentence is what a filed correction carries forward.",
+        },
+      ]}
     >
-      <rect x={90} y={14} width={300} height={50} rx={6} fill={C.soft} stroke={C.ink} strokeWidth={1.5} />
-      <Label x={240} y={32} size={15}>
-        test 0.61 mm vs model 0.46 mm
-      </Label>
-      <Label x={240} y={52} size={15} weight={600}>
-        first move?
-      </Label>
-      {opts.map(([a, why, ok], i) => {
-        const y = top + i * dy;
-        return (
-          <g key={a}>
-            <path
-              d={`M60,64 L60,${y + 16} L76,${y + 16}`}
-              fill="none"
-              stroke={ok ? C.accent : C.line}
-              strokeWidth={ok ? 3 : 1.5}
-            />
-            <Mark x={94} y={y + 16} ok={ok} />
-            <Label x={114} y={y + 16} anchor="start" size={15} tone={ok ? "accent" : "muted"} weight={ok ? 700 : undefined}>
-              {a}
-            </Label>
-            <Label x={460} y={y + 16} anchor="end" size={15} tone={ok ? "accent" : "muted"}>
-              {why}
-            </Label>
-          </g>
-        );
-      })}
-      <Label x={240} y={top + 4 * dy + 20} size={18} serif tone="accent">
-        assumptions before arithmetic
-      </Label>
-    </Figure>
+      {({ t }) => (
+        <>
+          <rect x={90} y={14} width={300} height={50} rx={6} fill={C.soft} stroke={C.ink} strokeWidth={1.5} />
+          <Label x={240} y={32} size={15}>
+            test 0.61 mm vs model 0.46 mm
+          </Label>
+          <Label x={240} y={52} size={15} weight={600}>
+            first move?
+          </Label>
+          {opts.map(([a, why, ok], i) => {
+            const y = top + i * dy;
+            const s0 = optAt[i];
+            const grow = seg(t, s0, s0 + 0.4);
+            const verdict = op(seg(t, s0 + 0.4, s0 + 0.8)); // its mark and reason
+            return (
+              <g key={a}>
+                {grow > 0 ? <path d={branch(y, grow)} fill="none" stroke={ok ? C.accent : C.line} strokeWidth={ok ? 3 : 1.5} /> : null}
+                <g opacity={verdict}>
+                  <Mark x={94} y={y + 16} ok={ok} />
+                </g>
+                <Label
+                  x={114}
+                  y={y + 16}
+                  anchor="start"
+                  size={15}
+                  tone={ok ? "accent" : "muted"}
+                  weight={ok ? 700 : undefined}
+                  opacity={op(seg(t, s0 + 0.2, s0 + 0.6))}
+                >
+                  {a}
+                </Label>
+                <Label x={460} y={y + 16} anchor="end" size={15} tone={ok ? "accent" : "muted"} opacity={verdict}>
+                  {why}
+                </Label>
+              </g>
+            );
+          })}
+          <Label x={240} y={top + 4 * dy + 20} size={18} serif tone="accent" opacity={op(seg(t, 3.6, 4.1))}>
+            assumptions before arithmetic
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 

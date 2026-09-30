@@ -1,4 +1,4 @@
-import { Arrow, Axes, C, DimH, Label, plotBox, type FigureMap } from "./kit";
+import { Axes, C, DimH, Label, plotBox, type FigureMap } from "./kit";
 import { AnimatedFigure, clamp, GrowArrow, lerp, op, partial, Reveal, seg } from "./motion";
 
 /* ------------------------------------------------------------------ helpers */
@@ -136,11 +136,11 @@ function BondZoo() {
   ];
   const W = 224;
   const H = 166;
-  const noteAt = [1.3, 2.5, 3.8, 5.6]; // each panel's answer to "what moves?"
+  const noteAt = [1.3, 2.4, 3.4, 5.2]; // each panel's answer to "what moves?"
   return (
     <AnimatedFigure
       height={360}
-      duration={6.3}
+      duration={6}
       alt="Four panels: metal ion cores in a sea of free electrons, a lattice of alternating plus and minus ions, atoms joined by directional covalent bonds, and long chains held to each other only by weak dashed links."
       steps={[
         {
@@ -149,18 +149,18 @@ function BondZoo() {
           caption: "Metallic: the valence electrons are a sea shared by the whole lattice, free to drift and carry current.",
         },
         {
-          at: 1.8,
-          label: "Ionic",
-          caption: "Ionic: alternating charges are locked in a lattice, and with no electron free to move it insulates.",
+          at: 1.9,
+          label: "Ionic, covalent",
+          caption: "Ionic charges are locked in their lattice and covalent pairs are shared and directional: no electron is free to move.",
         },
         {
-          at: 3.1,
-          label: "Covalent",
-          caption: "Covalent network: shared pairs point in fixed directions, and the whole network must break before it melts.",
-        },
-        {
-          at: 4.4,
+          at: 4,
           label: "Secondary",
+          caption: "Secondary: the strong bonds are internal to chains that barely hold each other, so whole chains can slide.",
+        },
+        {
+          at: 5.7,
+          label: "What moves",
           caption:
             "Same question in every panel: what is free to move? Electrons and slip planes in the metal, nothing in the ionic and covalent lattices, whole chains past each other in the polymer.",
         },
@@ -170,12 +170,12 @@ function BondZoo() {
         const ions = op(seg(t, 0.3, 0.8));
         const sea = op(seg(t, 0.5, 1));
         const drift = 14 * (1 - seg(t, 0.5, 1.8)); // the electron sea drifts right past the fixed cores
-        const salt = op(seg(t, 1.9, 2.4));
-        const atoms = op(seg(t, 3.2, 3.7));
-        const bonds = op(seg(t, 3.45, 3.95));
-        const chains = op(seg(t, 4.5, 5));
-        const slide = 18 * (1 - seg(t, 4.5, 5.6)); // the middle chain slides past its neighbours
-        const links = op(seg(t, 5.3, 5.8));
+        const salt = op(seg(t, 2, 2.5));
+        const atoms = op(seg(t, 2.8, 3.3));
+        const bonds = op(seg(t, 3.05, 3.55));
+        const chains = op(seg(t, 4.1, 4.6));
+        const slide = 18 * (1 - seg(t, 4.1, 5.2)); // the middle chain slides past its neighbours
+        const links = op(seg(t, 4.9, 5.4));
         return (
           <>
             {panels.map((p, i) => (
@@ -615,7 +615,7 @@ function Disorder() {
         const e = 2 * clamp((t - 0.4) / 2); // strain (%), both loaded at the same steady rate
         const es = t < 5.3 ? Math.min(e, 0.75) : lerp(0.75, 3, seg(t, 5.3, 6.3)); // the steel waits at its limit, then yields on
         const fill = seg(t, 3, 3.6); // stored energy, swept up to each elastic limit
-        const band = seg(t, 4.4, 4.7);
+        const band = seg(t, 4.4, 4.8);
         const steelKnee = op(seg(t, 1.15, 1.65));
         const glassTop = op(seg(t, 2.4, 2.9));
         return (
@@ -688,17 +688,17 @@ function Defects() {
       steps={[
         {
           at: 0,
-          label: "300 K",
+          label: "Room temp",
           caption: "Copper, Qv ≈ 0.9 eV: at 300 K only exp(−34.8) ≈ 7.6×10⁻¹⁶ of its sites are empty.",
         },
         {
           at: 1.4,
           label: "Heat",
-          caption: "Heat it: n/N = exp(−Qv/kT) is exponential in temperature, so temperature is a dial, not a nudge.",
+          caption: "Heat it toward 1000 K: temperature is a dial, not a nudge, and the vacancy fraction climbs with it.",
         },
         {
           at: 3.7,
-          label: "1000 K",
+          label: "Ten orders",
           caption:
             "n/N = exp(−Qv/kT) is exponential in temperature: 700 K of heating moves the vacancy population about ten orders of magnitude — and a quench freezes the hot value in.",
         },
@@ -772,7 +772,7 @@ function Diffusion() {
         },
         {
           at: 4.4,
-          label: "4 hours",
+          label: "Case depth",
           caption:
             "The profile's length scale is 2√(Dt) = 0.80 mm, so case depth grows only as the square root of time — twice as deep costs four times the hours.",
         },
@@ -782,7 +782,7 @@ function Diffusion() {
         return [
           { label: "t", value: `${hours(t).toFixed(1)} h` },
           { label: "2√(Dt)", value: `${(L * f).toFixed(2)} mm` },
-          { label: "0.4 wt% at", value: `${(xd * f).toFixed(2)} mm`, tone: "accent" },
+          { label: "case depth", value: `${(xd * f).toFixed(2)} mm`, tone: "accent" },
         ];
       }}
     >
@@ -1060,7 +1060,7 @@ function Allowables() {
         {
           at: 1.8,
           label: "Mean − 2s",
-          caption: "Mean 879, standard deviation ≈ 6.5 MPa: two below the mean, 879 − 2 × 6.5 = 866 MPa is the characteristic value.",
+          caption: "Mean 879 and standard deviation ≈ 6.5 MPa give a low-tail characteristic value of 879 − 2 × 6.5 = 866 MPa.",
         },
         {
           at: 3.4,
@@ -1256,7 +1256,7 @@ function HeatTreatW15() {
       {({ t }) => {
         // Anneal time traced so far: the pen eases to a stop at each zone boundary.
         const tau = t < 1.7 ? lerp(0, 2, seg(t, 0.7, 1.5)) : t < 3.3 ? lerp(2, 5, seg(t, 1.9, 3.2)) : lerp(5, 10, seg(t, 3.4, 4.8));
-        const cold = op(seg(t, 0.2, 0.7));
+        const cold = op(seg(t, 0.3, 0.8));
         return (
           <>
             {zones.map((z, i) => (
