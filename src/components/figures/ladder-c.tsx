@@ -631,7 +631,7 @@ function Taylor() {
       {({ t }) => {
         const v = speed(t);
         const first = op(seg(t, 1, 1.5));
-        const moving = op(seg(t, 1.9, 2.2));
+        const moving = op(seg(t, 1.9, 2.3));
         const last = op(seg(t, 3.2, 3.7));
         return (
           <>
@@ -869,7 +869,7 @@ function Bonus() {
   return (
     <AnimatedFigure
       height={290}
-      duration={4.2}
+      duration={4}
       alt="Allowed position tolerance against measured hole size: 0.20 mm at the 10.0 mm maximum-material size, rising one-for-one to 0.40 mm at 10.2 mm, the extra 0.20 marked as bonus."
       steps={[
         {
@@ -967,12 +967,12 @@ function Surface() {
   return (
     <AnimatedFigure
       height={290}
-      duration={4.4}
+      duration={4.2}
       alt="Three bars of fatigue strength for the same steel: polished 300 MPa, machined 240 MPa, forged 150 MPa, with the top of each bar drawn smooth, grooved and rough."
       steps={[
         { at: 0, label: "Polished", caption: "Measured on a polished bar, this steel's fully reversed plateau is 300 MPa." },
         { at: 1.2, label: "Machined", caption: "A machined skin multiplies it by about 0.8, so 240 MPa." },
-        { at: 2.6, label: "Forged", caption: "A forged skin multiplies it by about 0.5, so 150 MPa. The alloy did not change." },
+        { at: 2.6, label: "Forged", caption: "A forged skin multiplies it by about 0.5, so 150 MPa; the alloy did not change." },
         {
           at: 3.8,
           label: "Multiply",
@@ -1092,7 +1092,7 @@ function Passes() {
   return (
     <AnimatedFigure
       height={290}
-      duration={4.4}
+      duration={4.2}
       alt="First-pass yield against number of steps: each step keeps 98%, yet the product falls to about 82% at 10 steps and about 45% at 40 steps."
       steps={[
         { at: 0, label: "Each step", caption: "Each step keeps 98% of the parts it receives." },
@@ -1140,7 +1140,7 @@ function Layers() {
   return (
     <AnimatedFigure
       height={290}
-      duration={4.4}
+      duration={4.2}
       alt="Side view of a printed stack of layers: a pull along the roads is labelled 40 MPa, a peel pulling layers apart is labelled 40 / 2 = 20 MPa at the seam."
       steps={[
         { at: 0, label: "Print", caption: "Printed plastic is a stack: roads of plastic, each layer bonded to the one below." },
@@ -1204,23 +1204,24 @@ function Bottleneck() {
     { y: 220, t: [20, 25, 30], rate: "120 / h", note: "station 2 → 25 s" },
   ];
   const built = rows[0].t;
-  // Each row appears as built, then its one station is cut (row 0 has no cut); its rate shows once the cut is done.
-  const showAt = [0.3, 1.4, 3];
-  const cutAt = [0, 2, 3.6];
+  // The built line is there from the start. Each later row appears as built, then its one station is cut;
+  // a row's rate shows once its cut is done.
+  const showAt = [0, 1.2, 2.9];
+  const cutAt = [0, 1.8, 3.5];
   const cut = (t: number, r: number) => (r === 0 ? 1 : seg(t, cutAt[r], cutAt[r] + 0.8));
   /** Station times of row r at time t, going from the built line to the row's change. */
   const times = (t: number, r: number) => built.map((b, i) => lerp(b, rows[r].t[i], cut(t, r)));
   return (
     <AnimatedFigure
       height={280}
-      duration={5.2}
+      duration={5}
       alt="Three rows of three stations drawn to length by cycle time: 20, 45, 30 s makes 80 per hour; cutting station 1 to 10 s still makes 80; cutting station 2 to 25 s makes 120 with station 3 now the slow one."
       steps={[
         { at: 0, label: "As built", caption: "Three stations at 20 s, 45 s and 30 s: the 45 s one sets the pace, 3600 / 45 = 80 parts an hour." },
-        { at: 1.4, label: "Station 1", caption: "Cut the 20 s station to 10 s and you still make 80: it was already waiting on the 45 s one." },
-        { at: 3, label: "Station 2", caption: "Cut the 45 s station to 25 s instead, and the 30 s station becomes the slow one." },
+        { at: 1.2, label: "Station 1", caption: "Cut the 20 s station to 10 s and you still make 80: it was already waiting on the 45 s one." },
+        { at: 2.9, label: "Station 2", caption: "Cut the 45 s station to 25 s instead, and the 30 s station becomes the slow one." },
         {
-          at: 4.4,
+          at: 4.3,
           label: "Rate",
           caption: "The longest box sets the pace: speed an idle station and nothing moves; speed the 45 s one and the rate finally rises.",
         },
@@ -1240,7 +1241,7 @@ function Bottleneck() {
             const cur = times(t, ri);
             const q = cut(t, ri);
             const max = Math.max(...cur);
-            const shown = op(seg(t, showAt[ri], showAt[ri] + 0.5));
+            const shown = ri === 0 ? undefined : op(seg(t, showAt[ri], showAt[ri] + 0.5));
             let x = 20;
             return (
               <g key={r.note}>
@@ -1248,9 +1249,9 @@ function Bottleneck() {
                 {cur.map((c, i) => {
                   const w = c * k;
                   const changed = built[i] !== r.t[i];
-                  // A cut station's number fades out, and back in as the new time.
+                  // A cut station's old time fades out as the cut starts; the new one fades in as it lands.
                   const label = `${changed && q < 0.5 ? built[i] : r.t[i]} s`;
-                  const lab = changed ? op(Math.abs(2 * q - 1)) : undefined;
+                  const lab = changed ? op(q < 0.5 ? 1 - clamp(q / 0.3) : clamp(5 * q - 4)) : undefined;
                   const g = (
                     <g key={i} opacity={shown}>
                       <rect x={x} y={r.y} width={w} height={36} rx={4} fill={c === max ? C.accent : C.soft} stroke={C.ink} strokeWidth={1.5} />
@@ -1270,7 +1271,7 @@ function Bottleneck() {
                   anchor="end"
                   weight={700}
                   tone={r.rate === "120 / h" ? "accent" : "ink"}
-                  opacity={op(ri === 0 ? seg(t, 0.9, 1.3) : seg(t, cutAt[ri] + 0.8, cutAt[ri] + 1.2))}
+                  opacity={op(ri === 0 ? seg(t, 0.4, 0.9) : seg(t, cutAt[ri] + 0.8, cutAt[ri] + 1.2))}
                 >
                   {r.rate}
                 </Label>
@@ -1423,7 +1424,7 @@ function Scrap() {
   const w = 36;
   const gap = 6;
   const x0 = 30;
-  const madeAt = (i: number) => 0.3 + 0.12 * i; // processed one after another
+  const madeAt = (i: number) => (i === 0 ? -1 : 0.3 + 0.12 * (i - 1)); // processed one after another; the first is done at the start
   const scrapAt = 2; // then two of them are thrown away
   const made = (t: number) => Array.from({ length: 10 }, (_, i) => i).filter((i) => t >= madeAt(i) + 0.2).length;
   /** The X over a scrapped part, stroke by stroke (q 0–1). */
@@ -1449,7 +1450,7 @@ function Scrap() {
         return [
           { label: "spent", value: `${10 * n}` },
           { label: "good parts", value: `${good}` },
-          { label: "per good part", value: good ? ((10 * n) / good).toFixed(2) : "–", tone: "accent" },
+          { label: "per good part", value: ((10 * n) / good).toFixed(2), tone: "accent" },
         ];
       }}
     >

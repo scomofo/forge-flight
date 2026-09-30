@@ -6,7 +6,9 @@ import { AnimatedFigure, clamp, GrowArrow, lerp, op, partial, Reveal, seg } from
 /** Deterministic pseudo-random in [0,1) so figures render identically every time. */
 function hash(i: number, j: number, seed = 1) {
   const s = Math.sin(i * 127.1 + j * 311.7 + seed * 74.7) * 43758.5453;
-  return s - Math.floor(s);
+  // Rounded: the server's and the browser's Math.sin can differ in the last
+  // bits, which this amplifies into attribute mismatches on hydration.
+  return Math.round((s - Math.floor(s)) * 1e6) / 1e6;
 }
 
 /** Abramowitz–Stegun 7.1.26 error function (|error| < 1.5e-7). */

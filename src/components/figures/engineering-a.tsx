@@ -997,6 +997,9 @@ function Buckle() {
       {({ t }) => {
         const bow = lerp(0, a, seg(t, 1, 1.7)); // the pinned pole bows out
         const sway = lerp(0, a, seg(t, 3, 3.7)); // the free top swings out, carrying its load
+        // The camper's load lands on each pole top: the heads stay put while the shafts extend upward.
+        const pressL = seg(t, 0.4, 0.9);
+        const pressR = seg(t, 2.4, 2.9);
         return (
           <>
             <line x1={240} y1={16} x2={240} y2={300} stroke={C.line} strokeWidth={1.5} />
@@ -1005,7 +1008,7 @@ function Buckle() {
             <path d={shape(120, (u) => bow * Math.sin(Math.PI * u))} fill="none" stroke={C.ink} strokeWidth={5} />
             <Pin x={120} y={bot} />
             <circle cx={120} cy={top} r={5} fill={C.surface} stroke={C.ink} strokeWidth={2} />
-            <GrowArrow p={seg(t, 0.4, 0.9)} x1={120} y1={14} x2={120} y2={top - 8} tone="accent" width={3} />
+            {pressL >= 0.02 ? <Arrow x1={120} y1={lerp(top - 8, 14, pressL)} x2={120} y2={top - 8} tone="accent" width={3} /> : null}
             <Label x={128} y={24} anchor="start" size={15} tone="accent" opacity={op(seg(t, 0.6, 1.1))}>
               686 N
             </Label>
@@ -1023,7 +1026,7 @@ function Buckle() {
             <line x1={340} y1={top} x2={340} y2={bot} stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
             <path d={shape(340, (u) => 2 * sway * (1 - Math.cos((Math.PI / 2) * u)))} fill="none" stroke={C.ink} strokeWidth={5} />
             <Ground x={306} y={bot} w={68} />
-            <GrowArrow p={seg(t, 2.4, 2.9)} x1={340 + 2 * sway} y1={14} x2={340 + 2 * sway} y2={top - 8} tone="accent" width={3} />
+            {pressR >= 0.02 ? <Arrow x1={340 + 2 * sway} y1={lerp(top - 8, 14, pressR)} x2={340 + 2 * sway} y2={top - 8} tone="accent" width={3} /> : null}
             <Label x={332 + 2 * sway} y={24} anchor="end" size={15} tone="accent" opacity={op(seg(t, 2.6, 3.1))}>
               686 N
             </Label>

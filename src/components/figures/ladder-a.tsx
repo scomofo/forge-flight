@@ -1,4 +1,5 @@
-import { Arrow, Axes, C, DimH, DimV, Figure, Ground, Label, WallV, plotBox, type FigureMap } from "./kit";
+import type { ReactNode } from "react";
+import { Arrow, Axes, C, DimH, DimV, Ground, Label, WallV, plotBox, type FigureMap } from "./kit";
 import { AnimatedFigure, clamp, GrowArrow, HOLD, lerp, op, partial, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
@@ -399,7 +400,7 @@ function Float() {
               fillOpacity={0.5}
               stroke={C.ink}
               strokeWidth={2}
-              opacity={op(seg(t, 2, 2.3))}
+              opacity={op(seg(t, 2, 2.4))}
             />
             <Label x={370} y={125} tone="alarm" weight={600} opacity={op(seg(t, 3, 3.5))}>steel sinks</Label>
             <Label x={440} y={80} anchor="end" tone="muted" size={15}>water 1000 kg/m³</Label>
@@ -441,7 +442,7 @@ function Depth() {
         return [
           { label: "depth", value: `${h.toFixed(1)} m` },
           { label: "gauge", value: `${(9.81 * h).toFixed(0)} kPa`, tone: "accent" },
-          { label: "absolute", value: `≈ ${(1 + h / 10).toFixed(1)} atm` },
+          { value: `absolute ≈ ${(1 + h / 10).toFixed(1)} atm` },
         ];
       }}
     >
@@ -642,11 +643,11 @@ function Pipe() {
   /** Half-height of the duct at x: 50 in the wide part, 25 in the neck, a straight taper between. */
   const half = (x: number) => (x <= 200 ? 50 : x >= 250 ? 25 : 50 - (x - 200) / 2);
   /**
-   * A slice of air that sets off from x = 85 at 0.5 s, in real time at 50 px per m, so its speed is
+   * A slice of air that sets off from x = 85 at 0.6 s, in real time at 50 px per m, so its speed is
    * v = Q/A = 2500/half px/s: 2.3 s to the taper, 0.75 s through it, then 1.55 s to x = 405.
    */
   const slice = (t: number) => {
-    const s = Math.max(0, t - 0.5);
+    const s = Math.max(0, t - 0.6);
     if (s <= 2.3) return 85 + 50 * s;
     if (s <= 3.05) return 300 - 100 * Math.sqrt(1 - (s - 2.3));
     return Math.min(405, 250 + 100 * (s - 3.05));
@@ -654,7 +655,7 @@ function Pipe() {
   return (
     <AnimatedFigure
       height={230}
-      duration={5.6}
+      duration={5.7}
       alt="A duct that necks from 0.010 m² to 0.005 m², with an arrow for 1 m/s in the wide part and an arrow twice as long for 2 m/s in the neck."
       steps={[
         {
@@ -662,8 +663,8 @@ function Pipe() {
           label: "Wide",
           caption: "The duct must pass 0.010 m³ of air each second: through 0.010 m² that takes 1 m/s.",
         },
-        { at: 2.8, label: "Neck", caption: "Where the duct necks down to 0.005 m², the same air has to speed up to 2 m/s." },
-        { at: 5.1, label: "Same Q", caption: "Half the area, twice the speed: the same 0.010 m³ has to get through each second." },
+        { at: 2.9, label: "Neck", caption: "Where the duct necks down to 0.005 m², the same air has to speed up to 2 m/s." },
+        { at: 5.2, label: "Same Q", caption: "Half the area, twice the speed: the same 0.010 m³ has to get through each second." },
       ]}
       readouts={(t) => {
         const h = half(slice(t));
@@ -678,7 +679,7 @@ function Pipe() {
     >
       {({ t }) => {
         const x = slice(t);
-        const show = seg(t, 0.2, 0.5) * (1 - seg(t, 5.1, 5.5));
+        const show = seg(t, 0.2, 0.6) * (1 - seg(t, 5.2, 5.6));
         return (
           <>
             <path d={duct} fill={C.soft} fillOpacity={0.6} stroke={C.ink} strokeWidth={2} />
@@ -696,11 +697,11 @@ function Pipe() {
               />
             ) : null}
             <Label x={110} y={cy - 66}>0.010 m²</Label>
-            <Label x={355} y={cy - 42} opacity={op(seg(t, 3.2, 3.7))}>0.005 m²</Label>
+            <Label x={355} y={cy - 42} opacity={op(seg(t, 3.3, 3.8))}>0.005 m²</Label>
             <GrowArrow p={clamp((x - 85) / 50)} x1={85} y1={cy - 8} x2={135} y2={cy - 8} tone="accent" />
-            <Label x={110} y={cy + 20} tone="accent" weight={600} opacity={op(seg(t, 1.4, 1.9))}>1 m/s</Label>
+            <Label x={110} y={cy + 20} tone="accent" weight={600} opacity={op(seg(t, 1.5, 2))}>1 m/s</Label>
             <GrowArrow p={clamp((x - 305) / 100)} x1={305} y1={cy} x2={405} y2={cy} tone="accent" />
-            <Label x={355} y={cy + 42} tone="accent" weight={600} opacity={op(seg(t, 5, 5.5))}>2 m/s</Label>
+            <Label x={355} y={cy + 42} tone="accent" weight={600} opacity={op(seg(t, 5.1, 5.6))}>2 m/s</Label>
             <Label x={240} y={206} tone="muted" size={15}>Q = 0.010 m³/s in both</Label>
           </>
         );
@@ -731,36 +732,36 @@ function RodSpeed() {
   return (
     <AnimatedFigure
       height={225}
-      duration={3.6}
+      duration={3.7}
       alt="A steel rod and a polyethylene rod tapped at the left end; at the same moment the pulse is near the far end of the steel rod but under a third of the way along the polyethylene."
       steps={[
         { at: 0, label: "Tap", caption: "Tap the left end of a steel rod and of a polyethylene rod at the same moment." },
         {
-          at: 0.6,
+          at: 0.7,
           label: "Run",
           caption: "Each pulse runs at √(E/ρ): about 5060 m/s in steel and 1450 m/s in polyethylene (slowed down here).",
         },
         {
-          at: 3,
+          at: 3.1,
           label: "Same moment",
           caption: "Steel is eight times denser but a hundred times stiffer, so its pulse runs about 3.5 times as far in the same time.",
         },
       ]}
     >
       {({ t }) => {
-        const tap = seg(t, 0.3, 0.6);
-        const pulse = seg(t, 0.5, 0.7);
-        const run = clamp((t - 0.6) / 2.4); // both pulses at constant speed, slowed to the same clock
+        const tap = seg(t, 0.3, 0.7);
+        const pulse = seg(t, 0.5, 0.9);
+        const run = clamp((t - 0.7) / 2.4); // both pulses at constant speed, slowed to the same clock
         return (
           <>
             <Label x={x0} y={36} anchor="start" weight={600}>steel</Label>
-            <Label x={x0 + len} y={36} anchor="end" tone="accent" weight={600} opacity={op(seg(t, 0.8, 1.3))}>≈ 5060 m/s</Label>
+            <Label x={x0 + len} y={36} anchor="end" tone="accent" weight={600} opacity={op(seg(t, 0.9, 1.4))}>≈ 5060 m/s</Label>
             {rod(70, lerp(x0, steel, run), "accent", tap, pulse)}
             <Label x={x0} y={126} anchor="start" weight={600}>polyethylene</Label>
-            <Label x={x0 + len} y={126} anchor="end" tone="accent" weight={600} opacity={op(seg(t, 1, 1.5))}>≈ 1450 m/s</Label>
+            <Label x={x0 + len} y={126} anchor="end" tone="accent" weight={600} opacity={op(seg(t, 1.1, 1.6))}>≈ 1450 m/s</Label>
             {rod(160, lerp(x0, pe, run), "accent", tap, pulse)}
             <Label x={x0 - 22} y={96} tone="muted" size={15} opacity={op(tap)}>tap</Label>
-            <Label x={250} y={206} tone="muted" size={15} opacity={op(seg(t, 3, 3.5))}>same moment after the tap</Label>
+            <Label x={250} y={206} tone="muted" size={15} opacity={op(seg(t, 3.1, 3.6))}>same moment after the tap</Label>
           </>
         );
       }}
@@ -1071,22 +1072,49 @@ function CreepRate() {
 
 /** Hardness: Vickers dent → 3 × HV estimate. */
 function Hardness() {
+  const block = "M40,120 L127,120 L145,134 L163,120 L250,120 L250,220 L40,220 Z";
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={4}
       alt="A pyramid indenter pressed into a steel block leaving a 200 HV dent, with an arrow to the estimate UTS ≈ 3 × 200 = 600 MPa and a note that elongation is not measured."
-      caption="The dent gives a strength guess by the factor of 3; it tells you nothing about how far the steel stretches."
+      steps={[
+        { at: 0, label: "Dent", caption: "Press a sharp point into the steel and measure the dent: this one reads 200 HV." },
+        {
+          at: 1.8,
+          label: "Estimate",
+          caption: "For many steels the ultimate strength in MPa is roughly three times the Vickers number: 3 × 200 = 600 MPa.",
+        },
+        {
+          at: 3.1,
+          label: "Elongation",
+          caption: "The dent gives a strength guess by the factor of 3; it tells you nothing about how far the steel stretches.",
+        },
+      ]}
     >
-      <Arrow x1={145} y1={16} x2={145} y2={50} tone="ink" />
-      <path d="M115,58 L175,58 L145,134 Z" fill={C.muted} fillOpacity={0.4} stroke={C.ink} strokeWidth={2} />
-      <path d="M40,120 L127,120 L145,134 L163,120 L250,120 L250,220 L40,220 Z" fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={145} y={176} weight={600}>200 HV</Label>
-      <Arrow x1={262} y1={120} x2={292} y2={120} tone="accent" width={2.5} />
-      <Label x={300} y={108} anchor="start">UTS ≈ 3 × 200</Label>
-      <Label x={300} y={134} anchor="start" tone="accent" size={20} weight={600}>≈ 600 MPa</Label>
-      <Label x={300} y={186} anchor="start" tone="muted" size={15}>elongation:</Label>
-      <Label x={300} y={206} anchor="start" tone="alarm" size={15}>not measured</Label>
-    </Figure>
+      {({ t }) => {
+        const q = seg(t, 0.4, 1.3); // how far the point has pressed in: from touching the surface to the full dent
+        const dent =
+          q < 1
+            ? `M40,120 L${(145 - 18 * q).toFixed(1)},120 L145,${(120 + 14 * q).toFixed(1)} L${(145 + 18 * q).toFixed(1)},120 L250,120 L250,220 L40,220 Z`
+            : block;
+        return (
+          <>
+            <g transform={q < 1 ? `translate(0,${(14 * q - 14).toFixed(1)})` : undefined}>
+              <Arrow x1={145} y1={16} x2={145} y2={50} tone="ink" />
+              <path d="M115,58 L175,58 L145,134 Z" fill={C.muted} fillOpacity={0.4} stroke={C.ink} strokeWidth={2} />
+            </g>
+            <path d={dent} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={145} y={176} weight={600} opacity={op(seg(t, 1.2, 1.7))}>200 HV</Label>
+            <GrowArrow p={seg(t, 1.8, 2.3)} x1={262} y1={120} x2={292} y2={120} tone="accent" width={2.5} />
+            <Label x={300} y={108} anchor="start" opacity={op(seg(t, 2, 2.5))}>UTS ≈ 3 × 200</Label>
+            <Label x={300} y={134} anchor="start" tone="accent" size={20} weight={600} opacity={op(seg(t, 2.4, 2.9))}>≈ 600 MPa</Label>
+            <Label x={300} y={186} anchor="start" tone="muted" size={15} opacity={op(seg(t, 3.1, 3.6))}>elongation:</Label>
+            <Label x={300} y={206} anchor="start" tone="alarm" size={15} opacity={op(seg(t, 3.3, 3.8))}>not measured</Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1095,57 +1123,131 @@ function Leak() {
   const x0 = 40;
   const s = 400 / 30; // px per mm
   const X = (mm: number) => x0 + mm * s;
+  const crack: Array<[number, number]> = [
+    [X(0), 118],
+    [X(0) + 10, 114],
+    [X(0) + 18, 120],
+    [X(0) + 28, 116],
+  ];
   return (
-    <Figure
+    <AnimatedFigure
       height={255}
+      duration={4}
       alt="A scale from 0 to 30 mm with the 8 mm pipe wall shaded; the critical crack is 28 mm at toughness 50, beyond the wall, and 7.0 mm at toughness 25, inside the wall."
-      caption="If the critical crack is longer than the wall, the crack gets through and weeps first; if it fits inside, the wall can burst."
+      steps={[
+        { at: 0, label: "Wall", caption: "A pipe wall 8 mm thick, at 150 MPa, with an edge crack growing in from one face." },
+        {
+          at: 1.2,
+          label: "K 50",
+          caption: "At toughness 50 the critical crack is about 28 mm, longer than the 8 mm wall, so the wall opens through and weeps.",
+        },
+        {
+          at: 2.4,
+          label: "K 25",
+          caption: "Drop the toughness to 25 and the critical crack falls to about 7.0 mm, inside the wall, so it can burst first.",
+        },
+        {
+          at: 3.4,
+          label: "Which first",
+          caption: "If the critical crack is longer than the wall, the crack gets through and weeps first; if it fits inside, the wall can burst.",
+        },
+      ]}
     >
-      <rect x={X(0)} y={70} width={X(8) - X(0)} height={70} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <path d={`M${X(0)},118 L${X(0) + 10},114 L${X(0) + 18},120 L${X(0) + 28},116`} fill="none" stroke={C.ink} strokeWidth={2.5} />
-      <Label x={(X(0) + X(8)) / 2} y={92} size={15}>wall</Label>
-      <line x1={X(7)} y1={58} x2={X(7)} y2={150} stroke={C.alarm} strokeWidth={3} />
-      <Label x={X(7) - 4} y={44} anchor="end" tone="alarm" weight={600}>7.0 mm</Label>
-      <line x1={X(28)} y1={58} x2={X(28)} y2={150} stroke={C.accent} strokeWidth={3} />
-      <Label x={X(28)} y={44} tone="accent" weight={600}>28 mm</Label>
-      <line x1={X(0)} y1={160} x2={X(30)} y2={160} stroke={C.ink} strokeWidth={1.5} />
-      {[0, 8, 20, 30].map((v) => (
-        <g key={v}>
-          <line x1={X(v)} y1={154} x2={X(v)} y2={166} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={X(v)} y={180} tone="muted" size={15}>{v === 30 ? "30 mm" : String(v)}</Label>
-        </g>
-      ))}
-      <Label x={x0} y={212} anchor="start" tone="accent" size={15}>K 50 → 28 mm, past the wall: leaks first</Label>
-      <Label x={x0} y={236} anchor="start" tone="alarm" size={15}>K 25 → 7.0 mm, inside the wall: can burst</Label>
-    </Figure>
+      {({ t }) => {
+        const k50 = seg(t, 1.2, 1.7); // critical lengths rise off the scale
+        const k25 = seg(t, 2.4, 2.9);
+        return (
+          <>
+            <rect x={X(0)} y={70} width={X(8) - X(0)} height={70} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <path
+              d={partial(crack, seg(t, 0.4, 1))
+                .map(([x, y], i) => `${i ? "L" : "M"}${x},${y}`)
+                .join(" ")}
+              fill="none"
+              stroke={C.ink}
+              strokeWidth={2.5}
+            />
+            <Label x={(X(0) + X(8)) / 2} y={92} size={15}>wall</Label>
+            {k25 > 0.02 ? <line x1={X(7)} y1={lerp(150, 58, k25)} x2={X(7)} y2={150} stroke={C.alarm} strokeWidth={3} /> : null}
+            <Label x={X(7) - 4} y={44} anchor="end" tone="alarm" weight={600} opacity={op(seg(t, 2.7, 3.2))}>7.0 mm</Label>
+            {k50 > 0.02 ? <line x1={X(28)} y1={lerp(150, 58, k50)} x2={X(28)} y2={150} stroke={C.accent} strokeWidth={3} /> : null}
+            <Label x={X(28)} y={44} tone="accent" weight={600} opacity={op(seg(t, 1.5, 2))}>28 mm</Label>
+            <line x1={X(0)} y1={160} x2={X(30)} y2={160} stroke={C.ink} strokeWidth={1.5} />
+            {[0, 8, 20, 30].map((v) => (
+              <g key={v}>
+                <line x1={X(v)} y1={154} x2={X(v)} y2={166} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={X(v)} y={180} tone="muted" size={15}>{v === 30 ? "30 mm" : String(v)}</Label>
+              </g>
+            ))}
+            <Label x={x0} y={212} anchor="start" tone="accent" size={15} opacity={op(seg(t, 1.7, 2.2))}>
+              K 50 → 28 mm, past the wall: leaks first
+            </Label>
+            <Label x={x0} y={236} anchor="start" tone="alarm" size={15} opacity={op(seg(t, 2.9, 3.4))}>
+              K 25 → 7.0 mm, inside the wall: can burst
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
 /** Thinning: 20 × 6 link to 20 × 4 after 20 years at 8 kN. */
 function Thinning() {
   const s = 8;
+  const years = (t: number) => 20 * seg(t, 0.6, 2.8);
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={3.9}
       alt="Cross-sections of a steel link: today 20 by 6 mm, 120 mm², 67 MPa; after 20 years 20 by 4 mm, 80 mm², 100 MPa; the same 8 kN in both."
-      caption="The load never changed; 2 mm of corrosion took a third of the area, so the stress rose from 67 to 100 MPa."
+      steps={[
+        { at: 0, label: "Today", caption: "Today the 20 × 6 mm link has 120 mm² and carries 8 kN at about 67 MPa." },
+        {
+          at: 0.6,
+          label: "20 years",
+          caption: "Losing 0.10 mm a year, the link is 2 mm thinner after 20 years, and the load cell still reads 8 kN.",
+        },
+        {
+          at: 2.9,
+          label: "Stress",
+          caption: "The load never changed; 2 mm of corrosion took a third of the area, so the stress rose from 67 to 100 MPa.",
+        },
+      ]}
+      readouts={(t) => {
+        const left = 6 - 0.1 * years(t); // mm of thickness left
+        return [
+          { label: "years", value: years(t).toFixed(0) },
+          { label: "thickness", value: `${left.toFixed(1)} mm` },
+          { label: "area", value: `${(20 * left).toFixed(0)} mm²` },
+          { label: "σ", value: `${(8000 / (20 * left)).toFixed(0)} MPa`, tone: "alarm" },
+        ];
+      }}
     >
-      <Label x={130} y={22} weight={600}>today</Label>
-      <rect x={50} y={80} width={20 * s} height={6 * s} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={130} y={104} size={15}>6 mm</Label>
-      <Label x={130} y={150}>120 mm²</Label>
-      <Label x={130} y={176} tone="accent" weight={600}>67 MPa</Label>
+      {({ t }) => {
+        const q = seg(t, 0.6, 2.8); // share of the 2 mm lost, 1 mm off each face
+        const after = op(seg(t, 2.7, 3.2));
+        return (
+          <>
+            <Label x={130} y={22} weight={600}>today</Label>
+            <rect x={50} y={80} width={20 * s} height={6 * s} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={130} y={104} size={15}>6 mm</Label>
+            <Label x={130} y={150}>120 mm²</Label>
+            <Label x={130} y={176} tone="accent" weight={600}>67 MPa</Label>
 
-      <Label x={350} y={22} weight={600}>after 20 years</Label>
-      <rect x={270} y={80} width={20 * s} height={6 * s} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
-      <rect x={270} y={88} width={20 * s} height={4 * s} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={350} y={104} size={15}>4 mm</Label>
-      <Label x={350} y={150}>80 mm²</Label>
-      <Label x={350} y={176} tone="alarm" weight={600}>100 MPa</Label>
-      <DimH x1={50} x2={210} y={64} label="20 mm" />
-      <DimH x1={270} x2={430} y={64} label="20 mm" />
-      <Label x={240} y={224} tone="muted" size={15}>same 8 kN on both</Label>
-    </Figure>
+            <Label x={350} y={22} weight={600} opacity={op(seg(t, 0.6, 1.1))}>after 20 years</Label>
+            <rect x={270} y={80} width={20 * s} height={6 * s} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
+            <rect x={270} y={lerp(80, 88, q)} width={20 * s} height={lerp(6 * s, 4 * s, q)} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={350} y={104} size={15} opacity={after}>4 mm</Label>
+            <Label x={350} y={150} opacity={after}>80 mm²</Label>
+            <Label x={350} y={176} tone="alarm" weight={600} opacity={op(seg(t, 2.9, 3.4))}>100 MPa</Label>
+            <DimH x1={50} x2={210} y={64} label="20 mm" />
+            <DimH x1={270} x2={430} y={64} label="20 mm" />
+            <Label x={240} y={224} tone="muted" size={15}>same 8 kN on both</Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1153,28 +1255,49 @@ function Thinning() {
 function Diffuse() {
   const b = plotBox({ x: 70, y: 40, w: 350, h: 190, xMin: 0, xMax: 20, yMin: 0, yMax: 2.4 });
   const x = (t: number) => Math.sqrt(0.25 * t);
+  const curve = sample(x, 0, 19.5);
+  /** When each marked hour's point, guide and label come in, s. */
+  const mark: Record<number, number> = { 4: 1, 8: 2.3, 16: 3.4 };
   return (
-    <Figure
+    <AnimatedFigure
       height={275}
+      duration={4.3}
       alt="Case depth against time for D = 0.25 mm²/h: 1 mm at 4 hours, only 1.4 mm at 8 hours, and 2 mm at 16 hours on a square-root curve."
-      caption="Twice the depth costs four times the hours: 16 h for 2 mm, while 8 h only reaches about 1.4 mm."
+      steps={[
+        { at: 0, label: "4 hours", caption: "With D = 0.25 mm²/h, the carburizing front reaches 1 mm in 4 hours." },
+        { at: 1.8, label: "8 hours", caption: "Doubling the time to 8 hours only gets the front to about 1.4 mm." },
+        {
+          at: 3.4,
+          label: "16 hours",
+          caption: "Twice the depth costs four times the hours: 16 h for 2 mm, while 8 h only reaches about 1.4 mm.",
+        },
+      ]}
     >
-      <Axes box={b} xLabel="time (h)" yLabel="depth (mm)" />
-      <path d={b.path(sample(x, 0, 19.5))} fill="none" stroke={C.accent} strokeWidth={3} />
-      {[4, 8, 16].map((t) => (
-        <g key={t}>
-          <Guide x1={b.px(t)} y1={b.py(x(t))} x2={b.px(t)} y2={b.py(0)} />
-          <Label x={b.px(t)} y={b.py(0) + 18} tone="muted" size={15}>{String(t)}</Label>
-        </g>
-      ))}
-      <Dot x={b.px(4)} y={b.py(1)} />
-      <Dot x={b.px(8)} y={b.py(x(8))} tone="alarm" hollow />
-      <Dot x={b.px(16)} y={b.py(2)} />
-      <Label x={b.px(4) - 12} y={b.py(1) - 6} anchor="end" weight={600}>1 mm</Label>
-      <Label x={b.px(8) - 8} y={b.py(x(8)) - 22} anchor="end" tone="alarm" weight={600}>1.4 mm</Label>
-      <Label x={b.px(16) - 12} y={b.py(2) - 18} anchor="end" weight={600}>2 mm</Label>
-      <Label x={90} y={62} anchor="start" tone="muted" size={15}>D = 0.25 mm²/h</Label>
-    </Figure>
+      {({ t }) => {
+        const hours = 4 * seg(t, 0.4, 1) + 4 * seg(t, 1.8, 2.3) + 11.5 * seg(t, 2.9, 3.7); // the front has run this long
+        return (
+          <>
+            <Axes box={b} xLabel="time (h)" yLabel="depth (mm)" />
+            {hours > 0 ? <path d={b.path(partial(curve, hours / 19.5))} fill="none" stroke={C.accent} strokeWidth={3} /> : null}
+            {[4, 8, 16].map((h) => (
+              <g key={h}>
+                <Drop x={b.px(h)} y1={b.py(x(h))} y2={b.py(0)} p={seg(t, mark[h], mark[h] + 0.5)} />
+                <Label x={b.px(h)} y={b.py(0) + 18} tone="muted" size={15}>{String(h)}</Label>
+              </g>
+            ))}
+            <Dot x={b.px(4)} y={b.py(1)} opacity={op(seg(t, 1, 1.4))} />
+            <Dot x={b.px(8)} y={b.py(x(8))} tone="alarm" hollow opacity={op(seg(t, 2.3, 2.7))} />
+            <Dot x={b.px(16)} y={b.py(2)} opacity={op(seg(t, 3.4, 3.8))} />
+            <Label x={b.px(4) - 12} y={b.py(1) - 6} anchor="end" weight={600} opacity={op(seg(t, 1.1, 1.6))}>1 mm</Label>
+            <Label x={b.px(8) - 8} y={b.py(x(8)) - 22} anchor="end" tone="alarm" weight={600} opacity={op(seg(t, 2.4, 2.9))}>
+              1.4 mm
+            </Label>
+            <Label x={b.px(16) - 12} y={b.py(2) - 18} anchor="end" weight={600} opacity={op(seg(t, 3.5, 4))}>2 mm</Label>
+            <Label x={90} y={62} anchor="start" tone="muted" size={15}>D = 0.25 mm²/h</Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1186,7 +1309,7 @@ function Face() {
   const ox = cx;
   const oy = cy - R;
   const fatigueR = 150; // reaches about two thirds of the diameter
-  const dots = [];
+  const dots: ReactNode[] = [];
   for (let y = cy - R; y <= cy + R; y += 9) {
     for (let x = cx - R; x <= cx + R; x += 9) {
       const jx = x + ((y / 9) % 2 ? 4.5 : 0);
@@ -1195,36 +1318,60 @@ function Face() {
     }
   }
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.3}
       alt="End view of a broken shaft: a smooth thumbnail from a surface origin with curved beach marks over about two thirds of the face, and a dull fibrous patch over the last third."
-      caption="The beach marks bowing out from the origin say fatigue; the dull patch is only how it finished."
+      steps={[
+        { at: 0, label: "Origin", caption: "The crack started from one small origin at the shaft's surface." },
+        {
+          at: 1,
+          label: "Fatigue",
+          caption: "Over many cycles it grew as a smooth thumbnail across about two thirds of the face, leaving beach marks behind it.",
+        },
+        {
+          at: 3.2,
+          label: "Overload",
+          caption: "The beach marks bowing out from the origin say fatigue; the dull patch is only how it finished.",
+        },
+      ]}
     >
-      <defs>
-        <clipPath id="ladA-face">
-          <circle cx={cx} cy={cy} r={R} />
-        </clipPath>
-      </defs>
-      <circle cx={cx} cy={cy} r={R} fill={C.line} fillOpacity={0.5} />
-      {dots}
-      <g clipPath="url(#ladA-face)">
-        <circle cx={ox} cy={oy} r={fatigueR} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-        {[35, 65, 95, 125].map((r) => (
-          <circle key={r} cx={ox} cy={oy} r={r} fill="none" stroke={C.accent} strokeWidth={1.8} />
-        ))}
-      </g>
-      <circle cx={cx} cy={cy} r={R} fill="none" stroke={C.ink} strokeWidth={2.5} />
-      <circle cx={ox} cy={oy} r={5} fill={C.alarm} />
+      {({ t }) => {
+        const front = fatigueR * seg(t, 1, 2.8); // radius the fatigue crack has reached from the origin
+        const origin = op(seg(t, 0.4, 0.9));
+        const beach = op(seg(t, 2.6, 3.1));
+        const overload = op(seg(t, 3.3, 3.8));
+        return (
+          <>
+            <defs>
+              <clipPath id="ladA-face">
+                <circle cx={cx} cy={cy} r={R} />
+              </clipPath>
+            </defs>
+            <circle cx={cx} cy={cy} r={R} fill={C.line} fillOpacity={0.5} />
+            <g opacity={op(seg(t, 3.2, 3.7))}>{dots}</g>
+            <g clipPath="url(#ladA-face)">
+              {front > 0.5 ? <circle cx={ox} cy={oy} r={front} fill={C.soft} stroke={C.ink} strokeWidth={2} /> : null}
+              {/* each beach mark is left behind as the front passes it */}
+              {[35, 65, 95, 125].map((r) => (
+                <circle key={r} cx={ox} cy={oy} r={r} fill="none" stroke={C.accent} strokeWidth={1.8} opacity={op(clamp((front - r) / 10))} />
+              ))}
+            </g>
+            <circle cx={cx} cy={cy} r={R} fill="none" stroke={C.ink} strokeWidth={2.5} />
+            <circle cx={ox} cy={oy} r={5} fill={C.alarm} opacity={origin} />
 
-      <line x1={ox + 6} y1={oy} x2={318} y2={oy} stroke={C.muted} strokeWidth={1.2} />
-      <Label x={324} y={oy} anchor="start" tone="alarm" weight={600}>origin</Label>
-      <line x1={cx + 70} y1={110} x2={318} y2={110} stroke={C.muted} strokeWidth={1.2} />
-      <Label x={324} y={100} anchor="start" size={15}>beach marks:</Label>
-      <Label x={324} y={122} anchor="start" tone="accent" weight={600}>fatigue</Label>
-      <line x1={cx + 50} y1={225} x2={318} y2={225} stroke={C.muted} strokeWidth={1.2} />
-      <Label x={324} y={215} anchor="start" size={15}>dull patch:</Label>
-      <Label x={324} y={237} anchor="start" weight={600}>final overload</Label>
-    </Figure>
+            <line x1={ox + 6} y1={oy} x2={318} y2={oy} stroke={C.muted} strokeWidth={1.2} opacity={origin} />
+            <Label x={324} y={oy} anchor="start" tone="alarm" weight={600} opacity={origin}>origin</Label>
+            <line x1={cx + 70} y1={110} x2={318} y2={110} stroke={C.muted} strokeWidth={1.2} opacity={beach} />
+            <Label x={324} y={100} anchor="start" size={15} opacity={beach}>beach marks:</Label>
+            <Label x={324} y={122} anchor="start" tone="accent" weight={600} opacity={beach}>fatigue</Label>
+            <line x1={cx + 50} y1={225} x2={318} y2={225} stroke={C.muted} strokeWidth={1.2} opacity={overload} />
+            <Label x={324} y={215} anchor="start" size={15} opacity={overload}>dull patch:</Label>
+            <Label x={324} y={237} anchor="start" weight={600} opacity={overload}>final overload</Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

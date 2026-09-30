@@ -211,7 +211,7 @@ function Fermi() {
         {
           at: 3.1,
           label: "Tuners",
-          caption: "Tuned about once a year, at roughly 500 jobs per tuner, 60,000 / 500 gives about 120 tuners.",
+          caption: "Each piano is tuned about once a year and a tuner handles roughly 500 jobs a year: 60,000 / 500 gives about 120 tuners.",
         },
         {
           at: 4.3,

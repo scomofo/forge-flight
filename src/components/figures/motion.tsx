@@ -246,12 +246,13 @@ export function AnimatedFigure({
             >
               {steps.map((s, i) => (
                 <button
-                  key={s.label}
+                  key={i}
                   type="button"
                   aria-current={i === idx ? "step" : undefined}
+                  aria-label={`Step ${i + 1}: ${s.label}`}
                   onClick={() => clock.seek(s.at, true)}
                   className={cn(
-                    "min-h-9 whitespace-nowrap rounded-full border px-3 py-1 text-[13px] font-medium transition-colors duration-150",
+                    "inline-flex min-h-9 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1 text-[13px] font-medium transition-colors duration-150",
                     i === idx
                       ? "border-accent bg-accent text-accent-ink"
                       : i < idx
@@ -259,7 +260,8 @@ export function AnimatedFigure({
                         : "border-line text-muted",
                   )}
                 >
-                  {`${i + 1}\u2002${s.label}`}
+                  {/* Dimmed and spaced so a label like "10 mm" doesn't read as "210 mm". */}
+                  <span className="tabular-nums opacity-70">{i + 1}</span> <span>{s.label}</span>
                 </button>
               ))}
             </div>
