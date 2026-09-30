@@ -91,7 +91,7 @@ function Processes() {
         {
           at: 1.9,
           label: "Requirement",
-          caption: "The bracket's two hole positions need ±0.05 mm, so a process is only viable if it holds that or tighter.",
+          caption: "The bracket's two hole positions need ±0.05 mm; a process coarser than that is out unless a secondary operation is added.",
         },
         {
           at: 3.1,
@@ -225,6 +225,11 @@ function Tolerances() {
         {
           at: 3.7,
           label: "RSS",
+          caption: "RSS adds them in quadrature: √(0.10² + 0.05² + 0.10²) = 0.15 mm, so the stack reaches 100.15.",
+        },
+        {
+          at: 4.9,
+          label: "Verdict",
           caption:
             "Same three parts, two verdicts: worst-case (0.25) pushes past the 100.20 wall, RSS (0.15) stays inside. The consequence of a jam picks which one you trust.",
         },
@@ -304,7 +309,8 @@ function Dfm() {
         {
           at: 2.9,
           label: "Holes",
-          caption: "Tight tolerance only where a function lives: the holes sit in a real stack, the face only has to look right. The re-quote drops about 30%.",
+          caption:
+            "Tight tolerance only where a function lives: the holes sit in a real stack, the face only has to look right. The re-quote drops about 30%.",
         },
       ]}
     >
@@ -380,7 +386,7 @@ function DoePlan() {
         {
           at: 1.8,
           label: "Additive",
-          caption: "Adding the main effects, 9.50 + 1.30 + 1.20, predicts 12.0 MPa for toughened epoxy at 24 h.",
+          caption: "The additive prediction for toughened epoxy at 24 h is 9.50 + 1.30 + 1.20 = 12.0 MPa.",
         },
         { at: 2.9, label: "Measured", caption: "The (+,+) corner, toughened epoxy with the full 24 h cure, measured 13.0 MPa." },
         {
@@ -624,8 +630,8 @@ function HonestGraph() {
             <Label x={r.x} y={r.y - 20} anchor="start" size={15} tone="muted" opacity={op(strip)}>
               residuals (s²): static, no pattern
             </Label>
-            <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={C.soft} opacity={0.5 * strip} />
-            <line x1={r.x} y1={r.py(0)} x2={r.x + r.w} y2={r.py(0)} stroke={C.muted} strokeWidth={1.5} opacity={op(strip)} />
+            <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={C.soft} opacity={0.5} />
+            <line x1={r.x} y1={r.py(0)} x2={r.x + r.w} y2={r.py(0)} stroke={C.muted} strokeWidth={1.5} />
             {L.map((l, i) => {
               const p = seg(t, 3.4 + 0.12 * i, 3.8 + 0.12 * i); // each residual grows out of the zero line
               const y = lerp(r.py(0), r.py(res[i]), p);
@@ -685,6 +691,11 @@ function TradeStudy() {
         {
           at: 2.4,
           label: "Weigh",
+          caption: "Weighted 0.30, 0.25, 0.20, 0.15 and 0.10, the totals are nylon 0.694, aluminum 0.632, steel 0.505 and CFRP 0.500.",
+        },
+        {
+          at: 3.9,
+          label: "Winner",
           caption:
             "Each criterion is stretched to 0–1 between the best and worst observed before the weights touch it. Under this brief, nylon wins by being cheap, fast and light.",
         },
@@ -1416,7 +1427,7 @@ function CapMastery() {
       duration={4.3}
       alt="A decision fork from the question 'measured 0.61 mm against predicted 0.46 mm, first move?' to four answers: recheck arithmetic, average, and rebuild stiffer are crossed out; reading the assumption ledger, where the root clamp is marked assumed, is ticked."
       steps={[
-        { at: 0, label: "Question", caption: "The test measured 0.61 mm against the model's 0.46 mm. What is the first move?" },
+        { at: 0, label: "Question", caption: "The test measured 0.61 mm against the model's 0.46 mm: what is the first move?" },
         {
           at: 0.6,
           label: "Tempting",
