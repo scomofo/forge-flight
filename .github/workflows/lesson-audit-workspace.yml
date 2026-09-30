@@ -1,57 +1,23 @@
-name: Reconcile and validate lesson fixes
+name: Export lesson fix review workspace
 on:
   push:
     branches: [work/lesson-givens-build-20260930]
     paths: [.github/workflows/lesson-audit-workspace.yml]
 permissions:
-  contents: write
+  contents: read
 jobs:
-  validate:
+  export:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: fix/lesson-givens-and-notation
-          fetch-depth: 0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: '22'
-          cache: npm
-      - name: Preserve newly merged help and remove temporary transport files
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git merge --no-commit --no-ff ab7e9d44888a79ea997dde1320ff0255d91a1042
-          git rm --ignore-unmatch .work/lesson-givens-0.b64 .work/lesson-givens-1.b64 .work/lesson-givens-2.b64 .github/workflows/lesson-audit-workspace.yml
-          git diff --cached --check
-          git commit -m 'fix: preserve merged algebra help and remove temporary audit staging'
-          git push origin HEAD:refs/heads/fix/lesson-givens-and-notation
-      - run: npm ci --ignore-scripts
-      - run: npm test
-      - run: npm run typecheck
-      - run: npm run build
-      - name: Lint changed source
-        run: git diff --name-only --diff-filter=ACMRT ab7e9d44888a79ea997dde1320ff0255d91a1042 HEAD -- '*.ts' '*.tsx' '*.mjs' | xargs -r npx eslint
-      - run: npx playwright install --with-deps chromium
-      - name: Development browser acceptance
-        run: node scripts/browser-lesson-givens.mjs
-      - name: Built browser acceptance
-        env:
-          ACCEPTANCE_BUILD: '1'
-          ACCEPTANCE_OUT: screenshots/lesson-givens-built
-        run: node scripts/browser-lesson-givens.mjs
-      - name: Record tested head
-        if: always()
-        run: |
-          mkdir -p artifacts
-          git rev-parse HEAD > artifacts/tested-head.txt
+          ref: 3993eb2d62ce24cce93de86fd9be31d871b69aa8
+          persist-credentials: false
+      - name: Export tracked source only
+        run: git archive --format=tar.gz -o /tmp/lesson-fixes-source.tar.gz HEAD
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
         with:
-          name: lesson-fixes-final-acceptance
-          path: |
-            screenshots/lesson-givens/
-            screenshots/lesson-givens-built/
-            artifacts/tested-head.txt
-          retention-days: 7
+          name: lesson-fixes-source
+          path: /tmp/lesson-fixes-source.tar.gz
+          retention-days: 1
