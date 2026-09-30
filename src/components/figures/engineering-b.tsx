@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Arrow, Axes, C, DimH, Figure, Label, WallV, plotBox, type FigureMap } from "./kit";
+import { AnimatedFigure, GrowArrow, clamp, lerp, op, partial, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
 
@@ -76,46 +77,97 @@ function Processes() {
   const dy = 36;
   const axisY = top + rows.length * dy;
   return (
-    <Figure
+    <AnimatedFigure
       height={300}
+      duration={5.2}
       alt="Five manufacturing processes plotted by routine tolerance on a log axis, with a vertical line at the required ±0.05 mm; grinding and CNC milling fall left of the line and pass, die casting, FDM and sand casting fall right and fail."
-      caption="Tolerance is the first screen: only processes left of the ±0.05 mm line can hold the bracket's holes. CNC milling clears it and wins at about $42 a part."
+      steps={[
+        {
+          at: 0,
+          label: "Processes",
+          caption:
+            "Every process holds a routine tolerance: grinding ±0.005 mm, CNC milling ±0.025, die casting ±0.1, FDM ±0.2, sand casting ±0.5.",
+        },
+        {
+          at: 1.9,
+          label: "Requirement",
+          caption: "The bracket's two hole positions need ±0.05 mm, so a process is only viable if it holds that or tighter.",
+        },
+        {
+          at: 3.1,
+          label: "Screen",
+          caption: "Grinding and CNC milling pass; die casting at ±0.1 fails outright, and FDM at ±0.2 is out four times over.",
+        },
+        {
+          at: 4.4,
+          label: "Winner",
+          caption:
+            "Tolerance is the first screen: only processes left of the ±0.05 mm line can hold the bracket's holes. CNC milling clears it and wins at about $42 a part.",
+        },
+      ]}
     >
-      <rect x={x0} y={top - 16} width={req - x0} height={axisY - top + 16} fill={C.soft} />
-      <line x1={req} y1={top - 24} x2={req} y2={axisY} stroke={C.accent} strokeWidth={2.5} strokeDasharray="6 4" />
-      <Label x={req} y={top - 36} tone="accent" weight={600}>
-        required ±0.05
-      </Label>
-      {rows.map(([name, tol, v], i) => {
-        const y = top + i * dy + 4;
-        const pass = v <= 0.05;
-        const win = name === "CNC milling";
+      {({ t }) => {
+        const drop = seg(t, 2, 2.5); // the requirement line comes down
+        const band = seg(t, 2.3, 2.9); // the passing band sweeps out to it
+        const crown = seg(t, 4.4, 4.9); // CNC milling named the winner
         return (
-          <g key={name}>
-            <line x1={x0} y1={y} x2={x0 + w} y2={y} stroke={C.line} strokeWidth={1} />
-            <Label x={x0 - 12} y={y} anchor="end" size={15} tone={win ? "accent" : "ink"} weight={win ? 700 : undefined}>
-              {name} <tspan fill={C.muted}>{tol}</tspan>
+          <>
+            {band > 0 ? <rect x={x0} y={top - 16} width={lerp(0, req - x0, band)} height={axisY - top + 16} fill={C.soft} /> : null}
+            {drop > 0 ? (
+              <line x1={req} y1={top - 24} x2={req} y2={lerp(top - 24, axisY, drop)} stroke={C.accent} strokeWidth={2.5} strokeDasharray="6 4" />
+            ) : null}
+            <Label x={req} y={top - 36} tone="accent" weight={600} opacity={op(seg(t, 2.1, 2.6))}>
+              required ±0.05
             </Label>
-            <circle cx={px(v)} cy={y} r={7} fill={pass ? C.accent : C.alarm} />
-          </g>
+            {rows.map(([name, tol, v], i) => {
+              const y = top + i * dy + 4;
+              const pass = v <= 0.05;
+              const win = name === "CNC milling";
+              const a = 0.4 + 0.25 * i;
+              const judged = seg(t, 3.2 + 0.15 * i, 3.7 + 0.15 * i); // dot takes its pass/fail colour
+              return (
+                <g key={name} opacity={op(seg(t, a, a + 0.5))}>
+                  <line x1={x0} y1={y} x2={x0 + w} y2={y} stroke={C.line} strokeWidth={1} />
+                  {win && crown < 1 ? (
+                    <Label x={x0 - 12} y={y} anchor="end" size={15} opacity={op(1 - crown)}>
+                      {name} <tspan fill={C.muted}>{tol}</tspan>
+                    </Label>
+                  ) : null}
+                  <Label
+                    x={x0 - 12}
+                    y={y}
+                    anchor="end"
+                    size={15}
+                    tone={win ? "accent" : "ink"}
+                    weight={win ? 700 : undefined}
+                    opacity={win ? op(crown) : undefined}
+                  >
+                    {name} <tspan fill={C.muted}>{tol}</tspan>
+                  </Label>
+                  {judged < 1 ? <circle cx={px(v)} cy={y} r={7} fill={C.muted} /> : null}
+                  <circle cx={px(v)} cy={y} r={7} fill={pass ? C.accent : C.alarm} opacity={op(judged)} />
+                </g>
+              );
+            })}
+            <line x1={x0} y1={axisY} x2={x0 + w} y2={axisY} stroke={C.ink} strokeWidth={1.5} />
+            {[0.01, 0.1, 1].map((t) => (
+              <g key={t}>
+                <line x1={px(t)} y1={axisY} x2={px(t)} y2={axisY + 6} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={px(t)} y={axisY + 20} size={15} tone="muted" anchor={t === 1 ? "end" : "middle"}>
+                  {t === 1 ? "1 mm" : String(t)}
+                </Label>
+              </g>
+            ))}
+            <Label x={20} y={axisY + 20} anchor="start" size={15} tone="muted">
+              routine tolerance ± (log)
+            </Label>
+            <Label x={x0 + (req - x0) / 2} y={axisY + 44} size={15} tone="accent" opacity={op(seg(t, 2.6, 3.1))}>
+              passes
+            </Label>
+          </>
         );
-      })}
-      <line x1={x0} y1={axisY} x2={x0 + w} y2={axisY} stroke={C.ink} strokeWidth={1.5} />
-      {[0.01, 0.1, 1].map((t) => (
-        <g key={t}>
-          <line x1={px(t)} y1={axisY} x2={px(t)} y2={axisY + 6} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={px(t)} y={axisY + 20} size={15} tone="muted" anchor={t === 1 ? "end" : "middle"}>
-            {t === 1 ? "1 mm" : String(t)}
-          </Label>
-        </g>
-      ))}
-      <Label x={20} y={axisY + 20} anchor="start" size={15} tone="muted">
-        routine tolerance ± (log)
-      </Label>
-      <Label x={x0 + (req - x0) / 2} y={axisY + 44} size={15} tone="accent">
-        passes
-      </Label>
-    </Figure>
+      }}
+    </AnimatedFigure>
   );
 }
 

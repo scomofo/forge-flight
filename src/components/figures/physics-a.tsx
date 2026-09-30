@@ -108,48 +108,79 @@ function SigFigs() {
   const B = { x: A.x - 1.6 * 60, y: A.y };
   const Cc = { x: A.x, y: A.y - 1.7 * 60 };
   return (
-    <Figure
+    <AnimatedFigure
       height={280}
+      duration={5.6}
       alt="A number line from 2.60 to 2.80 kg/L with the band 2.71 ± 0.06 shaded, above a right triangle whose legs are 1.6% and 1.7% and whose hypotenuse is 2.3%."
-      caption="Relative uncertainties add like perpendicular sides: 1.6% and 1.7% make 2.3%, which puts the honest last digit of 2.712 in the second decimal place."
+      steps={[
+        { at: 0, label: "Calculate", caption: "The calculator gives ρ = 3.20 / 1.18 = 2.712 kg/L." },
+        {
+          at: 1.3,
+          label: "Inputs",
+          caption: "The mass, 3.20 ± 0.05 kg, is uncertain by 1.6%; the volume, 1.18 ± 0.02 L, by 1.7%.",
+        },
+        {
+          at: 2.8,
+          label: "Combine",
+          caption: "Combined in quadrature they make about 2.3%; applied to the density, that is roughly 0.063 kg/L.",
+        },
+        {
+          at: 4.4,
+          label: "Report",
+          caption:
+            "Relative uncertainties add like perpendicular sides: 1.6% and 1.7% make 2.3%, which puts the honest last digit of 2.712 in the second decimal place.",
+        },
+      ]}
     >
-      <Label x={nx(2.71)} y={28} tone="accent" weight={600} size={18}>
-        ρ = 2.71 ± 0.06 kg/L
-      </Label>
-      <rect x={nx(2.65)} y={74} width={nx(2.77) - nx(2.65)} height={30} fill={C.soft} stroke={C.accent} strokeWidth={1.5} />
-      <line x1={50} y1={89} x2={430} y2={89} stroke={C.ink} strokeWidth={2} />
-      {[2.6, 2.65, 2.7, 2.75, 2.8].map((v) => (
-        <g key={v}>
-          <line x1={nx(v)} y1={82} x2={nx(v)} y2={96} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={nx(v)} y={120} tone="muted" size={15}>
-            {v.toFixed(2)}
-          </Label>
-        </g>
-      ))}
-      <circle cx={nx(2.712)} cy={89} r={6} fill={C.accent} />
+      {({ t }) => {
+        const mass = seg(t, 1.3, 1.8); // legs grow from the right angle's ends, then the hypotenuse
+        const vol = seg(t, 1.8, 2.3);
+        const hyp = seg(t, 2.8, 3.3);
+        const band = seg(t, 4.4, 5); // ± 0.06 opens out from 2.71
+        return (
+          <>
+            <Label x={nx(2.71)} y={28} tone="accent" weight={600} size={18} opacity={op(seg(t, 4.9, 5.4))}>
+              ρ = 2.71 ± 0.06 kg/L
+            </Label>
+            {band > 0 ? (
+              <rect x={lerp(nx(2.71), nx(2.65), band)} y={74} width={lerp(0, nx(2.77) - nx(2.65), band)} height={30} fill={C.soft} stroke={C.accent} strokeWidth={1.5} />
+            ) : null}
+            <line x1={50} y1={89} x2={430} y2={89} stroke={C.ink} strokeWidth={2} />
+            {[2.6, 2.65, 2.7, 2.75, 2.8].map((v) => (
+              <g key={v}>
+                <line x1={nx(v)} y1={82} x2={nx(v)} y2={96} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={nx(v)} y={120} tone="muted" size={15}>
+                  {v.toFixed(2)}
+                </Label>
+              </g>
+            ))}
+            <circle cx={nx(2.712)} cy={89} r={6} fill={C.accent} opacity={op(seg(t, 0.4, 0.9))} />
 
-      <polygon points={`${A.x},${A.y} ${B.x},${B.y} ${Cc.x},${Cc.y}`} fill={C.soft} stroke="none" />
-      <line x1={B.x} y1={B.y} x2={A.x} y2={A.y} stroke={C.ink} strokeWidth={2} />
-      <line x1={A.x} y1={A.y} x2={Cc.x} y2={Cc.y} stroke={C.ink} strokeWidth={2} />
-      <line x1={B.x} y1={B.y} x2={Cc.x} y2={Cc.y} stroke={C.accent} strokeWidth={3} />
-      <rect x={A.x - 10} y={A.y - 10} width={10} height={10} fill="none" stroke={C.muted} strokeWidth={1.2} />
-      <Label x={(A.x + B.x) / 2} y={266} size={15}>
-        mass 1.6%
-      </Label>
-      <Label x={A.x + 8} y={(A.y + Cc.y) / 2} anchor="start" size={15}>
-        vol. 1.7%
-      </Label>
-      <Label x={(B.x + Cc.x) / 2 - 10} y={(B.y + Cc.y) / 2 - 12} anchor="end" tone="accent" weight={600}>
-        2.3%
-      </Label>
+            <polygon points={`${A.x},${A.y} ${B.x},${B.y} ${Cc.x},${Cc.y}`} fill={C.soft} stroke="none" opacity={op(seg(t, 3, 3.5))} />
+            {mass > 0 ? <line x1={B.x} y1={B.y} x2={lerp(B.x, A.x, mass)} y2={A.y} stroke={C.ink} strokeWidth={2} /> : null}
+            {vol > 0 ? <line x1={A.x} y1={A.y} x2={Cc.x} y2={lerp(A.y, Cc.y, vol)} stroke={C.ink} strokeWidth={2} /> : null}
+            {hyp > 0 ? <line x1={B.x} y1={B.y} x2={lerp(B.x, Cc.x, hyp)} y2={lerp(B.y, Cc.y, hyp)} stroke={C.accent} strokeWidth={3} /> : null}
+            <rect x={A.x - 10} y={A.y - 10} width={10} height={10} fill="none" stroke={C.muted} strokeWidth={1.2} opacity={op(seg(t, 2.1, 2.6))} />
+            <Label x={(A.x + B.x) / 2} y={266} size={15} opacity={op(seg(t, 1.5, 2))}>
+              mass 1.6%
+            </Label>
+            <Label x={A.x + 8} y={(A.y + Cc.y) / 2} anchor="start" size={15} opacity={op(seg(t, 2, 2.5))}>
+              vol. 1.7%
+            </Label>
+            <Label x={(B.x + Cc.x) / 2 - 10} y={(B.y + Cc.y) / 2 - 12} anchor="end" tone="accent" weight={600} opacity={op(seg(t, 3.1, 3.6))}>
+              2.3%
+            </Label>
 
-      <Label x={470} y={175} anchor="end" size={15} tone="muted">
-        √(1.6² + 1.7²) = 2.3%
-      </Label>
-      <Label x={470} y={230} anchor="end" size={15} tone="muted">
-        2.712 × 0.023 = 0.063
-      </Label>
-    </Figure>
+            <Label x={470} y={175} anchor="end" size={15} tone="muted" opacity={op(seg(t, 3.4, 3.9))}>
+              √(1.6² + 1.7²) = 2.3%
+            </Label>
+            <Label x={470} y={230} anchor="end" size={15} tone="muted" opacity={op(seg(t, 3.8, 4.3))}>
+              2.712 × 0.023 = 0.063
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
