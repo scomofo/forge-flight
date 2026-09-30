@@ -269,39 +269,70 @@ function VecComp() {
 /** kingraphs: the derived v–t line; its slope is 4 m/s², its area from 1 to 3 s is 16 m. */
 function KinGraphs() {
   const b = plotBox({ x: 70, y: 36, w: 370, h: 190, xMin: 0, xMax: 3.3, yMin: 0, yMax: 14 });
+  // v(1) and v(2) come from the position log; v(3) ≈ 12 is read off the line afterwards.
+  const shown: Record<number, number> = { 1: 0.3, 2: 0.8, 3: 2.6 };
   return (
-    <Figure
+    <AnimatedFigure
       height={276}
+      duration={5}
       alt="A velocity-time graph rising in a straight line through 4, 8 and 12 m/s at 1, 2 and 3 s, with the trapezoid under it from 1 to 3 s shaded and labelled 16 m."
-      caption="The slope of v–t is the acceleration; the shaded area is the displacement, and it must return the logged 18 − 2 = 16 m."
+      steps={[
+        {
+          at: 0,
+          label: "Velocities",
+          caption: "Central differences on the position log give v(1) = 4 m/s and v(2) = 8 m/s.",
+        },
+        {
+          at: 1.5,
+          label: "Slope",
+          caption: "The velocity climbs 4 m/s every second: a steady 4 m/s² that carries the line to about 12 m/s at 3 s.",
+        },
+        {
+          at: 3.3,
+          label: "Area",
+          caption: "The slope of v–t is the acceleration; the shaded area is the displacement, and it must return the logged 18 − 2 = 16 m.",
+        },
+      ]}
     >
-      <path d={`${b.path([[1, 0], [1, 4], [3, 12], [3, 0]])} Z`} fill={C.soft} stroke="none" />
-      <Axes box={b} xLabel="t (s)" yLabel="v (m/s)" />
-      <path d={b.path([[0, 0], [3, 12]])} stroke={C.accent} strokeWidth={3} fill="none" />
-      {[1, 2, 3].map((t) => (
-        <g key={t}>
-          <line x1={b.px(t)} y1={b.py(0)} x2={b.px(t)} y2={b.py(0) + 6} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.px(t)} y={b.py(0) + 18} tone="muted" size={15}>
-            {t}
-          </Label>
-          <line x1={b.x - 6} y1={b.py(4 * t)} x2={b.x} y2={b.py(4 * t)} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.x - 10} y={b.py(4 * t)} anchor="end" tone="muted" size={15}>
-            {4 * t}
-          </Label>
-          <line x1={b.x} y1={b.py(4 * t)} x2={b.px(t)} y2={b.py(4 * t)} stroke={C.line} strokeWidth={1} strokeDasharray="4 4" />
-          <circle cx={b.px(t)} cy={b.py(4 * t)} r={6} fill={t === 3 ? C.surface : C.accent} stroke={C.accent} strokeWidth={2} />
-        </g>
-      ))}
-      <Label x={b.px(1.2)} y={b.py(9.6)} anchor="end" tone="accent" weight={600}>
-        slope 4 m/s²
-      </Label>
-      <Label x={b.px(2.25)} y={b.py(4)} weight={600}>
-        area = 16 m
-      </Label>
-      <Label x={b.px(2.25)} y={b.py(4) + 22} tone="muted" size={15}>
-        = x(3) − x(1)
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const line = seg(t, 1.5, 2.3);
+        const u = 1 + 2 * seg(t, 3.3, 4); // the shading sweeps from 1 s to 3 s
+        return (
+          <>
+            {u > 1 ? <path d={`${b.path([[1, 0], [1, 4], [u, 4 * u], [u, 0]])} Z`} fill={C.soft} stroke="none" /> : null}
+            <Axes box={b} xLabel="t (s)" yLabel="v (m/s)" />
+            {line > 0 ? <path d={b.path([[0, 0], [3 * line, 12 * line]])} stroke={C.accent} strokeWidth={3} fill="none" /> : null}
+            {[1, 2, 3].map((s) => (
+              <g key={s}>
+                <line x1={b.px(s)} y1={b.py(0)} x2={b.px(s)} y2={b.py(0) + 6} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.px(s)} y={b.py(0) + 18} tone="muted" size={15}>
+                  {s}
+                </Label>
+                <line x1={b.x - 6} y1={b.py(4 * s)} x2={b.x} y2={b.py(4 * s)} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.x - 10} y={b.py(4 * s)} anchor="end" tone="muted" size={15}>
+                  {4 * s}
+                </Label>
+                <g opacity={op(seg(t, shown[s], shown[s] + 0.5))}>
+                  <line x1={b.x} y1={b.py(4 * s)} x2={b.px(s)} y2={b.py(4 * s)} stroke={C.line} strokeWidth={1} strokeDasharray="4 4" />
+                  <circle cx={b.px(s)} cy={b.py(4 * s)} r={6} fill={s === 3 ? C.surface : C.accent} stroke={C.accent} strokeWidth={2} />
+                </g>
+              </g>
+            ))}
+            <Label x={b.px(1.2)} y={b.py(9.6)} anchor="end" tone="accent" weight={600} opacity={op(seg(t, 2.1, 2.6))}>
+              slope 4 m/s²
+            </Label>
+            <g opacity={op(seg(t, 4, 4.5))}>
+              <Label x={b.px(2.25)} y={b.py(4)} weight={600}>
+                area = 16 m
+              </Label>
+              <Label x={b.px(2.25)} y={b.py(4) + 22} tone="muted" size={15}>
+                = x(3) − x(1)
+              </Label>
+            </g>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
