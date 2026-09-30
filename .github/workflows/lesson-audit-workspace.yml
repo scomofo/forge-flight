@@ -1,4 +1,4 @@
-name: Apply and validate lesson clarity fixes
+name: Reconcile and validate lesson fixes
 on:
   push:
     branches: [work/lesson-givens-build-20260930]
@@ -8,122 +8,50 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    env:
-      BASE_SHA: 4e6d6879db8293ed288fecf8bbfe57369a8db16b
-      FEATURE: fix/lesson-givens-and-notation
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: fix/lesson-givens-and-notation
           fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
           cache: npm
-      - name: Verify uploaded edits and select clean base
-        run: |
-          python3 - <<'PY'
-          import base64, hashlib, json, lzma
-          from pathlib import Path
-          encoded=''.join(Path(f'.work/lesson-givens-{i}.b64').read_text() for i in range(3))
-          packed=base64.b64decode(encoded,validate=True)
-          assert hashlib.sha256(packed).hexdigest()=='7ab65819e45e6a69d6d40275b9c7cf2913c9b06c60bcbd88c0157ebe062b3dfa'
-          ops=json.loads(lzma.decompress(packed))
-          assert len(ops)==40
-          Path('/tmp/lesson-ops.json').write_text(json.dumps(ops))
-          PY
-          git checkout --detach "$BASE_SHA"
-          git switch -c "$FEATURE"
-          mkdir -p artifacts/validation
-      - run: npm ci --ignore-scripts
-      - name: Save baseline assessment contract
-        run: |
-          node --experimental-strip-types --input-type=module - <<'JS' > /tmp/assessment-before.json
-          import {lessons} from './src/course/catalog.ts';
-          import {createHash} from 'node:crypto';
-          console.log(JSON.stringify(lessons.map(l=>({key:`${l.track}/${l.id}`,index:l.index,bench:l.bench,passAt:l.passAt??3,answers:l.checks.map(c=>c.answer),optionsSha256:createHash('sha256').update(JSON.stringify(l.checks.map(c=>c.options))).digest('hex')}))));
-          JS
-      - name: Apply SHA-guarded edits and preserve assessment fixture
-        run: |
-          python3 - <<'PY'
-          import hashlib,json
-          from pathlib import Path
-          for op in json.loads(Path('/tmp/lesson-ops.json').read_text()):
-            p=Path(op['path'])
-            assert not p.is_absolute() and '..' not in p.parts
-            if 'create' in op:
-              assert not p.exists(),p
-              p.parent.mkdir(parents=True,exist_ok=True)
-              p.write_text(op['create'])
-            else:
-              s=p.read_text()
-              assert hashlib.sha256(s.encode()).hexdigest()==op['sha256'],p
-              for a,b,replacement in reversed(op['edits']): s=s[:a]+replacement+s[b:]
-              p.write_text(s)
-          PY
-          node --experimental-strip-types --input-type=module - <<'JS'
-          import {lessons} from './src/course/catalog.ts';
-          import {createHash} from 'node:crypto';
-          import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
-          import assert from 'node:assert/strict';
-          const contracts=JSON.parse(readFileSync('/tmp/assessment-before.json','utf8'));
-          const reviewedWording=['engineering/standards','manufacturing-301/bonus'];
-          assert.equal(lessons.length,contracts.length);
-          for(const c of contracts){
-            const l=lessons.find(l=>`${l.track}/${l.id}`===c.key);assert.ok(l,c.key);
-            assert.equal(l.index,c.index);assert.equal(l.bench,c.bench);assert.equal(l.passAt??3,c.passAt);assert.deepEqual(l.checks.map(q=>q.answer),c.answers);
-            const hash=createHash('sha256').update(JSON.stringify(l.checks.map(q=>q.options))).digest('hex');
-            if(reviewedWording.includes(c.key))c.optionsSha256=hash;else assert.equal(hash,c.optionsSha256,c.key);
-          }
-          mkdirSync('scripts/fixtures',{recursive:true});
-          writeFileSync('scripts/fixtures/lesson-assessment-contract.json',JSON.stringify({base:process.env.BASE_SHA,reviewedWording,contracts},null,2)+'\n');
-          JS
-          echo 'ff70b878769933913be8534d7ddc1ef8940add8bf60dbc8eb686309986f2c2d6  scripts/fixtures/lesson-assessment-contract.json' | sha256sum -c -
-          git diff --check
-      - name: Tests
-        run: npm test 2>&1 | tee artifacts/validation/tests.log
-      - name: TypeScript
-        run: npm run typecheck 2>&1 | tee artifacts/validation/typecheck.log
-      - name: Production build
-        run: npm run build 2>&1 | tee artifacts/validation/build.log
-      - name: Lint edited sources
-        run: |
-          python3 - <<'PY'
-          import json,subprocess
-          from pathlib import Path
-          paths=[op['path'] for op in json.loads(Path('/tmp/lesson-ops.json').read_text()) if Path(op['path']).suffix in ['.ts','.tsx','.mjs']]
-          subprocess.run(['npx','eslint',*paths],check=True)
-          PY
-      - name: Publish clean implementation branch
+      - name: Preserve newly merged help and remove temporary transport files
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          python3 - <<'PY'
-          import json,subprocess
-          from pathlib import Path
-          paths=[op['path'] for op in json.loads(Path('/tmp/lesson-ops.json').read_text()) if not op['path'].startswith('.github/')]
-          paths.append('scripts/fixtures/lesson-assessment-contract.json')
-          subprocess.run(['git','add','--',*paths],check=True)
-          PY
+          git merge --no-commit --no-ff ab7e9d44888a79ea997dde1320ff0255d91a1042
+          git rm --ignore-unmatch .work/lesson-givens-0.b64 .work/lesson-givens-1.b64 .work/lesson-givens-2.b64 .github/workflows/lesson-audit-workspace.yml
           git diff --cached --check
-          git commit -m 'fix: make lesson givens and notation explicit across the curriculum'
-          git push origin "HEAD:refs/heads/$FEATURE"
-          git rev-parse HEAD | tee artifacts/validation/commit.txt
-      - name: Install browser
-        run: npx playwright install --with-deps chromium
+          git commit -m 'fix: preserve merged algebra help and remove temporary audit staging'
+          git push origin HEAD:refs/heads/fix/lesson-givens-and-notation
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build
+      - name: Lint changed source
+        run: git diff --name-only --diff-filter=ACMRT ab7e9d44888a79ea997dde1320ff0255d91a1042 HEAD -- '*.ts' '*.tsx' '*.mjs' | xargs -r npx eslint
+      - run: npx playwright install --with-deps chromium
       - name: Development browser acceptance
-        run: node scripts/browser-lesson-givens.mjs 2>&1 | tee artifacts/validation/browser-dev.log
+        run: node scripts/browser-lesson-givens.mjs
       - name: Built browser acceptance
         env:
           ACCEPTANCE_BUILD: '1'
           ACCEPTANCE_OUT: screenshots/lesson-givens-built
-        run: node scripts/browser-lesson-givens.mjs 2>&1 | tee artifacts/validation/browser-built.log
+        run: node scripts/browser-lesson-givens.mjs
+      - name: Record tested head
+        if: always()
+        run: |
+          mkdir -p artifacts
+          git rev-parse HEAD > artifacts/tested-head.txt
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: lesson-fix-validation
+          name: lesson-fixes-final-acceptance
           path: |
-            artifacts/validation/
             screenshots/lesson-givens/
             screenshots/lesson-givens-built/
+            artifacts/tested-head.txt
           retention-days: 7
