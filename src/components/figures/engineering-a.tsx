@@ -1,4 +1,5 @@
 import { Arrow, Axes, C, DimH, Figure, Ground, Label, WallV, plotBox, type FigureMap } from "./kit";
+import { AnimatedFigure, clamp, GrowArrow, lerp, op, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
 
@@ -14,6 +15,8 @@ function Cell({
   stroke = C.line,
   weight,
   anchor = "middle",
+  opacity,
+  fillOpacity,
 }: {
   x: number;
   y: number;
@@ -25,10 +28,12 @@ function Cell({
   stroke?: string;
   weight?: number;
   anchor?: "start" | "middle";
+  opacity?: number;
+  fillOpacity?: number;
 }) {
   return (
-    <g>
-      <rect x={x} y={y} width={w} height={h} fill={fill} stroke={stroke} strokeWidth={1.5} />
+    <g opacity={opacity}>
+      <rect x={x} y={y} width={w} height={h} fill={fill} fillOpacity={fillOpacity} stroke={stroke} strokeWidth={1.5} />
       {text ? (
         <Label x={anchor === "middle" ? x + w / 2 : x + 8} y={y + h / 2} tone={tone} size={15} weight={weight} anchor={anchor}>
           {text}
@@ -39,10 +44,26 @@ function Cell({
 }
 
 /** A labelled box with a small muted title and one or two lines of text. */
-function Box({ x, y, w, title, lines, tone = "ink" }: { x: number; y: number; w: number; title: string; lines: string[]; tone?: "ink" | "accent" }) {
+function Box({
+  x,
+  y,
+  w,
+  title,
+  lines,
+  tone = "ink",
+  opacity,
+}: {
+  x: number;
+  y: number;
+  w: number;
+  title: string;
+  lines: string[];
+  tone?: "ink" | "accent";
+  opacity?: number;
+}) {
   const h = 30 + lines.length * 20;
   return (
-    <g>
+    <g opacity={opacity}>
       <rect x={x} y={y} width={w} height={h} rx={6} fill={tone === "accent" ? C.soft : C.surface} stroke={C[tone]} strokeWidth={2} />
       <Label x={x + w / 2} y={y + 16} tone="muted" size={15}>
         {title}
@@ -62,87 +83,145 @@ function Box({ x, y, w, title, lines, tone = "ink" }: { x: number; y: number; w:
 function Requirements() {
   const px = (g: number) => 40 + g * 1.6;
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={4.7}
       alt="A speech bubble saying 'light' turns into the requirement 'mass at most 150 g', drawn as a pass/fail line on a mass scale where a 200 g concept lands in the fail zone."
-      caption="The need can't lose an argument; the requirement can. A 200 g concept fails the 150 g line on day one, no taste involved."
+      steps={[
+        { at: 0, label: "Need", caption: "The bike light's brief says 'light': a real stakeholder need, but still a mood." },
+        {
+          at: 1.3,
+          label: "Requirement",
+          caption: "Engineering gives it a number, a unit and a limit: the light shall have a mass of at most 150 g.",
+        },
+        {
+          at: 2.7,
+          label: "Pass/fail",
+          caption: "On a mass scale the requirement becomes a line: 150 g or less passes, anything heavier fails.",
+        },
+        {
+          at: 4,
+          label: "Concept",
+          caption:
+            "The need can't lose an argument; the requirement can. A 200 g concept fails the 150 g line on day one, no taste involved.",
+        },
+      ]}
     >
-      <rect x={20} y={24} width={130} height={44} rx={20} fill={C.surface} stroke={C.muted} strokeWidth={2} />
-      <path d="M50,68 L42,84 L66,68" fill={C.surface} stroke={C.muted} strokeWidth={2} />
-      <line x1={51} y1={67} x2={65} y2={67} stroke={C.surface} strokeWidth={3} />
-      <Label x={85} y={46} tone="muted" size={17} serif>
-        “light”
-      </Label>
-      <Label x={85} y={100} tone="muted" size={15}>
-        need: a mood
-      </Label>
-      <Arrow x1={160} y1={46} x2={206} y2={46} tone="ink" width={2} />
-      <rect x={214} y={24} width={246} height={44} rx={4} fill={C.soft} stroke={C.accent} strokeWidth={2} />
-      <Label x={337} y={46} tone="accent" size={17} weight={600}>
-        mass shall be ≤ 150 g
-      </Label>
-      <Label x={337} y={100} tone="accent" size={15}>
-        requirement: can fail
-      </Label>
+      {({ t }) => {
+        const scale = op(seg(t, 2.7, 3.2));
+        const line = seg(t, 2.9, 3.4); // the 150 g line rises off the scale
+        const zone = seg(t, 3.1, 3.7); // and the pass zone sweeps up to it
+        const land = seg(t, 4, 4.5);
+        return (
+          <>
+            <rect x={20} y={24} width={130} height={44} rx={20} fill={C.surface} stroke={C.muted} strokeWidth={2} />
+            <path d="M50,68 L42,84 L66,68" fill={C.surface} stroke={C.muted} strokeWidth={2} />
+            <line x1={51} y1={67} x2={65} y2={67} stroke={C.surface} strokeWidth={3} />
+            <Label x={85} y={46} tone="muted" size={17} serif>
+              “light”
+            </Label>
+            <Label x={85} y={100} tone="muted" size={15} opacity={op(seg(t, 0.4, 0.9))}>
+              need: a mood
+            </Label>
+            <GrowArrow p={seg(t, 1.3, 1.8)} x1={160} y1={46} x2={206} y2={46} tone="ink" width={2} />
+            <g opacity={op(seg(t, 1.6, 2.1))}>
+              <rect x={214} y={24} width={246} height={44} rx={4} fill={C.soft} stroke={C.accent} strokeWidth={2} />
+              <Label x={337} y={46} tone="accent" size={17} weight={600}>
+                mass shall be ≤ 150 g
+              </Label>
+            </g>
+            <Label x={337} y={100} tone="accent" size={15} opacity={op(seg(t, 1.9, 2.4))}>
+              requirement: can fail
+            </Label>
 
-      {/* the pass/fail scale */}
-      <rect x={px(0)} y={160} width={px(150) - px(0)} height={30} fill={C.soft} />
-      <Label x={(px(0) + px(150)) / 2} y={175} tone="accent" size={15}>
-        pass
-      </Label>
-      <Label x={px(235)} y={175} tone="alarm" size={15}>
-        fail
-      </Label>
-      <line x1={px(0)} y1={190} x2={px(250)} y2={190} stroke={C.ink} strokeWidth={2} />
-      <line x1={px(150)} y1={146} x2={px(150)} y2={200} stroke={C.accent} strokeWidth={3} />
-      {[0, 150, 200, 250].map((g) => (
-        <g key={g}>
-          <line x1={px(g)} y1={190} x2={px(g)} y2={198} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={px(g)} y={214} tone="muted" size={15}>
-            {`${g} g`}
-          </Label>
-        </g>
-      ))}
-      <path d={`M${px(200) - 9},150 L${px(200) + 9},150 L${px(200)},166 z`} fill={C.alarm} />
-      <Label x={px(200)} y={134} tone="alarm" size={15}>
-        concept: 200 g
-      </Label>
-    </Figure>
+            {/* the pass/fail scale */}
+            {zone > 0 ? <rect x={px(0)} y={160} width={lerp(0, px(150) - px(0), zone)} height={30} fill={C.soft} /> : null}
+            <Label x={(px(0) + px(150)) / 2} y={175} tone="accent" size={15} opacity={op(seg(t, 3.3, 3.8))}>
+              pass
+            </Label>
+            <Label x={px(235)} y={175} tone="alarm" size={15} opacity={op(seg(t, 3.5, 4))}>
+              fail
+            </Label>
+            <line x1={px(0)} y1={190} x2={px(250)} y2={190} stroke={C.ink} strokeWidth={2} opacity={scale} />
+            {line > 0 ? <line x1={px(150)} y1={lerp(200, 146, line)} x2={px(150)} y2={200} stroke={C.accent} strokeWidth={3} /> : null}
+            {[0, 150, 200, 250].map((g) => (
+              <g key={g} opacity={scale}>
+                <line x1={px(g)} y1={190} x2={px(g)} y2={198} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={px(g)} y={214} tone="muted" size={15}>
+                  {`${g} g`}
+                </Label>
+              </g>
+            ))}
+            <path
+              d={`M${px(200) - 9},150 L${px(200) + 9},150 L${px(200)},166 z`}
+              fill={C.alarm}
+              opacity={op(land)}
+              transform={land < 1 ? `translate(0,${lerp(-14, 0, land).toFixed(1)})` : undefined}
+            />
+            <Label x={px(200)} y={134} tone="alarm" size={15} opacity={op(seg(t, 4.1, 4.6))}>
+              concept: 200 g
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
 /** verifyvalidate: two different checks against two different things. */
 function VerifyValidate() {
   return (
-    <Figure
+    <AnimatedFigure
       height={270}
+      duration={4.6}
       alt="Three boxes: the need 'phone charged by morning', the requirement '5.0 V ± 0.25 V up to 3.0 A', and the charger; verification links the charger to the requirement, validation links the charger back to the need."
-      caption="Verification checks the charger against the requirement on a bench; validation checks it against the need, in users' hands. A pass on one says nothing about the other."
+      steps={[
+        {
+          at: 0,
+          label: "Write",
+          caption: "The need is a phone charged by morning; the requirement writes it down as 5.0 V ± 0.25 V at up to 3.0 A.",
+        },
+        {
+          at: 1.6,
+          label: "Verify",
+          caption: "Verification tests the built charger against the requirement: step a load from 0 to 3 A and read the voltage.",
+        },
+        {
+          at: 3.3,
+          label: "Validate",
+          caption:
+            "Verification checks the charger against the requirement on a bench; validation checks it against the need, in users' hands. A pass on one says nothing about the other.",
+        },
+      ]}
     >
-      <Box x={16} y={16} w={170} title="need" lines={["phone charged", "by morning"]} />
-      <Box x={294} y={16} w={170} title="requirement" lines={["5.0 V ± 0.25 V", "up to 3.0 A"]} tone="accent" />
-      <Box x={160} y={196} w={160} title="product" lines={["the charger"]} />
-      <Arrow x1={192} y1={50} x2={286} y2={50} tone="muted" width={2} />
-      <Label x={240} y={34} tone="muted" size={15}>
-        write
-      </Label>
+      {({ t }) => (
+        <>
+          <Box x={16} y={16} w={170} title="need" lines={["phone charged", "by morning"]} />
+          <Box x={294} y={16} w={170} title="requirement" lines={["5.0 V ± 0.25 V", "up to 3.0 A"]} tone="accent" opacity={op(seg(t, 0.8, 1.3))} />
+          <Box x={160} y={196} w={160} title="product" lines={["the charger"]} opacity={op(seg(t, 1.6, 2.1))} />
+          <GrowArrow p={seg(t, 0.4, 0.9)} x1={192} y1={50} x2={286} y2={50} tone="muted" width={2} />
+          <Label x={240} y={34} tone="muted" size={15} opacity={op(seg(t, 0.5, 1))}>
+            write
+          </Label>
 
-      <Arrow x1={300} y1={190} x2={368} y2={92} tone="accent" width={2.5} both />
-      <Label x={346} y={140} tone="accent" size={15} anchor="start" weight={600}>
-        verification
-      </Label>
-      <Label x={352} y={160} tone="accent" size={15} anchor="start">
-        built it right?
-      </Label>
+          <GrowArrow p={seg(t, 2, 2.6)} x1={300} y1={190} x2={368} y2={92} tone="accent" width={2.5} both />
+          <Label x={346} y={140} tone="accent" size={15} anchor="start" weight={600} opacity={op(seg(t, 2.4, 2.9))}>
+            verification
+          </Label>
+          <Label x={352} y={160} tone="accent" size={15} anchor="start" opacity={op(seg(t, 2.6, 3.1))}>
+            built it right?
+          </Label>
 
-      <Arrow x1={180} y1={190} x2={112} y2={92} tone="ink" width={2.5} both dashed />
-      <Label x={134} y={140} size={15} anchor="end" weight={600}>
-        validation
-      </Label>
-      <Label x={128} y={160} size={15} anchor="end">
-        right thing?
-      </Label>
-    </Figure>
+          <GrowArrow p={seg(t, 3.3, 3.9)} x1={180} y1={190} x2={112} y2={92} tone="ink" width={2.5} both dashed />
+          <Label x={134} y={140} size={15} anchor="end" weight={600} opacity={op(seg(t, 3.7, 4.2))}>
+            validation
+          </Label>
+          <Label x={128} y={160} size={15} anchor="end" opacity={op(seg(t, 3.9, 4.4))}>
+            right thing?
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -155,35 +234,60 @@ function Ledger() {
     ["A-2", "sends lbf·s", "(empty)", "low", "no"],
   ];
   return (
-    <Figure
+    <AnimatedFigure
       height={230}
+      duration={4.2}
       alt="An assumption ledger with two rows: A-1, trajectory software expects newton-seconds, source spec section 4.2, high confidence, resolved; A-2, subcontractor sends pound-force seconds, provenance empty, low confidence, unresolved, highlighted as the riskiest line."
-      caption="Row A-2 has no source, low confidence, and no resolution: one glance finds the line that lost the Orbiter."
+      steps={[
+        {
+          at: 0,
+          label: "A-1",
+          caption: "Entry A-1: the trajectory software expects newton-seconds, sourced to spec §4.2, high confidence, resolved.",
+        },
+        {
+          at: 1.6,
+          label: "A-2",
+          caption: "Entry A-2: the subcontractor sends pound-force seconds, with no provenance, low confidence, and no resolution.",
+        },
+        {
+          at: 3.1,
+          label: "Riskiest",
+          caption: "Row A-2 has no source, low confidence, and no resolution: one glance finds the line that lost the Orbiter.",
+        },
+      ]}
     >
-      {heads.map((h, i) => (
-        <Cell key={h} x={cols[i]} y={24} w={cols[i + 1] - cols[i]} h={34} text={h} tone="muted" />
-      ))}
-      {rows.map((r, j) => {
-        const bad = j === 1;
-        return r.map((t, i) => (
-          <Cell
-            key={`${j}-${i}`}
-            x={cols[i]}
-            y={58 + j * 42}
-            w={cols[i + 1] - cols[i]}
-            h={42}
-            text={t}
-            tone={bad && i >= 2 ? "alarm" : i === 0 ? "muted" : "ink"}
-            weight={bad && i === 2 ? 600 : undefined}
-          />
-        ));
-      })}
-      <rect x={20} y={100} width={440} height={42} fill="none" stroke={C.alarm} strokeWidth={3} />
-      <Arrow x1={260} y1={186} x2={260} y2={148} tone="alarm" width={2} />
-      <Label x={260} y={202} tone="alarm" size={15}>
-        riskiest line: no source, low confidence
-      </Label>
-    </Figure>
+      {({ t }) => (
+        <>
+          {heads.map((h, i) => (
+            <Cell key={h} x={cols[i]} y={24} w={cols[i + 1] - cols[i]} h={34} text={h} tone="muted" />
+          ))}
+          {rows.map((r, j) => {
+            const bad = j === 1;
+            return r.map((text, i) => {
+              const a = 0.4 + 1.3 * j + 0.15 * i; // row by row, left to right
+              return (
+                <Cell
+                  key={`${j}-${i}`}
+                  x={cols[i]}
+                  y={58 + j * 42}
+                  w={cols[i + 1] - cols[i]}
+                  h={42}
+                  text={text}
+                  tone={bad && i >= 2 ? "alarm" : i === 0 ? "muted" : "ink"}
+                  weight={bad && i === 2 ? 600 : undefined}
+                  opacity={op(seg(t, a, a + 0.5))}
+                />
+              );
+            });
+          })}
+          <rect x={20} y={100} width={440} height={42} fill="none" stroke={C.alarm} strokeWidth={3} opacity={op(seg(t, 3.1, 3.6))} />
+          <GrowArrow p={seg(t, 3.3, 3.8)} x1={260} y1={186} x2={260} y2={148} tone="alarm" width={2} />
+          <Label x={260} y={202} tone="alarm" size={15} opacity={op(seg(t, 3.5, 4))}>
+            riskiest line: no source, low confidence
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -201,57 +305,91 @@ function Deck({ cx, cy }: { cx: number; cy: number }) {
 
 /** modelvalid: the model asked about a steady push; the bridge died of twisting. */
 function ModelValid() {
+  const onset = 2.8; // the real deck starts to twist
+  const period = 0.9; // one twist cycle, s (schematic)
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={5.6}
       alt="Two bridge-deck cross-sections: on the left a steady design wind pushes a deck that holds; on the right a 64 km/h wind sets the same deck twisting back and forth in torsional flutter."
-      caption="The model answered its own question correctly — the deck holds a steady push. It had no vocabulary for the twist that actually tore the bridge apart."
+      steps={[
+        {
+          at: 0,
+          label: "Model",
+          caption: "The design model asked whether the deck holds a steady design wind far stronger than 64 km/h, and it does, with margin.",
+        },
+        {
+          at: 2,
+          label: "Reality",
+          caption: "In a 64 km/h wind, well below the design wind, the real deck began to twist back and forth: aeroelastic flutter.",
+        },
+        {
+          at: 4.7,
+          label: "Torn apart",
+          caption:
+            "The model answered its own question correctly — the deck holds a steady push. It had no vocabulary for the twist that actually tore the bridge apart.",
+        },
+      ]}
     >
-      <line x1={240} y1={20} x2={240} y2={230} stroke={C.line} strokeWidth={1.5} />
-      <Label x={120} y={28} size={15} weight={600}>
-        modelled: steady push
-      </Label>
-      <Label x={360} y={28} size={15} weight={600} tone="alarm">
-        reality: flutter
-      </Label>
+      {({ t, raw, duration }) => {
+        // Flutter feeds itself: the twist grows each cycle to the static ±12°, lands on −12° at the final
+        // frame, and keeps going through the end hold.
+        const u = clamp((t - onset) / (duration - onset));
+        const grow = (Math.exp(2 * u) - 1) / (Math.exp(2) - 1);
+        const twist = -12 * grow * Math.cos((2 * Math.PI * (raw - duration)) / period);
+        const real = op(seg(t, 2, 2.5));
+        const apart = seg(t, 4.7, 5.2);
+        return (
+          <>
+            <line x1={240} y1={20} x2={240} y2={230} stroke={C.line} strokeWidth={1.5} />
+            <Label x={120} y={28} size={15} weight={600}>
+              modelled: steady push
+            </Label>
+            <Label x={360} y={28} size={15} weight={600} tone="alarm" opacity={real}>
+              reality: flutter
+            </Label>
 
-      {[108, 128, 148].map((y) => (
-        <Arrow key={y} x1={14} y1={y} x2={50} y2={y} tone="muted" width={2} />
-      ))}
-      <Deck cx={140} cy={128} />
-      <Label x={120} y={184} tone="muted" size={15}>
-        design wind ≫ 64 km/h
-      </Label>
-      <Label x={120} y={208} tone="accent" size={15} weight={600}>
-        deck holds ✓
-      </Label>
+            {[108, 128, 148].map((y, i) => (
+              <GrowArrow key={y} p={seg(t, 0.4 + 0.1 * i, 0.9 + 0.1 * i)} x1={14} y1={y} x2={50} y2={y} tone="muted" width={2} />
+            ))}
+            <Deck cx={140} cy={128} />
+            <Label x={120} y={184} tone="muted" size={15} opacity={op(seg(t, 0.9, 1.4))}>
+              design wind ≫ 64 km/h
+            </Label>
+            <Label x={120} y={208} tone="accent" size={15} weight={600} opacity={op(seg(t, 1.3, 1.8))}>
+              deck holds ✓
+            </Label>
 
-      {[108, 128, 148].map((y) => (
-        <Arrow key={y} x1={250} y1={y} x2={278} y2={y} tone="muted" width={2} />
-      ))}
-      <g opacity={0.35}>
-        <g transform="rotate(12 372 128)">
-          <Deck cx={372} cy={128} />
-        </g>
-      </g>
-      <g transform="rotate(-12 372 128)">
-        <Deck cx={372} cy={128} />
-      </g>
-      <path
-        d="M306,82 A80,80 0 0 1 438,82"
-        fill="none"
-        stroke={C.alarm}
-        strokeWidth={2.5}
-        markerStart="url(#fig-arrow-alarm)"
-        markerEnd="url(#fig-arrow-alarm)"
-      />
-      <Label x={360} y={184} tone="muted" size={15}>
-        wind 64 km/h
-      </Label>
-      <Label x={360} y={208} tone="alarm" size={15} weight={600}>
-        deck twists apart
-      </Label>
-    </Figure>
+            {[108, 128, 148].map((y, i) => (
+              <GrowArrow key={y} p={seg(t, 2.3 + 0.1 * i, 2.8 + 0.1 * i)} x1={250} y1={y} x2={278} y2={y} tone="muted" width={2} />
+            ))}
+            <g opacity={0.35 * apart}>
+              <g transform="rotate(12 372 128)">
+                <Deck cx={372} cy={128} />
+              </g>
+            </g>
+            <g transform={`rotate(${+twist.toFixed(2)} 372 128)`} opacity={real}>
+              <Deck cx={372} cy={128} />
+            </g>
+            <path
+              d="M306,82 A80,80 0 0 1 438,82"
+              fill="none"
+              stroke={C.alarm}
+              strokeWidth={2.5}
+              markerStart="url(#fig-arrow-alarm)"
+              markerEnd="url(#fig-arrow-alarm)"
+              opacity={op(apart)}
+            />
+            <Label x={360} y={184} tone="muted" size={15} opacity={op(seg(t, 2.5, 3))}>
+              wind 64 km/h
+            </Label>
+            <Label x={360} y={208} tone="alarm" size={15} weight={600} opacity={op(apart)}>
+              deck twists apart
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

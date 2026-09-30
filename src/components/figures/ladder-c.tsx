@@ -1,19 +1,22 @@
 import type { ReactNode } from "react";
 import { Arrow, Axes, C, DimH, Figure, Label, WallV, plotBox, type FigureMap } from "./kit";
+import { AnimatedFigure, clamp, GrowArrow, lerp, op, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
 
+// `opacity` on these helpers is for fading in; pass `op(…)` so the final frame carries no attribute.
+
 /** Short tick on an axis with a label: dir "x" puts the label below, "y" to the left. */
-function Tick({ x, y, dir, label }: { x: number; y: number; dir: "x" | "y"; label: string }) {
+function Tick({ x, y, dir, label, opacity }: { x: number; y: number; dir: "x" | "y"; label: string; opacity?: number }) {
   return dir === "x" ? (
-    <g>
+    <g opacity={opacity}>
       <line x1={x} y1={y} x2={x} y2={y + 6} stroke={C.ink} strokeWidth={1.5} />
       <Label x={x} y={y + 18} tone="muted" size={15}>
         {label}
       </Label>
     </g>
   ) : (
-    <g>
+    <g opacity={opacity}>
       <line x1={x - 6} y1={y} x2={x} y2={y} stroke={C.ink} strokeWidth={1.5} />
       <Label x={x - 10} y={y} tone="muted" size={15} anchor="end">
         {label}
@@ -23,21 +26,47 @@ function Tick({ x, y, dir, label }: { x: number; y: number; dir: "x" | "y"; labe
 }
 
 /** Dashed guide line. */
-function Guide({ x1, y1, x2, y2, tone = "muted" }: { x1: number; y1: number; x2: number; y2: number; tone?: "muted" | "alarm" | "accent" }) {
-  return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={C[tone]} strokeWidth={1.5} strokeDasharray="5 5" />;
+function Guide({
+  x1,
+  y1,
+  x2,
+  y2,
+  tone = "muted",
+  opacity,
+}: {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  tone?: "muted" | "alarm" | "accent";
+  opacity?: number;
+}) {
+  return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={C[tone]} strokeWidth={1.5} strokeDasharray="5 5" opacity={opacity} />;
 }
 
 /** Label drawn on an accent fill: surface-coloured text for contrast. */
-function OnAccent({ x, y, children, size = 15 }: { x: number; y: number; children: ReactNode; size?: number }) {
+function OnAccent({ x, y, children, size = 15, opacity }: { x: number; y: number; children: ReactNode; size?: number; opacity?: number }) {
   return (
-    <text x={x} y={y} fill={C.surface} textAnchor="middle" fontSize={size} fontWeight={600} dominantBaseline="middle">
+    <text x={x} y={y} fill={C.surface} textAnchor="middle" fontSize={size} fontWeight={600} dominantBaseline="middle" opacity={opacity}>
       {children}
     </text>
   );
 }
 
-function Dot({ x, y, tone = "accent", r = 6 }: { x: number; y: number; tone?: "accent" | "ink" | "alarm"; r?: number }) {
-  return <circle cx={x} cy={y} r={r} fill={C[tone]} stroke={C.surface} strokeWidth={2} />;
+function Dot({
+  x,
+  y,
+  tone = "accent",
+  r = 6,
+  opacity,
+}: {
+  x: number;
+  y: number;
+  tone?: "accent" | "ink" | "alarm";
+  r?: number;
+  opacity?: number;
+}) {
+  return <circle cx={x} cy={y} r={r} fill={C[tone]} stroke={C.surface} strokeWidth={2} opacity={opacity} />;
 }
 
 /** Point on a semicircular dial (0 → left, 1 → right). */
@@ -58,68 +87,101 @@ function Miner() {
     { name: "severe", f: 0.7 },
   ];
   const stackX = 330;
-  let acc = 0;
+  // The blocks run one after another; each block's bar and its slice of the stack grow together.
+  const when = [
+    [0.4, 1.1],
+    [1.3, 2],
+    [2.3, 4.3],
+  ];
+  const run = (t: number) => when.map(([a, b]) => seg(t, a, b));
   return (
-    <Figure
+    <AnimatedFigure
       height={270}
+      duration={5}
       alt="Three bars show the mild, middle and severe blocks each spending 0.20, 0.20 and 0.70 of their own life, all under 1, and a stacked bar adds them to 1.10, past the line at 1."
-      caption="No block reached its own life, yet the fractions add to 1.10: the sum crossed 1 first."
+      steps={[
+        { at: 0, label: "Mild, middle", caption: "The mild block spends 0.20 of its own life, and the middle block another 0.20." },
+        { at: 2.3, label: "Severe", caption: "The severe level allows 10000 cycles; 7000 of them spend 0.70, still under its own life." },
+        { at: 4.3, label: "Sum", caption: "No block reached its own life, yet the fractions add to 1.10: the sum crossed 1 first." },
+      ]}
+      readouts={(t) => {
+        const p = run(t);
+        const sum = blocks.reduce((a, b, i) => a + b.f * p[i], 0);
+        return [
+          { label: "Σ n/N", value: sum.toFixed(2), tone: sum >= 1 ? "alarm" : "accent" },
+          { label: "severe n", value: `${Math.round(7000 * p[2])} of 10000` },
+        ];
+      }}
     >
-      <Label x={130} y={base - s - 20} tone="muted" size={15}>
-        each block's own life = 1
-      </Label>
-      {blocks.map((b, i) => {
-        const x = 40 + i * 64;
+      {({ t }) => {
+        const p = run(t);
+        const f = blocks.map((b, i) => lerp(0, b.f, p[i]));
+        const shown = when.map(([, b]) => op(seg(t, b - 0.2, b + 0.3)));
+        let acc = 0;
         return (
-          <g key={b.name}>
-            <rect x={x} y={base - s} width={44} height={s} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
-            <rect
-              x={x}
-              y={base - b.f * s}
-              width={44}
-              height={b.f * s}
-              fill={i === 2 ? C.accent : C.soft}
-              stroke={C.ink}
-              strokeWidth={1.5}
-            />
-            <Label x={x + 22} y={base - b.f * s - 12} size={15}>
-              {b.f.toFixed(2)}
+          <>
+            <Label x={130} y={base - s - 20} tone="muted" size={15}>
+              each block's own life = 1
             </Label>
-            <Label x={x + 22} y={base + 16} tone="muted" size={15}>
-              {b.name}
+            {blocks.map((b, i) => {
+              const x = 40 + i * 64;
+              return (
+                <g key={b.name}>
+                  <rect x={x} y={base - s} width={44} height={s} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
+                  {f[i] > 0 ? (
+                    <rect
+                      x={x}
+                      y={base - f[i] * s}
+                      width={44}
+                      height={f[i] * s}
+                      fill={i === 2 ? C.accent : C.soft}
+                      stroke={C.ink}
+                      strokeWidth={1.5}
+                    />
+                  ) : null}
+                  <Label x={x + 22} y={base - b.f * s - 12} size={15} opacity={shown[i]}>
+                    {b.f.toFixed(2)}
+                  </Label>
+                  <Label x={x + 22} y={base + 16} tone="muted" size={15}>
+                    {b.name}
+                  </Label>
+                </g>
+              );
+            })}
+            <Arrow x1={232} y1={160} x2={300} y2={160} tone="muted" width={2} />
+            <Label x={266} y={140} tone="muted" size={15}>add</Label>
+            {blocks.map((b, i) => {
+              const y0 = base - (acc + f[i]) * s;
+              const h = f[i] * s;
+              acc += f[i];
+              return (
+                <g key={`s${b.name}`}>
+                  {h > 0 ? (
+                    <rect x={stackX} y={y0} width={60} height={h} fill={i === 2 ? C.accent : C.soft} stroke={C.ink} strokeWidth={1.5} />
+                  ) : null}
+                  {i === 2 ? (
+                    <OnAccent x={stackX + 30} y={y0 + h / 2} opacity={shown[i]}>{b.f.toFixed(2)}</OnAccent>
+                  ) : (
+                    <Label x={stackX + 30} y={y0 + h / 2} size={15} opacity={shown[i]}>
+                      {b.f.toFixed(2)}
+                    </Label>
+                  )}
+                </g>
+              );
+            })}
+            <line x1={310} y1={base - s} x2={470} y2={base - s} stroke={C.alarm} strokeWidth={2} strokeDasharray="6 4" />
+            <Label x={470} y={base - s + 16} anchor="end" tone="alarm" size={15}>
+              1: done
             </Label>
-          </g>
+            <Label x={stackX + 30} y={base - 1.1 * s - 16} tone="accent" weight={700} size={18} opacity={op(seg(t, 4.3, 4.8))}>
+              Σ n/N = 1.10
+            </Label>
+            <line x1={310} y1={base} x2={470} y2={base} stroke={C.ink} strokeWidth={1.5} />
+            <line x1={30} y1={base} x2={230} y2={base} stroke={C.ink} strokeWidth={1.5} />
+          </>
         );
-      })}
-      <Arrow x1={232} y1={160} x2={300} y2={160} tone="muted" width={2} />
-      <Label x={266} y={140} tone="muted" size={15}>add</Label>
-      {blocks.map((b, i) => {
-        const y0 = base - (acc + b.f) * s;
-        const h = b.f * s;
-        acc += b.f;
-        return (
-          <g key={`s${b.name}`}>
-            <rect x={stackX} y={y0} width={60} height={h} fill={i === 2 ? C.accent : C.soft} stroke={C.ink} strokeWidth={1.5} />
-            {i === 2 ? (
-              <OnAccent x={stackX + 30} y={y0 + h / 2}>{b.f.toFixed(2)}</OnAccent>
-            ) : (
-              <Label x={stackX + 30} y={y0 + h / 2} size={15}>
-                {b.f.toFixed(2)}
-              </Label>
-            )}
-          </g>
-        );
-      })}
-      <line x1={310} y1={base - s} x2={470} y2={base - s} stroke={C.alarm} strokeWidth={2} strokeDasharray="6 4" />
-      <Label x={470} y={base - s + 16} anchor="end" tone="alarm" size={15}>
-        1: done
-      </Label>
-      <Label x={stackX + 30} y={base - 1.1 * s - 16} tone="accent" weight={700} size={18}>
-        Σ n/N = 1.10
-      </Label>
-      <line x1={310} y1={base} x2={470} y2={base} stroke={C.ink} strokeWidth={1.5} />
-      <line x1={30} y1={base} x2={230} y2={base} stroke={C.ink} strokeWidth={1.5} />
-    </Figure>
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -129,38 +191,74 @@ function Thermomech() {
   const k = 2.3; // px per MPa
   const X = (s: number) => x0 + s * k;
   const ax = 232;
+  const load = (t: number) => seg(t, 0.4, 1.2); // the 40 MPa load comes on
+  const heat = (t: number) => clamp((t - 1.8) / 2.4); // ΔT climbs steadily to 40°: σ = 40 − 2.4·ΔT
+  const net = (t: number) => lerp(lerp(0, 40, load(t)), -56, heat(t));
+  const mpa = (v: number) => {
+    const r = Math.round(v);
+    return `${r > 0 ? "+" : r < 0 ? "−" : ""}${Math.abs(r)} MPa`;
+  };
   return (
-    <Figure
+    <AnimatedFigure
       height={300}
+      duration={5}
       alt="A steel bar held between two walls, and a stress number line where a +40 MPa tension arrow is followed by a −96 MPa thermal arrow, landing at a net −56 MPa compression."
-      caption="Heating a held bar adds compression; the 96 MPa thermal term outweighs the 40 MPa load, so the net flips to 56 MPa compression."
+      steps={[
+        { at: 0, label: "Load", caption: "The held steel bar already carries 40 MPa of tension from its load." },
+        {
+          at: 1.6,
+          label: "Heat",
+          caption: "Heat it 40° with the ends held: the bar wants to grow, so the thermal term E α ΔT is compressive.",
+        },
+        { at: 2.8, label: "Flip", caption: "Past about 17° the net flips from tension to compression." },
+        {
+          at: 4.2,
+          label: "Net",
+          caption:
+            "Heating a held bar adds compression; the 96 MPa thermal term outweighs the 40 MPa load, so the net flips to 56 MPa compression.",
+        },
+      ]}
+      readouts={(t) => [
+        { label: "ΔT", value: `${Math.round(40 * heat(t))}°` },
+        { label: "thermal", value: mpa(-96 * heat(t)), tone: "alarm" },
+        { label: "net", value: mpa(net(t)), tone: "accent" },
+      ]}
     >
-      <WallV x={60} y={20} h={56} side="left" />
-      <WallV x={420} y={20} h={56} side="right" />
-      <rect x={60} y={34} width={360} height={28} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={240} y={48} size={15}>ends held, heated 40°</Label>
-      <Arrow x1={66} y1={92} x2={102} y2={92} tone="alarm" width={2.5} />
-      <Arrow x1={414} y1={92} x2={378} y2={92} tone="alarm" width={2.5} />
-      <Label x={240} y={92} tone="alarm" size={15}>wants to grow, walls push back</Label>
+      {({ t }) => {
+        const hot = op(seg(t, 1.6, 2.1));
+        const pH = heat(t);
+        const tip = X(lerp(40, -56, pH));
+        return (
+          <>
+            <WallV x={60} y={20} h={56} side="left" />
+            <WallV x={420} y={20} h={56} side="right" />
+            <rect x={60} y={34} width={360} height={28} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={240} y={48} size={15}>ends held, heated 40°</Label>
+            <Arrow x1={66} y1={92} x2={102} y2={92} tone="alarm" width={2.5} opacity={hot} />
+            <Arrow x1={414} y1={92} x2={378} y2={92} tone="alarm" width={2.5} opacity={hot} />
+            <Label x={240} y={92} tone="alarm" size={15} opacity={hot}>wants to grow, walls push back</Label>
 
-      <Arrow x1={X(0)} y1={140} x2={X(40)} y2={140} tone="ink" width={3} />
-      <Label x={X(20)} y={124} size={15}>+40 load</Label>
-      <Arrow x1={X(40)} y1={182} x2={X(-56)} y2={182} tone="alarm" width={3} />
-      <Label x={X(-44)} y={166} tone="alarm" size={15}>−96 thermal (E α ΔT)</Label>
-      <Guide x1={X(0)} y1={130} x2={X(0)} y2={ax} />
-      <Guide x1={X(40)} y1={130} x2={X(40)} y2={192} />
-      <Guide x1={X(-56)} y1={182} x2={X(-56)} y2={ax} tone="accent" />
+            <GrowArrow p={load(t)} x1={X(0)} y1={140} x2={X(40)} y2={140} tone="ink" width={3} />
+            <Label x={X(20)} y={124} size={15} opacity={op(seg(t, 0.8, 1.3))}>+40 load</Label>
+            <GrowArrow p={pH} x1={X(40)} y1={182} x2={X(-56)} y2={182} tone="alarm" width={3} />
+            <Label x={X(-44)} y={166} tone="alarm" size={15} opacity={op(seg(t, 3.8, 4.3))}>−96 thermal (E α ΔT)</Label>
+            <Guide x1={X(0)} y1={130} x2={X(0)} y2={ax} opacity={op(seg(t, 0.3, 0.8))} />
+            <Guide x1={X(40)} y1={130} x2={X(40)} y2={192} opacity={op(seg(t, 1, 1.5))} />
+            {pH > 0 ? <Guide x1={tip} y1={182} x2={tip} y2={ax} tone="accent" opacity={op(seg(t, 1.8, 2.3))} /> : null}
 
-      <line x1={X(-110)} y1={ax} x2={X(70)} y2={ax} stroke={C.ink} strokeWidth={1.5} />
-      {[-100, -50, 0, 50].map((v) => (
-        <line key={v} x1={X(v)} y1={ax - 5} x2={X(v)} y2={ax + 5} stroke={C.ink} strokeWidth={1.5} />
-      ))}
-      <Label x={X(0)} y={ax + 18} tone="muted" size={15}>0</Label>
-      <Dot x={X(-56)} y={ax} />
-      <Label x={X(-56)} y={ax + 20} tone="accent" weight={700}>net −56 MPa</Label>
-      <Label x={X(-110)} y={ax + 50} anchor="start" tone="muted" size={15}>← compression</Label>
-      <Label x={X(70)} y={ax + 50} anchor="end" tone="muted" size={15}>tension →</Label>
-    </Figure>
+            <line x1={X(-110)} y1={ax} x2={X(70)} y2={ax} stroke={C.ink} strokeWidth={1.5} />
+            {[-100, -50, 0, 50].map((v) => (
+              <line key={v} x1={X(v)} y1={ax - 5} x2={X(v)} y2={ax + 5} stroke={C.ink} strokeWidth={1.5} />
+            ))}
+            <Label x={X(0)} y={ax + 18} tone="muted" size={15}>0</Label>
+            <Dot x={X(net(t))} y={ax} />
+            <Label x={X(-56)} y={ax + 20} tone="accent" weight={700} opacity={op(seg(t, 4.2, 4.7))}>net −56 MPa</Label>
+            <Label x={X(-110)} y={ax + 50} anchor="start" tone="muted" size={15}>← compression</Label>
+            <Label x={X(70)} y={ax + 50} anchor="end" tone="muted" size={15}>tension →</Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -178,26 +276,62 @@ function Interval() {
     pts.push([n, aAt(n)]);
   }
   const n2 = (1 / Math.sqrt(a0) - 1 / Math.sqrt(2)) / k; // ≈ 0.48 M
+  // Cycles tick over at a steady rate, so the drawing crawls and then runs.
+  const cyc = (t: number) => life * clamp((t - 0.5) / 3.6);
+  const t2 = 0.5 + 3.6 * (n2 / life); // the crack passes 2 mm
+  /** The curve up to n million cycles; the whole sampled curve once the crack is critical. */
+  const upTo = (n: number): Array<[number, number]> => (n >= life ? pts : [...pts.filter(([m]) => m < n), [n, aAt(n)]]);
   return (
-    <Figure
+    <AnimatedFigure
       height={330}
+      duration={5.4}
       alt="Crack length against cycles: the crack crawls for most of its life and then runs to 44 mm; found at 0.5 mm it has 0.86 million cycles left, found at 2 mm only 0.38 million."
-      caption="The slow early growth is where the cycles are: a 4× later find costs about half the life, not three quarters."
+      steps={[
+        { at: 0, label: "0.5 mm find", caption: "Found at 0.5 mm, the crack is short, and a short crack grows slowly." },
+        {
+          at: 2.5,
+          label: "2 mm find",
+          caption: "A 2 mm find, four times longer, comes after that slow early growth; from here the crack runs to 44 mm.",
+        },
+        {
+          at: 4.1,
+          label: "Life left",
+          caption: "The slow early growth is where the cycles are: a 4× later find costs about half the life, not three quarters.",
+        },
+      ]}
+      readouts={(t) => {
+        const a = aAt(cyc(t));
+        return [
+          { label: "cycles", value: `${cyc(t).toFixed(2)} M` },
+          { label: "crack", value: `${a < 10 ? a.toFixed(1) : a.toFixed(0)} mm`, tone: "accent" },
+        ];
+      }}
     >
-      <Axes box={b} xLabel="cycles (millions)" yLabel="crack length, mm" />
-      <Guide x1={b.px(0)} y1={b.py(ac)} x2={b.px(0.9)} y2={b.py(ac)} tone="alarm" />
-      <Label x={b.px(0.02)} y={b.py(ac) + 14} anchor="start" tone="alarm" size={15}>
-        critical ≈ 44 mm
-      </Label>
-      <path d={b.path(pts)} fill="none" stroke={C.accent} strokeWidth={3} />
-      <Dot x={b.px(0)} y={b.py(a0)} />
-      <Dot x={b.px(n2)} y={b.py(2)} tone="ink" />
-      <Guide x1={b.px(n2)} y1={b.py(2)} x2={b.px(n2)} y2={b.py(14)} />
-      <Label x={b.px(n2)} y={b.py(14) - 12} size={15}>2 mm find</Label>
-      <Label x={b.px(0.02)} y={b.py(6)} anchor="start" size={15}>0.5 mm find</Label>
-      <DimH x1={b.px(0)} x2={b.px(life)} y={268} label="from 0.5 mm: 0.86 M cycles" tone="accent" />
-      <DimH x1={b.px(n2)} x2={b.px(life)} y={312} label="from 2 mm: 0.38 M" tone="ink" />
-    </Figure>
+      {({ t }) => {
+        const found = op(seg(t, t2, t2 + 0.4));
+        return (
+          <>
+            <Axes box={b} xLabel="cycles (millions)" yLabel="crack length, mm" />
+            <Guide x1={b.px(0)} y1={b.py(ac)} x2={b.px(0.9)} y2={b.py(ac)} tone="alarm" />
+            <Label x={b.px(0.02)} y={b.py(ac) + 14} anchor="start" tone="alarm" size={15}>
+              critical ≈ 44 mm
+            </Label>
+            <path d={b.path(upTo(cyc(t)))} fill="none" stroke={C.accent} strokeWidth={3} />
+            <Dot x={b.px(0)} y={b.py(a0)} />
+            <Dot x={b.px(n2)} y={b.py(2)} tone="ink" opacity={found} />
+            <Guide x1={b.px(n2)} y1={b.py(2)} x2={b.px(n2)} y2={b.py(14)} opacity={found} />
+            <Label x={b.px(n2)} y={b.py(14) - 12} size={15} opacity={found}>2 mm find</Label>
+            <Label x={b.px(0.02)} y={b.py(6)} anchor="start" size={15}>0.5 mm find</Label>
+            <g opacity={op(seg(t, 4.1, 4.6))}>
+              <DimH x1={b.px(0)} x2={b.px(life)} y={268} label="from 0.5 mm: 0.86 M cycles" tone="accent" />
+            </g>
+            <g opacity={op(seg(t, 4.5, 5))}>
+              <DimH x1={b.px(n2)} x2={b.px(life)} y={312} label="from 2 mm: 0.38 M" tone="ink" />
+            </g>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
