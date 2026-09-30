@@ -1,0 +1,5 @@
+npm ci exit: 0
+typecheck exit: 0
+test exit: 0
+lint exit: 1
+build:dev exit: 0

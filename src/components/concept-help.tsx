@@ -32,6 +32,7 @@ export function ConceptHelp({ help }: { help: IdeaHelp[] }) {
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Content
+              aria-label={item.title}
               sideOffset={8}
               collisionPadding={16}
               className="z-50 max-h-[min(70vh,36rem)] w-[min(92vw,34rem)] overflow-y-auto rounded-xl border border-line bg-bg p-5 shadow-xl"
@@ -64,6 +65,21 @@ export function ConceptHelp({ help }: { help: IdeaHelp[] }) {
                 <div className="mt-5 rounded-lg border border-line bg-surface px-4 py-3">
                   <p className="text-sm font-medium text-ink">Watch out</p>
                   <p className="mt-1 text-sm leading-relaxed text-muted">{item.caution}</p>
+                </div>
+              ) : null}
+
+              {item.sources?.length ? (
+                <div className="mt-5 border-t border-line pt-3">
+                  <p className="text-sm font-medium text-ink">Property sources</p>
+                  <ul className="mt-2 space-y-2 text-sm">
+                    {item.sources.map((source) => (
+                      <li key={source.url}>
+                        <a className="text-accent underline underline-offset-4" href={source.url} target="_blank" rel="noopener noreferrer">
+                          {source.label} (opens in a new tab)
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ) : null}
 

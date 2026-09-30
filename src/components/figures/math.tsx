@@ -1,3 +1,4 @@
+import { ConceptHelp } from "@/components/concept-help";
 import { Axes, C, DimH, Ground, Label, plotBox, type FigureMap } from "./kit";
 import { AnimatedFigure, GrowArrow, lerp, op, partial, seg } from "./motion";
 
@@ -137,9 +138,10 @@ function Powers() {
   const dy = -60;
   return (
     <AnimatedFigure
-      height={280}
-      duration={4.7}
-      alt="An aluminum bracket 80 by 50 by 6 mm drawn as a flat box, with its volume 2.4 times ten to the fourth cubic millimeters converted to 2.4 times ten to the minus fifth cubic meters and a mass of about 65 grams."
+      height={340}
+      duration={7.2}
+      toolbar={<ConceptHelp help={[{ concept: "material-density" }]} />}
+      alt="An aluminum bracket measures 80 by 50 by 6 mm. Geometry gives volume 2.4 times ten to the minus fifth cubic metres. Density is a separate given: aluminum is approximately 2700 kilograms per cubic metre, from a material table. Mass equals density times volume, giving 0.0648 kg, or about 65 grams."
       steps={[
         { at: 0, label: "Bracket", caption: "An aluminum bracket measures 80 × 50 × 6 mm; estimate its mass." },
         {
@@ -150,9 +152,13 @@ function Powers() {
         { at: 2.8, label: "Volume", caption: "80 × 50 × 6 = 24,000 mm³ = 2.4 × 10⁴ mm³, which is 2.4 × 10⁻⁵ m³." },
         {
           at: 4.1,
+          label: "Density (given)",
+          caption: "ρ (rho) is density: mass per unit volume. For this example, use aluminum ≈ 2700 kg/m³, a typical value from a material table. The dimensions did not produce this number.",
+        },
+        {
+          at: 6.1,
           label: "Mass",
-          caption:
-            "Cubing the unit cubes the factor: 1 m = 10³ mm, so 1 m³ = 10⁹ mm³. A palm-sized aluminum part should come out in tens of grams.",
+          caption: "Geometry gave V = 2.4 × 10⁻⁵ m³. The material table supplied ρ ≈ 2700 kg/m³. Multiply: m = ρV = 0.0648 kg = 64.8 g ≈ 65 g. Density is looked up; mass is calculated.",
         },
       ]}
     >
@@ -179,7 +185,9 @@ function Powers() {
           <Label x={x0 - 8} y={y0 + tk / 2} tone="muted" size={15} anchor="end" opacity={op(seg(t, 0.7, 1.2))}>6 mm</Label>
 
           <Label x={240} y={228} size={18} serif opacity={op(seg(t, 2.8, 3.3))}>V = 2.4 × 10⁴ mm³ = 2.4 × 10⁻⁵ m³</Label>
-          <Label x={240} y={260} size={18} serif tone="accent" weight={600} opacity={op(seg(t, 4.1, 4.6))}>m = 2700 kg/m³ × V ≈ 65 g</Label>
+          <Label x={240} y={264} size={18} serif tone="accent" opacity={op(seg(t, 4.1, 4.6))}>ρ(aluminum) ≈ 2700 kg/m³</Label>
+          <Label x={240} y={289} size={14} tone="muted" opacity={op(seg(t, 4.1, 4.6))}>Given · typical material-table value</Label>
+          <Label x={240} y={323} size={18} serif tone="accent" weight={600} opacity={op(seg(t, 6.1, 6.6))}>m = ρV = 0.0648 kg ≈ 65 g</Label>
         </>
       )}
     </AnimatedFigure>

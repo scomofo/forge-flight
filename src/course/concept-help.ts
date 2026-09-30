@@ -370,6 +370,62 @@ export const conceptHelpRegistry: Record<string, RegistryEntry> = {
     caution: "Do not add full free expansion and full restraint stress at the same time. They represent different boundary conditions.",
   },
 
+  "material-density": {
+  "trigger": "Where did 2700 come from?",
+  "title": "Density is a looked-up material property",
+  "intro": "2700 kg/m³ is the approximate density of aluminum used for this estimate. It is a given from a material table, not an answer hidden in the geometry.",
+  "sections": [
+    {
+      "heading": "Read the symbol and the unit",
+      "body": "ρ (rho) means density. kg/m³ means kilograms per cubic metre: how much mass a chosen volume of material contains. This is mass, not a force in newtons."
+    },
+    {
+      "heading": "Where the number comes from",
+      "body": "The Royal Society of Chemistry lists aluminum at 2.70 g/cm³. That is 2700 kg/m³: 1 g is 0.001 kg and 1 cm³ is 0.000001 m³. A particular alloy and temperature can require a different datasheet value."
+    },
+    {
+      "heading": "Three separate steps",
+      "items": [
+        "Geometry → volume: 80 × 50 × 6 mm = 24,000 mm³ = 2.4 × 10⁻⁵ m³.",
+        "Material → density: aluminum ≈ 2700 kg/m³, looked up.",
+        "Mass = density × volume: 2700 × 2.4 × 10⁻⁵ = 0.0648 kg = 64.8 g ≈ 65 g."
+      ]
+    },
+    {
+      "heading": "Why dimensions are not enough",
+      "body": "A steel bracket and an aluminum bracket with the same dimensions have the same volume, but different masses. You need the material property as well as the geometry."
+    },
+    {
+      "heading": "Rough comparison values",
+      "items": [
+        "Aluminum: about 2700 kg/m³ (2.7 g/cm³).",
+        "Steel: about 7850 kg/m³.",
+        "Titanium: about 4500 kg/m³.",
+        "Fresh water: about 1000 kg/m³."
+      ],
+      "body": "These are rounded comparison values, not specifications for every alloy, temperature, or fluid composition."
+    },
+    {
+      "heading": "You do not need to memorize these",
+      "body": "A worked example should supply a needed property or identify where to look it up. If a number seems to appear from nowhere, first ask whether it is given, calculated, measured, or looked up."
+    }
+  ],
+  "caution": "Match the volume unit to the density unit. Use m³ with kg/m³, or cm³ with g/cm³. Do not multiply 2700 kg/m³ by a volume still expressed in mm³.",
+  "sources": [
+    {
+      "label": "Royal Society of Chemistry: aluminum, 2.70 g/cm³",
+      "url": "https://periodic-table.rsc.org/element/13/aluminium"
+    },
+    {
+      "label": "Royal Society of Chemistry: titanium density",
+      "url": "https://periodic-table.rsc.org/element/22/titanium"
+    },
+    {
+      "label": "USGS: water density and temperature",
+      "url": "https://www.usgs.gov/water-science-school/science/water-density"
+    }
+  ]
+},
 };
 
 export function getConceptHelp(id: string) {
