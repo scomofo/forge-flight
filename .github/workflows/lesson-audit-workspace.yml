@@ -1,0 +1,36 @@
+name: Lesson audit workspace
+on:
+  push:
+    branches: [work/lesson-givens-build-20260930]
+    paths: [.github/workflows/lesson-audit-workspace.yml]
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 4e6d6879db8293ed288fecf8bbfe57369a8db16b
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Export pinned source
+        run: git archive --format=tar.gz -o /tmp/forge-flight-source.tar.gz HEAD
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lesson-audit-source
+          path: /tmp/forge-flight-source.tar.gz
+          retention-days: 1
+      - name: Install locked test and build dependencies
+        run: npm ci --ignore-scripts
+      - name: Export offline validation dependencies
+        run: tar -czf /tmp/forge-flight-runtime.tar.gz node_modules
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lesson-audit-runtime
+          path: /tmp/forge-flight-runtime.tar.gz
+          retention-days: 1
