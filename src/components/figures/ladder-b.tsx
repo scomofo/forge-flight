@@ -81,6 +81,11 @@ function Frame({
   );
 }
 
+/** Fades children that take no opacity of their own; at full strength it adds no wrapper, so the final DOM is the static one. */
+function Fade({ opacity, children }: { opacity?: number; children: ReactNode }) {
+  return opacity === undefined ? <>{children}</> : <g opacity={opacity}>{children}</g>;
+}
+
 function Dot({ x, y, tone = "accent", r = 5, opacity }: { x: number; y: number; tone?: Tone; r?: number; opacity?: number }) {
   return <circle cx={x} cy={y} r={r} fill={C[tone]} stroke={C.surface} strokeWidth={1.5} opacity={opacity} />;
 }
@@ -337,10 +342,10 @@ function Lever() {
               C₀ = 30
             </Label>
 
-            <g opacity={mix}>
+            <Fade opacity={mix}>
               <DimH x1={b.px(20)} x2={b.px(c)} y={ty + 34} label={arm("10")} />
               <DimH x1={b.px(c)} x2={b.px(80)} y={ty + 34} label={arm("50")} tone="accent" />
-            </g>
+            </Fade>
 
             <Label x={240} y={316} tone="accent" weight={600} opacity={op(seg(t, 4.4, 4.9))}>
               fraction solid = 50 / 60 = 0.83
@@ -411,7 +416,7 @@ function Fiber() {
             {curve > 0 ? <Curve d={b.path(partial(pts, curve))} /> : null}
             <Guide x1={b.px(30)} y1={b.py(sig(30))} x2={b.px(30)} y2={b.y + b.h} opacity={done} />
             <Dot x={b.px(0)} y={b.py(900)} opacity={along} />
-            <Dot x={b.px(th)} y={b.py(sig(th))} r={6} opacity={op(seg(t, 2.8, 3.1))} />
+            <Dot x={b.px(th)} y={b.py(sig(th))} r={6} opacity={op(seg(t, 2.8, 3.2))} />
             <Dot x={b.px(90)} y={b.py(40)} opacity={across} />
             <Label x={b.px(0) + 12} y={b.py(900)} anchor="start" size={15} opacity={along}>900 MPa</Label>
             <Label x={b.px(30) + 12} y={b.py(sig(30)) - 16} anchor="start" tone="accent" weight={600} opacity={done}>
@@ -509,7 +514,7 @@ function Mixture() {
             ) : null}
             <Guide x1={b.px(0.6)} y1={b.py(E(0.6))} x2={b.px(0.6)} y2={b.y + b.h} opacity={done} />
             <Dot x={b.px(0)} y={b.py(3.5)} tone="ink" opacity={epoxy} />
-            <Dot x={b.px(v)} y={b.py(E(v))} r={6} opacity={op(seg(t, 2.6, 2.9))} />
+            <Dot x={b.px(v)} y={b.py(E(v))} r={6} opacity={op(seg(t, 2.6, 3))} />
             <Dot x={b.px(1)} y={b.py(230)} tone="ink" opacity={carbon} />
             <Label x={b.x - 10} y={b.py(3.5) - 8} anchor="end" size={15} opacity={epoxy}>3.5</Label>
             <Label x={b.x - 10} y={b.py(3.5) + 12} anchor="end" size={15} tone="muted" opacity={epoxy}>epoxy</Label>
@@ -587,7 +592,7 @@ function Transition() {
             <Guide x1={b.x} y1={b.py(15)} x2={b.x + b.w} y2={b.py(15)} />
             {curve > 0 ? <Curve d={b.path(partial(pts, curve))} tone="ink" /> : null}
             {/* the cold plate leaves the 20°C point and slides down the shelf */}
-            <Dot x={b.px(T)} y={b.py(J(T))} tone="alarm" r={6} opacity={op(seg(t, 3, 3.3))} />
+            <Dot x={b.px(T)} y={b.py(J(T))} tone="alarm" r={6} opacity={op(seg(t, 3, 3.4))} />
             <Dot x={b.px(20)} y={b.py(J(20))} tone="accent" r={6} opacity={warm} />
             <Label x={b.px(-20)} y={b.py(J(-20)) - 40} tone="alarm" weight={600} opacity={cold}>20 J</Label>
             <Label x={b.px(-20)} y={b.py(J(-20)) - 20} tone="alarm" size={15} opacity={cold}>snaps</Label>
@@ -726,7 +731,7 @@ function Sensitive() {
             {u > 0 ? <Curve d={b.path(partial(pts, u))} /> : null}
             <Guide x1={b.px(0.8)} y1={b.py(S(0.8))} x2={b.px(0.8)} y2={b.y + b.h} opacity={done} />
             <Dot x={b.px(0)} y={b.py(300)} tone="ink" r={6} opacity={start} />
-            <Dot x={b.px(q)} y={b.py(S(q))} r={6} opacity={op(seg(t, 1.4, 1.7))} />
+            <Dot x={b.px(q)} y={b.py(S(q))} r={6} opacity={op(seg(t, 1.4, 1.8))} />
             <Label x={b.px(0) + 14} y={b.py(300) - 18} anchor="start" size={15} opacity={start}>300 MPa, Kf = 1</Label>
             <Label x={b.px(0.8) - 10} y={b.py(S(0.8)) - 38} anchor="end" tone="accent" weight={600} opacity={done}>
               ≈136 MPa
@@ -982,7 +987,7 @@ function Scc() {
             <Guide x1={b.px(200)} y1={b.py(0.04)} x2={b.px(200)} y2={b.y + b.h} opacity={at200} />
             <Dot x={b.px(200)} y={b.py(0.04)} r={6} opacity={at200} />
             {/* the wet tube, unloaded from 200 MPa to 80 */}
-            <Dot x={b.px(s)} y={b.py(wet(s))} tone="ink" opacity={op(seg(t, 3.4, 3.7))} />
+            <Dot x={b.px(s)} y={b.py(wet(s))} tone="ink" opacity={op(seg(t, 3.4, 3.8))} />
             <Label x={b.px(200) - 12} y={b.py(0.04) - 16} anchor="end" tone="accent" weight={600} opacity={at200}>
               0.04 mm/yr
             </Label>
@@ -1095,7 +1100,7 @@ function Torsion() {
       steps={[
         { at: 0, label: "Same torque", caption: "A solid shaft of 10 mm radius and one of 20 mm carry the same 200 N·m." },
         {
-          at: 0.9,
+          at: 1,
           label: "10 mm",
           caption: "The shear stress climbs from zero on the axis to about 127 MPa at the 10 mm shaft's skin.",
         },
@@ -1108,8 +1113,10 @@ function Torsion() {
     >
       {({ t }) => (
         <>
-          <Label x={240} y={20} tone="muted" size={15}>same 200 N·m on both</Label>
-          {shaft(90, 140, 45, 10, "≈127 MPa", seg(t, 0.9, 1.9), op(seg(t, 1.6, 2.1)))}
+          <Label x={240} y={20} tone="muted" size={15} opacity={op(seg(t, 0.4, 0.9))}>
+            same 200 N·m on both
+          </Label>
+          {shaft(90, 140, 45, 10, "≈127 MPa", seg(t, 1, 1.9), op(seg(t, 1.6, 2.1)))}
           {shaft(330, 140, 90, 20, "≈16 MPa", seg(t, 2.5, 3.3), op(seg(t, 3.1, 3.6)))}
         </>
       )}
@@ -1236,9 +1243,9 @@ function Eccentric() {
         const end = op(seg(t, 3.2, 3.7));
         return (
           <>
-            <g opacity={end}>
+            <Fade opacity={end}>
               <DimH x1={mid} x2={R} y={44} label="20 mm" />
-            </g>
+            </Fade>
             <Arrow x1={X} y1={6} x2={X} y2={66} width={3.5} />
             <Label x={X + 12} y={16} anchor="start" tone="accent" weight={600}>20 kN</Label>
             <rect x={L} y={70} width={R - L} height={110} fill={C.soft} stroke={C.ink} strokeWidth={2} />
@@ -1337,7 +1344,7 @@ function PinShear() {
               fill={C.soft}
               stroke={C.accent}
               strokeWidth={2}
-              opacity={op(seg(t, 3.4, 3.7))}
+              opacity={op(seg(t, 3.4, 3.8))}
             />
             <Label x={330} y={160} size={15} tone="muted" opacity={small}>8 mm</Label>
             <Label x={330} y={184} tone="accent" weight={600} opacity={small}>79.6 MPa</Label>
@@ -1406,6 +1413,16 @@ function Wear() {
     >
       {({ t }) => {
         const dx = lerp(-150, 0, slid(t)); // the block slides in from the left, leaving debris behind
+        const block = (
+          <>
+            <rect x={180} y={90} width={100} height={50} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={230} y={115} size={15}>H 1000</Label>
+            <Arrow x1={230} y1={30} x2={230} y2={86} tone="ink" />
+            <Label x={242} y={40} anchor="start" size={15}>200 N</Label>
+            <Arrow x1={292} y1={115} x2={430} y2={115} />
+            <Label x={360} y={96} tone="accent" weight={600}>1000 m</Label>
+          </>
+        );
         return (
           <>
             <Ground x={30} y={140} w={420} />
@@ -1413,14 +1430,7 @@ function Wear() {
               <circle key={i} cx={x} cy={134 - (i % 2) * 3} r={3} fill={C.muted} opacity={op(clamp((180 + dx - x) / 20))} />
             ))}
             <Label x={100} y={110} tone="muted" size={15} opacity={op(seg(t, 2.2, 2.7))}>debris</Label>
-            <g transform={dx ? `translate(${dx.toFixed(1)},0)` : undefined}>
-              <rect x={180} y={90} width={100} height={50} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-              <Label x={230} y={115} size={15}>H 1000</Label>
-              <Arrow x1={230} y1={30} x2={230} y2={86} tone="ink" />
-              <Label x={242} y={40} anchor="start" size={15}>200 N</Label>
-              <Arrow x1={292} y1={115} x2={430} y2={115} />
-              <Label x={360} y={96} tone="accent" weight={600}>1000 m</Label>
-            </g>
+            {dx ? <g transform={`translate(${dx.toFixed(1)},0)`}>{block}</g> : block}
 
             {row(190, "as given", 20, true, seg(t, 2.4, 2.9))}
             {row(224, "2× hardness", 10, false, seg(t, 3.1, 3.6))}
@@ -1484,7 +1494,7 @@ function Whirl() {
             <Guide x1={b.px(0.4)} y1={b.py(N(0.4))} x2={b.px(0.4)} y2={b.y + b.h} opacity={first} />
             <Guide x1={b.px(0.8)} y1={b.py(N(0.8))} x2={b.px(0.8)} y2={b.y + b.h} opacity={done} />
             <Dot x={b.px(0.4)} y={b.py(N(0.4))} tone="ink" r={6} opacity={first} />
-            <Dot x={b.px(L)} y={b.py(N(L))} r={6} opacity={op(seg(t, 2.6, 2.9))} />
+            <Dot x={b.px(L)} y={b.py(N(L))} r={6} opacity={op(seg(t, 2.6, 3))} />
             <Label x={b.px(0.4) + 12} y={b.py(N(0.4)) - 8} anchor="start" weight={600} opacity={first}>≈7300 rpm</Label>
             <Label x={b.px(0.8)} y={b.py(N(0.8)) - 26} tone="accent" weight={600} opacity={done}>≈2600 rpm</Label>
             <Label x={b.px(0.6) + 16} y={b.py(N(0.6)) - 22} anchor="start" tone="muted" size={15} opacity={op(seg(t, 4.3, 4.8))}>
@@ -1642,7 +1652,7 @@ function Bearing() {
             <Guide x1={b.px(4)} y1={b.py(Lf(4))} x2={b.px(4)} y2={b.y + b.h} opacity={first} />
             <Guide x1={b.px(8)} y1={b.py(Lf(8))} x2={b.px(8)} y2={b.y + b.h} opacity={done} />
             <Dot x={b.px(4)} y={b.py(125)} tone="ink" r={6} opacity={first} />
-            <Dot x={b.px(P)} y={b.py(Lf(P))} r={6} opacity={op(seg(t, 2.6, 2.9))} />
+            <Dot x={b.px(P)} y={b.py(Lf(P))} r={6} opacity={op(seg(t, 2.6, 3))} />
             <Label x={b.px(4) + 14} y={b.py(125) - 6} anchor="start" weight={600} opacity={first}>125</Label>
             <Label x={b.px(8)} y={b.py(Lf(8)) - 26} tone="accent" weight={600} opacity={done}>15.6</Label>
             <Label x={b.px(6)} y={b.py(150)} tone="muted" size={15} opacity={op(seg(t, 4.3, 4.8))}>
@@ -1745,8 +1755,8 @@ function Preload() {
             <Guide x1={b.px(10)} y1={b.py(17)} x2={b.px(10)} y2={b.y + b.h} opacity={at10} />
             <Guide x1={b.px(20)} y1={b.py(20)} x2={b.px(20)} y2={b.y + b.h} opacity={at20} />
             {/* the first load rides the line to 10 kN; the second takes over from there to 20 */}
-            <Dot x={b.px(p1)} y={b.py(bolt(p1))} r={6} opacity={op(seg(t, 0.4, 0.7))} />
-            <Dot x={b.px(P)} y={b.py(bolt(P))} r={6} tone="ink" opacity={op(seg(t, 4.2, 4.5))} />
+            <Dot x={b.px(p1)} y={b.py(bolt(p1))} r={6} opacity={op(seg(t, 0.4, 0.8))} />
+            <Dot x={b.px(P)} y={b.py(bolt(P))} r={6} tone="ink" opacity={op(seg(t, 4.2, 4.6))} />
             <Dot x={b.px(open)} y={b.py(open)} r={4} tone="ink" opacity={opened} />
             <Label x={b.px(10)} y={b.py(17) - 22} tone="accent" weight={600} opacity={at10}>17</Label>
             <Label x={b.px(20) + 12} y={b.py(20) + 20} anchor="start" weight={600} opacity={at20}>20</Label>
