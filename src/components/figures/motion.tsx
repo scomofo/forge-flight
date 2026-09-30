@@ -263,11 +263,11 @@ export function AnimatedFigure({
                 </button>
               ))}
             </div>
-            <div className="mt-2 flex items-center gap-3 print:hidden">
+            <div className="mt-3 flex items-center gap-3 print:hidden">
               <button
                 type="button"
                 onClick={clock.toggle}
-                className="min-h-11 min-w-20 rounded-lg bg-accent px-4 text-sm font-medium text-accent-ink transition-transform duration-150 ease-out active:scale-[0.96]"
+                className="min-h-11 min-w-20 rounded-[8px] bg-accent px-4 text-sm font-medium text-accent-ink transition-transform duration-150 ease-out active:scale-[0.96]"
               >
                 {clock.playing ? "Pause" : clock.raw >= duration ? "Replay" : "Play"}
               </button>
@@ -327,7 +327,7 @@ export function CompareSwitch<T extends string>({
               clock?.restart();
             }}
             className={cn(
-              "min-h-11 rounded-lg border px-3 text-sm font-medium transition-transform duration-150 ease-out active:scale-[0.96]",
+              "min-h-11 rounded-[8px] border px-3 text-sm font-medium transition-transform duration-150 ease-out active:scale-[0.96]",
               on ? "border-accent bg-accent text-accent-ink" : "border-line text-ink",
             )}
           >
