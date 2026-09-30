@@ -447,7 +447,7 @@ function Projectiles() {
         {
           at: 0,
           label: "Launch",
-          caption: "Launch at 20 m/s and 30°. That splits into 17.3 m/s across and 10 m/s up.",
+          caption: "Given launch: 20 m/s at 30°. Assume g = 9.81 m/s² downward, no drag, +y upward. The launch components are 17.3 m/s across and 10 m/s up.",
         },
         {
           at: 0.6,
@@ -642,7 +642,7 @@ function Contact() {
         {
           at: 0,
           label: "Normal",
-          caption: "The 5.0 kg block weighs 49.1 N; the slope pushes back with N = mg·cos30° = 42.5 N.",
+          caption: "Given m = 5.0 kg, slope 30°, μs = 0.40 and μk = 0.30; assume g = 9.81 m/s². Weight is 49.1 N and N = mg·cos30° = 42.5 N.",
         },
         { at: 1.8, label: "Pull", caption: "Along the slope, the downslope pull is mg·sin30° = 24.5 N." },
         {

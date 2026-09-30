@@ -1,4 +1,5 @@
 import { ConceptHelp } from "@/components/concept-help";
+import { LOAD_CELL_POINTS, LOAD_CELL_FIT } from "@/course/graph-reasoning";
 import { Axes, C, DimH, Ground, Label, plotBox, type FigureMap } from "./kit";
 import { AnimatedFigure, GrowArrow, lerp, op, partial, seg } from "./motion";
 
@@ -197,31 +198,34 @@ function Powers() {
 /** 0D: the load-cell calibration line through two points, read back at 6.93 mV. */
 function Graphs() {
   const b = plotBox({ x: 64, y: 40, w: 370, h: 190, xMin: 0, xMax: 60, yMin: 0, yMax: 13 });
-  const m = 0.21;
+  const m = LOAD_CELL_FIT.slope;
+  const [[w1, v1], [w2, v2]] = LOAD_CELL_POINTS;
   const W = 6.93 / m;
   const fit: Array<[number, number]> = [[0, 0], [60, 60 * m]];
   return (
     <AnimatedFigure
       height={290}
-      duration={5.9}
+      duration={9.6}
       alt="A straight calibration line V equals 0.21 times W through the points 10 kg at 2.1 mV and 50 kg at 10.5 mV, with a rise-over-run triangle and a reading of 6.93 mV traced across to 33 kg."
       steps={[
-        { at: 0, label: "Points", caption: "The load cell reads 2.1 mV at 10 kg and 10.5 mV at 50 kg." },
-        { at: 1.5, label: "Slope", caption: "Slope is rise over run: (10.5 − 2.1) / (50 − 10) = 8.4 / 40 = 0.21 mV/kg." },
-        { at: 3, label: "Line", caption: "The intercept is b = 2.1 − 0.21 × 10 = 0, so the line runs through zero: V = 0.21·W." },
+        { at: 0, label: "Points", caption: `Supplied calibration readings: ${w1} kg gives ${v1} mV; ${w2} kg gives ${v2} mV. The horizontal axis is load (kg); the vertical axis is voltage (mV).` },
+        { at: 1.5, label: "Run", caption: "Run = (50 − 10) kg = 40 kg: the change between the two supplied calibration loads. Rise = (10.5 − 2.1) mV = 8.4 mV. Subtract second minus first in both." },
+        { at: 3, label: "Slope", caption: "Slope = rise/run = 8.4 mV ÷ 40 kg = 0.21 mV/kg. Reversing both differences gives (−8.4)/(−40) = 0.21 too." },
+        { at: 4.5, label: "Intercept", caption: "Find b using V = mW + b and the 10 kg reading: 2.1 = 0.21 × 10 + b = 2.1 + b. Subtract 2.1 from both sides: b = 0 mV." },
+        { at: 6, label: "Line", caption: "Check the second point: b = 10.5 − 0.21 × 50 = 0 mV too. For these readings the fitted line is V = 0.21·W. A real sensor may have a zero-load offset." },
         {
-          at: 4.3,
+          at: 7.3,
           label: "Read",
           caption:
-            "Rise 8.4 mV over run 40 kg gives the slope; the line passes through zero. A new reading goes across to the line and down to the weight.",
+            "Given 6.93 mV, follow the fitted line to W = (6.93 − 0)/0.21 = 33 kg. This is interpolation between the two calibration loads; check the model with another reading.",
         },
       ]}
     >
       {({ t }) => {
-        const line = seg(t, 3, 3.8);
+        const line = seg(t, 6, 6.8);
         const run = seg(t, 1.5, 2.1);
         const rise = seg(t, 2.1, 2.7);
-        const across = seg(t, 4.4, 5);
+        const across = seg(t, 7.4, 8);
         const first = op(seg(t, 0.3, 0.8));
         const second = op(seg(t, 0.6, 1.1));
         return (
@@ -234,7 +238,7 @@ function Graphs() {
             {rise > 0 ? (
               <line x1={b.px(50)} y1={b.py(2.1)} x2={b.px(50)} y2={lerp(b.py(2.1), b.py(10.5), rise)} stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
             ) : null}
-            <Label x={b.px(21.5)} y={b.py(2.1) + 16} tone="muted" size={15} opacity={op(seg(t, 1.8, 2.3))}>run 40 kg</Label>
+            <Label x={b.px(30)} y={b.py(2.1) + 16} tone="muted" size={15} opacity={op(seg(t, 1.8, 2.3))}>run = 50 − 10 = 40 kg</Label>
             <Label x={b.px(50) + 8} y={b.py(6.3)} tone="muted" size={15} anchor="start" opacity={op(seg(t, 2.4, 2.9))}>rise 8.4 mV</Label>
             <circle cx={b.px(10)} cy={b.py(2.1)} r={5} fill={C.ink} opacity={first} />
             <circle cx={b.px(50)} cy={b.py(10.5)} r={5} fill={C.ink} opacity={second} />
@@ -244,10 +248,10 @@ function Graphs() {
             {across > 0 ? (
               <line x1={b.px(0)} y1={b.py(6.93)} x2={lerp(b.px(0), b.px(W), across)} y2={b.py(6.93)} stroke={C.ink} strokeWidth={1.5} strokeDasharray="3 4" />
             ) : null}
-            <GrowArrow p={seg(t, 5, 5.5)} x1={b.px(W)} y1={b.py(6.93)} x2={b.px(W)} y2={b.py(0) - 2} tone="ink" width={1.5} dashed />
-            <Label x={b.px(0) - 6} y={b.py(6.93)} size={15} anchor="end" opacity={op(seg(t, 4.3, 4.7))}>6.93</Label>
-            <Label x={b.px(W)} y={b.py(0) + 18} size={15} tone="accent" weight={600} opacity={op(seg(t, 5.3, 5.8))}>33 kg</Label>
-            <Label x={b.px(56)} y={b.py(12.5)} size={16} tone="accent" anchor="end" opacity={op(seg(t, 3.5, 4))}>V = 0.21·W</Label>
+            <GrowArrow p={seg(t, 8, 8.5)} x1={b.px(W)} y1={b.py(6.93)} x2={b.px(W)} y2={b.py(0) - 2} tone="ink" width={1.5} dashed />
+            <Label x={b.px(0) - 6} y={b.py(6.93)} size={15} anchor="end" opacity={op(seg(t, 7.3, 7.7))}>6.93</Label>
+            <Label x={b.px(W)} y={b.py(0) + 18} size={15} tone="accent" weight={600} opacity={op(seg(t, 8.3, 8.8))}>33 kg</Label>
+            <Label x={b.px(56)} y={b.py(12.5)} size={16} tone="accent" anchor="end" opacity={op(seg(t, 6.5, 7))}>V = 0.21·W</Label>
           </>
         );
       }}

@@ -203,6 +203,8 @@ export const physicsW9Lessons: Lesson[] = [
         heading: "Heat transfers by conduction, convection, and radiation",
         body: "Conduction carries heat through material down a temperature gradient — Fourier's law, the reason a metal spoon handle gets hot. Convection carries it with moving fluid — the reason a fan cools you. Radiation needs no medium at all and grows as T⁴ — the reason the sun warms you through vacuum. Name the dominant mode before you reach for an equation; misidentifying the mode is the usual failure, not the arithmetic.",
         formula: "conduction: q = −k∇T; radiation: q = εσT⁴",
+        formulaNote: "Here q is heat flux (W/m²), not total heat rate. k is thermal conductivity in W/(m·K); ∇T is the spatial temperature gradient in K/m. In radiation, ε is dimensionless emissivity—not strain—and σ is the Stefan–Boltzmann constant in W/(m²·K⁴), not mechanical stress. T is absolute temperature in kelvin. εσT⁴ is emitted flux, not net exchange with the surroundings.",
+        help: [{ concept: "heat-flux-symbols" }],
       },
     ],
     bench: "thermalstress",

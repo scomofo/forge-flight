@@ -254,13 +254,13 @@ function Elastic() {
       duration={5.3}
       alt="A 10 mm steel rod 2 m long hanging from a ceiling with a 15 kN load, next to its circular cross-section and the results: stress 191 MPa against a 250 MPa yield, stretch 1.91 mm."
       steps={[
-        { at: 0, label: "Load", caption: "A 10 mm diameter steel rod, 2 m long, hangs a 15 kN load." },
+        { at: 0, label: "Load", caption: "Given rod: diameter 10 mm, length 2 m, load 15 kN. Supplied classroom steel E = 200 GPa and yield = 250 MPa; E is elastic stiffness, not strength." },
         { at: 1.4, label: "Area", caption: "Its cross-section is A = π(0.005)² = 7.85×10⁻⁵ m²." },
         { at: 2.8, label: "Stress", caption: "σ = 15000 / 7.85×10⁻⁵ = 191 MPa, under the roughly 250 MPa where mild steel yields." },
         {
           at: 4.2,
           label: "Stretch",
-          caption: "Divide the load by the area: 15 kN over 7.85×10⁻⁵ m² is 191 MPa — under yield — and the 2 m rod stretches 1.91 mm.",
+          caption: "Use the supplied E = 200 × 10⁹ Pa in δ = FL/(AE): 15000 × 2/(7.85×10⁻⁵ × 200×10⁹) = 1.91 mm. The separate stress is 191 MPa.",
         },
       ]}
     >
@@ -313,7 +313,7 @@ function Bending() {
         {
           at: 0,
           label: "Setup",
-          caption: "A steel ruler, 25 mm wide and 2 mm thick, sticks out 300 mm: I = bh³/12 = 1.67×10⁻¹¹ m⁴.",
+          caption: "Given ruler: width 25 mm, bending depth 2 mm, span 300 mm and tip load 5 N. Use supplied steel E = 200 GPa; I = bh³/12 = 1.67×10⁻¹¹ m⁴.",
         },
         { at: 1.4, label: "Load", caption: "Hang 5 N on the tip and it droops δ = FL³/3EI = 13.5 mm, about a twentieth of the span." },
         {

@@ -1,7 +1,11 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bench } from "@/components/bench";
+import { ExampleInputs } from "@/components/example-inputs";
+import { getExampleContext } from "@/course/example-context";
+import type { ExampleContext } from "@/course/types";
 import { ConceptHelp } from "@/components/concept-help";
+import { LessonSections } from "@/components/lesson-sections";
 import { LessonClip } from "@/components/lesson-clip";
 import { lessonFigures } from "@/components/figures";
 import { Quiz } from "@/components/quiz";
@@ -71,7 +75,7 @@ function StartHere({ lesson, figure }: { lesson: Lesson; figure?: ReactNode }) {
   );
 }
 
-function Example({ text, heading = "For example", help }: { text: string; heading?: string; help?: IdeaHelp[] }) {
+function Example({ text, heading = "For example", help, context }: { text: string; heading?: string; help?: IdeaHelp[]; context?: ExampleContext }) {
   const parts = text.split(" || ");
   const rows = [
     ["The case", parts[0]],
@@ -81,6 +85,7 @@ function Example({ text, heading = "For example", help }: { text: string; headin
   return (
     <section className="rounded-lg border border-line bg-surface px-4 py-4 sm:px-5">
       <h2 className="font-serif text-sm text-accent">{heading}</h2>
+      <ExampleInputs context={context} />
       <ol className="mt-3 flex flex-col gap-4">
         {rows.map(([label, line]) => (
           <li key={label}>
@@ -141,6 +146,8 @@ function ReadFlow({ lesson }: { lesson: Lesson }) {
               <p className="mt-3 max-w-prose text-lg leading-relaxed text-ink">{point}</p>
               {rest ? <p className="mt-3 max-w-prose leading-relaxed text-muted">{rest}</p> : null}
               {idea.formula ? <p className="mt-4 font-serif text-xl text-accent">{idea.formula}</p> : null}
+              {idea.formulaNote ? <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">{idea.formulaNote}</p> : null}
+              {idea.sections?.length ? <LessonSections sections={idea.sections} /> : null}
               {idea.help?.length ? <ConceptHelp help={idea.help} /> : null}
             </section>
           );
@@ -148,7 +155,7 @@ function ReadFlow({ lesson }: { lesson: Lesson }) {
         if (block.kind === "example") {
           return (
             <div key={`example-${i}`} className="mt-8">
-              <Example text={lesson.example} heading={block.heading} help={lesson.exampleHelp} />
+              <Example text={lesson.example} heading={block.heading} help={lesson.exampleHelp} context={getExampleContext(lesson.track, lesson.id)} />
             </div>
           );
         }
@@ -192,7 +199,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
       </p>
       <h1 className="mt-3 font-serif text-4xl leading-tight text-ink sm:text-5xl">{lesson.title}</h1>
       <div className="mt-8">
-        <StartHere lesson={lesson} figure={Figure ? <Figure /> : undefined} />
+        <StartHere lesson={lesson} figure={Figure ? <><ExampleInputs context={getExampleContext(lesson.track, lesson.id)} compact /><Figure /></> : undefined} />
       </div>
       <p className="mt-10 max-w-prose text-sm font-medium text-accent">What you will be able to do</p>
       <p className="mt-1 max-w-prose text-lg leading-relaxed text-ink">{lesson.lede}</p>

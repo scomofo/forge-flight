@@ -35,7 +35,7 @@ export const mathLessons: Lesson[] = [
       "The drawing says 240 mm. The stock list is in inches. This is the kind of conversion that seems trivial right up until a factor gets flipped. || Write the conversion as a fraction: 1 in / 25.4 mm. The numerator and denominator represent the same length, so multiplying by the fraction changes the unit without changing the quantity. || Keep the units on the page and cancel them just like algebraic factors. If the unit you are trying to remove is still there at the end, the setup is wrong. Fix that before you calculate.",
     use: "Use this whenever you convert units or scale a quantity by a ratio. || Start with the number and its unit. Multiply by conversion factors arranged so the unwanted units cancel. Keep the units visible on every line. || When only the target unit remains, do a rough size check. For 240 mm, something near 10 inches makes sense. Something near 100 or 6000 does not.",
     example:
-      "Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.449 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.055 lb, so 7.055 lb × ($4.10 / 1 lb) = $28.92. Keep the extra digits until the last line; round only the answer. || Call it 9.4 in and $29. The 3.2 kg only has two digits, so two or three digits is all any answer can honestly claim. In every line the starting unit cancelled and the target unit survived. Flip the factor to (25.4 mm / 1 in) and you get 6096 mm²/in, which is meaningless — you'll spot the mistake before any money is involved.",
+      "Supplied reference factors: 1 in = 25.4 mm exactly; 1 kg ≈ 2.20462 lb (rounded). The price is a given for this exercise, not a current quote. Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.449 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.055 lb, so 7.055 lb × ($4.10 / 1 lb) = $28.92. Keep the extra digits until the last line; round only the answer. || Call it 9.4 in and $29. The 3.2 kg only has two digits, so two or three digits is all any answer can honestly claim. In every line the starting unit cancelled and the target unit survived. Flip the factor to (25.4 mm / 1 in) and you get 6096 mm²/in, which is meaningless — you'll spot the mistake before any money is involved.",
     ideas: [
       {
         heading: "Keep the unit attached",
@@ -72,6 +72,8 @@ export const mathLessons: Lesson[] = [
         heading: "Ratios preserve shape",
         body: "A scale ratio multiplies every length by the same factor k, and that's all it touches directly. Area is length times length, so it picks up k². Volume picks up k³. A 1:8 glider isn't “eight times smaller” in any single sense: its span is 1/8, its wing area 1/64, its mass at the same density 1/512. If the full-size wing is 1.6 m², the model's is 1.6 m² × (1/8)² = 1.6 / 64 = 0.025 m². Forget the exponent and the model comes out impossibly heavy or impossibly fragile.",
         formula: "lengths ×k ⇒ areas ×k² ⇒ volumes ×k³",
+        formulaNote: "Here ⇒ means “implies.” k is the same scale factor for every length; area uses two lengths and volume uses three.",
+        help: [{ concept: "scaling-notation" }],
       },
       {
         heading: "Do a rough check first",
@@ -306,7 +308,7 @@ export const mathLessons: Lesson[] = [
       { kind: "idea", idea: 2, label: "Criterion 3" },
     ],
     start:
-      "A stiffness calculation gives I = 2.4 × 10⁻⁹ m⁴, but the CAD tool expects mm⁴. Nothing is wrong with the value; the scale just has to change. || Scientific notation separates the significant digits from the power of ten. Metric prefixes do the same job with names: milli is 10⁻³, kilo is 10³, mega is 10⁶, and so on. || The part people usually miss is the power on the unit. If metres are raised to the fourth power, the conversion factor is raised to the fourth power too.",
+      "A stiffness calculation supplies I = 2.4 × 10⁻⁹ m⁴, but the CAD tool expects mm⁴. I is the second moment of area: a cross-section geometry property about a chosen axis, not mass or a four-dimensional volume. Its definition weights area (length²) by squared distance (length²), giving length⁴. You can convert it without learning beam design first. || Scientific notation separates the coefficient from the power of ten. Metric prefixes do the same job with names: milli is 10⁻³, kilo is 10³, mega is 10⁶. Changing a prefix and tidying the scientific notation are two different steps. || Raise the conversion factor to the same power as the unit: 1 m⁴ = (1000 mm)⁴ = 10¹² mm⁴. Then 2.4 × 10⁻⁹ × 10¹² = 2.4 × 10³ mm⁴ = 2400 mm⁴. Multiply exponents for a power of a power; add exponents when multiplying powers of ten.",
     use: "When numbers span many orders of magnitude, or a unit change crosses prefixes. || Convert by shifting the exponent: each factor of 10³ moves milli↔unit↔kilo. When multiplying, add exponents; when dividing, subtract. Keep one digit before the decimal point. || Stop when the exponent and the prefix agree — 2.4 × 10³ mm⁴, and never 2.4 × 10⁻⁹ mm⁴ (the old exponent with the new label).",
     example:
       "An aluminum bracket measures 80 × 50 × 6 mm. Estimate its mass. Given: ρ(aluminum) ≈ 2700 kg/m³ (typical, from material tables). ρ is the Greek letter rho and means density: mass per unit volume. This number is looked up, not calculated from the dimensions; you are not expected to memorize it. || Geometry gives the volume: V = 80 × 50 × 6 = 24,000 mm³ = 2.4 × 10⁴ mm³. Since 1 m = 10³ mm, 1 m³ = 10⁹ mm³, so V = 2.4 × 10⁻⁵ m³. The material supplies the density: ρ ≈ 2700 kg/m³. Now use mass = density × volume: m = ρV = (2700 kg/m³)(2.4 × 10⁻⁵ m³) = 0.0648 kg = 64.8 g ≈ 65 g. || The cubic metres cancel and kilograms remain. The dimensions gave us volume; the material table gave us density; their product gave us mass. 65 g is plausible for this small solid bracket. Use the actual alloy datasheet when a precise density matters.",
@@ -314,14 +316,17 @@ export const mathLessons: Lesson[] = [
     ideas: [
       {
         heading: "Know the common prefixes",
-        body: "Milli = 10⁻³, micro = 10⁻⁶, nano = 10⁻⁹, kilo = 10³, mega = 10⁶, and giga = 10⁹. You will see these constantly. For example, 150 MPa = 150 × 10⁶ Pa = 1.5 × 10⁸ Pa. Converting the prefix and rewriting in standard scientific notation are two separate steps.",
+        body: "Milli = 10⁻³, micro = 10⁻⁶, nano = 10⁻⁹, kilo = 10³, mega = 10⁶, and giga = 10⁹. You will see these constantly. Take a given stress of 150 MPa. Mega supplies 10⁶, giving 150 × 10⁶ Pa. Now rewrite 150 as 1.5 × 10²: (1.5 × 10²) × 10⁶ = 1.5 × 10⁸ Pa = 150,000,000 Pa. The extra 10² came from rewriting 150, not from mega. In standard scientific notation the nonzero coefficient has magnitude at least 1 and less than 10.",
         formula: "1 GPa = 10⁹ Pa,   1 mm = 10⁻³ m",
+        formulaNote: "Capital M means mega (one million). Lowercase m means milli in a prefix, but m alone is the unit metre. Read the complete unit.",
+        help: [{ concept: "scientific-notation-normalize" }],
       },
       {
         heading: "Exponents add under multiplication",
-        body: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ. Division subtracts. This is why the bracket's volume needed care: mm³ to m³ is not 10³, it is (10³)³ = 10⁹. The exponent triples because the unit is cubed — the most common prefix slip in the shop.",
+        body: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ. Division subtracts. For the bracket, 1 mm = 10⁻³ m, so 1 mm³ = (10⁻³)³ m³ = 10⁻⁹ m³. Going the other way, 1 m³ = 10⁹ mm³. The conversion direction matters as much as the cube.",
         formula: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ",
         help: [
+          { concept: "powered-unit-conversion" },
           {
             trigger: "Why add the exponents?",
             title: "Multiplying powers of ten",
@@ -348,6 +353,8 @@ export const mathLessons: Lesson[] = [
         heading: "Scaling changes area and volume faster",
         body: "If every length doubles, area goes up by 2² = 4 and volume by 2³ = 8. A geometrically similar part that is ten times larger in every direction has a thousand times the volume and, at the same density, a thousand times the mass.",
         formula: "L → kL  ⇒  A → k²A,  V → k³V",
+        formulaNote: "Reading this line: → means “becomes” here; ⇒ means “implies.” L is length, A is area, V is volume, and k is the length scale factor. With k = 10, lengths grow 10×, area 100×, and volume 1000×. Mass also grows 1000× only if density stays the same.",
+        help: [{ concept: "scaling-notation" }],
       },
     ],
     bench: "powers",
@@ -359,13 +366,13 @@ export const mathLessons: Lesson[] = [
         prompt: "2.4 × 10⁻⁹ m⁴ expressed in mm⁴ is…",
         options: ["2.4 × 10³ mm⁴", "2.4 × 10⁻⁶ mm⁴", "2.4 × 10⁻⁹ mm⁴", "2.4 × 10¹² mm⁴"],
         answer: 0,
-        why: "1 m = 10³ mm, so 1 m⁴ = (10³)⁴ = 10¹² mm⁴. 2.4 × 10⁻⁹ × 10¹² = 2.4 × 10³. The exponent multiplies by the power of the unit.",
+        why: "1 m = 10³ mm, so 1 m⁴ = (10³)⁴ mm⁴ = 10¹² mm⁴ (3 × 4 = 12). Then 2.4 × 10⁻⁹ × 10¹² = 2.4 × 10³ mm⁴ = 2400 mm⁴ (−9 + 12 = 3). The 10¹² option drops the original 10⁻⁹; the 10⁻⁶ option uses the factor only once, −9 + 3 = −6; the unchanged 10⁻⁹ just relabels the number. A smaller unit should give a bigger number, but 10⁻⁶ also passes that rough check: the required factor is specifically 10¹².",
       },
       {
         prompt: "150 MPa in pascals is…",
         options: ["1.5 × 10⁸ Pa", "1.5 × 10⁵ Pa", "1.5 × 10⁶ Pa", "1.5 × 10¹¹ Pa"],
         answer: 0,
-        why: "Mega is 10⁶: 150 × 10⁶ = 1.5 × 10⁸. Keeping one digit before the point is the convention, not a rule of nature — but everyone follows it.",
+        why: "Mega supplies 10⁶: 150 MPa = 150 × 10⁶ Pa. Rewrite 150 = 1.5 × 10², then add exponents: (1.5 × 10²) × 10⁶ = 1.5 × 10⁸ Pa. The extra 10² comes from rewriting 150. Check: 150 million is 150,000,000 Pa. This given stress does not specify any particular alloy’s yield strength.",
       },
       {
         prompt: "Every dimension of a part triples. Its volume changes by…",
@@ -392,8 +399,8 @@ export const mathLessons: Lesson[] = [
     opening: { mode: "prose", heading: "Use the example to find the pattern" },
     readFlow: [
       { kind: "example", heading: "Start with the example" },
-      { kind: "idea", idea: 1, label: "Pattern" },
       { kind: "idea", idea: 0, label: "Underlying rule" },
+      { kind: "idea", idea: 1, label: "Pattern" },
       { kind: "idea", idea: 2, label: "What to watch" },
       { kind: "move", heading: "Apply it yourself" },
     ],
@@ -401,12 +408,65 @@ export const mathLessons: Lesson[] = [
       "A load cell reads 2.1 mV at 10 kg and 10.5 mV at 50 kg. If the sensor is linear, those two points let us build a calibration equation. || Slope is the change in y divided by the change in x. The intercept is the value of y when x is zero. Put them together and you get y = mx + b. || Two points define a line, but they do not prove the real system is linear. A third point is useful because it tells you whether the line actually predicts something it was not fitted to.",
     use: "When paired measurements fall on (or near) a line, or you need to classify a relationship as direct or inverse. || Compute slope from two points: m = Δy/Δx. Find b from one point: b = y − mx. Read new values off the equation, and check that the intercept makes physical sense. || Stop when the line predicts a third, held-back calibration point. If the residuals curve instead of scattering, the relationship is not linear — say so instead of forcing it.",
     example:
-      "Calibrate the load cell: (10 kg, 2.1 mV) and (50 kg, 10.5 mV). What weight gives 6.93 mV? || m = (10.5 − 2.1)/(50 − 10) = 8.4/40 = 0.21 mV/kg. b = 2.1 − 0.21×10 = 0. So V = 0.21·W, and W = 6.93/0.21 = 33 kg. || The zero intercept is a good sign — no load, no signal. And 33 kg sits between the calibration points, where interpolation is safest. Extrapolating far past 50 kg would be a claim the data does not support.",
+      "Calibrate the load cell: (10 kg, 2.1 mV) and (50 kg, 10.5 mV). What weight gives 6.93 mV? || Rise = (10.5 − 2.1) mV = 8.4 mV. Run = (50 − 10) kg = 40 kg, using the two calibration loads. Slope m = 8.4/40 = 0.21 mV/kg. Substitute the first reading: 2.1 = 0.21 × 10 + b = 2.1 + b, so b = 0 mV. Now V = 0.21·W, and W = 6.93/0.21 = 33 kg. || For these supplied readings, b = 0 predicts zero voltage at zero load; that still needs checking on the actual sensor. A real zero-load offset is possible. The 33 kg result is interpolation between our calibration points, not evidence that the line holds outside them.",
+    exampleHelp: [
+      {
+            "trigger": "Where did 50 − 10 come from?",
+            "title": "Rise and run use the same two readings",
+            "intro": "Those numbers are the loads you calibrated at: 10 kg and 50 kg. They are not extra constants.",
+            "sections": [
+                  {
+                        "heading": "Keep each point together",
+                        "items": [
+                              "First point: (10 kg, 2.1 mV). Second point: (50 kg, 10.5 mV).",
+                              "Rise = second voltage − first voltage = 10.5 − 2.1 = 8.4 mV.",
+                              "Run = second load − first load = 50 − 10 = 40 kg.",
+                              "Slope = 8.4 mV ÷ 40 kg = 0.21 mV/kg."
+                        ]
+                  },
+                  {
+                        "heading": "What that means",
+                        "body": "Each extra kilogram raises the reading by 0.21 mV in this fitted model. The 40 kg is the horizontal gap between the points, not the final load."
+                  },
+                  {
+                        "heading": "Reverse both, not just one",
+                        "body": "(2.1 − 10.5)/(10 − 50) = (−8.4)/(−40) = 0.21. Reversing just one subtraction changes the sign incorrectly."
+                  }
+            ]
+      },
+      {
+            "trigger": "Why does b become zero?",
+            "title": "Find the voltage left at zero load",
+            "intro": "b is the intercept: the voltage the fitted line predicts when the load is zero. Use a known reading to find it; do not guess it.",
+            "sections": [
+                  {
+                        "heading": "Substitute the 10 kg point",
+                        "items": [
+                              "Start with V = mW + b.",
+                              "We know V = 2.1 mV, m = 0.21 mV/kg and W = 10 kg.",
+                              "2.1 = 0.21 × 10 + b.",
+                              "0.21 × 10 = 2.1, so 2.1 = 2.1 + b.",
+                              "Subtract 2.1 from both sides: b = 2.1 − 2.1 = 0 mV."
+                        ]
+                  },
+                  {
+                        "heading": "Check with the other point",
+                        "body": "b = 10.5 − 0.21 × 50 = 0 mV too. Both calibration readings give the same intercept."
+                  },
+                  {
+                        "heading": "Why the +b disappears",
+                        "body": "Adding zero changes nothing, so V = 0.21W + 0 becomes V = 0.21W. The fitted relationship is directly proportional for this example."
+                  }
+            ],
+            "caution": "Real sensors can have zero-load offsets. These two readings give b = 0; they do not prove zero output or linear behavior at every load."
+      }
+],
     ideas: [
       {
         heading: "Slope tells you the rate of change",
         body: "The units of slope are y-units per x-unit. Here that is millivolts per kilogram, so a slope of 0.21 mV/kg means each additional kilogram changes the signal by 0.21 mV. A negative slope simply means y decreases as x increases.",
         formula: "m = Δy/Δx,   y = mx + b",
+        formulaNote: "Δ means change. Here x is load W (kg) and y is voltage V (mV): rise = (10.5 − 2.1) mV and run = (50 − 10) kg. The 10 and 50 are supplied calibration loads. b = V − mW is the voltage left over after subtracting the load-dependent part.",
         help: [
           {
             trigger: "Slope and intercept?",
@@ -437,8 +497,108 @@ export const mathLessons: Lesson[] = [
       },
       {
         heading: "Direct versus inverse",
-        body: "Direct proportion, y = kx, is a line through the origin: double x, double y. Inverse proportion, y = k/x, is a hyperbola: double x, halve y. Fixed work at varying power (time = work/power) is inverse; Hooke's law (F = kx) is direct. Check which shape you have before fitting, or you will fit a line to a curve.",
-        formula: "direct: y = kx   ·   inverse: y = k/x",
+        body: "Ask what stays the same. In a direct proportion, the ratio y/x stays constant. In an inverse proportion, the product x × y stays constant. Both involve a constant k, but they describe different patterns.",
+        formula: "direct: y = kx, constant y/x   ·   inverse: y = k/x, constant x × y",
+        formulaNote: "The examples below use positive quantities and k > 0. Do not divide by x = 0. A straight line with a nonzero intercept is not a direct proportion.",
+        sections: [
+        {
+                "heading": "Direct proportion: keep the ratio constant",
+                "body": "For y = kx, doubling x doubles y. The line passes through the origin (0, 0), and y/x stays at k for nonzero x. For an ideal spring, F = kx. Here k = 5 N/mm is the supplied spring stiffness, and x is extension from the unloaded length. Use this model only within its linear range.",
+                "table": {
+                        "caption": "Ideal spring: supplied k = 5 N/mm",
+                        "columns": [
+                                "Stretch x (mm)",
+                                "Force F (N)",
+                                "F/x (N/mm)"
+                        ],
+                        "rows": [
+                                [
+                                        "2",
+                                        "10",
+                                        "5"
+                                ],
+                                [
+                                        "4",
+                                        "20",
+                                        "5"
+                                ],
+                                [
+                                        "8",
+                                        "40",
+                                        "5"
+                                ]
+                        ]
+                }
+        },
+        {
+                "heading": "Inverse proportion: keep the product constant",
+                "body": "For y = k/x, doubling x halves y; x × y stays at k. Our example is a fixed 12 kJ job with constant useful power and no losses. Time = work/power, and 1 kW = 1 kJ/s, so kJ ÷ kW gives seconds. For positive x and k, the curve falls and flattens, approaching—but never reaching—either axis.",
+                "table": {
+                        "caption": "Fixed work: supplied 12 kJ",
+                        "columns": [
+                                "Power P (kW)",
+                                "Time t (s)",
+                                "P × t (kJ)"
+                        ],
+                        "rows": [
+                                [
+                                        "2",
+                                        "6",
+                                        "12"
+                                ],
+                                [
+                                        "4",
+                                        "3",
+                                        "12"
+                                ],
+                                [
+                                        "6",
+                                        "2",
+                                        "12"
+                                ]
+                        ]
+                }
+        },
+        {
+                "heading": "The trap: linear does not always mean proportional",
+                "body": "The line y = 2x + 3 has a constant slope, but its +3 offset stays put when x doubles. The ratios below change, so it is linear but not a direct proportion. Our fitted load-cell line V = 0.21W is a direct proportion because its intercept is zero: V/W = 0.21 mV/kg for nonzero W.",
+                "table": {
+                        "caption": "An offset line: y = 2x + 3",
+                        "columns": [
+                                "x",
+                                "y",
+                                "y/x"
+                        ],
+                        "rows": [
+                                [
+                                        "1",
+                                        "5",
+                                        "5"
+                                ],
+                                [
+                                        "2",
+                                        "7",
+                                        "3.5"
+                                ],
+                                [
+                                        "4",
+                                        "11",
+                                        "2.75"
+                                ]
+                        ]
+                }
+        },
+        {
+                "heading": "Check the shape, then the numbers",
+                "items": [
+                        "Plot the data. A straight line through the origin suggests direct proportion; check whether y/x is constant for nonzero x.",
+                        "A falling curve is only a clue. Check x × y: not every decreasing relationship is inverse.",
+                        "For y = k/x, plotting y against 1/x gives a straight line through the origin with slope k. x cannot be zero.",
+                        "Real readings scatter. Compare differences against measurement uncertainty and use extra points. A line fitted to a curve can be misleading within the measured range as well as beyond it."
+                ]
+        }
+],
+        help: [{ trigger: "How does this show up at a drill press?", title: "Same cutting speed, different drill diameter", intro: "Keep the surface cutting speed fixed and a larger drill must turn more slowly.", sections: [{ heading: "Where the factor comes from", body: "RPM = 12 × SFM/(π × D) ≈ 3.82 × SFM/D when D is in inches and SFM is surface feet per minute. The 12 converts feet to inches, πD is the circumference, and 3.82 is the rounded 12/π—not a material property." }, { heading: "Use the supplied practice speed", items: ["At a given 100 SFM and D = 0.5 in: RPM ≈ 3.82 × 100/0.5 = 764.", "At the same 100 SFM and D = 1 in: RPM ≈ 382.", "Doubling diameter halves RPM because RPM × D stays constant at this cutting speed."] }], caution: "100 SFM is an exercise input, not a recommended speed for every drill or material. Use the tool maker’s guidance for an actual cut." }],
       },
       {
         heading: "Real data will not sit perfectly on the line",
@@ -447,7 +607,7 @@ export const mathLessons: Lesson[] = [
     ],
     bench: "slope",
     prompt:
-      "Match the dashed calibration line with the slope and intercept sliders. Then deliberately break the match and describe what each slider does to the line in one sentence.",
+      "Match the dashed line with the slope and intercept sliders. Then classify each three-pair practice set as direct, inverse, or neither, and check the ratio and product before moving on.",
     note: "The bench line is exact. Real calibration data scatters around the line — the bench is the idealization the noisy data is judged against.",
     checks: [
       {
@@ -477,7 +637,7 @@ export const mathLessons: Lesson[] = [
           "Calibration was unnecessary",
         ],
         answer: 0,
-        why: "b is the reading at zero load. Zero is what an honest zero should read — it supports the linear model.",
+        why: "b is the zero-load reading predicted by this fitted line. These example readings give b = 0, so the model predicts no signal at zero load. A real sensor can have an offset; test zero load and additional points rather than treating b = 0 as proof of linearity.",
       },
     ],
     passAt: RUNWAY_PASS_AT,

@@ -877,7 +877,7 @@ function Bending() {
       duration={5.1}
       alt="A square aluminum tube cantilevered 1.2 m from a wall with a 500 N tip load, giving 600 N·m at the wall; beside it the 40 by 40 by 3 mm section with a linear stress profile, plus 117.7 MPa tension at the top fiber and minus 117.7 MPa compression at the bottom, zero at the neutral axis."
       steps={[
-        { at: 0, label: "Beam", caption: "A 40×40×3 mm aluminum tube is cantilevered 1.2 m from the wall, like a workbench edge." },
+        { at: 0, label: "Beam", caption: "Given tube 40×40×3 mm, span 1.2 m. Inner side = 34 mm; I = (40⁴−34⁴)/12 ≈ 101972 mm⁴ and S = I/20 ≈ 5099 mm³. This is a yield-only teaching comparison." },
         {
           at: 1.4,
           label: "Load",

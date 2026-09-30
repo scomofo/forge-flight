@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ProportionPractice } from "./proportion-practice";
 import { BenchShell, Readouts, Segmented, Slider, fmt } from "./ui";
 
 const LEN_TO_M: Record<string, number> = {
@@ -267,6 +268,7 @@ export function SlopeBench() {
   );
 
   return (
+    <>
     <BenchShell
       prompt="Match the dashed calibration line with the sliders. || The error readout hits zero exactly on the target. Then break the match and watch which slider moves the line at x = 0."
       note="The bench line is exact. Real calibration data scatters around the line — the bench is the idealization the noisy data is judged against."
@@ -331,6 +333,8 @@ export function SlopeBench() {
         Dashed: the target calibration line, y = 0.50x + 1. Solid: your line.
       </p>
     </BenchShell>
+    <ProportionPractice />
+    </>
   );
 }
 

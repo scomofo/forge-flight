@@ -426,6 +426,95 @@ export const conceptHelpRegistry: Record<string, RegistryEntry> = {
     }
   ]
 },
+"scaling-notation": {
+    "trigger": "Read the scaling arrows",
+    "title": "What becomes larger—and by how much?",
+    "intro": "In this scaling statement, → means “becomes.” It is a change, not an equals sign.",
+    "sections": [
+      {
+        "heading": "Read it aloud",
+        "items": [
+          "L → kL: each length becomes k times as long.",
+          "⇒ means implies: that change in length has the following consequences.",
+          "A → k²A: area becomes k squared times as large.",
+          "V → k³V: volume becomes k cubed times as large."
+        ]
+      },
+      {
+        "heading": "Try k = 10",
+        "body": "A 10× increase in every length makes area 10 × 10 = 100× and volume 10 × 10 × 10 = 1000×. At unchanged density, mass is also 1000×."
+      }
+    ],
+    "caution": "All lengths must scale together for geometric similarity. In a limit such as x → 0, the same arrow instead means “approaches”; read its local context."
+  },
+  "scientific-notation-normalize": {
+    "trigger": "Where did the extra 10² come from?",
+    "title": "First change the prefix, then tidy the notation",
+    "intro": "150 × 10⁶ Pa is already the right value. Writing 1.5 × 10⁸ Pa is the same value in standard scientific notation.",
+    "sections": [
+      {
+        "heading": "Follow both steps",
+        "items": [
+          "Mega (M) supplies 10⁶: 150 MPa = 150 × 10⁶ Pa.",
+          "Rewrite the coefficient: 150 = 1.5 × 10².",
+          "Substitute it: (1.5 × 10²) × 10⁶ Pa.",
+          "Add exponents of the same base: 2 + 6 = 8, so 1.5 × 10⁸ Pa."
+        ]
+      },
+      {
+        "heading": "Check without exponents",
+        "body": "150 million = 150,000,000. The extra 10² came from rewriting 150, not from mega. Nothing about the pressure changed."
+      }
+    ],
+    "caution": "This is a given example stress, not a promised yield strength or allowable for an unnamed alloy.",
+    "sources": [
+      {
+        "label": "NIST: SI prefixes",
+        "url": "https://www.nist.gov/pml/owm/metric-si-prefixes"
+      }
+    ]
+  },
+  "powered-unit-conversion": {
+    "trigger": "Why m⁴, and why 10¹²?",
+    "title": "A power on the unit also powers the conversion",
+    "intro": "I, the second moment of area, is a geometry property about an axis. It is not mass, volume, or a fourth spatial dimension.",
+    "sections": [
+      {
+        "heading": "Why length to the fourth?",
+        "body": "The definition adds small areas weighted by squared distance from the axis. Length² × length² is length⁴. Beam bending stiffness also depends on the material: EI, not I alone."
+      },
+      {
+        "heading": "Two different exponent steps",
+        "items": [
+          "1 m = 10³ mm.",
+          "1 m⁴ = (10³)⁴ mm⁴ = 10¹² mm⁴: multiply 3 × 4.",
+          "2.4 × 10⁻⁹ × 10¹² = 2.4 × 10³ mm⁴: add −9 + 12.",
+          "The result is 2400 mm⁴."
+        ]
+      },
+      {
+        "heading": "Common slips",
+        "body": "10⁻⁶ uses the conversion only once (−9 + 3). 10¹² drops the starting 10⁻⁹. Leaving 10⁻⁹ unchanged just swaps the label."
+      }
+    ],
+    "caution": "“Smaller unit, bigger number” is only a rough check. The wrong 10⁻⁶ option is also larger than 10⁻⁹; check the actual fourth-power factor."
+  },
+  "heat-flux-symbols": {
+    "trigger": "These symbols changed meaning?",
+    "title": "Read heat-transfer symbols locally",
+    "intro": "The same Greek letter can label different quantities in different models. The units and local definition decide its meaning.",
+    "sections": [
+      {
+        "heading": "Conduction",
+        "body": "q = −k∇T is heat flux in W/m². k is thermal conductivity, W/(m·K), and ∇T is temperature change per distance, K/m. The minus sign sends heat toward lower temperature."
+      },
+      {
+        "heading": "Radiation",
+        "body": "In q = εσT⁴, ε is emissivity (not strain), σ is the Stefan–Boltzmann constant (not stress), and T is kelvin. This is emitted power per area; net exchange also accounts for radiation arriving from the surroundings."
+      }
+    ],
+    "caution": "Heat rate in watts and heat flux in watts per square metre are not interchangeable. Use the actual radiating area when converting between them."
+  },
 };
 
 export function getConceptHelp(id: string) {
