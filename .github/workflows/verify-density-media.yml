@@ -1,0 +1,38 @@
+name: Verify density help and published media
+on:
+  push:
+    branches: [enhancement/density-and-animation-pack]
+    paths: ['.github/workflows/verify-density-media.yml', 'scripts/browser-density-help.mjs']
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Run focused component and media browser acceptance
+        env:
+          ACCEPTANCE_OUT: /tmp/density-acceptance
+        run: |
+          npx playwright install --with-deps chromium
+          node scripts/browser-density-help.mjs
+      - name: Confirm the existing lint finding and lint all changed TypeScript files
+        shell: bash
+        run: |
+          git diff fd110e27493e616676680511ace1bb2c5b807818 -- src/lib/app-data/client.server.ts | tee /tmp/auth-diff.txt
+          test ! -s /tmp/auth-diff.txt
+          npx eslint src/course/math.ts src/course/types.ts src/course/concept-help.ts src/course/animation-assets.ts src/components/lesson-view.tsx src/components/concept-help.tsx src/components/figures/math.tsx src/components/lesson-animation.tsx
+      - name: Save browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: density-browser-acceptance
+          path: /tmp/density-acceptance/
+          if-no-files-found: ignore
