@@ -940,8 +940,8 @@ function Turn() {
   const cy = 150;
   /**
    * `turn` rotates the boom, its arrows and the camera about the pivot; `v` and `a` grow the speed
-   * and inward arrows, `aText` shows the acceleration label. On a `tight` boom the turning arrows
-   * sweep across both labels, so copies of them are drawn on top while it turns.
+   * and inward arrows, `aText` shows the acceleration label. The turning parts sweep across the
+   * labels, so while they turn, knocked-out copies of the labels are drawn on top.
    */
   const boom = (
     cx: number,
@@ -953,7 +953,6 @@ function Turn() {
     v: number,
     a: number,
     aText: number,
-    tight = false,
   ) => {
     const mx = cx + r;
     return (
@@ -971,7 +970,7 @@ function Turn() {
           <rect x={mx - 9} y={cy - 9} width={18} height={18} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
         </g>
         <Label x={cx} y={cy + r + 26} tone="accent" weight={600} opacity={op(aText)}>{aLabel}</Label>
-        {turn && tight ? (
+        {turn ? (
           <>
             <Halo x={cx + r / 2 - 4} y={cy + 20} size={15}>{rLabel}</Halo>
             <Label x={cx + r / 2 - 4} y={cy + 20} size={15}>{rLabel}</Label>
@@ -1011,7 +1010,7 @@ function Turn() {
         return (
           <>
             {boom(120, 110, 25, "2 m", "50 m/s² inward", turn(1, 120), v, seg(t, 1.2, 1.8), seg(t, 1.6, 2.1))}
-            {boom(365, 55, 50, "1 m", "100 m/s² inward", turn(2, 365), v, seg(t, 2.4, 3), seg(t, 2.8, 3.3), true)}
+            {boom(365, 55, 50, "1 m", "100 m/s² inward", turn(2, 365), v, seg(t, 2.4, 3), seg(t, 2.8, 3.3))}
           </>
         );
       }}
