@@ -1,78 +1,53 @@
-name: Graph clarity and complete browser acceptance
+name: Pinned lesson browser acceptance
 on:
   push:
     branches: [work/lesson-givens-build-20260930]
     paths: [.github/workflows/lesson-audit-workspace.yml]
 permissions:
-  contents: write
+  contents: read
 jobs:
-  validate:
+  browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          fetch-depth: 0
+          ref: c9bf8fce66f99aa2f54c9a182c4c9b35d6e5cd78
+          persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
           cache: npm
-      - name: Apply verified patch to the pinned PR head
+      - name: Identify the installed browser
         shell: bash
         run: |
           set -euo pipefail
-          for i in 0 1 2; do git show "HEAD:.work/graphs-followup-${i}.b64"; done | base64 --decode | gzip -d > "$RUNNER_TEMP/graphs.patch"
-          echo "64602f04b20fd341b48a7a34cceb67b648e3b89d7ae679eff34721694538aa32  $RUNNER_TEMP/graphs.patch" | sha256sum --check
-          test "$(git rev-parse origin/fix/lesson-givens-and-notation)" = 3993eb2d62ce24cce93de86fd9be31d871b69aa8
-          test "$(git rev-parse origin/main)" = ab7e9d44888a79ea997dde1320ff0255d91a1042
-          git switch --detach 3993eb2d62ce24cce93de86fd9be31d871b69aa8
-          git apply --check "$RUNNER_TEMP/graphs.patch"
-          git apply --index "$RUNNER_TEMP/graphs.patch"
-          git diff --cached --check
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'feat: explain calibration and proportional reasoning with ungraded practice'
-          git merge --no-commit --no-ff ab7e9d44888a79ea997dde1320ff0255d91a1042
-          git rm -f --ignore-unmatch .work/lesson-givens-0.b64 .work/lesson-givens-1.b64 .work/lesson-givens-2.b64 .github/workflows/lesson-audit-workspace.yml
-          git diff --cached --check
-          git commit -m 'fix: preserve merged algebra help and remove temporary audit staging'
+          BROWSER="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          test -n "$BROWSER" || { echo 'No preinstalled compatible browser found'; exit 1; }
+          echo "CHROMIUM_EXECUTABLE_PATH=$BROWSER" >> "$GITHUB_ENV"
+          mkdir -p artifacts
+          "$BROWSER" --version | tee artifacts/browser-version.txt
+          git rev-parse HEAD > artifacts/tested-head.txt
       - run: npm ci --ignore-scripts
-      - name: All tests including failed-report regression
-        run: npm test
-      - run: npm run typecheck
-      - run: npm run build
-      - name: Lint changed source
-        run: git diff --name-only --diff-filter=ACMRT ab7e9d44888a79ea997dde1320ff0255d91a1042 HEAD -- '*.ts' '*.tsx' '*.mjs' | xargs -r npx eslint
-      - name: Publish tested source to the existing draft PR
-        shell: bash
-        run: |
-          set -euo pipefail
-          git fetch origin fix/lesson-givens-and-notation
-          test "$(git rev-parse origin/fix/lesson-givens-and-notation)" = 3993eb2d62ce24cce93de86fd9be31d871b69aa8
-          git push origin HEAD:refs/heads/fix/lesson-givens-and-notation
-      - run: npx playwright install --with-deps chromium
-      - name: Development browser acceptance and independent report check
+      - name: Development browser acceptance
         run: |
           node scripts/browser-lesson-givens.mjs
           node scripts/assert-lesson-acceptance.mjs screenshots/lesson-givens/results.json
-      - name: Built browser acceptance and independent report check
+      - name: Minified browser acceptance
+        if: success() || failure()
         env:
           ACCEPTANCE_BUILD: '1'
           ACCEPTANCE_OUT: screenshots/lesson-givens-built
         run: |
           node scripts/browser-lesson-givens.mjs
           node scripts/assert-lesson-acceptance.mjs screenshots/lesson-givens-built/results.json
-      - name: Record tested source
-        if: always()
-        run: |
-          mkdir -p artifacts
-          git rev-parse HEAD > artifacts/tested-head.txt
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: graph-clarity-browser-evidence
+          name: pinned-lesson-browser-evidence
           path: |
             screenshots/lesson-givens/
             screenshots/lesson-givens-built/
             artifacts/tested-head.txt
+            artifacts/browser-version.txt
           retention-days: 7
