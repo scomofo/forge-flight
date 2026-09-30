@@ -1,4 +1,5 @@
 import type { ExampleContext } from "./types.ts";
+import { LOAD_CELL_POINTS } from "./graph-reasoning.ts";
 import { REFERENCE_SPAR, SPAR_MATERIALS, G as SPAR_G } from "./matsynthesis.ts";
 import { CAP_REFERENCE, CAP_MATERIALS, CAP_MISMATCH } from "./capstone.ts";
 import { BEAM_CASE, BRACKET_ALTERNATIVES, BRACKET_CRITERIA, normalizeScores, rankAlternatives } from "./optimization.ts";
@@ -64,6 +65,51 @@ const supplied: Record<string, ExampleContext> = {
       "A power on a unit applies to its conversion factor too. The two exponent operations are different: (10³)⁴ = 10¹², but 10⁻⁹ × 10¹² = 10³."
     ]
   },
+  "math/graphs": {
+  "inputs": [
+    {
+      "label": "First calibration point (x₁, y₁)",
+      "value": `${LOAD_CELL_POINTS[0][0]} kg gives ${LOAD_CELL_POINTS[0][1]} mV`,
+      "origin": "Measured example",
+      "detail": "A supplied hypothetical reading, not a value you calculate."
+    },
+    {
+      "label": "Second calibration point (x₂, y₂)",
+      "value": `${LOAD_CELL_POINTS[1][0]} kg gives ${LOAD_CELL_POINTS[1][1]} mV`,
+      "origin": "Measured example",
+      "detail": "The 50 and 10 in the denominator are these two calibration loads."
+    },
+    {
+      "label": "Axes and symbols",
+      "value": "x = W in kg; y = V in mV",
+      "origin": "Given",
+      "detail": "W is the calibrated load expressed as a mass in kg here, not force in newtons. m is slope, not mass; b is the zero-load voltage."
+    },
+    {
+      "label": "Calibration model",
+      "value": "V = mW + b",
+      "origin": "Assumed",
+      "detail": "Assume a straight-line response over this range. Two fitted points do not establish real sensor linearity."
+    }
+  ],
+  "working": [
+    "Rise = y₂ − y₁ = (10.5 − 2.1) mV = 8.4 mV. Run = x₂ − x₁ = (50 − 10) kg = 40 kg: the change in load, not either load alone.",
+    "m = rise/run = 8.4 mV ÷ 40 kg = 0.21 mV/kg. Each extra kilogram adds 0.21 mV in this model.",
+    "Use the 10 kg point in V = mW + b: 2.1 = 0.21 × 10 + b. So 2.1 = 2.1 + b, and b = 2.1 − 2.1 = 0 mV.",
+    "Check with the 50 kg point: 10.5 − 0.21 × 50 = 0 mV again. With b = 0, the equation is V = 0.21W.",
+    "A new reading of 6.93 mV gives W = (V − b)/m = (6.93 − 0)/0.21 = 33 kg."
+  ],
+  "notes": [
+    "Subtract the paired readings in the same order: second minus first on both top and bottom. Reversing both gives (2.1 − 10.5)/(10 − 50) = (−8.4)/(−40) = 0.21 too.",
+    "Zero intercept is the fitted result for these example readings, not a rule for every load cell. Check zero load and an additional calibration point rather than assuming either zero output or linearity."
+  ],
+  "sources": [
+    {
+      "label": "Interface: calibration and zero balance definitions",
+      "url": "https://www.interfaceforce.com/support/technical-library/"
+    }
+  ]
+},
   "physics/projectiles": {
     "inputs": [
       {

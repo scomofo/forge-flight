@@ -198,6 +198,7 @@ export type ConceptHelpSection = {
   heading: string;
   body?: string;
   items?: string[];
+  table?: ExampleInputTable;
 };
 
 export type ConceptHelp = {
@@ -225,6 +226,8 @@ export type Idea = {
   formula?: string;
   /** A local, always-visible reading of notation; never a global symbol replacement. */
   formulaNote?: string;
+  /** Visible worked comparisons; optional help must not hide required reasoning. */
+  sections?: ConceptHelpSection[];
   help?: IdeaHelp[];
 };
 

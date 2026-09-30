@@ -5,6 +5,7 @@ import { ExampleInputs } from "@/components/example-inputs";
 import { getExampleContext } from "@/course/example-context";
 import type { ExampleContext } from "@/course/types";
 import { ConceptHelp } from "@/components/concept-help";
+import { LessonSections } from "@/components/lesson-sections";
 import { LessonClip } from "@/components/lesson-clip";
 import { lessonFigures } from "@/components/figures";
 import { Quiz } from "@/components/quiz";
@@ -146,6 +147,7 @@ function ReadFlow({ lesson }: { lesson: Lesson }) {
               {rest ? <p className="mt-3 max-w-prose leading-relaxed text-muted">{rest}</p> : null}
               {idea.formula ? <p className="mt-4 font-serif text-xl text-accent">{idea.formula}</p> : null}
               {idea.formulaNote ? <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">{idea.formulaNote}</p> : null}
+              {idea.sections?.length ? <LessonSections sections={idea.sections} /> : null}
               {idea.help?.length ? <ConceptHelp help={idea.help} /> : null}
             </section>
           );

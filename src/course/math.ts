@@ -335,8 +335,8 @@ export const mathLessons: Lesson[] = [
     opening: { mode: "prose", heading: "Use the example to find the pattern" },
     readFlow: [
       { kind: "example", heading: "Start with the example" },
-      { kind: "idea", idea: 1, label: "Pattern" },
       { kind: "idea", idea: 0, label: "Underlying rule" },
+      { kind: "idea", idea: 1, label: "Pattern" },
       { kind: "idea", idea: 2, label: "What to watch" },
       { kind: "move", heading: "Apply it yourself" },
     ],
@@ -344,12 +344,65 @@ export const mathLessons: Lesson[] = [
       "A load cell reads 2.1 mV at 10 kg and 10.5 mV at 50 kg. If the sensor is linear, those two points let us build a calibration equation. || Slope is the change in y divided by the change in x. The intercept is the value of y when x is zero. Put them together and you get y = mx + b. || Two points define a line, but they do not prove the real system is linear. A third point is useful because it tells you whether the line actually predicts something it was not fitted to.",
     use: "When paired measurements fall on (or near) a line, or you need to classify a relationship as direct or inverse. || Compute slope from two points: m = Δy/Δx. Find b from one point: b = y − mx. Read new values off the equation, and check that the intercept makes physical sense. || Stop when the line predicts a third, held-back calibration point. If the residuals curve instead of scattering, the relationship is not linear — say so instead of forcing it.",
     example:
-      "Calibrate the load cell: (10 kg, 2.1 mV) and (50 kg, 10.5 mV). What weight gives 6.93 mV? || m = (10.5 − 2.1)/(50 − 10) = 8.4/40 = 0.21 mV/kg. b = 2.1 − 0.21×10 = 0. So V = 0.21·W, and W = 6.93/0.21 = 33 kg. || The zero intercept is a good sign — no load, no signal. And 33 kg sits between the calibration points, where interpolation is safest. Extrapolating far past 50 kg would be a claim the data does not support.",
+      "Calibrate the load cell: (10 kg, 2.1 mV) and (50 kg, 10.5 mV). What weight gives 6.93 mV? || Rise = (10.5 − 2.1) mV = 8.4 mV. Run = (50 − 10) kg = 40 kg, using the two calibration loads. Slope m = 8.4/40 = 0.21 mV/kg. Substitute the first reading: 2.1 = 0.21 × 10 + b = 2.1 + b, so b = 0 mV. Now V = 0.21·W, and W = 6.93/0.21 = 33 kg. || For these supplied readings, b = 0 predicts zero voltage at zero load; that still needs checking on the actual sensor. A real zero-load offset is possible. The 33 kg result is interpolation between our calibration points, not evidence that the line holds outside them.",
+    exampleHelp: [
+      {
+            "trigger": "Where did 50 − 10 come from?",
+            "title": "Rise and run use the same two readings",
+            "intro": "Those numbers are the loads you calibrated at: 10 kg and 50 kg. They are not extra constants.",
+            "sections": [
+                  {
+                        "heading": "Keep each point together",
+                        "items": [
+                              "First point: (10 kg, 2.1 mV). Second point: (50 kg, 10.5 mV).",
+                              "Rise = second voltage − first voltage = 10.5 − 2.1 = 8.4 mV.",
+                              "Run = second load − first load = 50 − 10 = 40 kg.",
+                              "Slope = 8.4 mV ÷ 40 kg = 0.21 mV/kg."
+                        ]
+                  },
+                  {
+                        "heading": "What that means",
+                        "body": "Each extra kilogram raises the reading by 0.21 mV in this fitted model. The 40 kg is the horizontal gap between the points, not the final load."
+                  },
+                  {
+                        "heading": "Reverse both, not just one",
+                        "body": "(2.1 − 10.5)/(10 − 50) = (−8.4)/(−40) = 0.21. Reversing just one subtraction changes the sign incorrectly."
+                  }
+            ]
+      },
+      {
+            "trigger": "Why does b become zero?",
+            "title": "Find the voltage left at zero load",
+            "intro": "b is the intercept: the voltage the fitted line predicts when the load is zero. Use a known reading to find it; do not guess it.",
+            "sections": [
+                  {
+                        "heading": "Substitute the 10 kg point",
+                        "items": [
+                              "Start with V = mW + b.",
+                              "We know V = 2.1 mV, m = 0.21 mV/kg and W = 10 kg.",
+                              "2.1 = 0.21 × 10 + b.",
+                              "0.21 × 10 = 2.1, so 2.1 = 2.1 + b.",
+                              "Subtract 2.1 from both sides: b = 2.1 − 2.1 = 0 mV."
+                        ]
+                  },
+                  {
+                        "heading": "Check with the other point",
+                        "body": "b = 10.5 − 0.21 × 50 = 0 mV too. Both calibration readings give the same intercept."
+                  },
+                  {
+                        "heading": "Why the +b disappears",
+                        "body": "Adding zero changes nothing, so V = 0.21W + 0 becomes V = 0.21W. The fitted relationship is directly proportional for this example."
+                  }
+            ],
+            "caution": "Real sensors can have zero-load offsets. These two readings give b = 0; they do not prove zero output or linear behavior at every load."
+      }
+],
     ideas: [
       {
         heading: "Slope tells you the rate of change",
         body: "The units of slope are y-units per x-unit. Here that is millivolts per kilogram, so a slope of 0.21 mV/kg means each additional kilogram changes the signal by 0.21 mV. A negative slope simply means y decreases as x increases.",
         formula: "m = Δy/Δx,   y = mx + b",
+        formulaNote: "Δ means change. Here x is load W (kg) and y is voltage V (mV): rise = (10.5 − 2.1) mV and run = (50 − 10) kg. The 10 and 50 are supplied calibration loads. b = V − mW is the voltage left over after subtracting the load-dependent part.",
         help: [
           {
             trigger: "Slope and intercept?",
@@ -380,8 +433,108 @@ export const mathLessons: Lesson[] = [
       },
       {
         heading: "Direct versus inverse",
-        body: "Direct proportion, y = kx, is a line through the origin: double x, double y. Inverse proportion, y = k/x, is a hyperbola: double x, halve y. Fixed work at varying power (time = work/power) is inverse; Hooke's law (F = kx) is direct. Check which shape you have before fitting, or you will fit a line to a curve.",
-        formula: "direct: y = kx   ·   inverse: y = k/x",
+        body: "Ask what stays the same. In a direct proportion, the ratio y/x stays constant. In an inverse proportion, the product x × y stays constant. Both involve a constant k, but they describe different patterns.",
+        formula: "direct: y = kx, constant y/x   ·   inverse: y = k/x, constant x × y",
+        formulaNote: "The examples below use positive quantities and k > 0. Do not divide by x = 0. A straight line with a nonzero intercept is not a direct proportion.",
+        sections: [
+        {
+                "heading": "Direct proportion: keep the ratio constant",
+                "body": "For y = kx, doubling x doubles y. The line passes through the origin (0, 0), and y/x stays at k for nonzero x. For an ideal spring, F = kx. Here k = 5 N/mm is the supplied spring stiffness, and x is extension from the unloaded length. Use this model only within its linear range.",
+                "table": {
+                        "caption": "Ideal spring: supplied k = 5 N/mm",
+                        "columns": [
+                                "Stretch x (mm)",
+                                "Force F (N)",
+                                "F/x (N/mm)"
+                        ],
+                        "rows": [
+                                [
+                                        "2",
+                                        "10",
+                                        "5"
+                                ],
+                                [
+                                        "4",
+                                        "20",
+                                        "5"
+                                ],
+                                [
+                                        "8",
+                                        "40",
+                                        "5"
+                                ]
+                        ]
+                }
+        },
+        {
+                "heading": "Inverse proportion: keep the product constant",
+                "body": "For y = k/x, doubling x halves y; x × y stays at k. Our example is a fixed 12 kJ job with constant useful power and no losses. Time = work/power, and 1 kW = 1 kJ/s, so kJ ÷ kW gives seconds. For positive x and k, the curve falls and flattens, approaching—but never reaching—either axis.",
+                "table": {
+                        "caption": "Fixed work: supplied 12 kJ",
+                        "columns": [
+                                "Power P (kW)",
+                                "Time t (s)",
+                                "P × t (kJ)"
+                        ],
+                        "rows": [
+                                [
+                                        "2",
+                                        "6",
+                                        "12"
+                                ],
+                                [
+                                        "4",
+                                        "3",
+                                        "12"
+                                ],
+                                [
+                                        "6",
+                                        "2",
+                                        "12"
+                                ]
+                        ]
+                }
+        },
+        {
+                "heading": "The trap: linear does not always mean proportional",
+                "body": "The line y = 2x + 3 has a constant slope, but its +3 offset stays put when x doubles. The ratios below change, so it is linear but not a direct proportion. Our fitted load-cell line V = 0.21W is a direct proportion because its intercept is zero: V/W = 0.21 mV/kg for nonzero W.",
+                "table": {
+                        "caption": "An offset line: y = 2x + 3",
+                        "columns": [
+                                "x",
+                                "y",
+                                "y/x"
+                        ],
+                        "rows": [
+                                [
+                                        "1",
+                                        "5",
+                                        "5"
+                                ],
+                                [
+                                        "2",
+                                        "7",
+                                        "3.5"
+                                ],
+                                [
+                                        "4",
+                                        "11",
+                                        "2.75"
+                                ]
+                        ]
+                }
+        },
+        {
+                "heading": "Check the shape, then the numbers",
+                "items": [
+                        "Plot the data. A straight line through the origin suggests direct proportion; check whether y/x is constant for nonzero x.",
+                        "A falling curve is only a clue. Check x × y: not every decreasing relationship is inverse.",
+                        "For y = k/x, plotting y against 1/x gives a straight line through the origin with slope k. x cannot be zero.",
+                        "Real readings scatter. Compare differences against measurement uncertainty and use extra points. A line fitted to a curve can be misleading within the measured range as well as beyond it."
+                ]
+        }
+],
+        help: [{ trigger: "How does this show up at a drill press?", title: "Same cutting speed, different drill diameter", intro: "Keep the surface cutting speed fixed and a larger drill must turn more slowly.", sections: [{ heading: "Where the factor comes from", body: "RPM = 12 × SFM/(π × D) ≈ 3.82 × SFM/D when D is in inches and SFM is surface feet per minute. The 12 converts feet to inches, πD is the circumference, and 3.82 is the rounded 12/π—not a material property." }, { heading: "Use the supplied practice speed", items: ["At a given 100 SFM and D = 0.5 in: RPM ≈ 3.82 × 100/0.5 = 764.", "At the same 100 SFM and D = 1 in: RPM ≈ 382.", "Doubling diameter halves RPM because RPM × D stays constant at this cutting speed."] }], caution: "100 SFM is an exercise input, not a recommended speed for every drill or material. Use the tool maker’s guidance for an actual cut." }],
       },
       {
         heading: "Real data will not sit perfectly on the line",
@@ -390,7 +543,7 @@ export const mathLessons: Lesson[] = [
     ],
     bench: "slope",
     prompt:
-      "Match the dashed calibration line with the slope and intercept sliders. Then deliberately break the match and describe what each slider does to the line in one sentence.",
+      "Match the dashed line with the slope and intercept sliders. Then classify each three-pair practice set as direct, inverse, or neither, and check the ratio and product before moving on.",
     note: "The bench line is exact. Real calibration data scatters around the line — the bench is the idealization the noisy data is judged against.",
     checks: [
       {
@@ -420,7 +573,7 @@ export const mathLessons: Lesson[] = [
           "Calibration was unnecessary",
         ],
         answer: 0,
-        why: "b is the reading at zero load. Zero is what an honest zero should read — it supports the linear model.",
+        why: "b is the zero-load reading predicted by this fitted line. These example readings give b = 0, so the model predicts no signal at zero load. A real sensor can have an offset; test zero load and additional points rather than treating b = 0 as proof of linearity.",
       },
     ],
     passAt: RUNWAY_PASS_AT,

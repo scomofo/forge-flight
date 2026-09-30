@@ -134,3 +134,13 @@ The changes do not certify classroom material values as design allowables or
 validate every scientific model in the course. Applicable engineering standards,
 actual alloy/product condition and measured operating conditions remain required
 for real design.
+
+## Learner follow-up: calibration and proportional reasoning
+
+The graphs lesson now names its two hypothetical calibration readings before the animation, derives rise/run and the zero intercept, and distinguishes a fitted zero from a real sensor zero-balance guarantee. The optional help repeats both operations without making them prerequisites for finding essential inputs. The direct/inverse idea has three visible comparison tables, a 1/x plotting explanation, and an optional drilling example that derives 3.82 from 12/π with units.
+
+The existing slope bench is retained. Four ungraded three-pair practice sets test direct, inverse, linear-with-offset, and decreasing-but-not-inverse patterns. Calculations appear after an attempt; retries and restart do not call the progress store. There are now 56 example contexts; existing quiz options, answers and pass marks are unchanged.
+
+Popover height is constrained by Radix collision space and opening focuses the explanation rather than scrolling to its last button. Browser acceptance must complete both desktop and mobile interactions; a separate report verifier rejects failed or incomplete reports even if a child process exits zero.
+
+References: Interface technical-library calibration/zero-balance definitions (https://www.interfaceforce.com/support/technical-library/) and Radix Popover size/accessibility contract (https://www.radix-ui.com/primitives/docs/components/popover). The arithmetic examples are supplied classroom data, not recommended machine settings or real calibration certificates.

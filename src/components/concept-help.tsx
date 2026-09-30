@@ -1,4 +1,5 @@
 import * as Popover from "@radix-ui/react-popover";
+import { LessonSections } from "@/components/lesson-sections";
 import { getConceptHelp } from "@/course/concept-help";
 import type { ConceptHelp as ConceptHelpContent, IdeaHelp } from "@/course/types";
 
@@ -33,33 +34,22 @@ export function ConceptHelp({ help }: { help: IdeaHelp[] }) {
           <Popover.Portal>
             <Popover.Content
               aria-label={item.title}
+              tabIndex={-1}
+              onOpenAutoFocus={(event) => {
+                // Start at the explanation, not the Close button at its bottom.
+                event.preventDefault();
+                if (event.target instanceof HTMLElement) event.target.focus({ preventScroll: true });
+              }}
               sideOffset={8}
               collisionPadding={16}
-              className="z-50 max-h-[min(70vh,36rem)] w-[min(92vw,34rem)] overflow-y-auto rounded-xl border border-line bg-bg p-5 shadow-xl"
+              style={{ maxHeight: "min(70dvh, 36rem, var(--radix-popover-content-available-height))" }}
+              className="z-50 w-[min(92vw,34rem)] max-w-[calc(100vw-2rem)] overflow-y-auto overscroll-contain break-words rounded-xl border border-line bg-bg p-5 shadow-xl"
             >
               <p className="text-sm font-medium text-accent">Explain this</p>
               <h3 className="mt-1 font-serif text-2xl leading-tight text-ink">{item.title}</h3>
               <p className="mt-3 leading-relaxed text-ink">{item.intro}</p>
 
-              <div className="mt-5 flex flex-col gap-5">
-                {item.sections.map((section) => (
-                  <section key={section.heading}>
-                    <h4 className="text-sm font-semibold text-ink">{section.heading}</h4>
-                    {section.body ? (
-                      <p className="mt-2 leading-relaxed text-muted">{section.body}</p>
-                    ) : null}
-                    {section.items?.length ? (
-                      <ul className="mt-2 space-y-1.5 pl-5 text-sm leading-relaxed text-muted">
-                        {section.items.map((line) => (
-                          <li key={line} className="list-disc">
-                            {line}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </section>
-                ))}
-              </div>
+              <LessonSections sections={item.sections} />
 
               {item.caution ? (
                 <div className="mt-5 rounded-lg border border-line bg-surface px-4 py-3">

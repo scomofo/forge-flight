@@ -34,7 +34,7 @@ test('all 166 lesson identities, benches, pass marks, answer positions and revie
  }
 });
 test('every authored context points at a real lesson and contains complete, renderable inputs and tables',()=>{
- assert.equal(Object.keys(data.contexts).length,55);
+ assert.equal(Object.keys(data.contexts).length,56);
  for(const [key,c] of Object.entries(data.contexts)){
   assert.ok(lesson(key),key);assert.ok(c.inputs.length,key);
   for(const i of c.inputs){assert.ok(i.label?.trim());assert.ok(i.value?.trim());assert.ok(['Given','Reference','Assumed','Calculated','Measured example'].includes(i.origin));}
