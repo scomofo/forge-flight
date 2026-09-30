@@ -728,40 +728,64 @@ function FamLook() {
     ["aluminum", 25.6, "69 / 2.7 ≈ 25.6", "ink"],
     ["CFRP", 90, "140 / 1.55 ≈ 90", "accent"],
   ];
+  // Bars grow at about the same speed: the metals together, then the composite runs on.
+  const grow = (t: number, i: number) => (i < 2 ? seg(t, 1, 1.6) : seg(t, 2.4, 4.2));
   return (
-    <Figure
+    <AnimatedFigure
       height={230}
+      duration={4.9}
       alt="Horizontal bar chart of specific stiffness E/ρ: steel 25.5, aluminum 25.6, and carbon-fiber composite along the fiber 90 GPa per g/cm³."
-      caption="Per unit mass, steel and aluminum are the same stiffness; the composite is 3.5× better — but only along its fibers."
+      steps={[
+        {
+          at: 0,
+          label: "Budget",
+          caption: "A tie rod must be stiff in tension, and mass is the budget: compare steel, aluminum and CFRP by specific stiffness E/ρ.",
+        },
+        {
+          at: 1,
+          label: "Metals",
+          caption: "Steel gives 200/7.85 ≈ 25.5 and aluminum 69/2.7 ≈ 25.6: the two metals tie.",
+        },
+        {
+          at: 2.4,
+          label: "CFRP",
+          caption: "Per unit mass, steel and aluminum are the same stiffness; the composite is 3.5× better — but only along its fibers.",
+        },
+      ]}
     >
-      <Label x={x0} y={24} anchor="start" tone="muted" size={15}>
-        specific stiffness E/ρ (GPa per g/cm³)
-      </Label>
-      <line x1={x0} y1={42} x2={x0} y2={190} stroke={C.ink} strokeWidth={1.5} />
-      {rows.map(([name, v, text, tone], i) => {
-        const y = 66 + i * 50;
-        return (
-          <g key={name}>
-            <Label x={x0 - 10} y={y} anchor="end" size={16} weight={600} tone={tone}>
-              {name}
-            </Label>
-            <rect x={x0} y={y - 15} width={sx(v)} height={30} rx={2} fill={tone === "accent" ? C.accent : C.muted} />
-            {i < 2 ? (
-              <Label x={x0 + sx(v) + 8} y={y} anchor="start" size={15}>
-                {text}
-              </Label>
-            ) : (
-              <text x={x0 + sx(v) - 10} y={y} textAnchor="end" dominantBaseline="middle" fontSize={15} fontWeight={600} fill={C.surface}>
-                {text}
-              </text>
-            )}
-          </g>
-        );
-      })}
-      <Label x={x0 + sx(90)} y={206} anchor="end" tone="muted" size={15}>
-        along the fiber only
-      </Label>
-    </Figure>
+      {({ t }) => (
+        <>
+          <Label x={x0} y={24} anchor="start" tone="muted" size={15} opacity={op(seg(t, 0.3, 0.8))}>
+            specific stiffness E/ρ (GPa per g/cm³)
+          </Label>
+          <line x1={x0} y1={42} x2={x0} y2={190} stroke={C.ink} strokeWidth={1.5} />
+          {rows.map(([name, v, text, tone], i) => {
+            const y = 66 + i * 50;
+            const p = grow(t, i);
+            return (
+              <g key={name}>
+                <Label x={x0 - 10} y={y} anchor="end" size={16} weight={600} tone={tone}>
+                  {name}
+                </Label>
+                {p > 0 ? <rect x={x0} y={y - 15} width={sx(v) * p} height={30} rx={2} fill={tone === "accent" ? C.accent : C.muted} /> : null}
+                {i < 2 ? (
+                  <Label x={x0 + sx(v) + 8} y={y} anchor="start" size={15} opacity={op(seg(t, 1.5, 2))}>
+                    {text}
+                  </Label>
+                ) : (
+                  <text x={x0 + sx(v) - 10} y={y} textAnchor="end" dominantBaseline="middle" fontSize={15} fontWeight={600} fill={C.surface} opacity={op(seg(t, 4, 4.5))}>
+                    {text}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+          <Label x={x0 + sx(90)} y={206} anchor="end" tone="muted" size={15} opacity={op(seg(t, 4.2, 4.7))}>
+            along the fiber only
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -771,45 +795,79 @@ function DirTemp() {
   const by = 86;
   const bw = 190;
   const bh = 100;
-  const fibers: ReactNode[] = [];
-  for (let y = by + 10; y < by + bh; y += 10) {
-    fibers.push(<line key={y} x1={bx + 4} y1={y} x2={bx + bw - 4} y2={y} stroke={C.ink} strokeWidth={2.5} />);
-  }
+  const fibers: number[] = [];
+  for (let y = by + 10; y < by + bh; y += 10) fibers.push(y);
   const midY = by + bh / 2;
   const midX = bx + bw / 2;
   return (
-    <Figure
+    <AnimatedFigure
       height={270}
+      duration={4.5}
       alt="A unidirectional carbon-fiber block with fibers running left to right; pulling along the fibers gives 139.2 GPa, pulling across them gives 7.4 GPa, a ratio of 19 to 1."
-      caption="Same block, two directions: along the fibers the stiff fiber carries the load; across them the soft epoxy does. Design to the weak one."
+      steps={[
+        {
+          at: 0,
+          label: "Block",
+          caption: "A unidirectional CFRP block: 60% carbon fiber (230 GPa) in epoxy (3 GPa), the fibers all running one way.",
+        },
+        {
+          at: 1.1,
+          label: "Along",
+          caption: "Pulled along the fibers, both phases share the same strain: 0.6×230 + 0.4×3 = 139.2 GPa.",
+        },
+        {
+          at: 2.4,
+          label: "Across",
+          caption: "Pulled across them, the soft epoxy takes the strain: 1/(0.6/230 + 0.4/3) ≈ 7.4 GPa.",
+        },
+        {
+          at: 3.6,
+          label: "Ratio",
+          caption:
+            "Same block, two directions: along the fibers the stiff fiber carries the load; across them the soft epoxy does. Design to the weak one.",
+        },
+      ]}
     >
-      <rect x={bx} y={by} width={bw} height={bh} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      {fibers}
-      <Arrow x1={bx + bw + 6} y1={midY} x2={bx + bw + 70} y2={midY} width={4} />
-      <Arrow x1={bx - 6} y1={midY} x2={bx - 70} y2={midY} width={4} />
-      <Label x={470} y={midY - 40} anchor="end" tone="accent" size={15}>
-        along fiber
-      </Label>
-      <Label x={470} y={midY - 20} anchor="end" tone="accent" size={18} weight={600}>
-        139.2 GPa
-      </Label>
+      {({ t }) => {
+        const laid = seg(t, 0.3, 0.9);
+        const along = seg(t, 1.2, 1.7);
+        const across = seg(t, 2.5, 3);
+        return (
+          <>
+            <rect x={bx} y={by} width={bw} height={bh} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            {laid > 0.02
+              ? fibers.map((y) => (
+                  <line key={y} x1={bx + 4} y1={y} x2={lerp(bx + 4, bx + bw - 4, laid)} y2={y} stroke={C.ink} strokeWidth={2.5} />
+                ))
+              : null}
+            <GrowArrow p={along} x1={bx + bw + 6} y1={midY} x2={bx + bw + 70} y2={midY} width={4} />
+            <GrowArrow p={along} x1={bx - 6} y1={midY} x2={bx - 70} y2={midY} width={4} />
+            <Label x={470} y={midY - 40} anchor="end" tone="accent" size={15} opacity={op(seg(t, 1.5, 2))}>
+              along fiber
+            </Label>
+            <Label x={470} y={midY - 20} anchor="end" tone="accent" size={18} weight={600} opacity={op(seg(t, 1.5, 2))}>
+              139.2 GPa
+            </Label>
 
-      <Arrow x1={midX} y1={by - 4} x2={midX} y2={by - 50} tone="alarm" width={3} />
-      <Arrow x1={midX} y1={by + bh + 4} x2={midX} y2={by + bh + 50} tone="alarm" width={3} />
-      <Label x={midX + 14} y={by - 40} anchor="start" tone="alarm" size={15}>
-        across
-      </Label>
-      <Label x={midX + 14} y={by - 20} anchor="start" tone="alarm" size={18} weight={600}>
-        7.4 GPa
-      </Label>
+            <GrowArrow p={across} x1={midX} y1={by - 4} x2={midX} y2={by - 50} tone="alarm" width={3} />
+            <GrowArrow p={across} x1={midX} y1={by + bh + 4} x2={midX} y2={by + bh + 50} tone="alarm" width={3} />
+            <Label x={midX + 14} y={by - 40} anchor="start" tone="alarm" size={15} opacity={op(seg(t, 2.8, 3.3))}>
+              across
+            </Label>
+            <Label x={midX + 14} y={by - 20} anchor="start" tone="alarm" size={18} weight={600} opacity={op(seg(t, 2.8, 3.3))}>
+              7.4 GPa
+            </Label>
 
-      <Label x={70} y={40} size={26} serif tone="ink" weight={600}>
-        19 : 1
-      </Label>
-      <Label x={240} y={258} tone="muted" size={15}>
-        60% carbon fiber (230 GPa) in epoxy (3 GPa)
-      </Label>
-    </Figure>
+            <Label x={70} y={40} size={26} serif tone="ink" weight={600} opacity={op(seg(t, 3.7, 4.2))}>
+              19 : 1
+            </Label>
+            <Label x={240} y={258} tone="muted" size={15}>
+              60% carbon fiber (230 GPa) in epoxy (3 GPa)
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -825,47 +883,86 @@ function ChooseFam() {
     { name: "ceramic", t: 1100, note: "winner: brittle", kind: "win" },
   ];
   const screen = sx(900);
+  // Raise the temperature steadily, 0 → 1100°C over 1.0–3.2 s; each bar stops at its family's ceiling.
+  const reach = (temp: number) => 1 + (2.2 * temp) / 1100;
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.7}
       alt="Bar chart of continuous-service temperature ceilings for five families against a 900°C screen line: polymers and composites stop near 250°C, steel and aluminum near 450°C, while nickel superalloys and ceramics pass; the ceramic is marked the winner at the price of brittleness."
-      caption="The 900°C screen kills three families at their best edge. Of the two survivors, cost ranks ceramic first — and its price, brittleness, is stated."
+      steps={[
+        {
+          at: 0,
+          label: "Screen",
+          caption: "The bracket must hold 50 MPa at 900°C continuous, in air, so 900°C is a hard screen.",
+        },
+        {
+          at: 1,
+          label: "Kill",
+          caption: "At their best edges, polymers and composites are done by ~250°C, and steel and aluminum creep by ~450°C.",
+        },
+        {
+          at: reach(900),
+          label: "Survivors",
+          caption: "Nickel superalloys and ceramics clear 900°C; the superalloy survives but costs ~20× steel.",
+        },
+        {
+          at: 3.9,
+          label: "Winner",
+          caption:
+            "The 900°C screen kills three families at their best edge. Of the two survivors, cost ranks ceramic first — and its price, brittleness, is stated.",
+        },
+      ]}
     >
-      <line x1={screen} y1={34} x2={screen} y2={250} stroke={C.alarm} strokeWidth={2.5} strokeDasharray="7 5" />
-      <Label x={screen} y={20} tone="alarm" size={15} weight={600}>
-        screen: 900°C
-      </Label>
-      <line x1={x0} y1={40} x2={x0} y2={250} stroke={C.ink} strokeWidth={1.5} />
-      {rows.map((r, i) => {
-        const y = 60 + i * 42;
-        const end = sx(r.t);
-        const fill = r.kind === "dead" ? C.line : r.kind === "alive" ? C.soft : C.accent;
+      {({ t }) => {
+        const temp = 1100 * clamp((t - 1) / 2.2);
+        const drop = seg(t, 0.3, 0.9);
         return (
-          <g key={r.name}>
-            <Label x={x0 - 10} y={y} anchor="end" size={16} tone={r.kind === "dead" ? "muted" : r.kind === "win" ? "accent" : "ink"} weight={r.kind === "win" ? 600 : undefined}>
-              {r.name}
+          <>
+            {drop > 0.02 ? (
+              <line x1={screen} y1={34} x2={screen} y2={lerp(34, 250, drop)} stroke={C.alarm} strokeWidth={2.5} strokeDasharray="7 5" />
+            ) : null}
+            <Label x={screen} y={20} tone="alarm" size={15} weight={600} opacity={op(seg(t, 0.4, 0.9))}>
+              screen: 900°C
             </Label>
-            <rect x={x0} y={y - 13} width={end - x0} height={26} rx={2} fill={fill} stroke={r.kind === "dead" ? C.muted : C.accent} strokeWidth={1.5} />
-            {r.kind === "dead" ? (
-              <>
-                <Cross x={end} y={y} s={7} />
-                <Label x={end + 14} y={y} anchor="start" size={15} tone="muted">
-                  {r.note}
-                </Label>
-              </>
-            ) : (
-              <text x={x0 + 10} y={y} dominantBaseline="middle" fontSize={15} fontWeight={600} fill={r.kind === "win" ? C.surface : C.ink}>
-                {r.note}
-              </text>
-            )}
-          </g>
+            <line x1={x0} y1={40} x2={x0} y2={250} stroke={C.ink} strokeWidth={1.5} />
+            {rows.map((r, i) => {
+              const y = 60 + i * 42;
+              const end = sx(r.t);
+              const fill = r.kind === "dead" ? C.line : r.kind === "alive" ? C.soft : C.accent;
+              const stop = reach(r.t);
+              const noted = r.kind === "win" ? 4 : 3.3;
+              return (
+                <g key={r.name}>
+                  <Label x={x0 - 10} y={y} anchor="end" size={16} tone={r.kind === "dead" ? "muted" : r.kind === "win" ? "accent" : "ink"} weight={r.kind === "win" ? 600 : undefined}>
+                    {r.name}
+                  </Label>
+                  {temp > 0 ? (
+                    <rect x={x0} y={y - 13} width={sx(Math.min(temp, r.t)) - x0} height={26} rx={2} fill={fill} stroke={r.kind === "dead" ? C.muted : C.accent} strokeWidth={1.5} />
+                  ) : null}
+                  {r.kind === "dead" ? (
+                    <>
+                      <Cross x={end} y={y} s={7} p={seg(t, stop, stop + 0.35)} />
+                      <Label x={end + 14} y={y} anchor="start" size={15} tone="muted" opacity={op(seg(t, stop + 0.1, stop + 0.6))}>
+                        {r.note}
+                      </Label>
+                    </>
+                  ) : (
+                    <text x={x0 + 10} y={y} dominantBaseline="middle" fontSize={15} fontWeight={600} fill={r.kind === "win" ? C.surface : C.ink} opacity={op(seg(t, noted, noted + 0.5))}>
+                      {r.note}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+            <line x1={x0} y1={250} x2={sx(1100)} y2={250} stroke={C.muted} strokeWidth={1.5} />
+            {[0, 450, 900].map((v) => (
+              <XTick key={v} x={sx(v)} y={250} label={`${v}°C`} tone={v === 900 ? "alarm" : "muted"} />
+            ))}
+          </>
         );
-      })}
-      <line x1={x0} y1={250} x2={sx(1100)} y2={250} stroke={C.muted} strokeWidth={1.5} />
-      {[0, 450, 900].map((t) => (
-        <XTick key={t} x={sx(t)} y={250} label={`${t}°C`} tone={t === 900 ? "alarm" : "muted"} />
-      ))}
-    </Figure>
+      }}
+    </AnimatedFigure>
   );
 }
 

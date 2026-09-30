@@ -1,10 +1,13 @@
 import type { ReactNode } from "react";
 import { Arrow, C, DimH, Figure, Ground, Label, plotBox, type FigureMap } from "./kit";
+import { AnimatedFigure, lerp, op, partial, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
 
 type Box = ReturnType<typeof plotBox>;
 type Tone = "ink" | "accent" | "muted" | "alarm";
+/** A tick: value, label, tone, and an opacity while it fades in. */
+type Tick = [number, ReactNode, Tone?, number?];
 
 /** Sample f on [a, b] into n+1 points. */
 function sample(f: (x: number) => number, a: number, b: number, n = 80): Array<[number, number]> {
@@ -27,24 +30,24 @@ function Frame({
   b: Box;
   xLabel: string;
   yLabel: string;
-  xTicks?: Array<[number, ReactNode, Tone?]>;
-  yTicks?: Array<[number, ReactNode, Tone?]>;
+  xTicks?: Tick[];
+  yTicks?: Tick[];
 }) {
   const { x, y, w, h } = b;
   return (
     <g>
       <Arrow x1={x} y1={y + h} x2={x + w + 14} y2={y + h} tone="ink" width={1.5} />
       <Arrow x1={x} y1={y + h} x2={x} y2={y - 14} tone="ink" width={1.5} />
-      {xTicks.map(([v, t, tone], i) => (
-        <g key={`x${i}`}>
+      {xTicks.map(([v, t, tone, o], i) => (
+        <g key={`x${i}`} opacity={o}>
           <line x1={b.px(v)} y1={y + h} x2={b.px(v)} y2={y + h + 6} stroke={C.ink} strokeWidth={1.5} />
           <Label x={b.px(v)} y={y + h + 18} size={15} tone={tone ?? "muted"}>
             {t}
           </Label>
         </g>
       ))}
-      {yTicks.map(([v, t, tone], i) => (
-        <g key={`y${i}`}>
+      {yTicks.map(([v, t, tone, o], i) => (
+        <g key={`y${i}`} opacity={o}>
           <line x1={x - 6} y1={b.py(v)} x2={x} y2={b.py(v)} stroke={C.ink} strokeWidth={1.5} />
           <Label x={x - 10} y={b.py(v)} size={15} anchor="end" tone={tone ?? "muted"}>
             {t}
@@ -61,11 +64,23 @@ function Frame({
   );
 }
 
-function Dot({ x, y, tone = "accent", r = 5 }: { x: number; y: number; tone?: Tone; r?: number }) {
-  return <circle cx={x} cy={y} r={r} fill={C[tone]} stroke={C.surface} strokeWidth={1.5} />;
+function Dot({ x, y, tone = "accent", r = 5, opacity }: { x: number; y: number; tone?: Tone; r?: number; opacity?: number }) {
+  return <circle cx={x} cy={y} r={r} fill={C[tone]} stroke={C.surface} strokeWidth={1.5} opacity={opacity} />;
 }
 
-function Curve({ d, tone = "accent", width = 3, dashed = false }: { d: string; tone?: Tone; width?: number; dashed?: boolean }) {
+function Curve({
+  d,
+  tone = "accent",
+  width = 3,
+  dashed = false,
+  opacity,
+}: {
+  d: string;
+  tone?: Tone;
+  width?: number;
+  dashed?: boolean;
+  opacity?: number;
+}) {
   return (
     <path
       d={d}
@@ -75,12 +90,13 @@ function Curve({ d, tone = "accent", width = 3, dashed = false }: { d: string; t
       strokeLinejoin="round"
       strokeLinecap="round"
       strokeDasharray={dashed ? "6 5" : undefined}
+      opacity={opacity}
     />
   );
 }
 
-function Guide({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2: number }) {
-  return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" />;
+function Guide({ x1, y1, x2, y2, opacity }: { x1: number; y1: number; x2: number; y2: number; opacity?: number }) {
+  return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" opacity={opacity} />;
 }
 
 /* ---------- materials-301 ---------- */
@@ -91,34 +107,68 @@ function ColdWork() {
   const e = plotBox({ x: 90, y: 40, w: 290, h: 180, xMin: 0, xMax: 40, yMin: 0, yMax: 50 });
   const sig = (cw: number) => 250 + 6 * cw;
   const el = (cw: number) => 40 * Math.exp(-cw / 18);
+  const sigPts = sample(sig, 0, 40, 2);
+  const elPts = sample(el, 0, 40);
+  /** Share of the way from the annealed bar to the 40% draw. */
+  const draw = (t: number) => seg(t, 1.2, 3.4);
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.2}
       alt="Plot against percent cold work from 0 to 40: strength rises in a straight line from 250 MPa to 490 MPa while elongation falls on a curve from 40% to about 4%."
-      caption="Same alloy at both ends. The work bought strength and spent stretch, so the condition has to be on the drawing."
+      steps={[
+        { at: 0, label: "Annealed", caption: "Annealed, the bar sits at about 250 MPa and about 40% elongation." },
+        { at: 1.2, label: "Cold work", caption: "Draw it: more cold work raises strength and spends elongation." },
+        {
+          at: 3.3,
+          label: "Condition",
+          caption: "Same alloy at both ends. The work bought strength and spent stretch, so the condition has to be on the drawing.",
+        },
+      ]}
+      readouts={(t) => {
+        const cw = 40 * draw(t);
+        return [
+          { label: "cold work", value: `${Math.round(cw)}%` },
+          { label: "strength", value: `${Math.round(sig(cw))} MPa`, tone: "accent" },
+          { label: "elongation", value: `${Math.round(el(cw))}%`, tone: "ink" },
+        ];
+      }}
     >
-      <Frame
-        b={s}
-        xLabel="% cold work"
-        yLabel=""
-        xTicks={[
-          [0, "0 annealed"],
-          [40, "40%"],
-        ]}
-      />
-      <Curve d={s.path(sample(sig, 0, 40, 2))} />
-      <Curve d={e.path(sample(el, 0, 40))} tone="ink" dashed />
-      <Dot x={s.px(0)} y={s.py(250)} />
-      <Dot x={s.px(40)} y={s.py(490)} />
-      <Dot x={e.px(0)} y={e.py(40)} tone="ink" />
-      <Dot x={e.px(40)} y={e.py(el(40))} tone="ink" />
-      <Label x={80} y={s.py(250)} anchor="end" tone="accent" size={15}>250 MPa</Label>
-      <Label x={80} y={e.py(40)} anchor="end" size={15}>40%</Label>
-      <Label x={390} y={s.py(490)} anchor="start" tone="accent" size={15}>490 MPa</Label>
-      <Label x={390} y={e.py(el(40))} anchor="start" size={15}>≈4%</Label>
-      <Label x={s.px(24)} y={s.py(sig(24)) - 22} tone="accent" weight={600}>strength</Label>
-      <Label x={e.px(24)} y={e.py(el(24)) - 20}>elongation</Label>
-    </Figure>
+      {({ t }) => {
+        const p = draw(t);
+        const start = op(seg(t, 0.4, 0.9));
+        const end = op(seg(t, 3.3, 3.8));
+        return (
+          <>
+            <Frame
+              b={s}
+              xLabel="% cold work"
+              yLabel=""
+              xTicks={[
+                [0, "0 annealed"],
+                [40, "40%"],
+              ]}
+            />
+            {p > 0 ? <Curve d={s.path(partial(sigPts, p))} /> : null}
+            {p > 0 ? <Curve d={e.path(partial(elPts, p))} tone="ink" dashed /> : null}
+            <Dot x={s.px(0)} y={s.py(250)} opacity={start} />
+            <Dot x={s.px(40)} y={s.py(490)} opacity={end} />
+            <Dot x={e.px(0)} y={e.py(40)} tone="ink" opacity={start} />
+            <Dot x={e.px(40)} y={e.py(el(40))} tone="ink" opacity={end} />
+            <Label x={80} y={s.py(250)} anchor="end" tone="accent" size={15} opacity={start}>250 MPa</Label>
+            <Label x={80} y={e.py(40)} anchor="end" size={15} opacity={start}>40%</Label>
+            <Label x={390} y={s.py(490)} anchor="start" tone="accent" size={15} opacity={end}>490 MPa</Label>
+            <Label x={390} y={e.py(el(40))} anchor="start" size={15} opacity={end}>≈4%</Label>
+            <Label x={s.px(24)} y={s.py(sig(24)) - 22} tone="accent" weight={600} opacity={op(seg(t, 2.4, 2.9))}>
+              strength
+            </Label>
+            <Label x={e.px(24)} y={e.py(el(24)) - 20} opacity={op(seg(t, 2.5, 3.0))}>
+              elongation
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -127,39 +177,66 @@ function Quench() {
   const center = (t: number) => 200 + 350 / (1 + (t / 20) ** 2);
   const frac = (hv: number) => (hv - 200) / 350;
   return (
-    <Figure
+    <AnimatedFigure
       height={280}
+      duration={4.6}
       alt="Cross-sections of a 10 mm and a 40 mm quenched steel bar, both dark at the surface marked 550 HV; the small bar's center is 480 HV and the large bar's center fades to 270 HV."
-      caption="The skin meets the water on both bars. The thick bar's middle is insulated by the metal around it, so its center is soft."
+      steps={[
+        {
+          at: 0,
+          label: "Skin",
+          caption: "Quench a 10 mm and a 40 mm steel bar: the surface meets the water first, and both skins reach 550 HV.",
+        },
+        { at: 1.6, label: "Thin bar", caption: "The 10 mm bar's center reaches about 480 HV, while the thick bar's middle lags." },
+        {
+          at: 3.6,
+          label: "Thick bar",
+          caption: "The skin meets the water on both bars. The thick bar's middle is insulated by the metal around it, so its center is soft.",
+        },
+      ]}
     >
-      <defs>
-        <radialGradient id="lb-q-small">
-          <stop offset="0" stopColor={C.accent} stopOpacity={frac(center(10))} />
-          <stop offset="1" stopColor={C.accent} stopOpacity={1} />
-        </radialGradient>
-        <radialGradient id="lb-q-big">
-          <stop offset="0" stopColor={C.accent} stopOpacity={frac(center(40)) * 0.6} />
-          <stop offset="0.55" stopColor={C.accent} stopOpacity={0.35} />
-          <stop offset="1" stopColor={C.accent} stopOpacity={1} />
-        </radialGradient>
-      </defs>
-      <circle cx={100} cy={150} r={25} fill="url(#lb-q-small)" stroke={C.ink} strokeWidth={2} />
-      <circle cx={320} cy={150} r={100} fill="url(#lb-q-big)" stroke={C.ink} strokeWidth={2} />
+      {({ t }) => {
+        // Hardness sets in from the skin inward: the 10 mm core follows fast, the 40 mm core lags and stays soft.
+        const skin = seg(t, 0.4, 1.0);
+        const core10 = seg(t, 1.2, 1.8);
+        const mid40 = seg(t, 1.5, 2.7);
+        const core40 = seg(t, 2.3, 3.9);
+        const surf = op(seg(t, 0.7, 1.2));
+        const at10 = op(seg(t, 1.6, 2.1));
+        const at40 = op(seg(t, 3.6, 4.1));
+        return (
+          <>
+            <defs>
+              <radialGradient id="lb-q-small">
+                <stop offset="0" stopColor={C.accent} stopOpacity={frac(center(10)) * core10} />
+                <stop offset="1" stopColor={C.accent} stopOpacity={skin} />
+              </radialGradient>
+              <radialGradient id="lb-q-big">
+                <stop offset="0" stopColor={C.accent} stopOpacity={frac(center(40)) * 0.6 * core40} />
+                <stop offset="0.55" stopColor={C.accent} stopOpacity={0.35 * mid40} />
+                <stop offset="1" stopColor={C.accent} stopOpacity={skin} />
+              </radialGradient>
+            </defs>
+            <circle cx={100} cy={150} r={25} fill="url(#lb-q-small)" stroke={C.ink} strokeWidth={2} />
+            <circle cx={320} cy={150} r={100} fill="url(#lb-q-big)" stroke={C.ink} strokeWidth={2} />
 
-      <Label x={215} y={22} tone="accent" weight={600}>surface 550 HV</Label>
-      <Arrow x1={170} y1={34} x2={117} y2={128} tone="muted" width={1.5} />
-      <Arrow x1={255} y1={34} x2={266} y2={64} tone="muted" width={1.5} />
+            <Label x={215} y={22} tone="accent" weight={600} opacity={surf}>surface 550 HV</Label>
+            <Arrow x1={170} y1={34} x2={117} y2={128} tone="muted" width={1.5} opacity={surf} />
+            <Arrow x1={255} y1={34} x2={266} y2={64} tone="muted" width={1.5} opacity={surf} />
 
-      <Label x={320} y={138}>center</Label>
-      <Label x={320} y={160} weight={600}>270 HV</Label>
-      <circle cx={100} cy={150} r={3} fill={C.ink} />
-      <Arrow x1={100} y1={200} x2={100} y2={156} tone="muted" width={1.5} />
-      <Label x={100} y={214}>center</Label>
-      <Label x={100} y={234} weight={600}>480 HV</Label>
+            <Label x={320} y={138} opacity={at40}>center</Label>
+            <Label x={320} y={160} weight={600} opacity={at40}>270 HV</Label>
+            <circle cx={100} cy={150} r={3} fill={C.ink} opacity={at10} />
+            <Arrow x1={100} y1={200} x2={100} y2={156} tone="muted" width={1.5} opacity={at10} />
+            <Label x={100} y={214} opacity={at10}>center</Label>
+            <Label x={100} y={234} weight={600} opacity={at10}>480 HV</Label>
 
-      <Label x={100} y={266} tone="muted" size={15}>10 mm bar</Label>
-      <Label x={320} y={266} tone="muted" size={15}>40 mm bar</Label>
-    </Figure>
+            <Label x={100} y={266} tone="muted" size={15}>10 mm bar</Label>
+            <Label x={320} y={266} tone="muted" size={15}>40 mm bar</Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -170,41 +247,91 @@ function Lever() {
   const sol = (x: number) => 1 - (x / 100) ** 0.4307;
   const lensPts = [...sample(liq, 0, 100), ...sample(sol, 0, 100).reverse()];
   const ty = b.py(0.5);
+  const lens = b.path(lensPts) + " Z";
+  const liqD = b.path(sample(liq, 0, 100));
+  const solD = b.path(sample(sol, 0, 100));
+  /** Overall composition, % B: the lesson's 50, slid to 30. */
+  const c0 = (t: number) => lerp(50, 30, seg(t, 2.6, 4.0));
   return (
-    <Figure
+    <AnimatedFigure
       height={330}
+      duration={5.2}
       alt="A two-phase lens on a temperature versus percent B diagram with a horizontal tie line from solid at 20% B to liquid at 80% B; the overall composition 30% B splits the line into a 10 arm and a 50 arm."
-      caption="The ends of the tie line stay put. The solid fraction is the arm on the far side, 50 over the whole 60."
+      steps={[
+        {
+          at: 0,
+          label: "Tie line",
+          caption: "Held at one temperature, the solid is 20% B and the liquid is 80% B: the ends of the tie line.",
+        },
+        {
+          at: 1.8,
+          label: "Slide",
+          caption: "At an overall 50% B the solid fraction is 0.50; slide toward the solid end and it rises.",
+        },
+        {
+          at: 4.0,
+          label: "Read",
+          caption: "The ends of the tie line stay put. The solid fraction is the arm on the far side, 50 over the whole 60.",
+        },
+      ]}
+      readouts={(t) => {
+        const c = Math.round(c0(t));
+        return [
+          { label: "C₀", value: `${c}% B` },
+          { label: "fraction solid", value: `(80 − ${c}) / 60 = ${((80 - c) / 60).toFixed(2)}`, tone: "accent" },
+        ];
+      }}
     >
-      <path d={b.path(lensPts) + " Z"} fill={C.soft} stroke="none" />
-      <Curve d={b.path(sample(liq, 0, 100))} tone="ink" width={2} />
-      <Curve d={b.path(sample(sol, 0, 100))} tone="ink" width={2} />
-      <Frame
-        b={b}
-        xLabel="% B"
-        yLabel="temperature"
-        xTicks={[
-          [20, "20"],
-          [30, "30", "accent"],
-          [80, "80"],
-        ]}
-      />
-      <Label x={b.px(78)} y={b.py(0.86)} tone="muted">liquid</Label>
-      <Label x={b.px(10)} y={b.py(0.1)} tone="muted">solid</Label>
-      <Label x={b.px(52)} y={b.py(0.68)} tone="muted" size={15}>S + L</Label>
+      {({ t }) => {
+        const ends = op(seg(t, 0.4, 0.9));
+        const tie = seg(t, 0.8, 1.5);
+        const c = c0(t);
+        const mix = op(seg(t, 1.8, 2.3));
+        const read = seg(t, 4.0, 4.5);
+        // The arms track the slide; their lengths only get written once it stops.
+        const arm = (n: string) => (read >= 1 ? n : <tspan fillOpacity={read}>{n}</tspan>);
+        return (
+          <>
+            <path d={lens} fill={C.soft} stroke="none" />
+            <Curve d={liqD} tone="ink" width={2} />
+            <Curve d={solD} tone="ink" width={2} />
+            <Frame
+              b={b}
+              xLabel="% B"
+              yLabel="temperature"
+              xTicks={[
+                [20, "20", undefined, ends],
+                [30, "30", "accent", op(read)],
+                [80, "80", undefined, ends],
+              ]}
+            />
+            <Label x={b.px(78)} y={b.py(0.86)} tone="muted">liquid</Label>
+            <Label x={b.px(10)} y={b.py(0.1)} tone="muted">solid</Label>
+            <Label x={b.px(52)} y={b.py(0.68)} tone="muted" size={15}>S + L</Label>
 
-      <line x1={b.px(20)} y1={ty} x2={b.px(80)} y2={ty} stroke={C.accent} strokeWidth={3} />
-      <Guide x1={b.px(30)} y1={ty} x2={b.px(30)} y2={b.y + b.h} />
-      <Dot x={b.px(20)} y={ty} tone="ink" />
-      <Dot x={b.px(80)} y={ty} tone="ink" />
-      <Dot x={b.px(30)} y={ty} tone="accent" r={6} />
-      <Label x={b.px(30) + 6} y={ty - 20} anchor="start" tone="accent" size={15} weight={600}>C₀ = 30</Label>
+            {tie > 0.02 ? (
+              <line x1={b.px(20)} y1={ty} x2={lerp(b.px(20), b.px(80), tie)} y2={ty} stroke={C.accent} strokeWidth={3} />
+            ) : null}
+            <Guide x1={b.px(c)} y1={ty} x2={b.px(c)} y2={b.y + b.h} opacity={mix} />
+            <Dot x={b.px(20)} y={ty} tone="ink" opacity={ends} />
+            <Dot x={b.px(80)} y={ty} tone="ink" opacity={ends} />
+            <Dot x={b.px(c)} y={ty} tone="accent" r={6} opacity={mix} />
+            <Label x={b.px(30) + 6} y={ty - 20} anchor="start" tone="accent" size={15} weight={600} opacity={op(read)}>
+              C₀ = 30
+            </Label>
 
-      <DimH x1={b.px(20)} x2={b.px(30)} y={ty + 34} label="10" />
-      <DimH x1={b.px(30)} x2={b.px(80)} y={ty + 34} label="50" tone="accent" />
+            <g opacity={mix}>
+              <DimH x1={b.px(20)} x2={b.px(c)} y={ty + 34} label={arm("10")} />
+              <DimH x1={b.px(c)} x2={b.px(80)} y={ty + 34} label={arm("50")} tone="accent" />
+            </g>
 
-      <Label x={240} y={316} tone="accent" weight={600}>fraction solid = 50 / 60 = 0.83</Label>
-    </Figure>
+            <Label x={240} y={316} tone="accent" weight={600} opacity={op(seg(t, 4.4, 4.9))}>
+              fraction solid = 50 / 60 = 0.83
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -215,53 +342,92 @@ function Fiber() {
   const sig = (d: number) => 1 / (Math.cos(rad(d)) ** 2 / 900 + Math.sin(rad(d)) ** 2 / 40);
   const ix = 300;
   const iy = 50;
-  const a = rad(30);
+  const pts = sample(sig, 0, 90, 120);
+  /** The bracket load's angle off the fiber, degrees: swung from 0 to 30. */
+  const swing = (t: number) => lerp(0, 30, seg(t, 2.8, 4.2));
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={5}
       alt="Strength against load angle off the fiber: 900 MPa at 0 degrees collapsing to about 140 MPa at 30 degrees and 40 MPa at 90 degrees, with an inset of a fiber plate pulled 30 degrees off its fibers."
-      caption="The fiber never weakened. By 30° the load has mostly left it, and the across-fiber term sets the number."
+      steps={[
+        { at: 0, label: "Along", caption: "Pulled along the fiber, this carbon plate is about 900 MPa." },
+        {
+          at: 1,
+          label: "Across",
+          caption: "Across the fiber it is about 40 MPa; the strength at an angle is a blend that collapses quickly.",
+        },
+        { at: 2.8, label: "Swing", caption: "Swing the bracket load 30° off the fiber and the estimate falls to about 140 MPa." },
+        {
+          at: 4.2,
+          label: "Angle",
+          caption: "The fiber never weakened. By 30° the load has mostly left it, and the across-fiber term sets the number.",
+        },
+      ]}
+      readouts={(t) => {
+        const th = swing(t);
+        return [
+          { label: "load angle", value: `${Math.round(th)}°` },
+          { label: "strength", value: `≈${Math.round(sig(th) / 10) * 10} MPa`, tone: "accent" },
+        ];
+      }}
     >
-      <Frame
-        b={b}
-        xLabel="load angle off the fiber"
-        yLabel="strength, MPa"
-        xTicks={[
-          [0, "0°"],
-          [30, "30°", "accent"],
-          [90, "90°"],
-        ]}
-      />
-      <Curve d={b.path(sample(sig, 0, 90, 120))} />
-      <Guide x1={b.px(30)} y1={b.py(sig(30))} x2={b.px(30)} y2={b.y + b.h} />
-      <Dot x={b.px(0)} y={b.py(900)} />
-      <Dot x={b.px(30)} y={b.py(sig(30))} r={6} />
-      <Dot x={b.px(90)} y={b.py(40)} />
-      <Label x={b.px(0) + 12} y={b.py(900)} anchor="start" size={15}>900 MPa</Label>
-      <Label x={b.px(30) + 12} y={b.py(sig(30)) - 16} anchor="start" tone="accent" weight={600}>≈140 MPa</Label>
-      <Label x={b.px(90) - 4} y={b.py(40) - 18} anchor="end" size={15}>40 MPa</Label>
+      {({ t }) => {
+        const th = swing(t);
+        const a = rad(th);
+        const curve = seg(t, 1, 2.4);
+        const along = op(seg(t, 0.4, 0.9));
+        const across = op(seg(t, 2.2, 2.7));
+        const done = op(seg(t, 4.2, 4.7));
+        return (
+          <>
+            <Frame
+              b={b}
+              xLabel="load angle off the fiber"
+              yLabel="strength, MPa"
+              xTicks={[
+                [0, "0°"],
+                [30, "30°", "accent", done],
+                [90, "90°"],
+              ]}
+            />
+            {curve > 0 ? <Curve d={b.path(partial(pts, curve))} /> : null}
+            <Guide x1={b.px(30)} y1={b.py(sig(30))} x2={b.px(30)} y2={b.y + b.h} opacity={done} />
+            <Dot x={b.px(0)} y={b.py(900)} opacity={along} />
+            <Dot x={b.px(th)} y={b.py(sig(th))} r={6} opacity={op(seg(t, 2.8, 3.1))} />
+            <Dot x={b.px(90)} y={b.py(40)} opacity={across} />
+            <Label x={b.px(0) + 12} y={b.py(900)} anchor="start" size={15} opacity={along}>900 MPa</Label>
+            <Label x={b.px(30) + 12} y={b.py(sig(30)) - 16} anchor="start" tone="accent" weight={600} opacity={done}>
+              ≈140 MPa
+            </Label>
+            <Label x={b.px(90) - 4} y={b.py(40) - 18} anchor="end" size={15} opacity={across}>40 MPa</Label>
 
-      {/* inset: unidirectional plate with a load 30° off the fibers */}
-      <rect x={ix} y={iy} width={130} height={70} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={1.5} />
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <line key={i} x1={ix + 6} y1={iy + 10 + i * 10} x2={ix + 124} y2={iy + 10 + i * 10} stroke={C.muted} strokeWidth={1.2} />
-      ))}
-      <Arrow
-        x1={ix + 65 - 50 * Math.cos(a)}
-        y1={iy + 35 + 50 * Math.sin(a)}
-        x2={ix + 65 + 50 * Math.cos(a)}
-        y2={iy + 35 - 50 * Math.sin(a)}
-        both
-      />
-      <path
-        d={`M${ix + 65 + 34},${iy + 35} A34,34 0 0 0 ${ix + 65 + 34 * Math.cos(a)},${iy + 35 - 34 * Math.sin(a)}`}
-        fill="none"
-        stroke={C.ink}
-        strokeWidth={1.5}
-      />
-      <Label x={ix + 146} y={iy + 26} anchor="start" size={15}>30°</Label>
-      <Label x={ix + 65} y={iy + 88} tone="muted" size={15}>fibers →</Label>
-    </Figure>
+            {/* inset: unidirectional plate, the load swinging off the fibers */}
+            <rect x={ix} y={iy} width={130} height={70} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={1.5} />
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <line key={i} x1={ix + 6} y1={iy + 10 + i * 10} x2={ix + 124} y2={iy + 10 + i * 10} stroke={C.muted} strokeWidth={1.2} />
+            ))}
+            <Arrow
+              x1={ix + 65 - 50 * Math.cos(a)}
+              y1={iy + 35 + 50 * Math.sin(a)}
+              x2={ix + 65 + 50 * Math.cos(a)}
+              y2={iy + 35 - 50 * Math.sin(a)}
+              both
+            />
+            {th > 0.5 ? (
+              <path
+                d={`M${ix + 65 + 34},${iy + 35} A34,34 0 0 0 ${ix + 65 + 34 * Math.cos(a)},${iy + 35 - 34 * Math.sin(a)}`}
+                fill="none"
+                stroke={C.ink}
+                strokeWidth={1.5}
+              />
+            ) : null}
+            <Label x={ix + 146} y={iy + 26} anchor="start" size={15} opacity={done}>30°</Label>
+            <Label x={ix + 65} y={iy + 88} tone="muted" size={15}>fibers →</Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

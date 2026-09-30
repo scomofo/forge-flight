@@ -543,30 +543,62 @@ function Rolling() {
   const pts: Array<[number, number]> = [];
   for (let i = 0; i <= 60; i++) pts.push([(6 * i) / 60, F((6 * i) / 60)]);
   const slope = F(2) / 2;
+  // The curve is drawn out in draft at a steady rate: to 2 mm, a pause, then on to 6 mm (5 mm at 2.8 s).
+  const drawn = (t: number) => lerp(lerp(0, 1 / 3, clamp((t - 0.4) / 0.9)), 1, clamp((t - 1.9) / 1.2));
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4.8}
       alt="Rolling force against draft rises as a square-root curve through 520 kN at a 2 mm draft and 820 kN at 5 mm, well below a dashed straight line drawn in proportion."
-      caption="The draft went from 2 to 5 mm, but the force only follows the contact length √(R Δh): 520 kN to 820, not in proportion."
+      steps={[
+        { at: 0, label: "8 mm exit", caption: "Stock is 10 mm: exiting at 8 mm is a 2 mm draft and about 520 kN." },
+        { at: 1.8, label: "5 mm exit", caption: "Exiting at 5 mm is a 5 mm draft, more than double, and about 820 kN." },
+        {
+          at: 3.4,
+          label: "Square root",
+          caption: "The draft went from 2 to 5 mm, but the force only follows the contact length √(R Δh): 520 kN to 820, not in proportion.",
+        },
+      ]}
     >
-      <Axes box={b} xLabel="draft Δh, mm" yLabel="force, kN" />
-      <path d={b.path([[0, 0], [1000 / slope, 1000]])} fill="none" stroke={C.muted} strokeWidth={2} strokeDasharray="6 5" />
-      <Label x={b.px(1000 / slope) + 8} y={b.py(985)} anchor="start" tone="muted" size={15}>in proportion</Label>
-      <path d={b.path(pts)} fill="none" stroke={C.accent} strokeWidth={3} />
-      <Guide x1={b.px(0)} y1={b.py(F(2))} x2={b.px(2)} y2={b.py(F(2))} />
-      <Guide x1={b.px(2)} y1={b.py(F(2))} x2={b.px(2)} y2={b.py(0)} />
-      <Guide x1={b.px(0)} y1={b.py(F(5))} x2={b.px(5)} y2={b.py(F(5))} />
-      <Guide x1={b.px(5)} y1={b.py(F(5))} x2={b.px(5)} y2={b.py(0)} />
-      <Tick x={b.px(0)} y={b.py(520)} dir="y" label="520" />
-      <Tick x={b.px(0)} y={b.py(820)} dir="y" label="820" />
-      <Tick x={b.px(2)} y={b.py(0)} dir="x" label="2" />
-      <Tick x={b.px(5)} y={b.py(0)} dir="x" label="5" />
-      <Dot x={b.px(2)} y={b.py(F(2))} />
-      <Dot x={b.px(5)} y={b.py(F(5))} />
-      <Label x={b.px(2) + 12} y={b.py(F(2)) + 20} anchor="start" size={15}>8 mm exit</Label>
-      <Label x={b.px(5) + 10} y={b.py(F(5)) + 22} anchor="start" size={15}>5 mm exit</Label>
-      <Label x={b.px(6.9)} y={b.py(330)} anchor="end" tone="accent" serif size={18}>L ≈ √(R Δh)</Label>
-    </Figure>
+      {({ t }) => {
+        const two = op(seg(t, 1.2, 1.7));
+        const five = op(seg(t, 2.8, 3.3));
+        const pp = seg(t, 3.4, 4);
+        return (
+          <>
+            <Axes box={b} xLabel="draft Δh, mm" yLabel="force, kN" />
+            {pp > 0 ? (
+              <path
+                d={b.path([[0, 0], [lerp(0, 1000 / slope, pp), lerp(0, 1000, pp)]])}
+                fill="none"
+                stroke={C.muted}
+                strokeWidth={2}
+                strokeDasharray="6 5"
+              />
+            ) : null}
+            <Label x={b.px(1000 / slope) + 8} y={b.py(985)} anchor="start" tone="muted" size={15} opacity={op(seg(t, 3.8, 4.3))}>
+              in proportion
+            </Label>
+            <path d={b.path(partial(pts, drawn(t)))} fill="none" stroke={C.accent} strokeWidth={3} />
+            <Guide x1={b.px(0)} y1={b.py(F(2))} x2={b.px(2)} y2={b.py(F(2))} opacity={two} />
+            <Guide x1={b.px(2)} y1={b.py(F(2))} x2={b.px(2)} y2={b.py(0)} opacity={two} />
+            <Guide x1={b.px(0)} y1={b.py(F(5))} x2={b.px(5)} y2={b.py(F(5))} opacity={five} />
+            <Guide x1={b.px(5)} y1={b.py(F(5))} x2={b.px(5)} y2={b.py(0)} opacity={five} />
+            <Tick x={b.px(0)} y={b.py(520)} dir="y" label="520" opacity={two} />
+            <Tick x={b.px(0)} y={b.py(820)} dir="y" label="820" opacity={five} />
+            <Tick x={b.px(2)} y={b.py(0)} dir="x" label="2" opacity={two} />
+            <Tick x={b.px(5)} y={b.py(0)} dir="x" label="5" opacity={five} />
+            <Dot x={b.px(2)} y={b.py(F(2))} opacity={two} />
+            <Dot x={b.px(5)} y={b.py(F(5))} opacity={five} />
+            <Label x={b.px(2) + 12} y={b.py(F(2)) + 20} anchor="start" size={15} opacity={two}>8 mm exit</Label>
+            <Label x={b.px(5) + 10} y={b.py(F(5)) + 22} anchor="start" size={15} opacity={five}>5 mm exit</Label>
+            <Label x={b.px(6.9)} y={b.py(330)} anchor="end" tone="accent" serif size={18} opacity={op(seg(t, 4, 4.5))}>
+              L ≈ √(R Δh)
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

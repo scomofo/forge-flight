@@ -363,63 +363,109 @@ function DoePlan() {
   const b = plotBox({ x: 90, y: 40, w: 250, h: 190, xMin: -0.12, xMax: 1, yMin: 6.5, yMax: 14 });
   const L = b.px(0);
   const R = b.px(1);
+  // Corner dots appear as their lines reach them; the (+,+) corner only once it is measured.
+  const stdAt = [0.4, 1];
+  const toughAt = [1.3, 3.3];
   return (
-    <Figure
+    <AnimatedFigure
       height={300}
+      duration={4.9}
       alt="Interaction plot of lap-joint shear strength against cure time: standard epoxy rises from 8.0 to 8.4 MPa, toughened epoxy rises from 8.6 to 13.0 MPa, 1.0 MPa above the additive prediction of 12.0."
-      caption="If glue and cure acted alone, the lines would be parallel and the (+,+) corner would sit at 12.0. It measured 13.0: the extra 1.0 MPa is the interaction one-factor-at-a-time never visits."
+      steps={[
+        {
+          at: 0,
+          label: "Corners",
+          caption: "Corner means: standard epoxy gives 8.0 MPa at 2 h cure and 8.4 at 24 h; toughened epoxy gives 8.6 at 2 h.",
+        },
+        {
+          at: 1.8,
+          label: "Additive",
+          caption: "Adding the main effects, 9.50 + 1.30 + 1.20, predicts 12.0 MPa for toughened epoxy at 24 h.",
+        },
+        { at: 2.9, label: "Measured", caption: "The (+,+) corner, toughened epoxy with the full 24 h cure, measured 13.0 MPa." },
+        {
+          at: 3.9,
+          label: "Interaction",
+          caption:
+            "If glue and cure acted alone, the lines would be parallel and the (+,+) corner would sit at 12.0. It measured 13.0: the extra 1.0 MPa is the interaction one-factor-at-a-time never visits.",
+        },
+      ]}
     >
-      <Axes box={b} xLabel="" yLabel="shear strength (MPa)" />
-      {[8, 10, 12, 14].map((t) => (
-        <g key={t}>
-          <line x1={b.x - 6} y1={b.py(t)} x2={b.x} y2={b.py(t)} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.x - 10} y={b.py(t)} anchor="end" size={15} tone="muted">
-            {t}
-          </Label>
-        </g>
-      ))}
-      <Label x={L} y={b.y + b.h + 20} size={15} tone="muted">
-        cure 2 h
-      </Label>
-      <Label x={R} y={b.y + b.h + 20} size={15} tone="muted">
-        24 h
-      </Label>
-      <line x1={L} y1={b.py(8.0)} x2={R} y2={b.py(8.4)} stroke={C.ink} strokeWidth={3} />
-      <line x1={L} y1={b.py(8.6)} x2={R} y2={b.py(13.0)} stroke={C.accent} strokeWidth={3} />
-      <line x1={L} y1={b.py(8.6)} x2={R} y2={b.py(12.0)} stroke={C.muted} strokeWidth={1.5} strokeDasharray="6 5" />
-      {[
-        [L, 8.0],
-        [R, 8.4],
-      ].map(([x, v]) => (
-        <circle key={`s${x}`} cx={x} cy={b.py(v)} r={6} fill={C.ink} />
-      ))}
-      {[
-        [L, 8.6],
-        [R, 13.0],
-      ].map(([x, v]) => (
-        <circle key={`t${x}`} cx={x} cy={b.py(v)} r={6} fill={C.accent} />
-      ))}
-      <circle cx={R} cy={b.py(12.0)} r={6} fill={C.surface} stroke={C.muted} strokeWidth={2} />
-      <Label x={L} y={b.py(8.6) - 18} size={15} tone="accent">
-        8.6
-      </Label>
-      <Label x={L} y={b.py(8.0) + 18} size={15}>
-        8.0
-      </Label>
-      <Label x={R + 12} y={b.py(13.0)} anchor="start" size={15} tone="accent" weight={600}>
-        13.0 toughened
-      </Label>
-      <Label x={R + 12} y={b.py(12.0) + 4} anchor="start" size={15} tone="muted">
-        12.0 additive
-      </Label>
-      <Label x={R + 12} y={b.py(8.4)} anchor="start" size={15}>
-        8.4 standard
-      </Label>
-      <line x1={R - 12} y1={b.py(13.0)} x2={R - 12} y2={b.py(12.0)} stroke={C.alarm} strokeWidth={3} />
-      <Label x={R - 22} y={b.py(13.0) - 8} anchor="end" size={15} tone="alarm" weight={600}>
-        +1.0 interaction
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const std = seg(t, 0.6, 1.1);
+        const add = seg(t, 1.9, 2.4);
+        const tough = seg(t, 3, 3.5);
+        const gap = seg(t, 4, 4.4);
+        return (
+          <>
+            <Axes box={b} xLabel="" yLabel="shear strength (MPa)" />
+            {[8, 10, 12, 14].map((t) => (
+              <g key={t}>
+                <line x1={b.x - 6} y1={b.py(t)} x2={b.x} y2={b.py(t)} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.x - 10} y={b.py(t)} anchor="end" size={15} tone="muted">
+                  {t}
+                </Label>
+              </g>
+            ))}
+            <Label x={L} y={b.y + b.h + 20} size={15} tone="muted">
+              cure 2 h
+            </Label>
+            <Label x={R} y={b.y + b.h + 20} size={15} tone="muted">
+              24 h
+            </Label>
+            {std > 0 ? <line x1={L} y1={b.py(8.0)} x2={lerp(L, R, std)} y2={lerp(b.py(8.0), b.py(8.4), std)} stroke={C.ink} strokeWidth={3} /> : null}
+            {tough > 0 ? (
+              <line x1={L} y1={b.py(8.6)} x2={lerp(L, R, tough)} y2={lerp(b.py(8.6), b.py(13.0), tough)} stroke={C.accent} strokeWidth={3} />
+            ) : null}
+            {add > 0 ? (
+              <line
+                x1={L}
+                y1={b.py(8.6)}
+                x2={lerp(L, R, add)}
+                y2={lerp(b.py(8.6), b.py(12.0), add)}
+                stroke={C.muted}
+                strokeWidth={1.5}
+                strokeDasharray="6 5"
+              />
+            ) : null}
+            {[
+              [L, 8.0],
+              [R, 8.4],
+            ].map(([x, v], i) => (
+              <circle key={`s${x}`} cx={x} cy={b.py(v)} r={6} fill={C.ink} opacity={op(seg(t, stdAt[i], stdAt[i] + 0.4))} />
+            ))}
+            {[
+              [L, 8.6],
+              [R, 13.0],
+            ].map(([x, v], i) => (
+              <circle key={`t${x}`} cx={x} cy={b.py(v)} r={6} fill={C.accent} opacity={op(seg(t, toughAt[i], toughAt[i] + 0.4))} />
+            ))}
+            <circle cx={R} cy={b.py(12.0)} r={6} fill={C.surface} stroke={C.muted} strokeWidth={2} opacity={op(seg(t, 2.2, 2.6))} />
+            <Label x={L} y={b.py(8.6) - 18} size={15} tone="accent" opacity={op(seg(t, 1.3, 1.7))}>
+              8.6
+            </Label>
+            <Label x={L} y={b.py(8.0) + 18} size={15} opacity={op(seg(t, 0.4, 0.8))}>
+              8.0
+            </Label>
+            <Label x={R + 12} y={b.py(13.0)} anchor="start" size={15} tone="accent" weight={600} opacity={op(seg(t, 3.3, 3.7))}>
+              13.0 toughened
+            </Label>
+            <Label x={R + 12} y={b.py(12.0) + 4} anchor="start" size={15} tone="muted" opacity={op(seg(t, 2.2, 2.6))}>
+              12.0 additive
+            </Label>
+            <Label x={R + 12} y={b.py(8.4)} anchor="start" size={15} opacity={op(seg(t, 1, 1.4))}>
+              8.4 standard
+            </Label>
+            {gap > 0 ? (
+              <line x1={R - 12} y1={lerp(b.py(12.0), b.py(13.0), gap)} x2={R - 12} y2={b.py(12.0)} stroke={C.alarm} strokeWidth={3} />
+            ) : null}
+            <Label x={R - 22} y={b.py(13.0) - 8} anchor="end" size={15} tone="alarm" weight={600} opacity={op(seg(t, 4.2, 4.7))}>
+              +1.0 interaction
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -431,45 +477,85 @@ function SmallSample() {
   const axisY = 190;
   const lo = 19.8 - 0.49;
   const hi = 19.8 + 0.49;
+  const mid = b.px(19.8);
   return (
-    <Figure
+    <AnimatedFigure
       height={270}
+      duration={5}
       alt="Five thrust readings plotted on a kilonewton axis from 19.2 to 20.6, with the mean 19.80 marked and a 95% confidence bracket from 19.31 to 20.29; the high reading 20.4 is circled with Grubbs score 1.52 below the critical 1.72."
-      caption="Report the band, not just the dot: 19.80 ± 0.49 kN from five firings. The 20.4 looks lonely but scores 1.52 < 1.72, so it stays in the data."
+      steps={[
+        { at: 0, label: "Readings", caption: "Five firings measure 19.4, 19.8, 19.5, 19.9 and 20.4 kN of thrust." },
+        { at: 1.9, label: "Mean", caption: "Their mean is 99.0 / 5 = 19.80 kN." },
+        {
+          at: 2.8,
+          label: "Interval",
+          caption: "The standard error is 0.176 kN; times t = 2.776 for four degrees of freedom, the 95% half-width is 0.49 kN.",
+        },
+        {
+          at: 3.8,
+          label: "Suspect",
+          caption:
+            "Report the band, not just the dot: 19.80 ± 0.49 kN from five firings. The 20.4 looks lonely but scores 1.52 < 1.72, so it stays in the data.",
+        },
+      ]}
     >
-      <line x1={b.px(lo)} y1={70} x2={b.px(hi)} y2={70} stroke={C.accent} strokeWidth={3} />
-      <line x1={b.px(lo)} y1={60} x2={b.px(lo)} y2={80} stroke={C.accent} strokeWidth={3} />
-      <line x1={b.px(hi)} y1={60} x2={b.px(hi)} y2={80} stroke={C.accent} strokeWidth={3} />
-      <Label x={b.px(19.8)} y={40} tone="accent" weight={600}>
-        19.80 ± 0.49 kN (95%, n = 5)
-      </Label>
-      <line x1={b.px(19.8)} y1={80} x2={b.px(19.8)} y2={axisY} stroke={C.accent} strokeWidth={2} strokeDasharray="5 4" />
-      <Label x={b.px(19.8) - 8} y={100} anchor="end" size={15} tone="accent">
-        mean
-      </Label>
-      {readings.map((r) => (
-        <circle key={r} cx={b.px(r)} cy={dotY} r={8} fill={C.ink} />
-      ))}
-      <circle cx={b.px(20.4)} cy={dotY} r={15} fill="none" stroke={C.muted} strokeWidth={2} strokeDasharray="4 3" />
-      <Label x={b.px(20.4)} y={dotY - 52} size={15} tone="muted">
-        G = 1.52 &lt; 1.72
-      </Label>
-      <Label x={b.px(20.4)} y={dotY - 32} size={15} tone="muted">
-        stays
-      </Label>
-      <line x1={b.px(19.2)} y1={axisY} x2={b.px(20.6)} y2={axisY} stroke={C.ink} strokeWidth={1.5} />
-      {[19.2, 19.6, 20.0, 20.4].map((t) => (
-        <g key={t}>
-          <line x1={b.px(t)} y1={axisY} x2={b.px(t)} y2={axisY + 6} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.px(t)} y={axisY + 20} size={15} tone="muted">
-            {t.toFixed(1)}
-          </Label>
-        </g>
-      ))}
-      <Label x={b.px(20.6)} y={axisY + 46} anchor="end" size={15} tone="muted">
-        thrust (kN)
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const open = seg(t, 2.9, 3.5); // the interval opens out from the mean
+        const xl = lerp(mid, b.px(lo), open);
+        const xr = lerp(mid, b.px(hi), open);
+        const mean = seg(t, 2, 2.5);
+        return (
+          <>
+            <g opacity={op(seg(t, 2.9, 3.2))}>
+              <line x1={xl} y1={70} x2={xr} y2={70} stroke={C.accent} strokeWidth={3} />
+              <line x1={xl} y1={60} x2={xl} y2={80} stroke={C.accent} strokeWidth={3} />
+              <line x1={xr} y1={60} x2={xr} y2={80} stroke={C.accent} strokeWidth={3} />
+            </g>
+            <Label x={b.px(19.8)} y={40} tone="accent" weight={600} opacity={op(seg(t, 3.2, 3.7))}>
+              19.80 ± 0.49 kN (95%, n = 5)
+            </Label>
+            {mean > 0 ? (
+              <line x1={b.px(19.8)} y1={80} x2={b.px(19.8)} y2={lerp(80, axisY, mean)} stroke={C.accent} strokeWidth={2} strokeDasharray="5 4" />
+            ) : null}
+            <Label x={b.px(19.8) - 8} y={100} anchor="end" size={15} tone="accent" opacity={op(seg(t, 2.2, 2.7))}>
+              mean
+            </Label>
+            {readings.map((r, i) => {
+              const p = seg(t, 0.4 + 0.25 * i, 0.8 + 0.25 * i); // readings land one firing at a time
+              return <circle key={r} cx={b.px(r)} cy={lerp(dotY - 18, dotY, p)} r={8} fill={C.ink} opacity={op(p)} />;
+            })}
+            <circle
+              cx={b.px(20.4)}
+              cy={dotY}
+              r={15}
+              fill="none"
+              stroke={C.muted}
+              strokeWidth={2}
+              strokeDasharray="4 3"
+              opacity={op(seg(t, 3.9, 4.4))}
+            />
+            <Label x={b.px(20.4)} y={dotY - 52} size={15} tone="muted" opacity={op(seg(t, 4.1, 4.6))}>
+              G = 1.52 &lt; 1.72
+            </Label>
+            <Label x={b.px(20.4)} y={dotY - 32} size={15} tone="muted" opacity={op(seg(t, 4.4, 4.9))}>
+              stays
+            </Label>
+            <line x1={b.px(19.2)} y1={axisY} x2={b.px(20.6)} y2={axisY} stroke={C.ink} strokeWidth={1.5} />
+            {[19.2, 19.6, 20.0, 20.4].map((t) => (
+              <g key={t}>
+                <line x1={b.px(t)} y1={axisY} x2={b.px(t)} y2={axisY + 6} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.px(t)} y={axisY + 20} size={15} tone="muted">
+                  {t.toFixed(1)}
+                </Label>
+              </g>
+            ))}
+            <Label x={b.px(20.6)} y={axisY + 46} anchor="end" size={15} tone="muted">
+              thrust (kN)
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -482,61 +568,89 @@ function HonestGraph() {
   const res = [0.004, -0.002, -0.008, 0.006];
   const fit = (x: number) => 4.064 * x - 0.01;
   return (
-    <Figure
+    <AnimatedFigure
       height={360}
+      duration={4.4}
       alt="Pendulum data plotted as T squared against length: four points on a straight line through the origin with slope 4.064, and below it a residual strip with values +0.004, −0.002, −0.008 and +0.006 scattered with no pattern."
-      caption="Linearize so theory predicts a line, then judge the residuals, not the R²: here they are static and the intercept is zero within error, so g = 9.71 m/s² stands."
+      steps={[
+        { at: 0, label: "Data", caption: "The pendulum gives T² = 1.01, 2.02, 3.03 and 4.06 s² at L = 0.25, 0.50, 0.75 and 1.00 m." },
+        {
+          at: 1.5,
+          label: "Fit",
+          caption: "Theory says T² = (4π²/g)·L, a line through the origin; the fit's slope of 4.064 s²/m gives g = 9.71 m/s².",
+        },
+        {
+          at: 3,
+          label: "Residuals",
+          caption:
+            "Linearize so theory predicts a line, then judge the residuals, not the R²: here they are static and the intercept is zero within error, so g = 9.71 m/s² stands.",
+        },
+      ]}
     >
-      <Axes box={b} xLabel="" yLabel="T² (s²)" />
-      {[1, 2, 3, 4].map((t) => (
-        <g key={t}>
-          <line x1={b.x - 6} y1={b.py(t)} x2={b.x} y2={b.py(t)} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.x - 10} y={b.py(t)} anchor="end" size={15} tone="muted">
-            {t}
-          </Label>
-        </g>
-      ))}
-      <path d={b.path([
-        [0, fit(0)],
-        [1.08, fit(1.08)],
-      ])} stroke={C.accent} strokeWidth={2.5} fill="none" />
-      {L.map((l, i) => (
-        <circle key={l} cx={b.px(l)} cy={b.py(T2[i])} r={6} fill={C.ink} />
-      ))}
-      <Label x={b.x + 16} y={b.y + 14} anchor="start" size={15} tone="accent" weight={600}>
-        slope 4.064 s²/m
-      </Label>
-      <Label x={b.x + 16} y={b.y + 36} anchor="start" size={15} tone="accent">
-        g = 4π² ÷ 4.064 = 9.71 m/s²
-      </Label>
-      <Label x={b.x + 16} y={b.y + 58} anchor="start" size={15} tone="muted">
-        intercept −0.01 ≈ 0
-      </Label>
+      {({ t }) => {
+        const u = lerp(0, 1.08, seg(t, 1.6, 2.2)); // the fitted line draws out from the origin
+        const strip = seg(t, 3.1, 3.6);
+        return (
+          <>
+            <Axes box={b} xLabel="" yLabel="T² (s²)" />
+            {[1, 2, 3, 4].map((t) => (
+              <g key={t}>
+                <line x1={b.x - 6} y1={b.py(t)} x2={b.x} y2={b.py(t)} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.x - 10} y={b.py(t)} anchor="end" size={15} tone="muted">
+                  {t}
+                </Label>
+              </g>
+            ))}
+            {u > 0 ? (
+              <path d={b.path([
+                [0, fit(0)],
+                [u, fit(u)],
+              ])} stroke={C.accent} strokeWidth={2.5} fill="none" />
+            ) : null}
+            {L.map((l, i) => (
+              <circle key={l} cx={b.px(l)} cy={b.py(T2[i])} r={6} fill={C.ink} opacity={op(seg(t, 0.4 + 0.2 * i, 0.8 + 0.2 * i))} />
+            ))}
+            <Label x={b.x + 16} y={b.y + 14} anchor="start" size={15} tone="accent" weight={600} opacity={op(seg(t, 2, 2.5))}>
+              slope 4.064 s²/m
+            </Label>
+            <Label x={b.x + 16} y={b.y + 36} anchor="start" size={15} tone="accent" opacity={op(seg(t, 2.2, 2.7))}>
+              g = 4π² ÷ 4.064 = 9.71 m/s²
+            </Label>
+            <Label x={b.x + 16} y={b.y + 58} anchor="start" size={15} tone="muted" opacity={op(seg(t, 2.4, 2.9))}>
+              intercept −0.01 ≈ 0
+            </Label>
 
-      {/* residual strip */}
-      <Label x={r.x} y={r.y - 20} anchor="start" size={15} tone="muted">
-        residuals (s²): static, no pattern
-      </Label>
-      <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={C.soft} opacity={0.5} />
-      <line x1={r.x} y1={r.py(0)} x2={r.x + r.w} y2={r.py(0)} stroke={C.muted} strokeWidth={1.5} />
-      {L.map((l, i) => (
-        <g key={l}>
-          <line x1={r.px(l)} y1={r.py(0)} x2={r.px(l)} y2={r.py(res[i])} stroke={C.ink} strokeWidth={2} />
-          <circle cx={r.px(l)} cy={r.py(res[i])} r={5} fill={C.ink} />
-          <Label x={r.px(l) + 10} y={r.py(res[i]) + (res[i] < 0 ? 8 : -6)} anchor="start" size={15} tone="muted">
-            {(res[i] > 0 ? "+" : "−") + Math.abs(res[i]).toFixed(3)}
-          </Label>
-        </g>
-      ))}
-      {L.map((l) => (
-        <Label key={`t${l}`} x={r.px(l)} y={r.y + r.h + 18} size={15} tone="muted">
-          {l.toFixed(2)}
-        </Label>
-      ))}
-      <Label x={r.x + r.w + 10} y={r.y + r.h + 18} anchor="start" size={15} tone="muted">
-        L (m)
-      </Label>
-    </Figure>
+            {/* residual strip */}
+            <Label x={r.x} y={r.y - 20} anchor="start" size={15} tone="muted" opacity={op(strip)}>
+              residuals (s²): static, no pattern
+            </Label>
+            <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={C.soft} opacity={0.5 * strip} />
+            <line x1={r.x} y1={r.py(0)} x2={r.x + r.w} y2={r.py(0)} stroke={C.muted} strokeWidth={1.5} opacity={op(strip)} />
+            {L.map((l, i) => {
+              const p = seg(t, 3.4 + 0.12 * i, 3.8 + 0.12 * i); // each residual grows out of the zero line
+              const y = lerp(r.py(0), r.py(res[i]), p);
+              return (
+                <g key={l} opacity={op(p)}>
+                  <line x1={r.px(l)} y1={r.py(0)} x2={r.px(l)} y2={y} stroke={C.ink} strokeWidth={2} />
+                  <circle cx={r.px(l)} cy={y} r={5} fill={C.ink} />
+                  <Label x={r.px(l) + 10} y={r.py(res[i]) + (res[i] < 0 ? 8 : -6)} anchor="start" size={15} tone="muted">
+                    {(res[i] > 0 ? "+" : "−") + Math.abs(res[i]).toFixed(3)}
+                  </Label>
+                </g>
+              );
+            })}
+            {L.map((l) => (
+              <Label key={`t${l}`} x={r.px(l)} y={r.y + r.h + 18} size={15} tone="muted">
+                {l.toFixed(2)}
+              </Label>
+            ))}
+            <Label x={r.x + r.w + 10} y={r.y + r.h + 18} anchor="start" size={15} tone="muted">
+              L (m)
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

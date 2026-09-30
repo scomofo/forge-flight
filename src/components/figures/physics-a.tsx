@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Arrow, Axes, C, DimH, DimV, Figure, Ground, Label, plotBox, type FigureMap } from "./kit";
-import { AnimatedFigure, clamp, CompareSwitch, GrowArrow, lerp, op, seg } from "./motion";
+import { AnimatedFigure, clamp, CompareSwitch, GrowArrow, lerp, op, partial, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
 
@@ -194,49 +194,79 @@ function Fermi() {
     [3, Math.log10(120)],
   ];
   const sup = ["¹", "²", "³", "⁴", "⁵", "⁶", "⁷"];
+  const hops = [0.9, 1.9, 3.1]; // each hop down the chain takes 0.6 s
+  const lands = [0.4, ...hops.map((a) => a + 0.4)]; // a point and its label arrive with the line
   return (
-    <Figure
+    <AnimatedFigure
       height={272}
+      duration={5.3}
       alt="Four points on a powers-of-ten axis: 3 million people, 1.2 million households, 60,000 pianos, and 120 tuners, with the last point inside a band from 10 to 1,000 around the roughly 100 listed tuners."
-      caption="Each factor is a short, boundable hop in log space; the chain lands at 120, inside an order of magnitude of the ~100 in directories."
+      steps={[
+        {
+          at: 0,
+          label: "Households",
+          caption: "Start from about 3 million people in Chicago, or roughly 1.2 million households.",
+        },
+        { at: 1.9, label: "Pianos", caption: "Maybe 1 household in 20 has a piano: about 60,000 pianos." },
+        {
+          at: 3.1,
+          label: "Tuners",
+          caption: "Tuned about once a year, at roughly 500 jobs per tuner, 60,000 / 500 gives about 120 tuners.",
+        },
+        {
+          at: 4.3,
+          label: "Check",
+          caption:
+            "Each factor is a short, boundable hop in log space; the chain lands at 120, inside an order of magnitude of the ~100 in directories.",
+        },
+      ]}
     >
-      <line x1={b.x} y1={b.py(1)} x2={b.x} y2={b.py(7)} stroke={C.ink} strokeWidth={1.5} />
-      {sup.map((s, i) => (
-        <g key={s}>
-          <line x1={b.x} y1={b.py(i + 1)} x2={b.x + b.w} y2={b.py(i + 1)} stroke={C.line} strokeWidth={1} />
-          <Label x={b.x - 8} y={b.py(i + 1)} anchor="end" tone="muted" size={15}>
-            10{s}
-          </Label>
-        </g>
-      ))}
-      <rect x={b.px(2.72)} y={b.py(3)} width={b.px(3.28) - b.px(2.72)} height={b.py(1) - b.py(3)} fill={C.soft} stroke={C.accent} strokeWidth={1} strokeDasharray="4 3" />
-      <line x1={b.px(2.72)} y1={b.py(2)} x2={b.px(3.28)} y2={b.py(2)} stroke={C.muted} strokeWidth={2} />
-      <Label x={b.px(3)} y={250} tone="muted" size={15}>
-        ~100 listed
-      </Label>
-      <path d={b.path(pts)} fill="none" stroke={C.accent} strokeWidth={2.5} />
-      {pts.map(([x, y]) => (
-        <circle key={x} cx={b.px(x)} cy={b.py(y)} r={6} fill={C.accent} />
-      ))}
-      <Label x={b.px(0) + 10} y={b.py(pts[0][1]) - 16} anchor="start" size={15}>
-        3M people
-      </Label>
-      <Label x={b.px(1) - 6} y={b.py(pts[1][1]) + 22} anchor="end" size={15}>
-        1.2M homes
-      </Label>
-      <Label x={b.px(2) + 10} y={b.py(pts[2][1]) - 16} anchor="start" size={15}>
-        60,000 pianos
-      </Label>
-      <Label x={b.px(3) - 40} y={b.py(pts[3][1]) + 16} anchor="end" size={15} tone="accent" weight={600}>
-        120 tuners
-      </Label>
-      <Label x={(b.px(1) + b.px(2)) / 2 + 6} y={(b.py(pts[1][1]) + b.py(pts[2][1])) / 2 - 14} anchor="start" tone="muted" size={15}>
-        1 in 20
-      </Label>
-      <Label x={(b.px(2) + b.px(3)) / 2 + 10} y={(b.py(pts[2][1]) + b.py(pts[3][1])) / 2 - 8} anchor="start" tone="muted" size={15}>
-        ÷ 500/yr
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const hop = hops.reduce((n, a) => n + seg(t, a, a + 0.6), 0); // 0–3 hops drawn
+        const land = (i: number) => op(seg(t, lands[i], lands[i] + 0.5));
+        const listed = op(seg(t, 4.5, 5));
+        return (
+          <>
+            <line x1={b.x} y1={b.py(1)} x2={b.x} y2={b.py(7)} stroke={C.ink} strokeWidth={1.5} />
+            {sup.map((s, i) => (
+              <g key={s}>
+                <line x1={b.x} y1={b.py(i + 1)} x2={b.x + b.w} y2={b.py(i + 1)} stroke={C.line} strokeWidth={1} />
+                <Label x={b.x - 8} y={b.py(i + 1)} anchor="end" tone="muted" size={15}>
+                  10{s}
+                </Label>
+              </g>
+            ))}
+            <rect x={b.px(2.72)} y={b.py(3)} width={b.px(3.28) - b.px(2.72)} height={b.py(1) - b.py(3)} fill={C.soft} stroke={C.accent} strokeWidth={1} strokeDasharray="4 3" opacity={op(seg(t, 4.3, 4.8))} />
+            <line x1={b.px(2.72)} y1={b.py(2)} x2={b.px(3.28)} y2={b.py(2)} stroke={C.muted} strokeWidth={2} opacity={listed} />
+            <Label x={b.px(3)} y={250} tone="muted" size={15} opacity={listed}>
+              ~100 listed
+            </Label>
+            <path d={b.path(partial(pts, hop / 3))} fill="none" stroke={C.accent} strokeWidth={2.5} />
+            {pts.map(([x, y], i) => (
+              <circle key={x} cx={b.px(x)} cy={b.py(y)} r={6} fill={C.accent} opacity={land(i)} />
+            ))}
+            <Label x={b.px(0) + 10} y={b.py(pts[0][1]) - 16} anchor="start" size={15} opacity={land(0)}>
+              3M people
+            </Label>
+            <Label x={b.px(1) - 6} y={b.py(pts[1][1]) + 22} anchor="end" size={15} opacity={land(1)}>
+              1.2M homes
+            </Label>
+            <Label x={b.px(2) + 10} y={b.py(pts[2][1]) - 16} anchor="start" size={15} opacity={land(2)}>
+              60,000 pianos
+            </Label>
+            <Label x={b.px(3) - 40} y={b.py(pts[3][1]) + 16} anchor="end" size={15} tone="accent" weight={600} opacity={land(3)}>
+              120 tuners
+            </Label>
+            <Label x={(b.px(1) + b.px(2)) / 2 + 6} y={(b.py(pts[1][1]) + b.py(pts[2][1])) / 2 - 14} anchor="start" tone="muted" size={15} opacity={op(seg(t, 2, 2.5))}>
+              1 in 20
+            </Label>
+            <Label x={(b.px(2) + b.px(3)) / 2 + 10} y={(b.py(pts[2][1]) + b.py(pts[3][1])) / 2 - 8} anchor="start" tone="muted" size={15} opacity={op(seg(t, 3.2, 3.7))}>
+              ÷ 500/yr
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -250,50 +280,77 @@ function VecComp() {
   const T1 = { x: O.x + s * 5 * Math.cos(rad(30)), y: O.y - s * 5 * Math.sin(rad(30)) };
   const T2 = { x: T1.x + s * 3 * Math.cos(rad(-20)), y: T1.y - s * 3 * Math.sin(rad(-20)) };
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={5.2}
       alt="Force F1 of 5.0 kN at 30 degrees above the dock axis, with F2 of 3.0 kN at 20 degrees below drawn from its tip; the resultant R of 7.30 kN at 11.6 degrees runs from the start to the end."
-      caption="Tip to tail, the vertical parts partly cancel: the barge feels 7.30 kN, not the 8.0 kN the magnitudes add to."
+      steps={[
+        { at: 0, label: "F₁", caption: "The first tug pulls with F₁ = 5.0 kN at 30° above the dock axis." },
+        { at: 1.5, label: "F₂", caption: "The second pulls with F₂ = 3.0 kN at 20° below it, drawn from the tip of F₁." },
+        {
+          at: 2.8,
+          label: "Resultant",
+          caption: "F₁ = (4.33, 2.50) and F₂ = (2.82, −1.03) add to R = (7.15, 1.47) kN: 7.30 kN at 11.6°.",
+        },
+        {
+          at: 4.4,
+          label: "Compare",
+          caption: "Tip to tail, the vertical parts partly cancel: the barge feels 7.30 kN, not the 8.0 kN the magnitudes add to.",
+        },
+      ]}
     >
-      <line x1={20} y1={O.y} x2={465} y2={O.y} stroke={C.muted} strokeWidth={1.5} strokeDasharray="6 5" />
-      <Label x={465} y={O.y + 18} anchor="end" tone="muted" size={15}>
-        dock axis
-      </Label>
-      <line x1={T1.x} y1={T1.y} x2={T1.x + 70} y2={T1.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" />
-      <line x1={T2.x} y1={T2.y} x2={T2.x} y2={O.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" />
-      <Label x={T2.x + 8} y={(T2.y + O.y) / 2} anchor="start" tone="muted" size={15}>
-        1.47
-      </Label>
+      {({ t }) => {
+        const angle1 = op(seg(t, 0.8, 1.3));
+        const angle2 = op(seg(t, 2, 2.5));
+        const rise = op(seg(t, 3.3, 3.8)); // R's 1.47 kN vertical component
+        return (
+          <>
+            <line x1={20} y1={O.y} x2={465} y2={O.y} stroke={C.muted} strokeWidth={1.5} strokeDasharray="6 5" />
+            <Label x={465} y={O.y + 18} anchor="end" tone="muted" size={15}>
+              dock axis
+            </Label>
+            <line x1={T1.x} y1={T1.y} x2={T1.x + 70} y2={T1.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" opacity={op(seg(t, 1.5, 2))} />
+            <line x1={T2.x} y1={T2.y} x2={T2.x} y2={O.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" opacity={rise} />
+            <Label x={T2.x + 8} y={(T2.y + O.y) / 2} anchor="start" tone="muted" size={15} opacity={rise}>
+              1.47
+            </Label>
 
-      <Arrow x1={O.x} y1={O.y} x2={T1.x} y2={T1.y} tone="ink" />
-      <Arrow x1={T1.x} y1={T1.y} x2={T2.x} y2={T2.y} tone="ink" />
-      <Arrow x1={O.x} y1={O.y} x2={T2.x} y2={T2.y} tone="accent" width={3.5} />
+            <GrowArrow p={seg(t, 0.4, 1)} x1={O.x} y1={O.y} x2={T1.x} y2={T1.y} tone="ink" />
+            <GrowArrow p={seg(t, 1.6, 2.2)} x1={T1.x} y1={T1.y} x2={T2.x} y2={T2.y} tone="ink" />
+            <GrowArrow p={seg(t, 2.8, 3.4)} x1={O.x} y1={O.y} x2={T2.x} y2={T2.y} tone="accent" width={3.5} />
 
-      <ArcMark cx={O.x} cy={O.y} r={62} a0={11.6} a1={30} />
-      <ArcMark cx={T1.x} cy={T1.y} r={50} a0={-20} a1={0} />
-      <Label x={O.x + 74} y={O.y - 34} anchor="start" size={15}>
-        30°
-      </Label>
-      <Label x={T1.x + 56} y={T1.y + 13} anchor="start" size={15}>
-        20°
-      </Label>
+            <g opacity={angle1}>
+              <ArcMark cx={O.x} cy={O.y} r={62} a0={11.6} a1={30} />
+            </g>
+            <g opacity={angle2}>
+              <ArcMark cx={T1.x} cy={T1.y} r={50} a0={-20} a1={0} />
+            </g>
+            <Label x={O.x + 74} y={O.y - 34} anchor="start" size={15} opacity={angle1}>
+              30°
+            </Label>
+            <Label x={T1.x + 56} y={T1.y + 13} anchor="start" size={15} opacity={angle2}>
+              20°
+            </Label>
 
-      <Label x={(O.x + T1.x) / 2 - 12} y={(O.y + T1.y) / 2 - 16} anchor="end">
-        F₁ 5.0 kN
-      </Label>
-      <Label x={(T1.x + T2.x) / 2 + 18} y={(T1.y + T2.y) / 2 - 22} anchor="start">
-        F₂ 3.0 kN
-      </Label>
-      <Label x={(O.x + T2.x) / 2 + 20} y={(O.y + T2.y) / 2 + 22} tone="accent" weight={600}>
-        R 7.30 kN
-      </Label>
-      <Label x={240} y={214} tone="muted" size={15}>
-        R = (7.15, 1.47) kN, at 11.6°
-      </Label>
-      <Label x={240} y={236} tone="muted" size={15}>
-        |F₁| + |F₂| = 8.0 kN
-      </Label>
-    </Figure>
+            <Label x={(O.x + T1.x) / 2 - 12} y={(O.y + T1.y) / 2 - 16} anchor="end" opacity={op(seg(t, 0.7, 1.2))}>
+              F₁ 5.0 kN
+            </Label>
+            <Label x={(T1.x + T2.x) / 2 + 18} y={(T1.y + T2.y) / 2 - 22} anchor="start" opacity={op(seg(t, 1.9, 2.4))}>
+              F₂ 3.0 kN
+            </Label>
+            <Label x={(O.x + T2.x) / 2 + 20} y={(O.y + T2.y) / 2 + 22} tone="accent" weight={600} opacity={op(seg(t, 3.1, 3.6))}>
+              R 7.30 kN
+            </Label>
+            <Label x={240} y={214} tone="muted" size={15} opacity={op(seg(t, 3.6, 4.1))}>
+              R = (7.15, 1.47) kN, at 11.6°
+            </Label>
+            <Label x={240} y={236} tone="muted" size={15} opacity={op(seg(t, 4.4, 4.9))}>
+              |F₁| + |F₂| = 8.0 kN
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

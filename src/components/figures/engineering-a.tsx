@@ -194,33 +194,38 @@ function VerifyValidate() {
         },
       ]}
     >
-      {({ t }) => (
-        <>
-          <Box x={16} y={16} w={170} title="need" lines={["phone charged", "by morning"]} />
-          <Box x={294} y={16} w={170} title="requirement" lines={["5.0 V ± 0.25 V", "up to 3.0 A"]} tone="accent" opacity={op(seg(t, 0.8, 1.3))} />
-          <Box x={160} y={196} w={160} title="product" lines={["the charger"]} opacity={op(seg(t, 1.6, 2.1))} />
-          <GrowArrow p={seg(t, 0.4, 0.9)} x1={192} y1={50} x2={286} y2={50} tone="muted" width={2} />
-          <Label x={240} y={34} tone="muted" size={15} opacity={op(seg(t, 0.5, 1))}>
-            write
-          </Label>
+      {({ t }) => {
+        // Two-headed arrows fade in over their first quarter, so the heads don't pile up while short.
+        const ver = seg(t, 2, 2.6);
+        const val = seg(t, 3.3, 3.9);
+        return (
+          <>
+            <Box x={16} y={16} w={170} title="need" lines={["phone charged", "by morning"]} />
+            <Box x={294} y={16} w={170} title="requirement" lines={["5.0 V ± 0.25 V", "up to 3.0 A"]} tone="accent" opacity={op(seg(t, 0.8, 1.3))} />
+            <Box x={160} y={196} w={160} title="product" lines={["the charger"]} opacity={op(seg(t, 1.6, 2.1))} />
+            <GrowArrow p={seg(t, 0.4, 0.9)} x1={192} y1={50} x2={286} y2={50} tone="muted" width={2} />
+            <Label x={240} y={34} tone="muted" size={15} opacity={op(seg(t, 0.5, 1))}>
+              write
+            </Label>
 
-          <GrowArrow p={seg(t, 2, 2.6)} x1={300} y1={190} x2={368} y2={92} tone="accent" width={2.5} both />
-          <Label x={346} y={140} tone="accent" size={15} anchor="start" weight={600} opacity={op(seg(t, 2.4, 2.9))}>
-            verification
-          </Label>
-          <Label x={352} y={160} tone="accent" size={15} anchor="start" opacity={op(seg(t, 2.6, 3.1))}>
-            built it right?
-          </Label>
+            <GrowArrow p={ver} x1={300} y1={190} x2={368} y2={92} tone="accent" width={2.5} both opacity={op(4 * ver)} />
+            <Label x={346} y={140} tone="accent" size={15} anchor="start" weight={600} opacity={op(seg(t, 2.4, 2.9))}>
+              verification
+            </Label>
+            <Label x={352} y={160} tone="accent" size={15} anchor="start" opacity={op(seg(t, 2.6, 3.1))}>
+              built it right?
+            </Label>
 
-          <GrowArrow p={seg(t, 3.3, 3.9)} x1={180} y1={190} x2={112} y2={92} tone="ink" width={2.5} both dashed />
-          <Label x={134} y={140} size={15} anchor="end" weight={600} opacity={op(seg(t, 3.7, 4.2))}>
-            validation
-          </Label>
-          <Label x={128} y={160} size={15} anchor="end" opacity={op(seg(t, 3.9, 4.4))}>
-            right thing?
-          </Label>
-        </>
-      )}
+            <GrowArrow p={val} x1={180} y1={190} x2={112} y2={92} tone="ink" width={2.5} both dashed opacity={op(4 * val)} />
+            <Label x={134} y={140} size={15} anchor="end" weight={600} opacity={op(seg(t, 3.7, 4.2))}>
+              validation
+            </Label>
+            <Label x={128} y={160} size={15} anchor="end" opacity={op(seg(t, 3.9, 4.4))}>
+              right thing?
+            </Label>
+          </>
+        );
+      }}
     </AnimatedFigure>
   );
 }
@@ -483,112 +488,204 @@ function Sensitivity() {
     ["halve p ±", 126, "accent"],
     ["halve d ±", 200, "muted"],
   ];
+  // Row i fades in at show[i]; "now" grows from zero, each purchase starts at today's 211 N and shrinks to what it buys.
+  const show = [2.9, 3.9, 4.2];
   return (
-    <Figure
+    <AnimatedFigure
       height={280}
+      duration={5.5}
       alt="A bar split 86 percent pressure and 14 percent diameter variance share, with leverages S_p = 1 and S_d = 2; below, RSS uncertainty now 211 N, 126 N after halving the pressure uncertainty, and 200 N after halving the diameter uncertainty."
-      caption="The diameter has double the leverage but owns only 14% of the scatter. Halving the pressure ± buys 85 N back; halving the diameter ± buys 11 N."
+      steps={[
+        { at: 0, label: "Leverage", caption: "Area squares the diameter, so its leverage S_d = 2 is twice the pressure's S_p = 1." },
+        {
+          at: 1.3,
+          label: "Shares",
+          caption: "But leverage isn't the bill: with p ± 1% and d ± 0.2%, pressure owns 86% of the variance and diameter 14%.",
+        },
+        { at: 2.8, label: "Now", caption: "Today the two combine to an RSS uncertainty of 211 N." },
+        {
+          at: 3.9,
+          label: "Spend",
+          caption:
+            "The diameter has double the leverage but owns only 14% of the scatter. Halving the pressure ± buys 85 N back; halving the diameter ± buys 11 N.",
+        },
+      ]}
     >
-      <Label x={x0} y={24} anchor="start" size={15}>
-        pressure 86%
-      </Label>
-      <Label x={x0 + w} y={24} anchor="end" size={15} tone="muted">
-        diameter 14%
-      </Label>
-      <rect x={x0} y={40} width={xs - x0} height={28} fill={C.accent} />
-      <rect x={xs} y={40} width={x0 + w - xs} height={28} fill={C.muted} />
-      <Label x={(x0 + xs) / 2} y={86} size={15} tone="muted">
-        leverage S_p = 1
-      </Label>
-      <Label x={x0 + w} y={86} anchor="end" size={15} tone="muted">
-        S_d = 2
-      </Label>
-
-      <Label x={x0} y={132} anchor="start" size={15} tone="muted">
-        RSS after spending:
-      </Label>
-      {rows.map(([name, v, tone], i) => {
-        const y = 150 + i * 38;
+      {({ t }) => {
+        const shareP = seg(t, 1.3, 2);
+        const shareD = seg(t, 2, 2.4);
         return (
-          <g key={name}>
-            <Label x={x0} y={y + 11} anchor="start" size={15} tone={tone === "muted" ? "ink" : tone}>
-              {name}
+          <>
+            <Label x={x0} y={24} anchor="start" size={15} opacity={op(seg(t, 1.6, 2.1))}>
+              pressure 86%
             </Label>
-            <rect x={b0} y={y} width={bw(v)} height={22} fill={tone === "accent" ? C.accent : tone === "muted" ? C.line : C.soft} stroke={C[tone]} strokeWidth={1.5} />
-            <Label x={b0 + bw(v) + 8} y={y + 11} anchor="start" size={15} tone={tone === "muted" ? "ink" : tone} weight={tone === "accent" ? 600 : undefined}>
-              {`${v} N`}
+            <Label x={x0 + w} y={24} anchor="end" size={15} tone="muted" opacity={op(seg(t, 2.1, 2.6))}>
+              diameter 14%
             </Label>
-          </g>
+            {shareP > 0 ? <rect x={x0} y={40} width={lerp(0, xs - x0, shareP)} height={28} fill={C.accent} /> : null}
+            {shareD > 0 ? <rect x={xs} y={40} width={lerp(0, x0 + w - xs, shareD)} height={28} fill={C.muted} /> : null}
+            <Label x={(x0 + xs) / 2} y={86} size={15} tone="muted">
+              leverage S_p = 1
+            </Label>
+            <Label x={x0 + w} y={86} anchor="end" size={15} tone="muted" opacity={op(seg(t, 0.4, 0.9))}>
+              S_d = 2
+            </Label>
+
+            <Label x={x0} y={132} anchor="start" size={15} tone="muted" opacity={op(seg(t, 2.8, 3.3))}>
+              RSS after spending:
+            </Label>
+            {rows.map(([name, v, tone], i) => {
+              const y = 150 + i * 38;
+              const a = show[i];
+              const p = i === 0 ? seg(t, a + 0.1, a + 0.7) : seg(t, a + 0.3, a + 0.9);
+              const width = i === 0 ? lerp(0, bw(v), p) : lerp(bw(211), bw(v), p);
+              return (
+                <g key={name} opacity={op(seg(t, a, a + 0.4))}>
+                  <Label x={x0} y={y + 11} anchor="start" size={15} tone={tone === "muted" ? "ink" : tone}>
+                    {name}
+                  </Label>
+                  {width > 2 ? (
+                    <rect x={b0} y={y} width={width} height={22} fill={tone === "accent" ? C.accent : tone === "muted" ? C.line : C.soft} stroke={C[tone]} strokeWidth={1.5} />
+                  ) : null}
+                  <Label
+                    x={b0 + bw(v) + 8}
+                    y={y + 11}
+                    anchor="start"
+                    size={15}
+                    tone={tone === "muted" ? "ink" : tone}
+                    weight={tone === "accent" ? 600 : undefined}
+                    opacity={op(seg(t, a + 0.7, a + 1.2))}
+                  >
+                    {`${v} N`}
+                  </Label>
+                </g>
+              );
+            })}
+          </>
         );
-      })}
-    </Figure>
+      }}
+    </AnimatedFigure>
   );
 }
 
 /* ---------- W23 ---------- */
 
+/** The polyline `pts` cut `d` along its length; once `d` reaches the end, `pts` itself. */
+function upTo(pts: Array<[number, number]>, d: number): Array<[number, number]> {
+  const out: Array<[number, number]> = [pts[0]];
+  let left = d;
+  for (let i = 1; i < pts.length; i++) {
+    const [xa, ya] = pts[i - 1];
+    const [xb, yb] = pts[i];
+    const len = Math.hypot(xb - xa, yb - ya);
+    if (left < len) {
+      const q = left / len;
+      out.push([xa + (xb - xa) * q, ya + (yb - ya) * q]);
+      return out;
+    }
+    out.push(pts[i]);
+    left -= len;
+  }
+  return pts;
+}
+
+/** The load path from the rope's end to the top of the frame. */
+const LOAD_PATH: Array<[number, number]> = [
+  [18, 160],
+  [150, 160],
+  [250, 160],
+  [250, 180],
+  [320, 180],
+  [320, 178],
+  [420, 178],
+  [420, 44],
+];
+
 /** loadpath: glider tow hook, rope to frame, every link with its load. */
 function LoadPath() {
   return (
-    <Figure
+    <AnimatedFigure
       height={280}
+      duration={5}
       alt="Side view of a glider tow hook: the rope pulls 2 kN forward on a hook pinned through a lug; the lug's bracket is held by two bolts at 1 kN shear each into the fuselage frame, and a highlighted path runs from rope to frame."
-      caption="Every newton from the rope passes through the lug, splits across the two bolts, and runs into the frame. Each link on the path gets a named load and a check."
+      steps={[
+        { at: 0, label: "Rope", caption: "A glider tow hook rated for a 2 kN release load: the rope pulls on it with 2 kN of tension." },
+        { at: 1.3, label: "Lug", caption: "The hook passes all 2 kN into the lug, through its pin hole." },
+        { at: 2.4, label: "Bolts", caption: "The bracket splits it across two bolts: 1 kN of shear each." },
+        {
+          at: 3.6,
+          label: "Frame",
+          caption:
+            "Every newton from the rope passes through the lug, splits across the two bolts, and runs into the frame. Each link on the path gets a named load and a check.",
+        },
+      ]}
     >
-      {/* frame and its flange */}
-      <rect x={410} y={40} width={20} height={190} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <rect x={200} y={170} width={210} height={16} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={420} y={24} size={15}>
-        frame
-      </Label>
-      {/* bracket plate + lug */}
-      <path d="M180,154 L370,154 L370,170 L180,170 z" fill={C.surface} stroke={C.ink} strokeWidth={2} />
-      <path d="M180,146 L150,146 A12,12 0 0 0 150,170 L180,170 z" fill={C.surface} stroke={C.ink} strokeWidth={2} />
-      <line x1={180} y1={146} x2={180} y2={154} stroke={C.ink} strokeWidth={2} />
-      <circle cx={150} cy={158} r={5} fill={C.ink} />
-      {/* bolts */}
-      {[250, 320].map((x) => (
-        <g key={x}>
-          <rect x={x - 4} y={150} width={8} height={42} fill={C.ink} />
-          <rect x={x - 9} y={144} width={18} height={8} fill={C.ink} />
-          <rect x={x - 8} y={186} width={16} height={7} fill={C.ink} />
-        </g>
-      ))}
-      {/* hook ring + rope */}
-      <line x1={150} y1={158} x2={118} y2={158} stroke={C.ink} strokeWidth={3} />
-      <circle cx={108} cy={158} r={10} fill="none" stroke={C.ink} strokeWidth={3} />
-      <line x1={98} y1={158} x2={50} y2={158} stroke={C.ink} strokeWidth={3} strokeDasharray="2 3" />
-      <Arrow x1={50} y1={158} x2={16} y2={158} tone="accent" width={3} />
+      {({ t }) => {
+        // Trace the path link by link: to the lug's pin (132 px), past both bolts (324), up the frame (558).
+        const d = lerp(0, 132, seg(t, 1.3, 1.9)) + lerp(0, 192, seg(t, 2.4, 3.1)) + lerp(0, 234, seg(t, 3.6, 4.3));
+        return (
+          <>
+            {/* frame and its flange */}
+            <rect x={410} y={40} width={20} height={190} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <rect x={200} y={170} width={210} height={16} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={420} y={24} size={15}>
+              frame
+            </Label>
+            {/* bracket plate + lug */}
+            <path d="M180,154 L370,154 L370,170 L180,170 z" fill={C.surface} stroke={C.ink} strokeWidth={2} />
+            <path d="M180,146 L150,146 A12,12 0 0 0 150,170 L180,170 z" fill={C.surface} stroke={C.ink} strokeWidth={2} />
+            <line x1={180} y1={146} x2={180} y2={154} stroke={C.ink} strokeWidth={2} />
+            <circle cx={150} cy={158} r={5} fill={C.ink} />
+            {/* bolts */}
+            {[250, 320].map((x) => (
+              <g key={x}>
+                <rect x={x - 4} y={150} width={8} height={42} fill={C.ink} />
+                <rect x={x - 9} y={144} width={18} height={8} fill={C.ink} />
+                <rect x={x - 8} y={186} width={16} height={7} fill={C.ink} />
+              </g>
+            ))}
+            {/* hook ring + rope */}
+            <line x1={150} y1={158} x2={118} y2={158} stroke={C.ink} strokeWidth={3} />
+            <circle cx={108} cy={158} r={10} fill="none" stroke={C.ink} strokeWidth={3} />
+            <line x1={98} y1={158} x2={50} y2={158} stroke={C.ink} strokeWidth={3} strokeDasharray="2 3" />
+            <GrowArrow p={seg(t, 0.4, 0.9)} x1={50} y1={158} x2={16} y2={158} tone="accent" width={3} />
 
-      {/* highlighted load path, drawn over the parts, translucent */}
-      <polyline
-        points="18,160 150,160 250,160 250,180 320,180 320,178 420,178 420,44"
-        fill="none"
-        stroke={C.accent}
-        strokeWidth={10}
-        strokeLinejoin="round"
-        opacity={0.4}
-      />
-      <Label x={58} y={130} size={15} tone="accent" weight={600}>
-        rope 2 kN
-      </Label>
-      <Label x={155} y={118} size={15}>
-        lug 2 kN
-      </Label>
-      <Label x={285} y={118} size={15}>
-        bolts 1 kN
-      </Label>
-      <Label x={285} y={136} size={15}>
-        shear each
-      </Label>
+            {/* highlighted load path, drawn over the parts, translucent */}
+            {d > 0 ? (
+              <polyline
+                points={upTo(LOAD_PATH, d)
+                  .map(([x, y]) => `${+x.toFixed(1)},${+y.toFixed(1)}`)
+                  .join(" ")}
+                fill="none"
+                stroke={C.accent}
+                strokeWidth={10}
+                strokeLinejoin="round"
+                opacity={0.4}
+              />
+            ) : null}
+            <Label x={58} y={130} size={15} tone="accent" weight={600} opacity={op(seg(t, 0.6, 1.1))}>
+              rope 2 kN
+            </Label>
+            <Label x={155} y={118} size={15} opacity={op(seg(t, 1.7, 2.2))}>
+              lug 2 kN
+            </Label>
+            <Label x={285} y={118} size={15} opacity={op(seg(t, 2.8, 3.3))}>
+              bolts 1 kN
+            </Label>
+            <Label x={285} y={136} size={15} opacity={op(seg(t, 2.8, 3.3))}>
+              shear each
+            </Label>
 
-      <Label x={240} y={236} size={15} tone="accent" weight={600}>
-        rope → hook → lug → 2 bolts → frame
-      </Label>
-      <Label x={240} y={260} size={15} tone="muted">
-        → longerons → wing
-      </Label>
-    </Figure>
+            <Label x={240} y={236} size={15} tone="accent" weight={600} opacity={op(seg(t, 4.1, 4.6))}>
+              rope → hook → lug → 2 bolts → frame
+            </Label>
+            <Label x={240} y={260} size={15} tone="muted" opacity={op(seg(t, 4.4, 4.9))}>
+              → longerons → wing
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -600,53 +697,81 @@ function Margins() {
     { name: "ultimate", load: "18 kN", app: 180, allow: 310, allowName: "310 ult.", ms: "MS 0.72", gov: true },
   ];
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={4.8}
       alt="Two margin-table rows as bars: limit load 12 kN gives 120 MPa against 276 MPa yield, MS 1.30; ultimate load 18 kN gives 180 MPa against 310 MPa ultimate strength, MS 0.72, marked as governing."
-      caption="The 1.5 factor raises the applied stress more than the step from yield to ultimate raises the allowable, so the ultimate row is the worst line — and it still passes."
+      steps={[
+        {
+          at: 0,
+          label: "Limit",
+          caption: "At the 12 kN limit load the 100 mm² lug sees 120 MPa against a 276 MPa yield: MS = 276/120 − 1 = 1.30.",
+        },
+        {
+          at: 2.2,
+          label: "Ultimate",
+          caption: "Ultimate load is 12 × 1.5 = 18 kN: 180 MPa against the 310 MPa ultimate strength, MS 0.72.",
+        },
+        {
+          at: 4.1,
+          label: "Governs",
+          caption:
+            "The 1.5 factor raises the applied stress more than the step from yield to ultimate raises the allowable, so the ultimate row is the worst line — and it still passes.",
+        },
+      ]}
     >
-      {rows.map((r, i) => {
-        const y = 56 + i * 80;
-        return (
-          <g key={r.name}>
-            <Label x={20} y={y + 4} anchor="start" size={15} weight={600} tone={r.gov ? "accent" : "ink"}>
-              {r.name}
-            </Label>
-            <Label x={20} y={y + 24} anchor="start" size={15} tone="muted">
-              {r.load}
-            </Label>
-            <rect x={px(0)} y={y} width={px(r.allow) - px(0)} height={28} fill={C.soft} stroke={C.muted} strokeWidth={1.5} />
-            <rect x={px(0)} y={y} width={px(r.app) - px(0)} height={28} fill={C.accent} />
-            <Label x={px(r.app)} y={y - 12} size={15} tone="accent">
-              {`${r.app}`}
-            </Label>
-            <Label x={px(r.allow)} y={y - 12} size={15} tone="muted">
-              {r.allowName}
-            </Label>
-            <Label x={(px(r.app) + px(r.allow)) / 2} y={y + 14} size={15} weight={r.gov ? 700 : undefined}>
-              {r.ms}
-            </Label>
-            {r.gov ? (
-              <Label x={(px(r.app) + px(r.allow)) / 2} y={y + 44} size={15} tone="accent" weight={600}>
-                governs
+      {({ t }) => (
+        <>
+          {rows.map((r, i) => {
+            const y = 56 + i * 80;
+            const a = 0.3 + 1.9 * i; // the row's start
+            const name = op(seg(t, a, a + 0.5));
+            const allow = seg(t, a + 0.2, a + 0.8); // the allowable sweeps out,
+            const app = seg(t, a + 0.7, a + 1.2); // then the applied stress climbs into it
+            return (
+              <g key={r.name}>
+                <Label x={20} y={y + 4} anchor="start" size={15} weight={600} tone={r.gov ? "accent" : "ink"} opacity={name}>
+                  {r.name}
+                </Label>
+                <Label x={20} y={y + 24} anchor="start" size={15} tone="muted" opacity={name}>
+                  {r.load}
+                </Label>
+                {allow > 0.02 ? (
+                  <rect x={px(0)} y={y} width={lerp(0, px(r.allow) - px(0), allow)} height={28} fill={C.soft} stroke={C.muted} strokeWidth={1.5} />
+                ) : null}
+                {app > 0 ? <rect x={px(0)} y={y} width={lerp(0, px(r.app) - px(0), app)} height={28} fill={C.accent} /> : null}
+                <Label x={px(r.app)} y={y - 12} size={15} tone="accent" opacity={op(seg(t, a + 1, a + 1.5))}>
+                  {`${r.app}`}
+                </Label>
+                <Label x={px(r.allow)} y={y - 12} size={15} tone="muted" opacity={op(seg(t, a + 0.5, a + 1))}>
+                  {r.allowName}
+                </Label>
+                <Label x={(px(r.app) + px(r.allow)) / 2} y={y + 14} size={15} weight={r.gov ? 700 : undefined} opacity={op(seg(t, a + 1.3, a + 1.8))}>
+                  {r.ms}
+                </Label>
+                {r.gov ? (
+                  <Label x={(px(r.app) + px(r.allow)) / 2} y={y + 44} size={15} tone="accent" weight={600} opacity={op(seg(t, 4.1, 4.6))}>
+                    governs
+                  </Label>
+                ) : null}
+              </g>
+            );
+          })}
+          <line x1={px(0)} y1={214} x2={px(320)} y2={214} stroke={C.ink} strokeWidth={1.5} />
+          {[0, 100, 200, 300].map((s) => (
+            <g key={s}>
+              <line x1={px(s)} y1={214} x2={px(s)} y2={221} stroke={C.ink} strokeWidth={1.5} />
+              <Label x={px(s)} y={234} size={15} tone="muted">
+                {`${s}`}
               </Label>
-            ) : null}
-          </g>
-        );
-      })}
-      <line x1={px(0)} y1={214} x2={px(320)} y2={214} stroke={C.ink} strokeWidth={1.5} />
-      {[0, 100, 200, 300].map((s) => (
-        <g key={s}>
-          <line x1={px(s)} y1={214} x2={px(s)} y2={221} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={px(s)} y={234} size={15} tone="muted">
-            {`${s}`}
+            </g>
+          ))}
+          <Label x={px(320) + 6} y={214} size={15} tone="muted" anchor="start">
+            MPa
           </Label>
-        </g>
-      ))}
-      <Label x={px(320) + 6} y={214} size={15} tone="muted" anchor="start">
-        MPa
-      </Label>
-    </Figure>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
