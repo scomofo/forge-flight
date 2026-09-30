@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: worked example supplies density before calculating mass
+ok 1 - worked example supplies density before calculating mass
+  ---
+  duration_ms: 0.743271
+  type: 'test'
+  ...
+# Subtest: bracket volume, mass and alternative density units agree
+ok 2 - bracket volume, mass and alternative density units agree
+  ---
+  duration_ms: 0.166371
+  type: 'test'
+  ...
+# Subtest: the help is attached to the worked example, not hidden under an unrelated idea
+ok 3 - the help is attached to the worked example, not hidden under an unrelated idea
+  ---
+  duration_ms: 0.678753
+  type: 'test'
+  ...
+# Subtest: the shared explainer explains rho, origin, unit matching and lookup rather than memorization
+ok 4 - the shared explainer explains rho, origin, unit matching and lookup rather than memorization
+  ---
+  duration_ms: 0.154934
+  type: 'test'
+  ...
+# Subtest: animated figure introduces density before mass and retains it in the final frame
+ok 5 - animated figure introduces density before mass and retains it in the final frame
+  ---
+  duration_ms: 0.182345
+  type: 'test'
+  ...
+# Subtest: math mastery thresholds and check structure remain unchanged
+ok 6 - math mastery thresholds and check structure remain unchanged
+  ---
+  duration_ms: 0.108824
+  type: 'test'
+  ...
+# Subtest: help sources are rendered as explicit optional links and the dialog is named
+ok 7 - help sources are rendered as explicit optional links and the dialog is named
+  ---
+  duration_ms: 0.183937
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 105.960829

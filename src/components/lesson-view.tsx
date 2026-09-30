@@ -7,7 +7,7 @@ import { lessonFigures } from "@/components/figures";
 import { Quiz } from "@/components/quiz";
 import { isIntroTrack, lessonNeighbors } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
-import { isPassed, lessonKey, PASS_AT, type Lesson, type LessonReadBlock } from "@/course/types";
+import { isPassed, lessonKey, PASS_AT, type IdeaHelp, type Lesson, type LessonReadBlock } from "@/course/types";
 import { cn } from "@/lib/cn";
 
 const steps = [
@@ -71,7 +71,7 @@ function StartHere({ lesson, figure }: { lesson: Lesson; figure?: ReactNode }) {
   );
 }
 
-function Example({ text, heading = "For example" }: { text: string; heading?: string }) {
+function Example({ text, heading = "For example", help }: { text: string; heading?: string; help?: IdeaHelp[] }) {
   const parts = text.split(" || ");
   const rows = [
     ["The case", parts[0]],
@@ -89,6 +89,7 @@ function Example({ text, heading = "For example" }: { text: string; heading?: st
           </li>
         ))}
       </ol>
+      {help?.length ? <ConceptHelp help={help} /> : null}
     </section>
   );
 }
@@ -147,7 +148,7 @@ function ReadFlow({ lesson }: { lesson: Lesson }) {
         if (block.kind === "example") {
           return (
             <div key={`example-${i}`} className="mt-8">
-              <Example text={lesson.example} heading={block.heading} />
+              <Example text={lesson.example} heading={block.heading} help={lesson.exampleHelp} />
             </div>
           );
         }

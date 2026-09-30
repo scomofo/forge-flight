@@ -205,6 +205,8 @@ export type ConceptHelp = {
   title: string;
   intro: string;
   sections: ConceptHelpSection[];
+  /** References for looked-up properties, shown only when help is opened. */
+  sources?: { label: string; url: string }[];
   caution?: string;
 };
 
@@ -270,6 +272,8 @@ export type Lesson = {
   use: string;
   /** One worked case. Three parts separated by " || ": the object, the arithmetic, the call. */
   example: string;
+  /** Optional help beside the worked example; never required to pass a check. */
+  exampleHelp?: IdeaHelp[];
   ideas: [Idea, Idea, Idea];
   /**
    * Optional read-tab sequence. When omitted, lessons keep the legacy order:
