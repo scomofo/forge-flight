@@ -337,92 +337,140 @@ function Interval() {
 
 /** Review: four parts, four mechanisms. */
 function Review() {
-  const cell = (x: number, y: number, icon: ReactNode, mode: string, cue: string) => (
+  const cell = (x: number, y: number, icon: ReactNode, mode: string, cue: string, look: number, name: number) => (
     <g transform={`translate(${x},${y})`}>
       <rect x={0} y={0} width={228} height={112} rx={6} fill="none" stroke={C.line} strokeWidth={1.5} />
       {icon}
-      <Label x={104} y={42} anchor="start" tone="accent" weight={700} size={18}>
+      <Label x={104} y={42} anchor="start" tone="accent" weight={700} size={18} opacity={op(name)}>
         {mode}
       </Label>
-      <Label x={104} y={70} anchor="start" tone="muted" size={15}>
+      <Label x={104} y={70} anchor="start" tone="muted" size={15} opacity={op(look)}>
         {cue}
       </Label>
     </g>
   );
+  // Each part: first its condition (the sentence), then its mechanism and name (the chapter).
+  const lookAt = (i: number) => 0.4 + 0.45 * i;
+  const nameAt = (i: number) => 2.5 + 0.45 * i;
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={4.8}
       alt="Four panels: a long thin strut pushed on its end labelled buckling, a spinning stepped shaft labelled fatigue, a cracked shell labelled fracture, and a hot hanger labelled creep."
-      caption="Say the sentence first: the service condition picks the chapter, then you calculate that one."
+      steps={[
+        {
+          at: 0,
+          label: "Look",
+          caption: "Before you multiply anything, look at each part: long and pushed, a spinning shoulder, a crack, a year of heat.",
+        },
+        { at: 2.5, label: "Name", caption: "That sentence picks the chapter: buckling, fatigue, fracture, or creep." },
+        {
+          at: 4,
+          label: "Calculate",
+          caption: "Say the sentence first: the service condition picks the chapter, then you calculate that one.",
+        },
+      ]}
     >
-      {cell(
-        8,
-        10,
-        <g>
-          <Arrow x1={48} y1={6} x2={48} y2={24} tone="ink" width={2.5} />
-          <line x1={48} y1={26} x2={48} y2={102} stroke={C.ink} strokeWidth={3} />
-          <path d="M48,26 Q72,64 48,102" fill="none" stroke={C.accent} strokeWidth={2} strokeDasharray="5 4" />
-          <line x1={34} y1={104} x2={62} y2={104} stroke={C.ink} strokeWidth={2.5} />
-        </g>,
-        "buckling",
-        "long, thin, pushed",
-      )}
-      {cell(
-        244,
-        10,
-        <g>
-          <rect x={14} y={38} width={44} height={38} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-          <rect x={58} y={46} width={34} height={22} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-          <line x1={58} y1={46} x2={63} y2={53} stroke={C.alarm} strokeWidth={2.5} />
-          <path d="M22,28 A30,10 0 0 1 82,32" fill="none" stroke={C.accent} strokeWidth={2} markerEnd="url(#fig-arrow-accent)" />
-        </g>,
-        "fatigue",
-        "shoulder, spinning",
-      )}
-      {cell(
-        8,
-        128,
-        <g>
-          <circle cx={50} cy={56} r={36} fill={C.soft} stroke={C.ink} strokeWidth={4} />
-          <line x1={33} y1={24} x2={40} y2={36} stroke={C.alarm} strokeWidth={3} />
-          <line x1={40} y1={36} x2={36} y2={42} stroke={C.alarm} strokeWidth={2} />
-        </g>,
-        "fracture",
-        "crack present",
-      )}
-      {cell(
-        244,
-        128,
-        <g>
-          <line x1={20} y1={14} x2={82} y2={14} stroke={C.ink} strokeWidth={3} />
-          <line x1={51} y1={14} x2={51} y2={66} stroke={C.ink} strokeWidth={2.5} />
-          <rect x={36} y={66} width={30} height={26} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-          <path d="M20,40 q5,-6 0,-12 M84,40 q5,-6 0,-12" fill="none" stroke={C.alarm} strokeWidth={2} />
-          <Arrow x1={51} y1={96} x2={51} y2={108} tone="accent" width={2} />
-        </g>,
-        "creep",
-        "hot for a year",
-      )}
-    </Figure>
+      {({ t }) => {
+        const look = [0, 1, 2, 3].map((i) => seg(t, lookAt(i), lookAt(i) + 0.5));
+        const act = [0, 1, 2, 3].map((i) => seg(t, nameAt(i), nameAt(i) + 0.7)); // bow, crack, —, sag
+        const name = [0, 1, 2, 3].map((i) => seg(t, nameAt(i) + 0.2, nameAt(i) + 0.7));
+        const sag = lerp(58, 66, act[3]);
+        return (
+          <>
+            {cell(
+              8,
+              10,
+              <g opacity={op(look[0])}>
+                <Arrow x1={48} y1={6} x2={48} y2={24} tone="ink" width={2.5} />
+                <line x1={48} y1={26} x2={48} y2={102} stroke={C.ink} strokeWidth={3} />
+                {act[0] > 0 ? (
+                  <path
+                    d={`M48,26 Q${lerp(48, 72, act[0])},64 48,102`}
+                    fill="none"
+                    stroke={C.accent}
+                    strokeWidth={2}
+                    strokeDasharray="5 4"
+                    opacity={op(act[0])}
+                  />
+                ) : null}
+                <line x1={34} y1={104} x2={62} y2={104} stroke={C.ink} strokeWidth={2.5} />
+              </g>,
+              "buckling",
+              "long, thin, pushed",
+              look[0],
+              name[0],
+            )}
+            {cell(
+              244,
+              10,
+              <g opacity={op(look[1])}>
+                <rect x={14} y={38} width={44} height={38} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+                <rect x={58} y={46} width={34} height={22} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+                {act[1] > 0.02 ? (
+                  <line x1={58} y1={46} x2={lerp(58, 63, act[1])} y2={lerp(46, 53, act[1])} stroke={C.alarm} strokeWidth={2.5} />
+                ) : null}
+                <path d="M22,28 A30,10 0 0 1 82,32" fill="none" stroke={C.accent} strokeWidth={2} markerEnd="url(#fig-arrow-accent)" />
+              </g>,
+              "fatigue",
+              "shoulder, spinning",
+              look[1],
+              name[1],
+            )}
+            {cell(
+              8,
+              128,
+              <g opacity={op(look[2])}>
+                <circle cx={50} cy={56} r={36} fill={C.soft} stroke={C.ink} strokeWidth={4} />
+                <line x1={33} y1={24} x2={40} y2={36} stroke={C.alarm} strokeWidth={3} />
+                <line x1={40} y1={36} x2={36} y2={42} stroke={C.alarm} strokeWidth={2} />
+              </g>,
+              "fracture",
+              "crack present",
+              look[2],
+              name[2],
+            )}
+            {cell(
+              244,
+              128,
+              <g opacity={op(look[3])}>
+                <line x1={20} y1={14} x2={82} y2={14} stroke={C.ink} strokeWidth={3} />
+                <line x1={51} y1={14} x2={51} y2={sag} stroke={C.ink} strokeWidth={2.5} />
+                <rect x={36} y={sag} width={30} height={26} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+                <path d="M20,40 q5,-6 0,-12 M84,40 q5,-6 0,-12" fill="none" stroke={C.alarm} strokeWidth={2} />
+                <GrowArrow p={act[3]} x1={51} y1={96} x2={51} y2={108} tone="accent" width={2} />
+              </g>,
+              "creep",
+              "hot for a year",
+              look[3],
+              name[3],
+            )}
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
 /** Clocks: fatigue and creep fractions on one life. */
 function Clocks() {
   const r = 54;
-  const dial = (cx: number, f: number, name: string) => {
+  /** A dial for fraction f, its arc and needle at p (0…f), its number at opacity `shown`. */
+  const dial = (cx: number, f: number, name: string, p: number, shown: number | undefined) => {
     const cy = 100;
-    const [ex, ey] = dialPt(cx, cy, r, f);
-    const [nx, ny] = dialPt(cx, cy, r - 12, f);
+    const [ex, ey] = dialPt(cx, cy, r, p);
+    const [nx, ny] = dialPt(cx, cy, r - 12, p);
     return (
       <g>
         <path d={`M${cx - r},${cy} A${r},${r} 0 0 1 ${cx + r},${cy}`} fill="none" stroke={C.line} strokeWidth={10} />
-        <path d={`M${cx - r},${cy} A${r},${r} 0 0 1 ${ex.toFixed(1)},${ey.toFixed(1)}`} fill="none" stroke={C.accent} strokeWidth={10} />
+        {p > 0 ? (
+          <path d={`M${cx - r},${cy} A${r},${r} 0 0 1 ${ex.toFixed(1)},${ey.toFixed(1)}`} fill="none" stroke={C.accent} strokeWidth={10} />
+        ) : null}
         <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={C.ink} strokeWidth={2.5} />
         <circle cx={cx} cy={cy} r={4} fill={C.ink} />
         <Label x={cx - r} y={cy + 16} tone="muted" size={15}>0</Label>
         <Label x={cx + r} y={cy + 16} tone="muted" size={15}>1</Label>
-        <Label x={cx} y={cy + 20} weight={700}>{f.toFixed(2)}</Label>
+        <Label x={cx} y={cy + 20} weight={700} opacity={shown}>{f.toFixed(2)}</Label>
         <Label x={cx} y={cy + 44} tone="muted" size={15}>{name}</Label>
       </g>
     );
@@ -430,23 +478,59 @@ function Clocks() {
   const x0 = 40;
   const s = 300;
   const by = 214;
+  const fatigue = (t: number) => lerp(0, 0.4, seg(t, 0.4, 1.4));
+  // Creep first reaches 0.30 (sum 0.70, still in), then 0.70 (sum 1.10).
+  const creep = (t: number) => lerp(lerp(0, 0.3, seg(t, 1.8, 2.6)), 0.7, seg(t, 3.1, 3.9));
   return (
-    <Figure
+    <AnimatedFigure
       height={270}
+      duration={4.8}
       alt="Two dials show 0.40 of the fatigue life and 0.70 of the creep-rupture life, each under 1; a bar below adds them to 1.10, past the retire line at 1."
-      caption="Each clock alone says there is life left; on the one shared life they add to 1.10, so the part retires."
+      steps={[
+        { at: 0, label: "Fatigue", caption: "Cycles spend n/N of the fatigue life: this disk has used 0.40." },
+        {
+          at: 1.7,
+          label: "Creep",
+          caption: "Time at temperature spends t/t_r of the creep-rupture life: 0.40 plus 0.30 is 0.70, and the part is still in.",
+        },
+        {
+          at: 3.9,
+          label: "Retire",
+          caption: "Each clock alone says there is life left; on the one shared life they add to 1.10, so the part retires.",
+        },
+      ]}
+      readouts={(t) => {
+        const d = fatigue(t) + creep(t);
+        return [
+          { label: "n/N", value: fatigue(t).toFixed(2) },
+          { label: "t/t_r", value: creep(t).toFixed(2) },
+          { label: "D", value: d.toFixed(2), tone: d >= 1 ? "alarm" : "accent" },
+        ];
+      }}
     >
-      {dial(120, 0.4, "fatigue n/N")}
-      <Label x={240} y={80} size={24} tone="muted">+</Label>
-      {dial(360, 0.7, "creep t/t_r")}
-      <rect x={x0} y={by} width={0.4 * s} height={26} fill={C.soft} stroke={C.ink} strokeWidth={1.5} />
-      <Label x={x0 + 0.2 * s} y={by + 13} size={15}>0.40</Label>
-      <rect x={x0 + 0.4 * s} y={by} width={0.7 * s} height={26} fill={C.accent} stroke={C.ink} strokeWidth={1.5} />
-      <OnAccent x={x0 + 0.75 * s} y={by + 13}>0.70</OnAccent>
-      <line x1={x0 + s} y1={by - 20} x2={x0 + s} y2={by + 40} stroke={C.alarm} strokeWidth={2} strokeDasharray="6 4" />
-      <Label x={x0 + s} y={by - 30} tone="alarm" size={15}>1: retire</Label>
-      <Label x={x0 + 1.1 * s + 8} y={by + 13} anchor="start" tone="accent" weight={700}>1.10</Label>
-    </Figure>
+      {({ t }) => {
+        const fat = fatigue(t);
+        const cr = creep(t);
+        const fatShown = op(seg(t, 1.2, 1.6));
+        const crShown = op(seg(t, 3.7, 4.1));
+        return (
+          <>
+            {dial(120, 0.4, "fatigue n/N", fat, fatShown)}
+            <Label x={240} y={80} size={24} tone="muted">+</Label>
+            {dial(360, 0.7, "creep t/t_r", cr, crShown)}
+            {fat > 0 ? <rect x={x0} y={by} width={fat * s} height={26} fill={C.soft} stroke={C.ink} strokeWidth={1.5} /> : null}
+            <Label x={x0 + 0.2 * s} y={by + 13} size={15} opacity={fatShown}>0.40</Label>
+            {cr > 0 ? <rect x={x0 + 0.4 * s} y={by} width={cr * s} height={26} fill={C.accent} stroke={C.ink} strokeWidth={1.5} /> : null}
+            <OnAccent x={x0 + 0.75 * s} y={by + 13} opacity={crShown}>0.70</OnAccent>
+            <line x1={x0 + s} y1={by - 20} x2={x0 + s} y2={by + 40} stroke={C.alarm} strokeWidth={2} strokeDasharray="6 4" />
+            <Label x={x0 + s} y={by - 30} tone="alarm" size={15}>1: retire</Label>
+            <Label x={x0 + 1.1 * s + 8} y={by + 13} anchor="start" tone="accent" weight={700} opacity={op(seg(t, 3.9, 4.4))}>
+              1.10
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

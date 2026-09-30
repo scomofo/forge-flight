@@ -183,64 +183,107 @@ function Tolerances() {
     ["30 ± 0.05", 30],
     ["20 ± 0.10", 20],
   ];
+  const lefts: number[] = []; // each part's left edge, stacked from the cavity wall
   let cx = x0;
+  for (const [, len] of parts) {
+    lefts.push(cx);
+    cx += len * s;
+  }
   // number line
   const nx0 = 60;
   const nx1 = 440;
   const nv = (v: number) => nx0 + ((v - 100) / 0.3) * (nx1 - nx0);
   const ny = 230;
+  // Each stack adds one part at a time (0.45 s apiece): worst case adds 0.10 + 0.05 + 0.10,
+  // RSS adds the same three in quadrature.
+  const worst = [100, 100.1, 100.15, 100.25];
+  const rss = [100, 100.1, 100 + Math.sqrt(0.1 ** 2 + 0.05 ** 2), 100.15];
+  const stack = (t: number, at: number, v: number[]) => {
+    let x = v[0];
+    for (let i = 1; i < v.length; i++) {
+      const p = seg(t, at + 0.45 * (i - 1), at + 0.45 * i);
+      if (p > 0) x = lerp(v[i - 1], v[i], p);
+    }
+    return x;
+  };
   return (
-    <Figure
+    <AnimatedFigure
       height={300}
+      duration={5.5}
       alt="Three blocks of 50, 30 and 20 mm stacked in a 100.20 mm cavity, above a number line where the RSS stack reaches 100.15 inside the cavity wall and the worst-case stack reaches 100.25 beyond it."
-      caption="Same three parts, two verdicts: worst-case (0.25) pushes past the 100.20 wall, RSS (0.15) stays inside. The consequence of a jam picks which one you trust."
+      steps={[
+        {
+          at: 0,
+          label: "Parts",
+          caption: "A 50 ± 0.10 bracket, a 30 ± 0.05 spacer and a 20 ± 0.10 cover stack to 100.00 mm nominal in a 100.20 mm cavity.",
+        },
+        {
+          at: 1.9,
+          label: "Worst case",
+          caption: "Worst case puts every part at its limit at once: 0.10 + 0.05 + 0.10 = 0.25 mm, so the stack can reach 100.25.",
+        },
+        {
+          at: 3.7,
+          label: "RSS",
+          caption:
+            "Same three parts, two verdicts: worst-case (0.25) pushes past the 100.20 wall, RSS (0.15) stays inside. The consequence of a jam picks which one you trust.",
+        },
+      ]}
+      readouts={(t) => [
+        { label: "worst case", value: `${stack(t, 2, worst).toFixed(2)} mm`, tone: "alarm" },
+        { label: "RSS", value: `${stack(t, 3.8, rss).toFixed(2)} mm`, tone: "accent" },
+      ]}
     >
-      <DimH x1={x0} x2={cavR} y={36} label="cavity 100.20" />
-      <path
-        d={`M${x0},${yT - 8} L${x0},${yT + hB} L${cavR},${yT + hB} L${cavR},${yT - 8}`}
-        fill="none"
-        stroke={C.ink}
-        strokeWidth={3}
-      />
-      {parts.map(([lab, len], i) => {
-        const x = cx;
-        cx += len * s;
-        return (
-          <g key={lab}>
-            <rect x={x} y={yT} width={len * s} height={hB - 2} fill={i === 1 ? C.surface : C.soft} stroke={C.ink} strokeWidth={1.5} />
-            <Label x={x + (len * s) / 2} y={yT + hB / 2 - 1} size={15}>
-              {lab}
-            </Label>
-          </g>
-        );
-      })}
-      <Label x={(x0 + cavR) / 2} y={yT + hB + 22} size={15} tone="muted">
-        bracket + spacer + cover = 100.00 nominal
-      </Label>
-
-      {/* stack bars */}
-      <rect x={nx0} y={ny - 62} width={nv(100.25) - nx0} height={16} fill={C.alarm} opacity={0.85} />
-      <Label x={nv(100.25) + 8} y={ny - 54} anchor="start" size={15} tone="alarm" weight={600}>
-        worst 100.25
-      </Label>
-      <rect x={nx0} y={ny - 36} width={nv(100.15) - nx0} height={16} fill={C.accent} />
-      <Label x={nv(100.15) - 8} y={ny - 28} anchor="end" size={15} tone="accent" weight={600}>
-        <tspan fill={C.surface}>RSS 100.15</tspan>
-      </Label>
-      <line x1={nx0} y1={ny} x2={nx1} y2={ny} stroke={C.ink} strokeWidth={1.5} />
-      {[100, 100.1, 100.2, 100.3].map((t) => (
-        <g key={t}>
-          <line x1={nv(t)} y1={ny} x2={nv(t)} y2={ny + 6} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={nv(t)} y={ny + 20} size={15} tone="muted">
-            {t.toFixed(2)}
+      {({ t }) => (
+        <>
+          <DimH x1={x0} x2={cavR} y={36} label="cavity 100.20" />
+          <path
+            d={`M${x0},${yT - 8} L${x0},${yT + hB} L${cavR},${yT + hB} L${cavR},${yT - 8}`}
+            fill="none"
+            stroke={C.ink}
+            strokeWidth={3}
+          />
+          {parts.map(([lab, len], i) => {
+            const x = lefts[i];
+            const p = seg(t, 0.4 + 0.3 * i, 0.9 + 0.3 * i); // each part drops into the cavity
+            return (
+              <g key={lab} opacity={op(p)} transform={p < 1 ? `translate(0,${lerp(-22, 0, p).toFixed(1)})` : undefined}>
+                <rect x={x} y={yT} width={len * s} height={hB - 2} fill={i === 1 ? C.surface : C.soft} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={x + (len * s) / 2} y={yT + hB / 2 - 1} size={15}>
+                  {lab}
+                </Label>
+              </g>
+            );
+          })}
+          <Label x={(x0 + cavR) / 2} y={yT + hB + 22} size={15} tone="muted" opacity={op(seg(t, 1.3, 1.8))}>
+            bracket + spacer + cover = 100.00 nominal
           </Label>
-        </g>
-      ))}
-      <line x1={nv(100.2)} y1={ny - 76} x2={nv(100.2)} y2={ny} stroke={C.ink} strokeWidth={3} />
-      <Label x={nv(100.2)} y={ny + 46} size={15} weight={600}>
-        cavity wall
-      </Label>
-    </Figure>
+
+          {/* stack bars */}
+          <rect x={nx0} y={ny - 62} width={nv(stack(t, 2, worst)) - nx0} height={16} fill={C.alarm} opacity={0.85} />
+          <Label x={nv(100.25) + 8} y={ny - 54} anchor="start" size={15} tone="alarm" weight={600} opacity={op(seg(t, 3.2, 3.7))}>
+            worst 100.25
+          </Label>
+          <rect x={nx0} y={ny - 36} width={nv(stack(t, 3.8, rss)) - nx0} height={16} fill={C.accent} />
+          <Label x={nv(100.15) - 8} y={ny - 28} anchor="end" size={15} tone="accent" weight={600} opacity={op(seg(t, 4.9, 5.4))}>
+            <tspan fill={C.surface}>RSS 100.15</tspan>
+          </Label>
+          <line x1={nx0} y1={ny} x2={nx1} y2={ny} stroke={C.ink} strokeWidth={1.5} />
+          {[100, 100.1, 100.2, 100.3].map((t) => (
+            <g key={t}>
+              <line x1={nv(t)} y1={ny} x2={nv(t)} y2={ny + 6} stroke={C.ink} strokeWidth={1.5} />
+              <Label x={nv(t)} y={ny + 20} size={15} tone="muted">
+                {t.toFixed(2)}
+              </Label>
+            </g>
+          ))}
+          <line x1={nv(100.2)} y1={ny - 76} x2={nv(100.2)} y2={ny} stroke={C.ink} strokeWidth={3} />
+          <Label x={nv(100.2)} y={ny + 46} size={15} weight={600}>
+            cavity wall
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -251,42 +294,65 @@ function Dfm() {
   const y0 = 110;
   const y1 = 190;
   return (
-    <Figure
+    <AnimatedFigure
       height={290}
+      duration={4}
       alt="A 60 mm bracket plate: its top cosmetic face tolerance of ±0.01 mm is struck out and replaced by ±0.25 mm, while the two hole positions keep ±0.05 mm because they locate the mating part."
-      caption="Tight tolerance only where a function lives: the holes sit in a real stack, the face only has to look right. The re-quote drops about 30%."
+      steps={[
+        { at: 0, label: "Drawing", caption: "The first drawing of the 60 mm 6061 bracket carried ±0.01 mm on its cosmetic face." },
+        { at: 1.2, label: "Face", caption: "Nothing assembles, seals or aligns against that face, so loosen it to ±0.25 mm." },
+        {
+          at: 2.9,
+          label: "Holes",
+          caption: "Tight tolerance only where a function lives: the holes sit in a real stack, the face only has to look right. The re-quote drops about 30%.",
+        },
+      ]}
     >
-      {/* cosmetic face callout */}
-      <Label x={150} y={28} size={15} tone="muted">
-        cosmetic face
-      </Label>
-      <Label x={284} y={28} size={17} serif>
-        ±0.01
-      </Label>
-      <line x1={260} y1={37} x2={308} y2={19} stroke={C.alarm} strokeWidth={2.5} />
-      <Arrow x1={318} y1={28} x2={352} y2={28} tone="muted" width={1.5} />
-      <Label x={396} y={28} size={17} serif tone="accent" weight={600}>
-        ±0.25
-      </Label>
-      <line x1={x0} y1={y0} x2={x1} y2={y0} stroke={C.brass} strokeWidth={7} strokeLinecap="round" />
-      <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <line x1={x0} y1={y0} x2={x1} y2={y0} stroke={C.brass} strokeWidth={4} />
-      <Label x={240} y={80} size={15} tone="muted">
-        nothing mates, seals or aligns here
-      </Label>
-      {[150, 330].map((hx) => (
-        <g key={hx}>
-          <circle cx={hx} cy={150} r={13} fill={C.surface} stroke={C.accent} strokeWidth={3} />
-          <line x1={hx - 20} y1={150} x2={hx + 20} y2={150} stroke={C.muted} strokeWidth={1} strokeDasharray="4 3" />
-          <line x1={hx} y1={130} x2={hx} y2={170} stroke={C.muted} strokeWidth={1} strokeDasharray="4 3" />
-        </g>
-      ))}
-      <DimH x1={150} x2={330} y={178} label={<tspan fill={C.accent} fontWeight={600}>±0.05 kept</tspan>} tone="accent" />
-      <DimH x1={x0} x2={x1} y={232} label="60 mm, 6061" />
-      <Label x={240} y={268} size={15} tone="accent">
-        holes locate the mating part: functional
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const face = seg(t, 0.4, 0.9); // the face and its tolerance called out
+        const strike = seg(t, 1.8, 2.2);
+        return (
+          <>
+            {/* cosmetic face callout */}
+            <g opacity={op(face)}>
+              <Label x={150} y={28} size={15} tone="muted">
+                cosmetic face
+              </Label>
+              <Label x={284} y={28} size={17} serif>
+                ±0.01
+              </Label>
+            </g>
+            {strike > 0 ? (
+              <line x1={260} y1={37} x2={lerp(260, 308, strike)} y2={lerp(37, 19, strike)} stroke={C.alarm} strokeWidth={2.5} />
+            ) : null}
+            <GrowArrow p={seg(t, 2.1, 2.5)} x1={318} y1={28} x2={352} y2={28} tone="muted" width={1.5} />
+            <Label x={396} y={28} size={17} serif tone="accent" weight={600} opacity={op(seg(t, 2.3, 2.8))}>
+              ±0.25
+            </Label>
+            <line x1={x0} y1={y0} x2={x1} y2={y0} stroke={C.brass} strokeWidth={7} strokeLinecap="round" opacity={op(face)} />
+            <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <line x1={x0} y1={y0} x2={x1} y2={y0} stroke={C.brass} strokeWidth={4} opacity={op(face)} />
+            <Label x={240} y={80} size={15} tone="muted" opacity={op(seg(t, 1.3, 1.8))}>
+              nothing mates, seals or aligns here
+            </Label>
+            {[150, 330].map((hx) => (
+              <g key={hx}>
+                <circle cx={hx} cy={150} r={13} fill={C.surface} stroke={C.accent} strokeWidth={3} />
+                <line x1={hx - 20} y1={150} x2={hx + 20} y2={150} stroke={C.muted} strokeWidth={1} strokeDasharray="4 3" />
+                <line x1={hx} y1={130} x2={hx} y2={170} stroke={C.muted} strokeWidth={1} strokeDasharray="4 3" />
+              </g>
+            ))}
+            <g opacity={op(seg(t, 3, 3.5))}>
+              <DimH x1={150} x2={330} y={178} label={<tspan fill={C.accent} fontWeight={600}>±0.05 kept</tspan>} tone="accent" />
+            </g>
+            <DimH x1={x0} x2={x1} y={232} label="60 mm, 6061" />
+            <Label x={240} y={268} size={15} tone="accent" opacity={op(seg(t, 3.3, 3.8))}>
+              holes locate the mating part: functional
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

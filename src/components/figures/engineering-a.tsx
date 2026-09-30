@@ -401,42 +401,73 @@ function ErrProp() {
   const xp = x0 + 196 * k;
   const yd = y0 - 79 * k;
   return (
-    <Figure
+    <AnimatedFigure
       height={270}
+      duration={4.9}
       alt="A right triangle whose legs are the pressure contribution 196 N and the diameter contribution 79 N, with hypotenuse RSS 211 N; below it the two contributions laid end to end make the worst case 275 N."
-      caption="Independent errors combine at right angles (RSS, 211 N); conspiring errors line up end to end (worst case, 275 N). Pressure is the long leg either way."
+      steps={[
+        {
+          at: 0,
+          label: "Inputs",
+          caption: "F = p·A = 19.635 kN: the pressure's ±0.1 MPa moves it by 196 N, the diameter's ±0.1 mm by 79 N.",
+        },
+        { at: 1.9, label: "Worst case", caption: "If the two errors conspire, they add end to end: 196 + 79 = 275 N, ±1.40%." },
+        {
+          at: 3.5,
+          label: "RSS",
+          caption:
+            "Independent errors combine at right angles (RSS, 211 N); conspiring errors line up end to end (worst case, 275 N). Pressure is the long leg either way.",
+        },
+      ]}
     >
-      <Label x={40} y={26} anchor="start" size={15} tone="muted">
-        F = p·A = 19.635 kN
-      </Label>
-      <line x1={x0} y1={y0} x2={xp} y2={y0} stroke={C.ink} strokeWidth={4} />
-      <line x1={xp} y1={y0} x2={xp} y2={yd} stroke={C.brass} strokeWidth={4} />
-      <path d={`M${xp - 12},${y0} L${xp - 12},${y0 - 12} L${xp},${y0 - 12}`} fill="none" stroke={C.muted} strokeWidth={1.5} />
-      <line x1={x0} y1={y0} x2={xp} y2={yd} stroke={C.accent} strokeWidth={4} />
-      <Label x={(x0 + xp) / 2} y={y0 + 18} size={15}>
-        pressure 196 N
-      </Label>
-      <Label x={xp + 10} y={(y0 + yd) / 2 - 10} anchor="start" size={15}>
-        diameter
-      </Label>
-      <Label x={xp + 10} y={(y0 + yd) / 2 + 10} anchor="start" size={15}>
-        79 N
-      </Label>
-      <Label x={140} y={96} anchor="end" tone="accent" size={16} weight={600}>
-        RSS 211 N
-      </Label>
-      <Label x={140} y={116} anchor="end" tone="accent" size={15}>
-        ±1.08%
-      </Label>
+      {({ t }) => {
+        const legP = seg(t, 0.4, 0.9);
+        const legD = seg(t, 1, 1.4);
+        const endP = seg(t, 1.9, 2.4); // worst case: pressure first,
+        const endD = seg(t, 2.4, 2.8); // then diameter on its tip
+        const rss = seg(t, 3.6, 4.2);
+        return (
+          <>
+            <Label x={40} y={26} anchor="start" size={15} tone="muted">
+              F = p·A = 19.635 kN
+            </Label>
+            {legP > 0 ? <line x1={x0} y1={y0} x2={lerp(x0, xp, legP)} y2={y0} stroke={C.ink} strokeWidth={4} /> : null}
+            {legD > 0 ? <line x1={xp} y1={y0} x2={xp} y2={lerp(y0, yd, legD)} stroke={C.brass} strokeWidth={4} /> : null}
+            <path
+              d={`M${xp - 12},${y0} L${xp - 12},${y0 - 12} L${xp},${y0 - 12}`}
+              fill="none"
+              stroke={C.muted}
+              strokeWidth={1.5}
+              opacity={op(seg(t, 3.5, 3.9))}
+            />
+            {rss > 0 ? <line x1={x0} y1={y0} x2={lerp(x0, xp, rss)} y2={lerp(y0, yd, rss)} stroke={C.accent} strokeWidth={4} /> : null}
+            <Label x={(x0 + xp) / 2} y={y0 + 18} size={15} opacity={op(seg(t, 0.7, 1.2))}>
+              pressure 196 N
+            </Label>
+            <Label x={xp + 10} y={(y0 + yd) / 2 - 10} anchor="start" size={15} opacity={op(seg(t, 1.2, 1.7))}>
+              diameter
+            </Label>
+            <Label x={xp + 10} y={(y0 + yd) / 2 + 10} anchor="start" size={15} opacity={op(seg(t, 1.2, 1.7))}>
+              79 N
+            </Label>
+            <Label x={140} y={96} anchor="end" tone="accent" size={16} weight={600} opacity={op(seg(t, 4, 4.5))}>
+              RSS 211 N
+            </Label>
+            <Label x={140} y={116} anchor="end" tone="accent" size={15} opacity={op(seg(t, 4.2, 4.7))}>
+              ±1.08%
+            </Label>
 
-      <line x1={x0} y1={222} x2={xp} y2={222} stroke={C.ink} strokeWidth={4} />
-      <line x1={xp} y1={222} x2={xp + 79 * k} y2={222} stroke={C.brass} strokeWidth={4} />
-      <line x1={x0} y1={212} x2={x0} y2={232} stroke={C.ink} strokeWidth={1.5} />
-      <line x1={xp + 79 * k} y1={212} x2={xp + 79 * k} y2={232} stroke={C.ink} strokeWidth={1.5} />
-      <Label x={(x0 + xp + 79 * k) / 2} y={246} size={15} weight={600}>
-        worst case 275 N · ±1.40%
-      </Label>
-    </Figure>
+            {endP > 0 ? <line x1={x0} y1={222} x2={lerp(x0, xp, endP)} y2={222} stroke={C.ink} strokeWidth={4} /> : null}
+            {endD > 0 ? <line x1={xp} y1={222} x2={lerp(xp, xp + 79 * k, endD)} y2={222} stroke={C.brass} strokeWidth={4} /> : null}
+            <line x1={x0} y1={212} x2={x0} y2={232} stroke={C.ink} strokeWidth={1.5} opacity={op(seg(t, 1.9, 2.3))} />
+            <line x1={xp + 79 * k} y1={212} x2={xp + 79 * k} y2={232} stroke={C.ink} strokeWidth={1.5} opacity={op(seg(t, 2.6, 3))} />
+            <Label x={(x0 + xp + 79 * k) / 2} y={246} size={15} weight={600} opacity={op(seg(t, 2.8, 3.3))}>
+              worst case 275 N · ±1.40%
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 

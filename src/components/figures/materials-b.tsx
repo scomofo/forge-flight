@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Arrow, Axes, C, DimH, Figure, Label, plotBox, type FigureMap } from "./kit";
 import { AnimatedFigure, clamp, GrowArrow, lerp, op, partial, Reveal, seg } from "./motion";
 
@@ -563,7 +564,7 @@ function Transformations() {
   const cx = 418;
   const cy = 118;
   const r = 46;
-  const lam = [];
+  const lam: ReactNode[] = [];
   for (let i = -60; i <= 60; i += 6) {
     lam.push(<line key={i} x1={cx + i - 40} y1={cy - 60} x2={cx + i + 40} y2={cy + 60} stroke={C.muted} strokeWidth={2} />);
   }
@@ -770,7 +771,7 @@ function DirTemp() {
   const by = 86;
   const bw = 190;
   const bh = 100;
-  const fibers = [];
+  const fibers: ReactNode[] = [];
   for (let y = by + 10; y < by + bh; y += 10) {
     fibers.push(<line key={y} x1={bx + 4} y1={y} x2={bx + bw - 4} y2={y} stroke={C.ink} strokeWidth={2.5} />);
   }
