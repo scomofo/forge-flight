@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Arrow, Axes, C, DimH, DimV, Figure, Ground, Label, plotBox, type FigureMap } from "./kit";
+import { AnimatedFigure, clamp, CompareSwitch, GrowArrow, lerp, op, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
 
@@ -16,30 +18,6 @@ function ArcMark({ cx, cy, r, a0, a1 }: { cx: number; cy: number; r: number; a0:
   return <path d={arc(cx, cy, r, a0, a1)} fill="none" stroke={C.muted} strokeWidth={1.5} />;
 }
 
-/** Small cart: body on two wheels, resting on a track at y. */
-function Cart({ x, y, w, label, dashed = false }: { x: number; y: number; w: number; label: string; dashed?: boolean }) {
-  return (
-    <g>
-      <rect
-        x={x}
-        y={y - 36}
-        width={w}
-        height={26}
-        rx={3}
-        fill={dashed ? "none" : C.soft}
-        stroke={C.ink}
-        strokeWidth={2}
-        strokeDasharray={dashed ? "5 4" : undefined}
-      />
-      <circle cx={x + 10} cy={y - 5} r={5} fill={C.surface} stroke={C.ink} strokeWidth={1.5} />
-      <circle cx={x + w - 10} cy={y - 5} r={5} fill={C.surface} stroke={C.ink} strokeWidth={1.5} />
-      <Label x={x + w / 2} y={y - 23} size={15}>
-        {label}
-      </Label>
-    </g>
-  );
-}
-
 /* ---------- Week 1 ---------- */
 
 /** measure: pendulum and the three candidate period formulas, checked by dimensions. */
@@ -49,45 +27,76 @@ function Measure() {
     ["T = 2π√(g/l)", "T⁻¹", "1/time ✗", false],
     ["T = 2π·l/g", "T²", "time² ✗", false],
   ];
-  const bob = { x: 70 + 130 * Math.sin(Math.PI / 12), y: 44 + 130 * Math.cos(Math.PI / 12) };
   return (
-    <Figure
+    <AnimatedFigure
       height={230}
-      alt="A pendulum of length l under gravity g beside three candidate period formulas; only T = 2π√(l/g) comes out with the dimension of time."
-      caption="Swap in [l] = L and [g] = LT⁻²: only one candidate returns a time, and no experiment was needed to reject the other two."
+      duration={7}
+      alt="A swinging pendulum of length l beside three candidate period formulas; only T = 2π√(l/g) comes out with the dimension of time."
+      steps={[
+        { at: 0, label: "Setup", caption: "A pendulum of length l swings under gravity g. Which formula gives its period T?" },
+        {
+          at: 1.8,
+          label: "Check units",
+          caption: "Substitute [l] = L and [g] = LT⁻² into each candidate and read off what comes out.",
+        },
+        {
+          at: 5.8,
+          label: "Keep time",
+          caption:
+            "Swap in [l] = L and [g] = LT⁻²: only one candidate returns a time, and no experiment was needed to reject the other two.",
+        },
+      ]}
     >
-      <Ground x={30} y={44} w={80} side="above" />
-      <line x1={70} y1={44} x2={70} y2={190} stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
-      <line x1={70} y1={44} x2={bob.x} y2={bob.y} stroke={C.ink} strokeWidth={2} />
-      <circle cx={bob.x} cy={bob.y} r={12} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={96} y={100} serif size={18}>
-        l
-      </Label>
-      <Arrow x1={36} y1={150} x2={36} y2={206} tone="ink" width={2} />
-      <Label x={22} y={178} serif size={18}>
-        g
-      </Label>
-
-      <Label x={175} y={30} anchor="start" tone="muted" size={15}>
-        [l] = L,  [g] = LT⁻²
-      </Label>
-      {rows.map(([f, d, v, ok], i) => {
-        const y = 80 + i * 52;
+      {({ t, raw, duration }) => {
+        // Swings ±15° throughout; phased so the final frame hangs at the static 15°.
+        const th = (15 * Math.cos((2 * Math.PI * (raw - duration)) / 1.7) * Math.PI) / 180;
+        const bob = { x: 70 + 130 * Math.sin(th), y: 44 + 130 * Math.cos(th) };
+        const verdict = seg(t, 5.8, 6.4);
+        const dim = lerp(1, 0.45, seg(t, 6.2, 6.8));
         return (
-          <g key={f}>
-            <Label x={175} y={y} anchor="start" serif size={18} tone={ok ? "accent" : "ink"} weight={ok ? 600 : undefined}>
-              {f}
+          <>
+            <Ground x={30} y={44} w={80} side="above" />
+            <line x1={70} y1={44} x2={70} y2={190} stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
+            <line x1={70} y1={44} x2={bob.x} y2={bob.y} stroke={C.ink} strokeWidth={2} />
+            <circle cx={bob.x} cy={bob.y} r={12} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={96} y={100} serif size={18}>
+              l
             </Label>
-            <Label x={345} y={y} size={18} serif tone={ok ? "accent" : "alarm"}>
-              {d}
+            <Arrow x1={132} y1={150} x2={132} y2={206} tone="ink" width={2} />
+            <Label x={146} y={178} serif size={18}>
+              g
             </Label>
-            <Label x={470} y={y} anchor="end" size={16} tone={ok ? "accent" : "alarm"}>
-              {v}
+
+            <Label x={175} y={30} anchor="start" tone="muted" size={15} opacity={op(seg(t, 0.8, 1.4))}>
+              [l] = L,  [g] = LT⁻²
             </Label>
-          </g>
+            <rect x={164} y={62} width={312} height={36} rx={6} fill={C.soft} opacity={op(verdict)} />
+            {rows.map(([f, d, v, ok], i) => {
+              const y = 80 + i * 52;
+              const a = 1.8 + i * 1.2;
+              return (
+                <g key={f} opacity={op(seg(t, a, a + 0.5) * (ok ? 1 : dim))}>
+                  <Label x={175} y={y} anchor="start" serif size={18} tone={ok ? "accent" : "ink"} weight={ok ? 600 : undefined}>
+                    {f}
+                  </Label>
+                  <g opacity={op(seg(t, a + 0.6, a + 1.1))}>
+                    <Label x={345} y={y} size={18} serif tone={ok ? "accent" : "alarm"}>
+                      {d}
+                    </Label>
+                    <Label x={470} y={y} anchor="end" size={16} tone={ok ? "accent" : "alarm"}>
+                      {v}
+                    </Label>
+                  </g>
+                  {!ok && verdict > 0.02 ? (
+                    <line x1={172} y1={y} x2={172 + 136 * verdict} y2={y} stroke={C.alarm} strokeWidth={2} />
+                  ) : null}
+                </g>
+              );
+            })}
+          </>
         );
-      })}
-    </Figure>
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -303,43 +312,93 @@ function Projectiles() {
   const vy = 20 * Math.sin(Math.PI / 6);
   const T = (2 * vy) / g;
   const s = 11.5; // px per m
+  const k = 3; // px per m/s, velocity arrows
   const X0 = 30;
   const Y0 = 180;
   const P = (t: number) => [X0 + vx * t * s, Y0 - (vy * t - 0.5 * g * t * t) * s];
-  const pts = Array.from({ length: 61 }, (_, i) => P((T * i) / 60));
-  const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
-  const dots = Array.from({ length: 9 }, (_, i) => P((T * (i + 1)) / 10));
   const apex = P(T / 2);
   const land = P(T);
+  const flight = (t: number) => clamp(t - 0.6, 0, T); // launch after 0.6 s, then real time
   return (
-    <Figure
+    <AnimatedFigure
       height={240}
-      alt="A true-scale trajectory launched at 20 m/s and 30 degrees, peaking at 5.10 m at 1.02 s and landing 35.3 m away at 2.04 s, with evenly spaced time dots."
-      caption="Dots at equal time steps are evenly spaced across: x runs at a steady 17.3 m/s, because gravity only works on y."
+      duration={3.8}
+      alt="A true-scale trajectory launched at 20 m/s and 30 degrees, peaking at 5.10 m and landing 35.3 m away, with the horizontal and vertical velocity drawn on the moving ball."
+      steps={[
+        {
+          at: 0,
+          label: "Launch",
+          caption: "Launch at 20 m/s and 30°. That splits into 17.3 m/s across and 10 m/s up.",
+        },
+        {
+          at: 0.6,
+          label: "Flight",
+          caption: "Watch the two arrows: the across arrow never changes; the up arrow shrinks, flips, and grows again.",
+        },
+        {
+          at: 2.7,
+          label: "Result",
+          caption: "Dots at equal time steps are evenly spaced across: x runs at a steady 17.3 m/s, because gravity only works on y.",
+        },
+      ]}
+      readouts={(t) => {
+        const tau = flight(t);
+        const v = vy - g * tau;
+        return [
+          { label: "t", value: `${tau.toFixed(2)} s` },
+          { label: "vₓ", value: "17.3 m/s, steady", tone: "accent" },
+          { label: "v_y", value: `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)} m/s`, tone: "ink" },
+        ];
+      }}
     >
-      <Ground x={16} y={Y0} w={452} />
-      <path d={d} fill="none" stroke={C.accent} strokeWidth={3} />
-      {dots.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={3.5} fill={C.muted} />
-      ))}
-      <Arrow x1={X0} y1={Y0} x2={X0 + 100 * Math.cos(Math.PI / 6)} y2={Y0 - 100 * Math.sin(Math.PI / 6)} tone="ink" width={2.5} />
-      <ArcMark cx={X0} cy={Y0} r={42} a0={0} a1={30} />
-      <Label x={X0 + 50} y={Y0 - 12} anchor="start" size={15}>
-        30°
-      </Label>
-      <Label x={X0 + 70} y={Y0 - 74} anchor="start">
-        v₀ = 20 m/s
-      </Label>
-      <line x1={apex[0]} y1={apex[1]} x2={apex[0]} y2={Y0} stroke={C.muted} strokeWidth={1} strokeDasharray="4 4" />
-      <DimV x={apex[0] + 16} y1={apex[1]} y2={Y0} label="5.10 m" />
-      <Label x={apex[0]} y={apex[1] - 18} tone="muted" size={15}>
-        t = 1.02 s
-      </Label>
-      <Label x={470} y={Y0 - 58} anchor="end" tone="muted" size={15}>
-        t = 2.04 s
-      </Label>
-      <DimH x1={X0} x2={land[0]} y={220} label="range 35.3 m" tone="accent" />
-    </Figure>
+      {({ t }) => {
+        const tau = flight(t);
+        const n = Math.max(1, Math.ceil((tau / T) * 60));
+        const pts = Array.from({ length: n + 1 }, (_, i) => P((tau * i) / n));
+        const d = tau > 0 ? pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ") : `M${X0},${Y0}`;
+        const dots = Array.from({ length: 9 }, (_, i) => (T * (i + 1)) / 10).filter((u) => tau >= u).map(P);
+        const [bx, by] = P(tau);
+        const v = vy - g * tau;
+        const arrows = t < 0.6 || tau < T;
+        return (
+          <>
+            <Ground x={16} y={Y0} w={452} />
+            <g opacity={op(lerp(1, 0.4, seg(t, 0.6, 1.2)))}>
+              <Arrow x1={X0} y1={Y0} x2={X0 + 100 * Math.cos(Math.PI / 6)} y2={Y0 - 100 * Math.sin(Math.PI / 6)} tone="ink" width={2.5} />
+              <ArcMark cx={X0} cy={Y0} r={42} a0={0} a1={30} />
+              <Label x={X0 + 50} y={Y0 - 12} anchor="start" size={15}>
+                30°
+              </Label>
+              <Label x={X0 + 70} y={Y0 - 74} anchor="start">
+                v₀ = 20 m/s
+              </Label>
+            </g>
+            <path d={d} fill="none" stroke={C.accent} strokeWidth={3} strokeLinecap="round" />
+            {dots.map(([x, y], i) => (
+              <circle key={i} cx={x} cy={y} r={3.5} fill={C.muted} />
+            ))}
+            {arrows ? (
+              <>
+                <Arrow x1={bx} y1={by} x2={bx + vx * k} y2={by} tone="accent" />
+                {Math.abs(v) > 0.8 ? <Arrow x1={bx} y1={by} x2={bx} y2={by - v * k} tone="ink" width={2.5} /> : null}
+              </>
+            ) : null}
+            <circle cx={bx} cy={by} r={7} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <g opacity={op(seg(t, 2.8, 3.4))}>
+              <line x1={apex[0]} y1={apex[1]} x2={apex[0]} y2={Y0} stroke={C.muted} strokeWidth={1} strokeDasharray="4 4" />
+              <DimV x={apex[0] + 16} y1={apex[1]} y2={Y0} label="5.10 m" />
+              <Label x={apex[0]} y={apex[1] - 18} tone="muted" size={15}>
+                t = 1.02 s
+              </Label>
+              <Label x={470} y={Y0 - 58} anchor="end" tone="muted" size={15}>
+                t = 2.04 s
+              </Label>
+              <DimH x1={X0} x2={land[0]} y={220} label="range 35.3 m" tone="accent" />
+            </g>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -348,38 +407,96 @@ function Projectiles() {
 /** newton: car free-body along the road — engine 4400 N forward, drag 800 N back, net 3600 N. */
 function Newton() {
   const k = 0.03; // px per N
+  const drive = (t: number) => clamp(t - 4.8, 0, 1.6); // seconds of driving at 3.0 m/s²
   return (
-    <Figure
+    <AnimatedFigure
       height={220}
-      alt="A 1200 kg car with a 4400 N forward force and an 800 N drag force, and above it the 3600 N net force giving 3.0 m/s squared."
-      caption="The engine must beat drag before anything is left for acceleration: 4400 − 800 = 3600 N, and 3600 N on 1200 kg is 3.0 m/s²."
+      duration={6.4}
+      alt="A 1200 kg car with a 4400 N forward force and an 800 N drag force; the two combine into a 3600 N net force and the car accelerates at 3.0 m/s squared."
+      steps={[
+        { at: 0, label: "Engine", caption: "The engine pushes the 1200 kg car forward with 4400 N." },
+        { at: 1.4, label: "Drag", caption: "Drag pushes back with 800 N." },
+        { at: 2.8, label: "Net force", caption: "Put both forces on one line: 4400 − 800 leaves 3600 N." },
+        {
+          at: 4.8,
+          label: "Motion",
+          caption:
+            "The engine must beat drag before anything is left for acceleration: 4400 − 800 = 3600 N, and 3600 N on 1200 kg is 3.0 m/s².",
+        },
+      ]}
+      readouts={(t) => [
+        { label: "t", value: `${drive(t).toFixed(1)} s` },
+        { label: "v", value: `${(3 * drive(t)).toFixed(1)} m/s`, tone: "accent" },
+      ]}
     >
-      <Ground x={16} y={180} w={452} />
-      <rect x={150} y={120} width={160} height={40} rx={6} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <path d="M185,120 L200,94 L262,94 L280,120" fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <circle cx={185} cy={166} r={14} fill={C.surface} stroke={C.ink} strokeWidth={2} />
-      <circle cx={275} cy={166} r={14} fill={C.surface} stroke={C.ink} strokeWidth={2} />
-      <Label x={230} y={141} size={15}>
-        1200 kg
-      </Label>
+      {({ t }) => {
+        const pE = seg(t, 0.2, 1.2);
+        const pD = seg(t, 1.5, 2.4);
+        const pC = seg(t, 2.8, 3.5);
+        const tau = drive(t);
+        const dx = 24 * tau * tau; // ½·3.0 m/s²·τ² at 16 px per m
+        const spin = ((dx / 14) * 180) / Math.PI; // wheels roll without slipping
+        const fade = lerp(1, 0.4, seg(t, 4.1, 4.7));
+        const cx1 = lerp(272, 136, pC);
+        const cy = lerp(138, 40, pC);
+        return (
+          <>
+            <Ground x={16} y={180} w={452} />
+            <g transform={`translate(${dx.toFixed(1)},0)`}>
+              <rect x={110} y={120} width={160} height={40} rx={6} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+              <path d="M145,120 L160,94 L222,94 L240,120" fill={C.soft} stroke={C.ink} strokeWidth={2} />
+              {[145, 235].map((wx) => (
+                <g key={wx}>
+                  <circle cx={wx} cy={166} r={14} fill={C.surface} stroke={C.ink} strokeWidth={2} />
+                  <line
+                    x1={wx}
+                    y1={154}
+                    x2={wx}
+                    y2={178}
+                    stroke={C.muted}
+                    strokeWidth={1.5}
+                    transform={`rotate(${spin.toFixed(1)} ${wx} 166)`}
+                  />
+                </g>
+              ))}
+              <Label x={190} y={141} size={15}>
+                1200 kg
+              </Label>
+              <GrowArrow p={pE} x1={272} y1={138} x2={272 + 4400 * k} y2={138} tone="ink" />
+              <Label x={272 + 2200 * k} y={120} size={15} opacity={op(seg(t, 0.6, 1.2))}>
+                engine 4400 N
+              </Label>
+              <GrowArrow p={pD} x1={108} y1={138} x2={108 - 800 * k} y2={138} tone="alarm" />
+              <Label x={88} y={108} size={15} tone="alarm" opacity={op(seg(t, 1.8, 2.4))}>
+                drag 800 N
+              </Label>
+            </g>
 
-      <Arrow x1={312} y1={138} x2={312 + 4400 * k} y2={138} tone="ink" />
-      <Label x={312 + 2200 * k} y={120} size={15}>
-        engine 4400 N
-      </Label>
-      <Arrow x1={148} y1={138} x2={148 - 800 * k} y2={138} tone="alarm" />
-      <Label x={118} y={138} anchor="end" size={15} tone="alarm">
-        drag 800 N
-      </Label>
-
-      <Arrow x1={176} y1={50} x2={176 + 3600 * k} y2={50} tone="accent" width={4} />
-      <Label x={176 + 1800 * k} y={30} tone="accent" weight={600}>
-        ΣF = 3600 N
-      </Label>
-      <Label x={176 + 3600 * k + 14} y={50} anchor="start" tone="accent">
-        a = 3.0 m/s²
-      </Label>
-    </Figure>
+            {t >= 2.8 ? (
+              <Arrow x1={cx1} y1={cy} x2={cx1 + 4400 * k} y2={cy} tone="ink" opacity={op(lerp(1, 0.3, seg(t, 4.1, 4.7)))} />
+            ) : null}
+            <Label x={128} y={40} anchor="end" size={15} opacity={op(seg(t, 3.3, 3.6) * fade)}>
+              +4400 N
+            </Label>
+            <g opacity={op(seg(t, 3.5, 3.9) * fade)}>
+              <Arrow x1={268} y1={26} x2={268 - 800 * k} y2={26} tone="alarm" />
+              <Label x={276} y={26} anchor="start" size={15} tone="alarm">
+                −800 N
+              </Label>
+            </g>
+            <g opacity={op(seg(t, 4.1, 4.7))}>
+              <Arrow x1={136} y1={60} x2={136 + 3600 * k} y2={60} tone="accent" width={4} />
+              <Label x={136 + 1800 * k} y={80} tone="accent" weight={600}>
+                ΣF = 3600 N
+              </Label>
+              <Label x={136 + 3600 * k + 14} y={60} anchor="start" tone="accent">
+                a = 3.0 m/s²
+              </Label>
+            </g>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -559,43 +676,144 @@ function Work() {
   );
 }
 
+/** Coaster run for `potential`: the track after the crest as an arc-length table, and the car's timed progress along it. */
+const COASTER = (() => {
+  const cubic = (p: number[][], u: number) =>
+    [0, 1].map((j) => {
+      const m = 1 - u;
+      return m * m * m * p[0][j] + 3 * m * m * u * p[1][j] + 3 * m * u * u * p[2][j] + u * u * u * p[3][j];
+    });
+  const segs = [
+    [[110, 60], [180, 60], [210, 220], [290, 220]],
+    [[290, 220], [360, 220], [410, 190], [465, 140]],
+  ];
+  const pts: number[][] = [];
+  segs.forEach((s, si) => {
+    for (let i = si ? 1 : 0; i <= 200; i++) pts.push(cubic(s, i / 200));
+  });
+  const cum = [0];
+  for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const L = cum[cum.length - 1];
+  /** Point, and tangent angle in degrees, at arc length d. */
+  const at = (d: number) => {
+    const dd = clamp(d, 0, L);
+    let lo = 0;
+    let hi = cum.length - 1;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (cum[mid] < dd) lo = mid;
+      else hi = mid;
+    }
+    const q = (dd - cum[lo]) / (cum[hi] - cum[lo] || 1);
+    return {
+      x: lerp(pts[lo][0], pts[hi][0], q),
+      y: lerp(pts[lo][1], pts[hi][1], q),
+      ang: (Math.atan2(pts[hi][1] - pts[lo][1], pts[hi][0] - pts[lo][0]) * 180) / Math.PI,
+    };
+  };
+  const h = (y: number) => ((220 - y) / 160) * 20; // m above the dip; 160 px is 20 m
+  const v = (y: number) => Math.sqrt(Math.max(0, 2 * 9.81 * (20 - h(y)))); // energy: ½v² = g(20 − h)
+  // March at 120 Hz at 7 px per m/s, with a 1.6 m/s floor so the car leaves the crest.
+  const dists = [0];
+  let d = 0;
+  let run = 0;
+  let dip = 0;
+  while (d < L) {
+    const p = at(d);
+    d += (Math.max(1.6, v(p.y)) * 7) / 120;
+    run += 1 / 120;
+    dists.push(Math.min(d, L));
+    if (!dip && p.x >= 290) dip = run;
+  }
+  const lead = 0.6;
+  return {
+    h,
+    v,
+    lead,
+    run,
+    dip: lead + dip,
+    /** The car at sequence time t. */
+    car: (t: number) => at(dists[Math.min(dists.length - 1, Math.round(clamp(t - lead, 0, run) * 120))]),
+  };
+})();
+
 /** potential: coaster crest 20 m above the dip; all U at the top becomes K at the bottom. */
 function Potential() {
   const crest = { x: 110, y: 60 };
   const dip = { x: 290, y: 220 };
   return (
-    <Figure
+    <AnimatedFigure
       height={262}
-      alt="A roller-coaster track dropping 20 m from a crest to a dip, with the car at rest on the crest and moving at 19.81 m/s at the bottom."
-      caption="Height in, speed out: mgh at the crest becomes ½mv² at the dip, the mass cancels, and v = √(2gh) ≈ 20 m/s."
+      duration={COASTER.lead + COASTER.run + 1.4}
+      alt="A roller-coaster car rolls from a crest 20 m above the dip; bars show potential energy draining into kinetic energy, reaching 19.81 m/s at the bottom."
+      steps={[
+        { at: 0, label: "Crest", caption: "At the crest the car is barely moving: its energy is all height, U = mgh." },
+        { at: COASTER.lead, label: "Drop", caption: "As it falls, U drains into K. The two bars always add to the same length." },
+        {
+          at: COASTER.dip,
+          label: "Dip",
+          caption: "Height in, speed out: mgh at the crest becomes ½mv² at the dip, the mass cancels, and v = √(2gh) ≈ 20 m/s.",
+        },
+        {
+          at: COASTER.dip + 0.7,
+          label: "Climb",
+          caption: "Climbing back to 10 m trades half of K back into U. The total never changes.",
+        },
+      ]}
+      readouts={(t) => {
+        const p = COASTER.car(t);
+        return [
+          { label: "v", value: `${COASTER.v(p.y).toFixed(1)} m/s`, tone: "accent" },
+          { label: "h", value: `${COASTER.h(p.y).toFixed(1)} m` },
+        ];
+      }}
     >
-      <line x1={20} y1={dip.y} x2={465} y2={dip.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="6 5" />
-      <path
-        d={`M20,90 C60,70 80,${crest.y} ${crest.x},${crest.y} C180,${crest.y} 210,${dip.y} ${dip.x},${dip.y} C360,${dip.y} 410,190 465,140`}
-        fill="none"
-        stroke={C.ink}
-        strokeWidth={3}
-      />
-      <rect x={crest.x - 18} y={crest.y - 20} width={36} height={16} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <circle cx={crest.x - 10} cy={crest.y - 3} r={3.5} fill={C.ink} />
-      <circle cx={crest.x + 10} cy={crest.y - 3} r={3.5} fill={C.ink} />
-      <Label x={crest.x + 26} y={crest.y - 28} anchor="start" size={15}>
-        K = 0, U = mgh
-      </Label>
+      {({ t }) => {
+        const p = COASTER.car(t);
+        const U = COASTER.h(p.y) / 20;
+        return (
+          <>
+            <line x1={20} y1={dip.y} x2={465} y2={dip.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="6 5" />
+            <path
+              d={`M20,90 C60,70 80,${crest.y} ${crest.x},${crest.y} C180,${crest.y} 210,${dip.y} ${dip.x},${dip.y} C360,${dip.y} 410,190 465,140`}
+              fill="none"
+              stroke={C.ink}
+              strokeWidth={3}
+            />
+            <g transform={`translate(${p.x.toFixed(1)},${p.y.toFixed(1)}) rotate(${p.ang.toFixed(1)})`}>
+              <rect x={-18} y={-20} width={36} height={16} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+              <circle cx={-10} cy={-3} r={3.5} fill={C.ink} />
+              <circle cx={10} cy={-3} r={3.5} fill={C.ink} />
+            </g>
+            <Label x={crest.x + 26} y={crest.y - 28} anchor="start" size={15}>
+              K = 0, U = mgh
+            </Label>
+            <DimV x={40} y1={crest.y} y2={dip.y} label="h = 20 m" />
 
-      <rect x={dip.x - 18} y={dip.y - 20} width={36} height={16} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <circle cx={dip.x - 10} cy={dip.y - 3} r={3.5} fill={C.ink} />
-      <circle cx={dip.x + 10} cy={dip.y - 3} r={3.5} fill={C.ink} />
-      <Arrow x1={dip.x + 24} y1={dip.y - 30} x2={dip.x + 110} y2={dip.y - 30} tone="accent" />
-      <Label x={dip.x + 67} y={dip.y - 50} tone="accent" weight={600}>
-        19.81 m/s
-      </Label>
-      <Label x={dip.x} y={dip.y + 22} size={15}>
-        U = 0, K = ½mv²
-      </Label>
+            <Label x={342} y={34} anchor="end" size={15}>
+              U
+            </Label>
+            <rect x={350} y={26} width={110} height={16} fill="none" stroke={C.line} strokeWidth={1} />
+            <rect x={350} y={26} width={110 * U} height={16} fill={C.ink} fillOpacity={0.75} />
+            <Label x={342} y={58} anchor="end" size={15} tone="accent">
+              K
+            </Label>
+            <rect x={350} y={50} width={110} height={16} fill="none" stroke={C.line} strokeWidth={1} />
+            <rect x={350} y={50} width={110 * (1 - U)} height={16} fill={C.accent} />
 
-      <DimV x={40} y1={crest.y} y2={dip.y} label="h = 20 m" />
-    </Figure>
+            <g opacity={op(seg(t, COASTER.dip, COASTER.dip + 0.4))}>
+              <Arrow x1={310} y1={176} x2={380} y2={176} tone="accent" />
+              <Label x={345} y={158} tone="accent" weight={600}>
+                19.81 m/s
+              </Label>
+              <Label x={dip.x} y={dip.y + 22} size={15}>
+                U = 0, K = ½mv²
+              </Label>
+            </g>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -662,33 +880,83 @@ function Power() {
 /** impulse: force–time pulses of equal area — glove 50 N × 0.12 s, wall 600 N × 0.01 s. */
 function Impulse() {
   const b = plotBox({ x: 70, y: 40, w: 370, h: 190, xMin: 0, xMax: 0.14, yMin: 0, yMax: 650 });
+  /** Physics time under the playhead: 0.8 s covers the first 0.012 s (slowed), 2.6 s the rest. */
+  const phys = (t: number) => {
+    const u = t - 0.4;
+    return u <= 0 ? 0 : u < 0.8 ? (u / 0.8) * 0.012 : 0.012 + clamp((u - 0.8) / 2.6) * 0.128;
+  };
   return (
-    <Figure
-      height={280}
-      alt="A force-time graph with a tall narrow 600 N pulse lasting 0.01 s and a low wide 50 N pulse lasting 0.12 s, both enclosing 6.0 newton-seconds."
-      caption="Same area, same momentum change: stretch the stop twelve times longer and the average force drops twelve times."
+    <AnimatedFigure
+      height={262}
+      duration={4.6}
+      alt="A force-time graph drawn by a moving playhead: a tall 600 N pulse lasting 0.01 s and a low 50 N pulse lasting 0.12 s, both enclosing 6.0 newton-seconds."
+      steps={[
+        {
+          at: 0,
+          label: "Wall",
+          caption: "Stopped by a wall, the force climbs to 600 N but lasts only 0.01 s (slowed down here).",
+        },
+        {
+          at: 1.1,
+          label: "Glove",
+          caption: "A glove stretches the same stop to 0.12 s, so the force only needs to reach 50 N.",
+        },
+        {
+          at: 3.5,
+          label: "Same area",
+          caption: "Same area, same momentum change: stretch the stop twelve times longer and the average force drops twelve times.",
+        },
+      ]}
+      readouts={(t) => {
+        const tp = phys(t);
+        const u = t - 0.4;
+        return [
+          { label: "t", value: `${tp.toFixed(3)} s${u > 0 && u < 0.8 ? " · slowed" : ""}` },
+          { label: "wall J", value: `${(600 * Math.min(tp, 0.01)).toFixed(1)} N·s`, tone: "alarm" },
+          { label: "glove J", value: `${(50 * Math.min(tp, 0.12)).toFixed(1)} N·s`, tone: "accent" },
+        ];
+      }}
     >
-      <rect x={b.px(0)} y={b.py(50)} width={b.px(0.12) - b.px(0)} height={b.py(0) - b.py(50)} fill={C.accent} fillOpacity={0.35} stroke={C.accent} strokeWidth={2} />
-      <rect x={b.px(0)} y={b.py(600)} width={b.px(0.01) - b.px(0)} height={b.py(0) - b.py(600)} fill={C.alarm} fillOpacity={0.3} stroke={C.alarm} strokeWidth={2} />
-      <Axes box={b} xLabel="t (s)" yLabel="F (N)" />
-      {[0.01, 0.12].map((t) => (
-        <g key={t}>
-          <line x1={b.px(t)} y1={b.py(0)} x2={b.px(t)} y2={b.py(0) + 6} stroke={C.ink} strokeWidth={1.5} />
-          <Label x={b.px(t)} y={b.py(0) + 18} tone="muted" size={15}>
-            {t.toFixed(2)}
-          </Label>
-        </g>
-      ))}
-      <Label x={b.px(0.01) + 10} y={b.py(560)} anchor="start" tone="alarm" weight={600}>
-        wall: 600 N for 0.01 s
-      </Label>
-      <Label x={b.px(0.06)} y={b.py(50) - 18} tone="accent" weight={600}>
-        glove: 50 N for 0.12 s
-      </Label>
-      <Label x={b.px(0.075)} y={b.py(300)} size={15}>
-        each area = 6.0 N·s = Δp
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const tp = phys(t);
+        return (
+          <>
+            <rect x={b.px(0)} y={b.py(50)} width={b.px(Math.min(tp, 0.12)) - b.px(0)} height={b.py(0) - b.py(50)} fill={C.accent} fillOpacity={0.35} stroke={C.accent} strokeWidth={2} />
+            <rect x={b.px(0)} y={b.py(600)} width={b.px(Math.min(tp, 0.01)) - b.px(0)} height={b.py(0) - b.py(600)} fill={C.alarm} fillOpacity={0.3} stroke={C.alarm} strokeWidth={2} />
+            <Axes box={b} xLabel="t (s)" yLabel="F (N)" />
+            {[0.01, 0.12].map((u) => (
+              <g key={u}>
+                <line x1={b.px(u)} y1={b.py(0)} x2={b.px(u)} y2={b.py(0) + 6} stroke={C.ink} strokeWidth={1.5} />
+                <Label x={b.px(u)} y={b.py(0) + 18} tone="muted" size={15}>
+                  {u.toFixed(2)}
+                </Label>
+              </g>
+            ))}
+            <Label x={b.px(0.01) + 10} y={b.py(560)} anchor="start" tone="alarm" weight={600} opacity={op(seg(t, 0.9, 1.3))}>
+              wall: 600 N for 0.01 s
+            </Label>
+            <Label x={b.px(0.06)} y={b.py(50) - 18} tone="accent" weight={600} opacity={op(seg(t, 3.1, 3.5))}>
+              glove: 50 N for 0.12 s
+            </Label>
+            {t > 0.4 && t < 4 ? (
+              <line
+                x1={b.px(tp)}
+                y1={b.py(0) - 200}
+                x2={b.px(tp)}
+                y2={b.py(0)}
+                stroke={C.muted}
+                strokeWidth={1.5}
+                strokeDasharray="4 4"
+                opacity={op(1 - seg(t, 3.6, 4.0))}
+              />
+            ) : null}
+            <Label x={b.px(0.075)} y={b.py(300)} size={15} opacity={op(seg(t, 3.6, 4.1))}>
+              each area = 6.0 N·s = Δp
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -748,72 +1016,153 @@ function Conserve() {
 
 /** collisions: one impact, two outcomes — momentum 8 kg·m/s both ways, kinetic energy 16 J vs 6.4 J. */
 function Collisions() {
-  const v = 18; // px per m/s
-  const rows = [52, 146, 240];
+  const [e, setE] = useState<"elastic" | "stick">("elastic");
+  const stick = e === "stick";
+  const k = 25; // px per m/s·s of travel; the 2 kg cart covers 100 px/s at 4 m/s
+  const tc = 1.26; // seconds from the start of travel to contact
+  /** Cart speeds and left edges at sequence time t (0.3 s lead-in). */
+  const state = (t: number) => {
+    const tau = Math.max(0, t - 0.3);
+    if (tau < tc) return { tau, vA: 4, vB: 0, xA: 20 + 4 * k * tau, xB: 190 };
+    const d = tau - tc;
+    const [vA, vB] = stick ? [1.6, 1.6] : [-0.8, 3.2];
+    return { tau, vA, vB, xA: 146 + vA * k * d, xB: 190 + vB * k * d };
+  };
   return (
-    <Figure
-      height={272}
-      alt="Three rows of carts: before, a 2 kg cart at 4 m/s approaches a 3 kg cart at rest; elastic, they leave at −0.8 and 3.2 m/s with 16 J; stuck, they move together at 1.6 m/s with 6.4 J."
-      caption="Momentum stays 8 kg·m/s in every row; only the kinetic energy depends on e, and sticking spends 9.6 J on deformation and heat."
+    <AnimatedFigure
+      height={250}
+      duration={3.8}
+      alt="A 2 kg cart at 4 m/s hits a 3 kg cart at rest. Bars below track momentum, which stays 8 kg·m/s, and kinetic energy, which stays 16 J if elastic and drops to 6.4 J if the carts stick."
+      toolbar={
+        <CompareSwitch
+          label="Collision type"
+          value={e}
+          onChange={setE}
+          options={[
+            { value: "elastic", label: "Elastic, e = 1" },
+            { value: "stick", label: "Stuck, e = 0" },
+          ]}
+        />
+      }
+      steps={[
+        {
+          at: 0,
+          label: "Before",
+          caption: "A 2 kg cart at 4 m/s runs into a 3 kg cart at rest: 8 kg·m/s and 16 J going in.",
+        },
+        {
+          at: 1.56,
+          label: "Impact",
+          caption: stick
+            ? "Stuck: the pair leaves together at 1.6 m/s. Momentum is still 8 kg·m/s, but only 6.4 J of motion is left."
+            : "Elastic: the 2 kg cart bounces back at 0.8 m/s and the 3 kg cart leaves at 3.2 m/s. All 16 J comes out.",
+        },
+        {
+          at: 2.9,
+          label: "Compare",
+          caption:
+            "Momentum stays 8 kg·m/s either way; only the kinetic energy depends on e, and sticking spends 9.6 J on deformation and heat.",
+        },
+      ]}
+      readouts={(t) => {
+        const { vA, vB } = state(t);
+        const K = vA * vA + 1.5 * vB * vB;
+        return [
+          { label: "Σp", value: `${(2 * vA + 3 * vB).toFixed(1)} kg·m/s`, tone: "accent" },
+          { label: "K", value: `${K.toFixed(1)} J`, tone: 16 - K > 0.1 ? "alarm" : "accent" },
+        ];
+      }}
     >
-      {rows.map((y) => (
-        <line key={y} x1={20} y1={y + 16} x2={350} y2={y + 16} stroke={C.muted} strokeWidth={1.5} />
-      ))}
-      {/* before */}
-      <Label x={20} y={rows[0] - 34} anchor="start" size={15} tone="muted">
-        before
-      </Label>
-      <Cart x={110} y={rows[0] + 16} w={44} label="2 kg" />
-      <Arrow x1={156} y1={rows[0] - 6} x2={156 + 4 * v} y2={rows[0] - 6} tone="ink" />
-      <Label x={156 + 2 * v} y={rows[0] - 24} size={15}>
-        4 m/s
-      </Label>
-      <Cart x={240} y={rows[0] + 16} w={56} label="3 kg" />
-      <Label x={470} y={rows[0] - 2} anchor="end" size={15}>
-        p = 8 kg·m/s
-      </Label>
-      <Label x={470} y={rows[0] + 18} anchor="end" size={15}>
-        K = 16 J
-      </Label>
+      {({ t }) => {
+        const { tau, vA, vB, xA, xB } = state(t);
+        const hit = tau >= tc;
+        const ring = hit ? clamp((tau - tc) / 0.4) : 0;
+        const O = 80; // bar origin
+        const kp = 25; // px per kg·m/s
+        const ke = 12.5; // px per J
+        const pA = 2 * vA;
+        const pB = 3 * vB;
+        const KA = vA * vA;
+        const KB = 1.5 * vB * vB;
+        const lost = 16 - KA - KB;
+        const tipA = O + pA * kp;
+        const a1 = vA > 0 ? xA + 46 : xA - 2;
+        const a2 = a1 + vA * 12;
+        const b1 = xB + 58;
+        const b2 = b1 + vB * 12;
+        return (
+          <>
+            <rect x={20} y={8} width={10} height={10} fill={C.ink} fillOpacity={0.8} />
+            <Label x={36} y={13} anchor="start" size={15} tone="muted">
+              2 kg cart
+            </Label>
+            <rect x={120} y={8} width={10} height={10} fill={C.accent} />
+            <Label x={136} y={13} anchor="start" size={15} tone="muted">
+              3 kg cart
+            </Label>
 
-      {/* elastic */}
-      <Label x={20} y={rows[1] - 34} anchor="start" size={15} tone="muted">
-        elastic, e = 1
-      </Label>
-      <Cart x={110} y={rows[1] + 16} w={44} label="2 kg" />
-      <Arrow x1={108} y1={rows[1] - 6} x2={108 - 0.8 * v} y2={rows[1] - 6} tone="accent" />
-      <Label x={84} y={rows[1] - 6} anchor="end" size={15} tone="accent">
-        0.8 m/s
-      </Label>
-      <Cart x={240} y={rows[1] + 16} w={56} label="3 kg" />
-      <Arrow x1={298} y1={rows[1] - 6} x2={298 + 3.2 * v} y2={rows[1] - 6} tone="accent" />
-      <Label x={298 + 1.6 * v} y={rows[1] - 24} size={15} tone="accent">
-        3.2 m/s
-      </Label>
-      <Label x={470} y={rows[1] - 2} anchor="end" size={15}>
-        p = 8 kg·m/s
-      </Label>
-      <Label x={470} y={rows[1] + 18} anchor="end" size={15} tone="accent" weight={600}>
-        K = 16 J
-      </Label>
+            <line x1={20} y1={100} x2={470} y2={100} stroke={C.muted} strokeWidth={1.5} />
+            {hit && ring < 1 ? (
+              <circle cx={190} cy={80} r={4 + 30 * ring} fill="none" stroke={C.alarm} strokeWidth={2} opacity={1 - ring} />
+            ) : null}
+            <g transform={`translate(${xA.toFixed(1)},0)`}>
+              <rect x={0} y={64} width={44} height={26} rx={3} fill={C.surface} stroke={C.ink} strokeWidth={2} />
+              <circle cx={10} cy={95} r={5} fill={C.surface} stroke={C.ink} strokeWidth={1.5} />
+              <circle cx={34} cy={95} r={5} fill={C.surface} stroke={C.ink} strokeWidth={1.5} />
+              <Label x={22} y={77} size={15}>
+                2 kg
+              </Label>
+            </g>
+            <g transform={`translate(${xB.toFixed(1)},0)`}>
+              <rect x={0} y={64} width={56} height={26} rx={3} fill={C.soft} stroke={C.accent} strokeWidth={2} />
+              <circle cx={10} cy={95} r={5} fill={C.surface} stroke={C.accent} strokeWidth={1.5} />
+              <circle cx={46} cy={95} r={5} fill={C.surface} stroke={C.accent} strokeWidth={1.5} />
+              <Label x={28} y={77} size={15}>
+                3 kg
+              </Label>
+            </g>
+            {stick && hit ? null : (
+              <>
+                <Arrow x1={a1} y1={50} x2={a2} y2={50} tone="ink" />
+                <Label x={(a1 + a2) / 2} y={34} size={15}>
+                  {hit ? "0.8 m/s" : "4.0 m/s"}
+                </Label>
+              </>
+            )}
+            {vB > 0 ? (
+              <>
+                <Arrow x1={b1} y1={50} x2={b2} y2={50} tone="accent" />
+                <Label x={(b1 + b2) / 2} y={34} size={15} tone="accent">
+                  {stick ? "1.6 m/s" : "3.2 m/s"}
+                </Label>
+              </>
+            ) : null}
 
-      {/* stick */}
-      <Label x={20} y={rows[2] - 34} anchor="start" size={15} tone="muted">
-        stick, e = 0
-      </Label>
-      <Cart x={164} y={rows[2] + 16} w={44} label="2 kg" />
-      <Cart x={208} y={rows[2] + 16} w={56} label="3 kg" />
-      <Arrow x1={266} y1={rows[2] - 6} x2={266 + 1.6 * v} y2={rows[2] - 6} tone="alarm" />
-      <Label x={266 + 0.8 * v} y={rows[2] - 24} size={15} tone="alarm">
-        1.6 m/s
-      </Label>
-      <Label x={470} y={rows[2] - 2} anchor="end" size={15}>
-        p = 8 kg·m/s
-      </Label>
-      <Label x={470} y={rows[2] + 18} anchor="end" size={15} tone="alarm" weight={600}>
-        K = 6.4 J
-      </Label>
-    </Figure>
+            <Label x={20} y={130} anchor="start" size={15} tone="muted">
+              momentum
+            </Label>
+            <rect x={Math.min(O, tipA)} y={142} width={Math.abs(pA) * kp} height={16} fill={C.ink} fillOpacity={0.8} />
+            <rect x={Math.min(tipA, tipA + pB * kp)} y={142} width={Math.abs(pB) * kp} height={16} fill={C.accent} />
+            <line x1={O} y1={136} x2={O} y2={164} stroke={C.ink} strokeWidth={1.5} />
+            <line x1={O + 8 * kp} y1={134} x2={O + 8 * kp} y2={166} stroke={C.muted} strokeWidth={1.5} strokeDasharray="4 3" />
+            <Label x={20} y={190} anchor="start" size={15} tone="muted">
+              kinetic energy
+            </Label>
+            <rect x={O} y={202} width={KA * ke} height={16} fill={C.ink} fillOpacity={0.8} />
+            <rect x={O + KA * ke} y={202} width={KB * ke} height={16} fill={C.accent} />
+            {lost > 0.1 ? (
+              <>
+                <rect x={O + (KA + KB) * ke} y={202} width={lost * ke} height={16} fill="url(#fig-hatch-alarm)" stroke={C.alarm} strokeWidth={1} />
+                <Label x={470} y={236} anchor="end" size={15} tone="alarm">
+                  9.6 J to dents and heat
+                </Label>
+              </>
+            ) : null}
+            <line x1={O} y1={196} x2={O} y2={224} stroke={C.ink} strokeWidth={1.5} />
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
