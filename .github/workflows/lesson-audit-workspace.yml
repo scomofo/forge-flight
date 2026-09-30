@@ -1,4 +1,4 @@
-name: Pinned lesson browser acceptance
+name: Export merged lesson source
 on:
   push:
     branches: [work/lesson-givens-build-20260930]
@@ -6,48 +6,18 @@ on:
 permissions:
   contents: read
 jobs:
-  browser:
+  export:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: c9bf8fce66f99aa2f54c9a182c4c9b35d6e5cd78
+          ref: 0f3310af80ba988240477555c5f9235ca8e638c4
           persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: '22'
-          cache: npm
-      - name: Identify the installed browser
-        shell: bash
-        run: |
-          set -euo pipefail
-          BROWSER="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
-          test -n "$BROWSER" || { echo 'No preinstalled compatible browser found'; exit 1; }
-          echo "CHROMIUM_EXECUTABLE_PATH=$BROWSER" >> "$GITHUB_ENV"
-          mkdir -p artifacts
-          "$BROWSER" --version | tee artifacts/browser-version.txt
-          git rev-parse HEAD > artifacts/tested-head.txt
-      - run: npm ci --ignore-scripts
-      - name: Development browser acceptance
-        run: |
-          node scripts/browser-lesson-givens.mjs
-          node scripts/assert-lesson-acceptance.mjs screenshots/lesson-givens/results.json
-      - name: Minified browser acceptance
-        if: success() || failure()
-        env:
-          ACCEPTANCE_BUILD: '1'
-          ACCEPTANCE_OUT: screenshots/lesson-givens-built
-        run: |
-          node scripts/browser-lesson-givens.mjs
-          node scripts/assert-lesson-acceptance.mjs screenshots/lesson-givens-built/results.json
+      - name: Export exact merged source
+        run: git archive --format=tar.gz -o /tmp/trig-base-source.tar.gz HEAD
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
         with:
-          name: pinned-lesson-browser-evidence
-          path: |
-            screenshots/lesson-givens/
-            screenshots/lesson-givens-built/
-            artifacts/tested-head.txt
-            artifacts/browser-version.txt
-          retention-days: 7
+          name: trig-base-source
+          path: /tmp/trig-base-source.tar.gz
+          retention-days: 1
