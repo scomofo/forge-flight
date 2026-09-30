@@ -33,6 +33,8 @@ function RatiosUnits() {
       {({ t }) => {
         const strike1 = seg(t, 2.6, 3);
         const strike2 = seg(t, 2.9, 3.3);
+        const factor = op(seg(t, 1.6, 2.1));
+        const answer = op(seg(t, 3.8, 4.3));
         return (
           <>
             <g opacity={op(seg(t, 0.3, 0.8))}>
@@ -50,19 +52,15 @@ function RatiosUnits() {
               {strike1 > 0.02 ? (
                 <line x1={77} y1={43} x2={lerp(77, 101, strike1)} y2={lerp(43, 21, strike1)} stroke={C.alarm} strokeWidth={2.5} />
               ) : null}
-              <g opacity={op(seg(t, 1.6, 2.1))}>
-                <Label x={124} y={32} size={20}>×</Label>
-                <Label x={196} y={12} size={19} serif>1 in</Label>
-                <line x1={146} y1={32} x2={246} y2={32} stroke={C.ink} strokeWidth={1.5} />
-                <Label x={196} y={54} size={19} serif>25.4 mm</Label>
-              </g>
+              <Label x={124} y={32} size={20} opacity={factor}>×</Label>
+              <Label x={196} y={12} size={19} serif opacity={factor}>1 in</Label>
+              <line x1={146} y1={32} x2={246} y2={32} stroke={C.ink} strokeWidth={1.5} opacity={factor} />
+              <Label x={196} y={54} size={19} serif opacity={factor}>25.4 mm</Label>
               {strike2 > 0.02 ? (
                 <line x1={210} y1={65} x2={lerp(210, 234, strike2)} y2={lerp(65, 43, strike2)} stroke={C.alarm} strokeWidth={2.5} />
               ) : null}
-              <g opacity={op(seg(t, 3.8, 4.3))}>
-                <Label x={270} y={32} size={20}>=</Label>
-                <Label x={330} y={32} size={21} serif tone="accent" weight={600}>9.4 in</Label>
-              </g>
+              <Label x={270} y={32} size={20} opacity={answer}>=</Label>
+              <Label x={330} y={32} size={21} serif tone="accent" weight={600} opacity={answer}>9.4 in</Label>
               <GrowArrow p={seg(t, 4.4, 4.9)} x1={440} y1={70} x2={360} y2={50} tone="muted" width={1.5} />
               <Label x={440} y={84} anchor="end" tone="muted" size={15} opacity={op(seg(t, 4.3, 4.8))}>mm cancels, in survives</Label>
             </g>
@@ -112,10 +110,8 @@ function Algebra() {
             <line x1={190} y1={45} x2={190} y2={95} stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" opacity={section} />
             <GrowArrow p={pull} x1={300} y1={70} x2={360} y2={70} tone="ink" />
             <Label x={332} y={44} size={15} opacity={load}>12 kN</Label>
-            <g opacity={section}>
-              <rect x={395} y={50} width={50} height={40} fill={C.soft} stroke={C.accent} strokeWidth={2.5} />
-              <Label x={420} y={71} tone="accent" weight={600}>A</Label>
-            </g>
+            <rect x={395} y={50} width={50} height={40} fill={C.soft} stroke={C.accent} strokeWidth={2.5} opacity={section} />
+            <Label x={420} y={71} tone="accent" weight={600} opacity={section}>A</Label>
             <Label x={420} y={110} tone="muted" size={15} opacity={op(seg(t, 4.3, 4.8))}>10 × 8 mm</Label>
 
             <Label x={110} y={160} size={21} serif opacity={op(seg(t, 1.6, 2.1))}>σ = F / A</Label>

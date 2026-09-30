@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Arrow, Axes, C, DimH, DimV, Figure, Ground, Label, plotBox, type FigureMap } from "./kit";
-import { AnimatedFigure, clamp, CompareSwitch, GrowArrow, lerp, op, seg } from "./motion";
+import { Arrow, Axes, C, DimH, DimV, Ground, Label, plotBox, type FigureMap } from "./kit";
+import { AnimatedFigure, clamp, CompareSwitch, GrowArrow, lerp, op, partial, seg } from "./motion";
 
 /* ---------- local helpers ---------- */
 
@@ -194,49 +194,79 @@ function Fermi() {
     [3, Math.log10(120)],
   ];
   const sup = ["¹", "²", "³", "⁴", "⁵", "⁶", "⁷"];
+  const hops = [0.9, 1.9, 3.1]; // each hop down the chain takes 0.6 s
+  const lands = [0.4, ...hops.map((a) => a + 0.4)]; // a point and its label arrive with the line
   return (
-    <Figure
+    <AnimatedFigure
       height={272}
+      duration={5.3}
       alt="Four points on a powers-of-ten axis: 3 million people, 1.2 million households, 60,000 pianos, and 120 tuners, with the last point inside a band from 10 to 1,000 around the roughly 100 listed tuners."
-      caption="Each factor is a short, boundable hop in log space; the chain lands at 120, inside an order of magnitude of the ~100 in directories."
+      steps={[
+        {
+          at: 0,
+          label: "Households",
+          caption: "Start from about 3 million people in Chicago, or roughly 1.2 million households.",
+        },
+        { at: 1.9, label: "Pianos", caption: "Maybe 1 household in 20 has a piano: about 60,000 pianos." },
+        {
+          at: 3.1,
+          label: "Tuners",
+          caption: "Tuned about once a year, at roughly 500 jobs per tuner, 60,000 / 500 gives about 120 tuners.",
+        },
+        {
+          at: 4.3,
+          label: "Check",
+          caption:
+            "Each factor is a short, boundable hop in log space; the chain lands at 120, inside an order of magnitude of the ~100 in directories.",
+        },
+      ]}
     >
-      <line x1={b.x} y1={b.py(1)} x2={b.x} y2={b.py(7)} stroke={C.ink} strokeWidth={1.5} />
-      {sup.map((s, i) => (
-        <g key={s}>
-          <line x1={b.x} y1={b.py(i + 1)} x2={b.x + b.w} y2={b.py(i + 1)} stroke={C.line} strokeWidth={1} />
-          <Label x={b.x - 8} y={b.py(i + 1)} anchor="end" tone="muted" size={15}>
-            10{s}
-          </Label>
-        </g>
-      ))}
-      <rect x={b.px(2.72)} y={b.py(3)} width={b.px(3.28) - b.px(2.72)} height={b.py(1) - b.py(3)} fill={C.soft} stroke={C.accent} strokeWidth={1} strokeDasharray="4 3" />
-      <line x1={b.px(2.72)} y1={b.py(2)} x2={b.px(3.28)} y2={b.py(2)} stroke={C.muted} strokeWidth={2} />
-      <Label x={b.px(3)} y={250} tone="muted" size={15}>
-        ~100 listed
-      </Label>
-      <path d={b.path(pts)} fill="none" stroke={C.accent} strokeWidth={2.5} />
-      {pts.map(([x, y]) => (
-        <circle key={x} cx={b.px(x)} cy={b.py(y)} r={6} fill={C.accent} />
-      ))}
-      <Label x={b.px(0) + 10} y={b.py(pts[0][1]) - 16} anchor="start" size={15}>
-        3M people
-      </Label>
-      <Label x={b.px(1) - 6} y={b.py(pts[1][1]) + 22} anchor="end" size={15}>
-        1.2M homes
-      </Label>
-      <Label x={b.px(2) + 10} y={b.py(pts[2][1]) - 16} anchor="start" size={15}>
-        60,000 pianos
-      </Label>
-      <Label x={b.px(3) - 40} y={b.py(pts[3][1]) + 16} anchor="end" size={15} tone="accent" weight={600}>
-        120 tuners
-      </Label>
-      <Label x={(b.px(1) + b.px(2)) / 2 + 6} y={(b.py(pts[1][1]) + b.py(pts[2][1])) / 2 - 14} anchor="start" tone="muted" size={15}>
-        1 in 20
-      </Label>
-      <Label x={(b.px(2) + b.px(3)) / 2 + 10} y={(b.py(pts[2][1]) + b.py(pts[3][1])) / 2 - 8} anchor="start" tone="muted" size={15}>
-        ÷ 500/yr
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const hop = hops.reduce((n, a) => n + seg(t, a, a + 0.6), 0); // 0–3 hops drawn
+        const land = (i: number) => op(seg(t, lands[i], lands[i] + 0.5));
+        const listed = op(seg(t, 4.5, 5));
+        return (
+          <>
+            <line x1={b.x} y1={b.py(1)} x2={b.x} y2={b.py(7)} stroke={C.ink} strokeWidth={1.5} />
+            {sup.map((s, i) => (
+              <g key={s}>
+                <line x1={b.x} y1={b.py(i + 1)} x2={b.x + b.w} y2={b.py(i + 1)} stroke={C.line} strokeWidth={1} />
+                <Label x={b.x - 8} y={b.py(i + 1)} anchor="end" tone="muted" size={15}>
+                  10{s}
+                </Label>
+              </g>
+            ))}
+            <rect x={b.px(2.72)} y={b.py(3)} width={b.px(3.28) - b.px(2.72)} height={b.py(1) - b.py(3)} fill={C.soft} stroke={C.accent} strokeWidth={1} strokeDasharray="4 3" opacity={op(seg(t, 4.3, 4.8))} />
+            <line x1={b.px(2.72)} y1={b.py(2)} x2={b.px(3.28)} y2={b.py(2)} stroke={C.muted} strokeWidth={2} opacity={listed} />
+            <Label x={b.px(3)} y={250} tone="muted" size={15} opacity={listed}>
+              ~100 listed
+            </Label>
+            <path d={b.path(partial(pts, hop / 3))} fill="none" stroke={C.accent} strokeWidth={2.5} />
+            {pts.map(([x, y], i) => (
+              <circle key={x} cx={b.px(x)} cy={b.py(y)} r={6} fill={C.accent} opacity={land(i)} />
+            ))}
+            <Label x={b.px(0) + 10} y={b.py(pts[0][1]) - 16} anchor="start" size={15} opacity={land(0)}>
+              3M people
+            </Label>
+            <Label x={b.px(1) - 6} y={b.py(pts[1][1]) + 22} anchor="end" size={15} opacity={land(1)}>
+              1.2M homes
+            </Label>
+            <Label x={b.px(2) + 10} y={b.py(pts[2][1]) - 16} anchor="start" size={15} opacity={land(2)}>
+              60,000 pianos
+            </Label>
+            <Label x={b.px(3) - 40} y={b.py(pts[3][1]) + 16} anchor="end" size={15} tone="accent" weight={600} opacity={land(3)}>
+              120 tuners
+            </Label>
+            <Label x={(b.px(1) + b.px(2)) / 2 + 6} y={(b.py(pts[1][1]) + b.py(pts[2][1])) / 2 - 14} anchor="start" tone="muted" size={15} opacity={op(seg(t, 2, 2.5))}>
+              1 in 20
+            </Label>
+            <Label x={(b.px(2) + b.px(3)) / 2 + 10} y={(b.py(pts[2][1]) + b.py(pts[3][1])) / 2 - 8} anchor="start" tone="muted" size={15} opacity={op(seg(t, 3.2, 3.7))}>
+              ÷ 500/yr
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -250,50 +280,77 @@ function VecComp() {
   const T1 = { x: O.x + s * 5 * Math.cos(rad(30)), y: O.y - s * 5 * Math.sin(rad(30)) };
   const T2 = { x: T1.x + s * 3 * Math.cos(rad(-20)), y: T1.y - s * 3 * Math.sin(rad(-20)) };
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={5.2}
       alt="Force F1 of 5.0 kN at 30 degrees above the dock axis, with F2 of 3.0 kN at 20 degrees below drawn from its tip; the resultant R of 7.30 kN at 11.6 degrees runs from the start to the end."
-      caption="Tip to tail, the vertical parts partly cancel: the barge feels 7.30 kN, not the 8.0 kN the magnitudes add to."
+      steps={[
+        { at: 0, label: "F₁", caption: "The first tug pulls with F₁ = 5.0 kN at 30° above the dock axis." },
+        { at: 1.5, label: "F₂", caption: "The second pulls with F₂ = 3.0 kN at 20° below it, drawn from the tip of F₁." },
+        {
+          at: 2.8,
+          label: "Resultant",
+          caption: "F₁ = (4.33, 2.50) and F₂ = (2.82, −1.03) add to R = (7.15, 1.47) kN: 7.30 kN at 11.6°.",
+        },
+        {
+          at: 4.4,
+          label: "Compare",
+          caption: "Tip to tail, the vertical parts partly cancel: the barge feels 7.30 kN, not the 8.0 kN the magnitudes add to.",
+        },
+      ]}
     >
-      <line x1={20} y1={O.y} x2={465} y2={O.y} stroke={C.muted} strokeWidth={1.5} strokeDasharray="6 5" />
-      <Label x={465} y={O.y + 18} anchor="end" tone="muted" size={15}>
-        dock axis
-      </Label>
-      <line x1={T1.x} y1={T1.y} x2={T1.x + 70} y2={T1.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" />
-      <line x1={T2.x} y1={T2.y} x2={T2.x} y2={O.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" />
-      <Label x={T2.x + 8} y={(T2.y + O.y) / 2} anchor="start" tone="muted" size={15}>
-        1.47
-      </Label>
+      {({ t }) => {
+        const angle1 = op(seg(t, 0.8, 1.3));
+        const angle2 = op(seg(t, 2, 2.5));
+        const rise = op(seg(t, 3.3, 3.8)); // R's 1.47 kN vertical component
+        return (
+          <>
+            <line x1={20} y1={O.y} x2={465} y2={O.y} stroke={C.muted} strokeWidth={1.5} strokeDasharray="6 5" />
+            <Label x={465} y={O.y + 18} anchor="end" tone="muted" size={15}>
+              dock axis
+            </Label>
+            <line x1={T1.x} y1={T1.y} x2={T1.x + 70} y2={T1.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" opacity={op(seg(t, 1.5, 2))} />
+            <line x1={T2.x} y1={T2.y} x2={T2.x} y2={O.y} stroke={C.muted} strokeWidth={1.2} strokeDasharray="4 4" opacity={rise} />
+            <Label x={T2.x + 8} y={(T2.y + O.y) / 2} anchor="start" tone="muted" size={15} opacity={rise}>
+              1.47
+            </Label>
 
-      <Arrow x1={O.x} y1={O.y} x2={T1.x} y2={T1.y} tone="ink" />
-      <Arrow x1={T1.x} y1={T1.y} x2={T2.x} y2={T2.y} tone="ink" />
-      <Arrow x1={O.x} y1={O.y} x2={T2.x} y2={T2.y} tone="accent" width={3.5} />
+            <GrowArrow p={seg(t, 0.4, 1)} x1={O.x} y1={O.y} x2={T1.x} y2={T1.y} tone="ink" />
+            <GrowArrow p={seg(t, 1.6, 2.2)} x1={T1.x} y1={T1.y} x2={T2.x} y2={T2.y} tone="ink" />
+            <GrowArrow p={seg(t, 2.8, 3.4)} x1={O.x} y1={O.y} x2={T2.x} y2={T2.y} tone="accent" width={3.5} />
 
-      <ArcMark cx={O.x} cy={O.y} r={62} a0={11.6} a1={30} />
-      <ArcMark cx={T1.x} cy={T1.y} r={50} a0={-20} a1={0} />
-      <Label x={O.x + 74} y={O.y - 34} anchor="start" size={15}>
-        30°
-      </Label>
-      <Label x={T1.x + 56} y={T1.y + 13} anchor="start" size={15}>
-        20°
-      </Label>
+            <g opacity={angle1}>
+              <ArcMark cx={O.x} cy={O.y} r={62} a0={11.6} a1={30} />
+            </g>
+            <g opacity={angle2}>
+              <ArcMark cx={T1.x} cy={T1.y} r={50} a0={-20} a1={0} />
+            </g>
+            <Label x={O.x + 74} y={O.y - 34} anchor="start" size={15} opacity={angle1}>
+              30°
+            </Label>
+            <Label x={T1.x + 56} y={T1.y + 13} anchor="start" size={15} opacity={angle2}>
+              20°
+            </Label>
 
-      <Label x={(O.x + T1.x) / 2 - 12} y={(O.y + T1.y) / 2 - 16} anchor="end">
-        F₁ 5.0 kN
-      </Label>
-      <Label x={(T1.x + T2.x) / 2 + 18} y={(T1.y + T2.y) / 2 - 22} anchor="start">
-        F₂ 3.0 kN
-      </Label>
-      <Label x={(O.x + T2.x) / 2 + 20} y={(O.y + T2.y) / 2 + 22} tone="accent" weight={600}>
-        R 7.30 kN
-      </Label>
-      <Label x={240} y={214} tone="muted" size={15}>
-        R = (7.15, 1.47) kN, at 11.6°
-      </Label>
-      <Label x={240} y={236} tone="muted" size={15}>
-        |F₁| + |F₂| = 8.0 kN
-      </Label>
-    </Figure>
+            <Label x={(O.x + T1.x) / 2 - 12} y={(O.y + T1.y) / 2 - 16} anchor="end" opacity={op(seg(t, 0.7, 1.2))}>
+              F₁ 5.0 kN
+            </Label>
+            <Label x={(T1.x + T2.x) / 2 + 18} y={(T1.y + T2.y) / 2 - 22} anchor="start" opacity={op(seg(t, 1.9, 2.4))}>
+              F₂ 3.0 kN
+            </Label>
+            <Label x={(O.x + T2.x) / 2 + 20} y={(O.y + T2.y) / 2 + 22} tone="accent" weight={600} opacity={op(seg(t, 3.1, 3.6))}>
+              R 7.30 kN
+            </Label>
+            <Label x={240} y={214} tone="muted" size={15} opacity={op(seg(t, 3.6, 4.1))}>
+              R = (7.15, 1.47) kN, at 11.6°
+            </Label>
+            <Label x={240} y={236} tone="muted" size={15} opacity={op(seg(t, 4.4, 4.9))}>
+              |F₁| + |F₂| = 8.0 kN
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -577,49 +634,72 @@ function Contact() {
   const rear = { x: P.x - hw * d.x, y: P.y - hw * d.y };
   const front = { x: P.x + hw * d.x, y: P.y + hw * d.y };
   return (
-    <Figure
+    <AnimatedFigure
       height={276}
+      duration={5.1}
       alt="A 5.0 kg block on a 30 degree incline with weight 49.1 N down, normal 42.5 N perpendicular to the slope, a 24.5 N downslope pull, and 12.7 N kinetic friction up the slope."
-      caption="The downslope pull (24.5 N) beats the static limit μs·N (17.0 N), so the block slides and kinetic friction takes only 12.7 N back."
+      steps={[
+        {
+          at: 0,
+          label: "Normal",
+          caption: "The 5.0 kg block weighs 49.1 N; the slope pushes back with N = mg·cos30° = 42.5 N.",
+        },
+        { at: 1.8, label: "Pull", caption: "Along the slope, the downslope pull is mg·sin30° = 24.5 N." },
+        {
+          at: 3,
+          label: "Static limit",
+          caption: "Static friction can supply at most μs·N = 0.40 × 42.5 = 17.0 N, less than the 24.5 N pull.",
+        },
+        {
+          at: 3.9,
+          label: "Slide",
+          caption:
+            "The downslope pull (24.5 N) beats the static limit μs·N (17.0 N), so the block slides and kinetic friction takes only 12.7 N back.",
+        },
+      ]}
     >
-      <polygon points={`${top.x},${top.y} ${top.x},${bot.y} ${bot.x},${bot.y}`} fill={C.line} fillOpacity={0.35} stroke={C.ink} strokeWidth={2} />
-      <Ground x={16} y={bot.y} w={452} />
-      <ArcMark cx={bot.x} cy={bot.y} r={56} a0={150} a1={180} />
-      <Label x={bot.x - 76} y={bot.y - 14} size={15}>
-        30°
-      </Label>
+      {({ t }) => (
+        <>
+          <polygon points={`${top.x},${top.y} ${top.x},${bot.y} ${bot.x},${bot.y}`} fill={C.line} fillOpacity={0.35} stroke={C.ink} strokeWidth={2} />
+          <Ground x={16} y={bot.y} w={452} />
+          <ArcMark cx={bot.x} cy={bot.y} r={56} a0={150} a1={180} />
+          <Label x={bot.x - 76} y={bot.y - 14} size={15}>
+            30°
+          </Label>
 
-      <g transform={`translate(${Cb.x.toFixed(1)},${Cb.y.toFixed(1)}) rotate(30)`}>
-        <rect x={-hw} y={-hh} width={hw * 2} height={hh * 2} rx={2} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      </g>
+          <g transform={`translate(${Cb.x.toFixed(1)},${Cb.y.toFixed(1)}) rotate(30)`}>
+            <rect x={-hw} y={-hh} width={hw * 2} height={hh * 2} rx={2} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+          </g>
 
-      <Arrow x1={Cb.x} y1={Cb.y} x2={Cb.x} y2={Cb.y + 49.1 * k} tone="ink" />
-      <Label x={Cb.x - 8} y={Cb.y + 49.1 * k - 4} anchor="end" size={15}>
-        mg 49.1 N
-      </Label>
-      <Arrow x1={Cb.x} y1={Cb.y} x2={Cb.x + 42.5 * k * n.x} y2={Cb.y + 42.5 * k * n.y} tone="ink" />
-      <Label x={Cb.x + 42.5 * k * n.x + 8} y={Cb.y + 42.5 * k * n.y - 8} anchor="start" size={15}>
-        N 42.5 N
-      </Label>
-      <Arrow x1={front.x} y1={front.y} x2={front.x + 24.5 * k * d.x} y2={front.y + 24.5 * k * d.y} tone="muted" dashed />
-      <Label x={front.x + 24.5 * k * d.x + 6} y={front.y + 24.5 * k * d.y - 14} anchor="start" size={15} tone="muted">
-        24.5 N
-      </Label>
-      <Arrow x1={rear.x} y1={rear.y} x2={rear.x - 12.7 * k * d.x} y2={rear.y - 12.7 * k * d.y} tone="alarm" />
-      <Label x={rear.x - 12.7 * k * d.x - 2} y={rear.y - 12.7 * k * d.y + 30} anchor="end" size={15} tone="alarm">
-        fk 12.7 N
-      </Label>
+          <GrowArrow p={seg(t, 0.4, 0.9)} x1={Cb.x} y1={Cb.y} x2={Cb.x} y2={Cb.y + 49.1 * k} tone="ink" />
+          <Label x={Cb.x - 8} y={Cb.y + 49.1 * k - 4} anchor="end" size={15} opacity={op(seg(t, 0.6, 1.1))}>
+            mg 49.1 N
+          </Label>
+          <GrowArrow p={seg(t, 0.9, 1.4)} x1={Cb.x} y1={Cb.y} x2={Cb.x + 42.5 * k * n.x} y2={Cb.y + 42.5 * k * n.y} tone="ink" />
+          <Label x={Cb.x + 42.5 * k * n.x + 8} y={Cb.y + 42.5 * k * n.y - 8} anchor="start" size={15} opacity={op(seg(t, 1.1, 1.6))}>
+            N 42.5 N
+          </Label>
+          <GrowArrow p={seg(t, 1.8, 2.3)} x1={front.x} y1={front.y} x2={front.x + 24.5 * k * d.x} y2={front.y + 24.5 * k * d.y} tone="muted" dashed />
+          <Label x={front.x + 24.5 * k * d.x + 6} y={front.y + 24.5 * k * d.y - 14} anchor="start" size={15} tone="muted" opacity={op(seg(t, 2, 2.5))}>
+            24.5 N
+          </Label>
+          <GrowArrow p={seg(t, 3.9, 4.4)} x1={rear.x} y1={rear.y} x2={rear.x - 12.7 * k * d.x} y2={rear.y - 12.7 * k * d.y} tone="alarm" />
+          <Label x={rear.x - 12.7 * k * d.x - 2} y={rear.y - 12.7 * k * d.y + 30} anchor="end" size={15} tone="alarm" opacity={op(seg(t, 4.1, 4.6))}>
+            fk 12.7 N
+          </Label>
 
-      <Label x={470} y={112} anchor="end" size={15}>
-        pull 24.5 N
-      </Label>
-      <Label x={470} y={134} anchor="end" size={15}>
-        &gt; μs·N 17.0 N
-      </Label>
-      <Label x={470} y={162} anchor="end" tone="accent" weight={600}>
-        slides: a = 2.36 m/s²
-      </Label>
-    </Figure>
+          <Label x={470} y={112} anchor="end" size={15} opacity={op(seg(t, 2.2, 2.7))}>
+            pull 24.5 N
+          </Label>
+          <Label x={470} y={134} anchor="end" size={15} opacity={op(seg(t, 3, 3.5))}>
+            &gt; μs·N 17.0 N
+          </Label>
+          <Label x={470} y={162} anchor="end" tone="accent" weight={600} opacity={op(seg(t, 4.4, 4.9))}>
+            slides: a = 2.36 m/s²
+          </Label>
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -631,57 +711,88 @@ function Fbd() {
   const cx1 = m1.x + m1.w / 2;
   const cx2 = m2.x + m2.w / 2;
   return (
-    <Figure
+    <AnimatedFigure
       height={310}
+      duration={4.6}
       alt="Two masses of 3.0 kg and 5.0 kg hang from an ideal pulley; each carries tension 36.8 N up and its own weight down, 29.4 N and 49.1 N, and they accelerate at 2.45 m/s squared."
-      caption="Each block gets exactly two arrows, T up and its own weight down; the same T on both is why the tension lands between the two weights."
+      steps={[
+        {
+          at: 0,
+          label: "Mass 1",
+          caption: "Isolate the 3.0 kg block: tension T pulls it up, and its weight m₁g = 29.4 N pulls it down.",
+        },
+        {
+          at: 1.8,
+          label: "Mass 2",
+          caption: "Isolate the 5.0 kg block: the same T pulls it up, and its weight m₂g = 49.1 N pulls it down.",
+        },
+        {
+          at: 3.2,
+          label: "Solve",
+          caption: "Adding T − m₁g = m₁a and m₂g − T = m₂a cancels T: a = 2.45 m/s², and then T = 36.8 N.",
+        },
+        {
+          at: 4.2,
+          label: "Check",
+          caption:
+            "Each block gets exactly two arrows, T up and its own weight down; the same T on both is why the tension lands between the two weights.",
+        },
+      ]}
     >
-      <Ground x={200} y={14} w={80} side="above" />
-      <line x1={240} y1={14} x2={240} y2={60} stroke={C.ink} strokeWidth={2} />
-      <circle cx={240} cy={60} r={50} fill="none" stroke={C.ink} strokeWidth={2} />
-      <circle cx={240} cy={60} r={5} fill={C.ink} />
-      <line x1={cx1} y1={60} x2={cx1} y2={m1.y} stroke={C.muted} strokeWidth={1.5} />
-      <line x1={cx2} y1={60} x2={cx2} y2={m2.y} stroke={C.muted} strokeWidth={1.5} />
+      {({ t }) => {
+        const a = seg(t, 3.2, 3.7);
+        const aLabel = op(seg(t, 3.4, 3.9));
+        return (
+          <>
+            <Ground x={200} y={14} w={80} side="above" />
+            <line x1={240} y1={14} x2={240} y2={60} stroke={C.ink} strokeWidth={2} />
+            <circle cx={240} cy={60} r={50} fill="none" stroke={C.ink} strokeWidth={2} />
+            <circle cx={240} cy={60} r={5} fill={C.ink} />
+            <line x1={cx1} y1={60} x2={cx1} y2={m1.y} stroke={C.muted} strokeWidth={1.5} />
+            <line x1={cx2} y1={60} x2={cx2} y2={m2.y} stroke={C.muted} strokeWidth={1.5} />
 
-      <rect {...{ x: m1.x, y: m1.y, width: m1.w, height: m1.h }} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={cx1} y={m1.y + m1.h / 2} size={15}>
-        3.0 kg
-      </Label>
-      <rect {...{ x: m2.x, y: m2.y, width: m2.w, height: m2.h }} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={cx2} y={m2.y + m2.h / 2} size={15}>
-        5.0 kg
-      </Label>
+            <rect {...{ x: m1.x, y: m1.y, width: m1.w, height: m1.h }} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={cx1} y={m1.y + m1.h / 2} size={15}>
+              3.0 kg
+            </Label>
+            <rect {...{ x: m2.x, y: m2.y, width: m2.w, height: m2.h }} rx={3} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={cx2} y={m2.y + m2.h / 2} size={15}>
+              5.0 kg
+            </Label>
 
-      <Arrow x1={cx1} y1={m1.y} x2={cx1} y2={m1.y - 36.8 * k} tone="accent" />
-      <Label x={cx1 - 10} y={m1.y - 30} anchor="end" size={15} tone="accent">
-        T 36.8 N
-      </Label>
-      <Arrow x1={cx1} y1={m1.y + m1.h} x2={cx1} y2={m1.y + m1.h + 29.4 * k} tone="ink" />
-      <Label x={cx1 - 10} y={m1.y + m1.h + 26} anchor="end" size={15}>
-        m₁g 29.4 N
-      </Label>
+            <GrowArrow p={seg(t, 0.4, 0.9)} x1={cx1} y1={m1.y} x2={cx1} y2={m1.y - 36.8 * k} tone="accent" />
+            <Label x={cx1 - 10} y={m1.y - 30} anchor="end" size={15} tone="accent" opacity={op(seg(t, 0.6, 1.1))}>
+              T 36.8 N
+            </Label>
+            <GrowArrow p={seg(t, 0.9, 1.4)} x1={cx1} y1={m1.y + m1.h} x2={cx1} y2={m1.y + m1.h + 29.4 * k} tone="ink" />
+            <Label x={cx1 - 10} y={m1.y + m1.h + 26} anchor="end" size={15} opacity={op(seg(t, 1.1, 1.6))}>
+              m₁g 29.4 N
+            </Label>
 
-      <Arrow x1={cx2} y1={m2.y} x2={cx2} y2={m2.y - 36.8 * k} tone="accent" />
-      <Label x={cx2 + 10} y={m2.y - 30} anchor="start" size={15} tone="accent">
-        T 36.8 N
-      </Label>
-      <Arrow x1={cx2} y1={m2.y + m2.h} x2={cx2} y2={m2.y + m2.h + 49.1 * k} tone="ink" />
-      <Label x={cx2 + 10} y={m2.y + m2.h + 40} anchor="start" size={15}>
-        m₂g 49.1 N
-      </Label>
+            <GrowArrow p={seg(t, 1.8, 2.3)} x1={cx2} y1={m2.y} x2={cx2} y2={m2.y - 36.8 * k} tone="accent" />
+            <Label x={cx2 + 10} y={m2.y - 30} anchor="start" size={15} tone="accent" opacity={op(seg(t, 2, 2.5))}>
+              T 36.8 N
+            </Label>
+            <GrowArrow p={seg(t, 2.3, 2.8)} x1={cx2} y1={m2.y + m2.h} x2={cx2} y2={m2.y + m2.h + 49.1 * k} tone="ink" />
+            <Label x={cx2 + 10} y={m2.y + m2.h + 40} anchor="start" size={15} opacity={op(seg(t, 2.5, 3))}>
+              m₂g 49.1 N
+            </Label>
 
-      <Arrow x1={130} y1={m1.y + 36} x2={130} y2={m1.y - 4} tone="muted" width={2} />
-      <Label x={120} y={m1.y + 16} anchor="end" tone="muted" size={15}>
-        a
-      </Label>
-      <Arrow x1={352} y1={m2.y + 4} x2={352} y2={m2.y + 44} tone="muted" width={2} />
-      <Label x={362} y={m2.y + 24} anchor="start" tone="muted" size={15}>
-        a
-      </Label>
-      <Label x={470} y={40} anchor="end" tone="muted" size={15}>
-        a = 2.45 m/s²
-      </Label>
-    </Figure>
+            <GrowArrow p={a} x1={130} y1={m1.y + 36} x2={130} y2={m1.y - 4} tone="muted" width={2} />
+            <Label x={120} y={m1.y + 16} anchor="end" tone="muted" size={15} opacity={aLabel}>
+              a
+            </Label>
+            <GrowArrow p={a} x1={352} y1={m2.y + 4} x2={352} y2={m2.y + 44} tone="muted" width={2} />
+            <Label x={362} y={m2.y + 24} anchor="start" tone="muted" size={15} opacity={aLabel}>
+              a
+            </Label>
+            <Label x={470} y={40} anchor="end" tone="muted" size={15} opacity={op(seg(t, 3.6, 4.1))}>
+              a = 2.45 m/s²
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -696,45 +807,68 @@ function Work() {
     { y: 206, from: 450, to: 300, tone: "alarm", name: "friction", val: "−150 J" },
     { y: 236, from: 0, to: 300, tone: "ink", name: "net", val: "300 J → v = 7.75 m/s" },
   ];
+  const rowAt = [1.9, 3.1, 4.3]; // ledger rows in the lesson's order: push, friction, net
   return (
-    <Figure
+    <AnimatedFigure
       height={256}
+      duration={5.5}
       alt="A 10 kg crate pushed 5 m by 90 N against 30 N friction, above a ledger of +450 J from the push, −150 J from friction, and 300 J net giving 7.75 m/s."
-      caption="Work is signed: the push adds 450 J, friction takes 150 J back, and the 300 J left over is the crate's kinetic energy."
+      steps={[
+        {
+          at: 0,
+          label: "Forces",
+          caption: "A 10 kg crate is pushed 5 m across a floor by a horizontal 90 N force, and friction opposes with 30 N.",
+        },
+        { at: 1.9, label: "Push", caption: "The push does W = 90 × 5 × cos0° = 450 J." },
+        { at: 3.1, label: "Friction", caption: "Friction does W = 30 × 5 × cos180° = −150 J." },
+        {
+          at: 4.3,
+          label: "Net",
+          caption: "Work is signed: the push adds 450 J, friction takes 150 J back, and the 300 J left over is the crate's kinetic energy.",
+        },
+      ]}
     >
-      <Ground x={16} y={126} w={452} />
-      <rect x={40} y={66} width={60} height={60} rx={2} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
-      <rect x={300} y={66} width={60} height={60} rx={2} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={330} y={96} size={15}>
-        10 kg
-      </Label>
-      <DimH x1={70} x2={330} y={40} label="5 m" />
-      <Arrow x1={208} y1={88} x2={298} y2={88} tone="accent" />
-      <Label x={253} y={72} size={15} tone="accent">
-        90 N
-      </Label>
-      <Arrow x1={298} y1={116} x2={268} y2={116} tone="alarm" />
-      <Label x={262} y={112} anchor="end" size={15} tone="alarm">
-        30 N
-      </Label>
+      {({ t }) => (
+        <>
+          <Ground x={16} y={126} w={452} />
+          <rect x={40} y={66} width={60} height={60} rx={2} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 4" />
+          <rect x={300} y={66} width={60} height={60} rx={2} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+          <Label x={330} y={96} size={15}>
+            10 kg
+          </Label>
+          <DimH x1={70} x2={330} y={40} label="5 m" />
+          <GrowArrow p={seg(t, 0.4, 0.9)} x1={208} y1={88} x2={298} y2={88} tone="accent" />
+          <Label x={253} y={72} size={15} tone="accent" opacity={op(seg(t, 0.6, 1.1))}>
+            90 N
+          </Label>
+          <GrowArrow p={seg(t, 1, 1.5)} x1={298} y1={116} x2={268} y2={116} tone="alarm" />
+          <Label x={262} y={112} anchor="end" size={15} tone="alarm" opacity={op(seg(t, 1.2, 1.7))}>
+            30 N
+          </Label>
 
-      {rows.map((r) => {
-        const a = x0 + Math.min(r.from, r.to) * s;
-        const w = Math.abs(r.to - r.from) * s;
-        return (
-          <g key={r.name}>
-            <Label x={x0 - 10} y={r.y} anchor="end" size={15} tone="muted">
-              {r.name}
-            </Label>
-            <rect x={a} y={r.y - 9} width={w} height={18} fill={r.tone === "ink" ? C.soft : C[r.tone]} fillOpacity={r.tone === "ink" ? 1 : 0.8} stroke={C[r.tone]} strokeWidth={1.5} />
-            <Label x={x0 + Math.max(r.from, r.to) * s + 8} y={r.y} anchor="start" size={15} tone={r.tone === "ink" ? "accent" : r.tone} weight={r.tone === "ink" ? 600 : undefined}>
-              {r.val}
-            </Label>
-          </g>
-        );
-      })}
-      <line x1={x0} y1={160} x2={x0} y2={248} stroke={C.ink} strokeWidth={1.5} />
-    </Figure>
+          {rows.map((r, i) => {
+            const at = rowAt[i];
+            const to = lerp(r.from, r.to, seg(t, at + 0.1, at + 0.7)); // the bar grows the way its work runs
+            const a = x0 + Math.min(r.from, to) * s;
+            const w = Math.abs(to - r.from) * s;
+            return (
+              <g key={r.name}>
+                <Label x={x0 - 10} y={r.y} anchor="end" size={15} tone="muted" opacity={op(seg(t, at, at + 0.5))}>
+                  {r.name}
+                </Label>
+                {w > 0 ? (
+                  <rect x={a} y={r.y - 9} width={w} height={18} fill={r.tone === "ink" ? C.soft : C[r.tone]} fillOpacity={r.tone === "ink" ? 1 : 0.8} stroke={C[r.tone]} strokeWidth={1.5} />
+                ) : null}
+                <Label x={x0 + Math.max(r.from, r.to) * s + 8} y={r.y} anchor="start" size={15} tone={r.tone === "ink" ? "accent" : r.tone} weight={r.tone === "ink" ? 600 : undefined} opacity={op(seg(t, at + 0.5, at + 1))}>
+                  {r.val}
+                </Label>
+              </g>
+            );
+          })}
+          <line x1={x0} y1={160} x2={x0} y2={248} stroke={C.ink} strokeWidth={1.5} opacity={op(seg(t, 1.9, 2.4))} />
+        </>
+      )}
+    </AnimatedFigure>
   );
 }
 
@@ -889,51 +1023,90 @@ function Power() {
   const split = 210;
   const lossMid = top + useH + lossH / 2;
   const lx = split + 70;
+  const lossD = `M${split},${lossMid} C${lx - 20},${lossMid} ${lx},${lossMid + 20} ${lx},${lossMid + 60}`;
+  /** The loss curve's first fraction u (de Casteljau), so it grows along its own path. */
+  const lossTo = (u: number) => {
+    const P = [
+      [split, lossMid],
+      [lx - 20, lossMid],
+      [lx, lossMid + 20],
+      [lx, lossMid + 60],
+    ];
+    const mix = (a: number[], b: number[]) => a.map((v, i) => v + (b[i] - v) * u);
+    const [a, b2, c] = [mix(P[0], P[1]), mix(P[1], P[2]), mix(P[2], P[3])];
+    const [ab, bc] = [mix(a, b2), mix(b2, c)];
+    const f = (q: number[]) => q.map((v) => v.toFixed(1)).join(",");
+    return `M${split},${lossMid} C${f(a)} ${f(ab)} ${f(mix(ab, bc))}`;
+  };
   return (
-    <Figure
+    <AnimatedFigure
       height={250}
+      duration={5}
       alt="An energy-flow band: 800 W of electrical input splits into 490.5 W of useful lifting power, 61.3 percent, and 309.5 W of losses turning downward."
-      caption="The budget must close: 490.5 W lifts the load and the other 309.5 W leaves as heat, friction and noise, so η = 61.3%."
+      steps={[
+        { at: 0, label: "Input", caption: "A hoist lifts 200 kg by 3 m in 12 s, and its motor draws 800 W electrically." },
+        { at: 1.5, label: "Lift", caption: "The useful work is 200 × 9.81 × 3 = 5,886 J in 12 s: about 490.5 W of lift." },
+        {
+          at: 2.8,
+          label: "Losses",
+          caption: "The missing 309.5 W heats the windings, fights gear friction, and hums out of the housing.",
+        },
+        {
+          at: 4.3,
+          label: "Efficiency",
+          caption: "The budget must close: 490.5 W lifts the load and the other 309.5 W leaves as heat, friction and noise, so η = 61.3%.",
+        },
+      ]}
     >
-      <Label x={240} y={24} tone="muted" size={15}>
-        200 kg up 3 m in 12 s
-      </Label>
-      <rect x={30} y={top} width={split - 30} height={inH} fill={C.soft} stroke={C.accent} strokeWidth={1.5} />
-      <Label x={(30 + split) / 2} y={top + inH / 2} weight={600}>
-        800 W in
-      </Label>
-      <path
-        d={`M${split},${top} L420,${top} L450,${top + useH / 2} L420,${top + useH} L${split},${top + useH} Z`}
-        fill={C.accent}
-        fillOpacity={0.3}
-        stroke={C.accent}
-        strokeWidth={1.5}
-      />
-      <Label x={325} y={top + useH / 2} weight={600}>
-        490.5 W lift
-      </Label>
-      <path
-        d={`M${split},${lossMid} C${lx - 20},${lossMid} ${lx},${lossMid + 20} ${lx},${lossMid + 60}`}
-        fill="none"
-        stroke={C.alarm}
-        strokeOpacity={0.35}
-        strokeWidth={lossH}
-      />
-      <polygon
-        points={`${lx - lossH / 2 - 6},${lossMid + 60} ${lx + lossH / 2 + 6},${lossMid + 60} ${lx},${lossMid + 88}`}
-        fill={C.alarm}
-        fillOpacity={0.5}
-      />
-      <Label x={lx + 30} y={lossMid + 40} anchor="start" tone="alarm">
-        309.5 W lost
-      </Label>
-      <Label x={lx + 30} y={lossMid + 62} anchor="start" tone="muted" size={15}>
-        heat, friction, hum
-      </Label>
-      <Label x={470} y={top - 16} anchor="end" tone="accent" weight={600}>
-        η = 61.3%
-      </Label>
-    </Figure>
+      {({ t }) => {
+        const pIn = seg(t, 0.4, 1);
+        const pLift = seg(t, 1.5, 2.2);
+        const e = lerp(split, 420, pLift); // the lift band's shoulder, arrow tip 30 px ahead
+        const pLoss = seg(t, 2.8, 3.5);
+        return (
+          <>
+            <Label x={240} y={24} tone="muted" size={15}>
+              200 kg up 3 m in 12 s
+            </Label>
+            {pIn > 0 ? <rect x={30} y={top} width={lerp(0, split - 30, pIn)} height={inH} fill={C.soft} stroke={C.accent} strokeWidth={1.5} /> : null}
+            <Label x={(30 + split) / 2} y={top + inH / 2} weight={600} opacity={op(seg(t, 0.8, 1.3))}>
+              800 W in
+            </Label>
+            {pLift > 0 ? (
+              <path
+                d={`M${split},${top} L${e},${top} L${e + 30},${top + useH / 2} L${e},${top + useH} L${split},${top + useH} Z`}
+                fill={C.accent}
+                fillOpacity={0.3}
+                stroke={C.accent}
+                strokeWidth={1.5}
+                opacity={op(clamp(pLift * 5))}
+              />
+            ) : null}
+            <Label x={325} y={top + useH / 2} weight={600} opacity={op(seg(t, 2, 2.5))}>
+              490.5 W lift
+            </Label>
+            {pLoss > 0 ? (
+              <path d={pLoss < 1 ? lossTo(pLoss) : lossD} fill="none" stroke={C.alarm} strokeOpacity={0.35} strokeWidth={lossH} />
+            ) : null}
+            <polygon
+              points={`${lx - lossH / 2 - 6},${lossMid + 60} ${lx + lossH / 2 + 6},${lossMid + 60} ${lx},${lossMid + 88}`}
+              fill={C.alarm}
+              fillOpacity={0.5}
+              opacity={op(seg(t, 3.3, 3.7))}
+            />
+            <Label x={lx + 30} y={lossMid + 40} anchor="start" tone="alarm" opacity={op(seg(t, 3.4, 3.9))}>
+              309.5 W lost
+            </Label>
+            <Label x={lx + 30} y={lossMid + 62} anchor="start" tone="muted" size={15} opacity={op(seg(t, 3.6, 4.1))}>
+              heat, friction, hum
+            </Label>
+            <Label x={470} y={top - 16} anchor="end" tone="accent" weight={600} opacity={op(seg(t, 4.3, 4.8))}>
+              η = 61.3%
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
@@ -1031,48 +1204,90 @@ function Conserve() {
   const a1 = a0 + 2.0 * s;
   const b1 = b0 - 2.8 * s;
   const y = 140;
+  const glide = (t: number) => clamp(t - 0.5, 0, 1); // seconds since the push, real time
   return (
-    <Figure
+    <AnimatedFigure
       height={236}
+      duration={3.6}
       alt="Two skaters of 70 kg and 50 kg push apart from rest; one second later the 70 kg skater is 2.0 m to the right and the 50 kg skater 2.8 m to the left, with the center of mass unmoved."
-      caption="Momenta of +140 and −140 kg·m/s cancel, so the center of mass never moves: the push is internal to the two-skater system."
+      steps={[
+        {
+          at: 0,
+          label: "Push",
+          caption: "A 70 kg and a 50 kg skater push apart from rest on frictionless ice; the 70 kg skater glides off at +2.0 m/s.",
+        },
+        {
+          at: 1.6,
+          label: "Momentum",
+          caption: "Total momentum starts at 0, so 0 = 70 × 2.0 + 50 × v₂ gives v₂ = −2.8 m/s: the lighter skater leaves faster.",
+        },
+        {
+          at: 2.6,
+          label: "Check",
+          caption: "Momenta of +140 and −140 kg·m/s cancel, so the center of mass never moves: the push is internal to the two-skater system.",
+        },
+      ]}
+      readouts={(t) => {
+        const tau = glide(t);
+        const v1 = tau > 0 ? 2.0 : 0;
+        const v2 = tau > 0 ? -2.8 : 0;
+        const xcm = (70 * (lerp(a0, a1, tau) - a0) + 50 * (lerp(b0, b1, tau) - b0)) / 120 / s; // m, from the start
+        return [
+          { label: "t", value: `${tau.toFixed(2)} s` },
+          { label: "Σp", value: `${Math.abs(70 * v1 + 50 * v2).toFixed(0)} kg·m/s`, tone: "accent" },
+          { label: "Δx_cm", value: `${Math.abs(xcm).toFixed(2)} m`, tone: "accent" },
+        ];
+      }}
     >
-      <Ground x={16} y={170} w={452} />
-      <line x1={cm} y1={36} x2={cm} y2={170} stroke={C.accent} strokeWidth={2} strokeDasharray="6 5" />
-      <Label x={cm} y={194} tone="accent" weight={600}>
-        CM stays put
-      </Label>
-      <circle cx={a0} cy={y} r={26} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="4 4" />
-      <circle cx={b0} cy={y + 4} r={22} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="4 4" />
+      {({ t }) => {
+        const tau = glide(t);
+        const xa = lerp(a0, a1, tau); // +2.0 m/s
+        const xb = lerp(b0, b1, tau); // −2.8 m/s
+        const push = seg(t, 0.5, 0.9);
+        const names = op(seg(t, 0.55, 1)); // touching at rest, the discs crowd their labels; name them as they part
+        const speeds = op(seg(t, 0.7, 1.2));
+        const p = op(seg(t, 1.6, 2.1));
+        return (
+          <>
+            <Ground x={16} y={170} w={452} />
+            <line x1={cm} y1={36} x2={cm} y2={170} stroke={C.accent} strokeWidth={2} strokeDasharray="6 5" />
+            <Label x={cm} y={194} tone="accent" weight={600} opacity={op(seg(t, 2.6, 3.1))}>
+              CM stays put
+            </Label>
+            <circle cx={a0} cy={y} r={26} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="4 4" />
+            <circle cx={b0} cy={y + 4} r={22} fill="none" stroke={C.muted} strokeWidth={1.5} strokeDasharray="4 4" />
 
-      <circle cx={a1} cy={y} r={26} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={a1} y={y} size={15}>
-        70 kg
-      </Label>
-      <circle cx={b1} cy={y + 4} r={22} fill={C.soft} stroke={C.ink} strokeWidth={2} />
-      <Label x={b1} y={y + 4} size={15}>
-        50 kg
-      </Label>
+            <circle cx={xa} cy={y} r={26} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={xa} y={y} size={15} opacity={names}>
+              70 kg
+            </Label>
+            <circle cx={xb} cy={y + 4} r={22} fill={C.soft} stroke={C.ink} strokeWidth={2} />
+            <Label x={xb} y={y + 4} size={15} opacity={names}>
+              50 kg
+            </Label>
 
-      <Arrow x1={cm + 16} y1={72} x2={cm + 16 + 2.0 * 30} y2={72} tone="ink" />
-      <Label x={cm + 16 + 30} y={52} size={15}>
-        +2.0 m/s
-      </Label>
-      <Arrow x1={cm - 16} y1={72} x2={cm - 16 - 2.8 * 30} y2={72} tone="ink" />
-      <Label x={cm - 16 - 42} y={52} size={15}>
-        −2.8 m/s
-      </Label>
+            <GrowArrow p={push} x1={cm + 16} y1={72} x2={cm + 16 + 2.0 * 30} y2={72} tone="ink" />
+            <Label x={cm + 16 + 30} y={52} size={15} opacity={speeds}>
+              +2.0 m/s
+            </Label>
+            <GrowArrow p={push} x1={cm - 16} y1={72} x2={cm - 16 - 2.8 * 30} y2={72} tone="ink" />
+            <Label x={cm - 16 - 42} y={52} size={15} opacity={speeds}>
+              −2.8 m/s
+            </Label>
 
-      <Label x={a1} y={194} size={15} tone="muted">
-        p = +140
-      </Label>
-      <Label x={b1 - 22} y={194} anchor="start" size={15} tone="muted">
-        p = −140
-      </Label>
-      <Label x={470} y={222} anchor="end" size={15} tone="muted">
-        kg·m/s, 1 s after the push
-      </Label>
-    </Figure>
+            <Label x={a1} y={194} size={15} tone="muted" opacity={p}>
+              p = +140
+            </Label>
+            <Label x={b1 - 22} y={194} anchor="start" size={15} tone="muted" opacity={p}>
+              p = −140
+            </Label>
+            <Label x={470} y={222} anchor="end" size={15} tone="muted" opacity={op(seg(t, 1.8, 2.3))}>
+              kg·m/s, 1 s after the push
+            </Label>
+          </>
+        );
+      }}
+    </AnimatedFigure>
   );
 }
 
