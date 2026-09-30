@@ -18,6 +18,27 @@
  *   the lesson text exactly.
  * - Always pass `alt` (what the figure shows, one sentence) and `caption`
  *   (what to notice, one short sentence).
+ *
+ * Figures are short, replayable sequences drawn with `AnimatedFigure` from
+ * `./motion`. On top of the rules above:
+ * - The final frame is the static figure. Port a figure by keeping its JSX and
+ *   making values functions of `t`; don't redraw it. Reduced motion, print and
+ *   the server render all show only that final frame.
+ * - Pick one pattern. Build-up: elements fade or grow in the order the
+ *   lesson's text argues (`seg(t, a, a + 0.5)` for reveals, `GrowArrow` from
+ *   the tail). Motion: the lesson's object moves under the lesson's real
+ *   physics, in real or labelled slowed time, with readouts that finish on the
+ *   worked-example values. Compare: one `CompareSwitch` toolbar flips between
+ *   two cases on the same axes.
+ * - Timing: 3.5–7.5 s in total, reveal windows 0.4–0.7 s, 0.3–0.6 s of
+ *   lead-in before motion. The clock holds the final frame 1.8 s, then loops.
+ * - 3–4 steps. The last step's caption is the figure's caption, verbatim;
+ *   earlier captions are one plain sentence each, in the lesson's numbers.
+ * - Continuously changing numbers go in `readouts` (HTML), not SVG text.
+ *   Labels from a small fixed set can stay as SVG text toggled by opacity.
+ * - Draw paths progressively by rebuilding `d` from points sampled up to `t`,
+ *   never with stroke-dashoffset. Group moving objects in
+ *   `<g transform="translate(…)">` so their labels and arrows travel along.
  */
 import type { ReactNode } from "react";
 
@@ -35,6 +56,64 @@ export const C = {
 export const FONT = "var(--font-sans, ui-sans-serif, system-ui, sans-serif)";
 export const SERIF = "var(--font-serif, ui-serif, Georgia, serif)";
 
+/** The figure box every lesson figure sits in. */
+export const FIGURE_BOX = "mt-4 rounded-lg border border-line bg-surface p-3 sm:p-4";
+export const FIGCAPTION = "mt-2 text-sm leading-relaxed text-muted";
+
+/** Arrowheads per tone, and the alarm hatch used for "lost" quantities (`url(#fig-hatch-alarm)`). */
+function FigureDefs() {
+  return (
+    <defs>
+      {(["ink", "accent", "muted", "alarm"] as const).map((k) => (
+        <marker
+          key={k}
+          id={`fig-arrow-${k}`}
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M0,0 L10,5 L0,10 z" fill={C[k]} />
+        </marker>
+      ))}
+      <pattern id="fig-hatch-alarm" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="6" height="6" fill={C.alarm} fillOpacity={0.12} />
+        <line x1="0" y1="0" x2="0" y2="6" stroke={C.alarm} strokeWidth={2} />
+      </pattern>
+    </defs>
+  );
+}
+
+/** The figure's SVG: viewBox, type defaults and shared defs. */
+export function FigureSvg({
+  alt,
+  height,
+  width = 480,
+  children,
+}: {
+  alt: string;
+  height: number;
+  width?: number;
+  children: ReactNode;
+}) {
+  return (
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      role="img"
+      aria-label={alt}
+      className="h-auto w-full"
+      fontFamily={FONT}
+      fontSize={16}
+      fill={C.ink}
+    >
+      <FigureDefs />
+      {children}
+    </svg>
+  );
+}
+
 export function Figure({
   alt,
   caption,
@@ -49,40 +128,16 @@ export function Figure({
   children: ReactNode;
 }) {
   return (
-    <figure className="mt-4 rounded-lg border border-line bg-surface p-3 sm:p-4">
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        role="img"
-        aria-label={alt}
-        className="h-auto w-full"
-        fontFamily={FONT}
-        fontSize={16}
-        fill={C.ink}
-      >
-        <defs>
-          {(["ink", "accent", "muted", "alarm"] as const).map((k) => (
-            <marker
-              key={k}
-              id={`fig-arrow-${k}`}
-              viewBox="0 0 10 10"
-              refX="9"
-              refY="5"
-              markerWidth="7"
-              markerHeight="7"
-              orient="auto-start-reverse"
-            >
-              <path d="M0,0 L10,5 L0,10 z" fill={C[k]} />
-            </marker>
-          ))}
-        </defs>
+    <figure className={FIGURE_BOX}>
+      <FigureSvg alt={alt} height={height} width={width}>
         {children}
-      </svg>
-      <figcaption className="mt-2 text-sm leading-relaxed text-muted">{caption}</figcaption>
+      </FigureSvg>
+      <figcaption className={FIGCAPTION}>{caption}</figcaption>
     </figure>
   );
 }
 
-type Tone = "ink" | "accent" | "muted" | "alarm";
+export type Tone = "ink" | "accent" | "muted" | "alarm";
 
 /** A straight arrow from (x1,y1) to (x2,y2). `both` puts a head on each end. */
 export function Arrow({
@@ -94,6 +149,7 @@ export function Arrow({
   width = 3,
   both = false,
   dashed = false,
+  opacity,
 }: {
   x1: number;
   y1: number;
@@ -103,6 +159,7 @@ export function Arrow({
   width?: number;
   both?: boolean;
   dashed?: boolean;
+  opacity?: number;
 }) {
   return (
     <line
@@ -115,6 +172,7 @@ export function Arrow({
       strokeDasharray={dashed ? "6 5" : undefined}
       markerEnd={`url(#fig-arrow-${tone})`}
       markerStart={both ? `url(#fig-arrow-${tone})` : undefined}
+      opacity={opacity}
     />
   );
 }
@@ -129,6 +187,7 @@ export function Label({
   size = 16,
   weight,
   serif = false,
+  opacity,
 }: {
   x: number;
   y: number;
@@ -138,6 +197,7 @@ export function Label({
   size?: number;
   weight?: number;
   serif?: boolean;
+  opacity?: number;
 }) {
   return (
     <text
@@ -149,6 +209,7 @@ export function Label({
       fontWeight={weight}
       fontFamily={serif ? SERIF : undefined}
       dominantBaseline="middle"
+      opacity={opacity}
     >
       {children}
     </text>
