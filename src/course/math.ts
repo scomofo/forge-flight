@@ -35,7 +35,7 @@ export const mathLessons: Lesson[] = [
       "The drawing says 240 mm. The stock list is in inches. This is the kind of conversion that seems trivial right up until a factor gets flipped. || Write the conversion as a fraction: 1 in / 25.4 mm. The numerator and denominator represent the same length, so multiplying by the fraction changes the unit without changing the quantity. || Keep the units on the page and cancel them just like algebraic factors. If the unit you are trying to remove is still there at the end, the setup is wrong. Fix that before you calculate.",
     use: "Use this whenever you convert units or scale a quantity by a ratio. || Start with the number and its unit. Multiply by conversion factors arranged so the unwanted units cancel. Keep the units visible on every line. || When only the target unit remains, do a rough size check. For 240 mm, something near 10 inches makes sense. Something near 100 or 6000 does not.",
     example:
-      "Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.449 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.055 lb, so 7.055 lb × ($4.10 / 1 lb) = $28.92. Keep the extra digits until the last line; round only the answer. || Call it 9.4 in and $29. The 3.2 kg only has two digits, so two or three digits is all any answer can honestly claim. In every line the starting unit cancelled and the target unit survived. Flip the factor to (25.4 mm / 1 in) and you get 6096 mm²/in, which is meaningless — you'll spot the mistake before any money is involved.",
+      "Supplied reference factors: 1 in = 25.4 mm exactly; 1 kg ≈ 2.20462 lb (rounded). The price is a given for this exercise, not a current quote. Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.449 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.055 lb, so 7.055 lb × ($4.10 / 1 lb) = $28.92. Keep the extra digits until the last line; round only the answer. || Call it 9.4 in and $29. The 3.2 kg only has two digits, so two or three digits is all any answer can honestly claim. In every line the starting unit cancelled and the target unit survived. Flip the factor to (25.4 mm / 1 in) and you get 6096 mm²/in, which is meaningless — you'll spot the mistake before any money is involved.",
     ideas: [
       {
         heading: "Keep the unit attached",
@@ -72,6 +72,8 @@ export const mathLessons: Lesson[] = [
         heading: "Ratios preserve shape",
         body: "A scale ratio multiplies every length by the same factor k, and that's all it touches directly. Area is length times length, so it picks up k². Volume picks up k³. A 1:8 glider isn't “eight times smaller” in any single sense: its span is 1/8, its wing area 1/64, its mass at the same density 1/512. If the full-size wing is 1.6 m², the model's is 1.6 m² × (1/8)² = 1.6 / 64 = 0.025 m². Forget the exponent and the model comes out impossibly heavy or impossibly fragile.",
         formula: "lengths ×k ⇒ areas ×k² ⇒ volumes ×k³",
+        formulaNote: "Here ⇒ means “implies.” k is the same scale factor for every length; area uses two lengths and volume uses three.",
+        help: [{ concept: "scaling-notation" }],
       },
       {
         heading: "Do a rough check first",
@@ -242,7 +244,7 @@ export const mathLessons: Lesson[] = [
       { kind: "idea", idea: 2, label: "Criterion 3" },
     ],
     start:
-      "A stiffness calculation gives I = 2.4 × 10⁻⁹ m⁴, but the CAD tool expects mm⁴. Nothing is wrong with the value; the scale just has to change. || Scientific notation separates the significant digits from the power of ten. Metric prefixes do the same job with names: milli is 10⁻³, kilo is 10³, mega is 10⁶, and so on. || The part people usually miss is the power on the unit. If metres are raised to the fourth power, the conversion factor is raised to the fourth power too.",
+      "A stiffness calculation supplies I = 2.4 × 10⁻⁹ m⁴, but the CAD tool expects mm⁴. I is the second moment of area: a cross-section geometry property about a chosen axis, not mass or a four-dimensional volume. Its definition weights area (length²) by squared distance (length²), giving length⁴. You can convert it without learning beam design first. || Scientific notation separates the coefficient from the power of ten. Metric prefixes do the same job with names: milli is 10⁻³, kilo is 10³, mega is 10⁶. Changing a prefix and tidying the scientific notation are two different steps. || Raise the conversion factor to the same power as the unit: 1 m⁴ = (1000 mm)⁴ = 10¹² mm⁴. Then 2.4 × 10⁻⁹ × 10¹² = 2.4 × 10³ mm⁴ = 2400 mm⁴. Multiply exponents for a power of a power; add exponents when multiplying powers of ten.",
     use: "When numbers span many orders of magnitude, or a unit change crosses prefixes. || Convert by shifting the exponent: each factor of 10³ moves milli↔unit↔kilo. When multiplying, add exponents; when dividing, subtract. Keep one digit before the decimal point. || Stop when the exponent and the prefix agree — 2.4 × 10³ mm⁴, and never 2.4 × 10⁻⁹ mm⁴ (the old exponent with the new label).",
     example:
       "An aluminum bracket measures 80 × 50 × 6 mm. Estimate its mass. Given: ρ(aluminum) ≈ 2700 kg/m³ (typical, from material tables). ρ is the Greek letter rho and means density: mass per unit volume. This number is looked up, not calculated from the dimensions; you are not expected to memorize it. || Geometry gives the volume: V = 80 × 50 × 6 = 24,000 mm³ = 2.4 × 10⁴ mm³. Since 1 m = 10³ mm, 1 m³ = 10⁹ mm³, so V = 2.4 × 10⁻⁵ m³. The material supplies the density: ρ ≈ 2700 kg/m³. Now use mass = density × volume: m = ρV = (2700 kg/m³)(2.4 × 10⁻⁵ m³) = 0.0648 kg = 64.8 g ≈ 65 g. || The cubic metres cancel and kilograms remain. The dimensions gave us volume; the material table gave us density; their product gave us mass. 65 g is plausible for this small solid bracket. Use the actual alloy datasheet when a precise density matters.",
@@ -250,14 +252,17 @@ export const mathLessons: Lesson[] = [
     ideas: [
       {
         heading: "Know the common prefixes",
-        body: "Milli = 10⁻³, micro = 10⁻⁶, nano = 10⁻⁹, kilo = 10³, mega = 10⁶, and giga = 10⁹. You will see these constantly. For example, 150 MPa = 150 × 10⁶ Pa = 1.5 × 10⁸ Pa. Converting the prefix and rewriting in standard scientific notation are two separate steps.",
+        body: "Milli = 10⁻³, micro = 10⁻⁶, nano = 10⁻⁹, kilo = 10³, mega = 10⁶, and giga = 10⁹. You will see these constantly. Take a given stress of 150 MPa. Mega supplies 10⁶, giving 150 × 10⁶ Pa. Now rewrite 150 as 1.5 × 10²: (1.5 × 10²) × 10⁶ = 1.5 × 10⁸ Pa = 150,000,000 Pa. The extra 10² came from rewriting 150, not from mega. In standard scientific notation the nonzero coefficient has magnitude at least 1 and less than 10.",
         formula: "1 GPa = 10⁹ Pa,   1 mm = 10⁻³ m",
+        formulaNote: "Capital M means mega (one million). Lowercase m means milli in a prefix, but m alone is the unit metre. Read the complete unit.",
+        help: [{ concept: "scientific-notation-normalize" }],
       },
       {
         heading: "Exponents add under multiplication",
-        body: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ. Division subtracts. This is why the bracket's volume needed care: mm³ to m³ is not 10³, it is (10³)³ = 10⁹. The exponent triples because the unit is cubed — the most common prefix slip in the shop.",
+        body: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ. Division subtracts. For the bracket, 1 mm = 10⁻³ m, so 1 mm³ = (10⁻³)³ m³ = 10⁻⁹ m³. Going the other way, 1 m³ = 10⁹ mm³. The conversion direction matters as much as the cube.",
         formula: "(a × 10ᵐ)(b × 10ⁿ) = ab × 10ᵐ⁺ⁿ",
         help: [
+          { concept: "powered-unit-conversion" },
           {
             trigger: "Why add the exponents?",
             title: "Multiplying powers of ten",
@@ -284,6 +289,8 @@ export const mathLessons: Lesson[] = [
         heading: "Scaling changes area and volume faster",
         body: "If every length doubles, area goes up by 2² = 4 and volume by 2³ = 8. A geometrically similar part that is ten times larger in every direction has a thousand times the volume and, at the same density, a thousand times the mass.",
         formula: "L → kL  ⇒  A → k²A,  V → k³V",
+        formulaNote: "Reading this line: → means “becomes” here; ⇒ means “implies.” L is length, A is area, V is volume, and k is the length scale factor. With k = 10, lengths grow 10×, area 100×, and volume 1000×. Mass also grows 1000× only if density stays the same.",
+        help: [{ concept: "scaling-notation" }],
       },
     ],
     bench: "powers",
@@ -295,13 +302,13 @@ export const mathLessons: Lesson[] = [
         prompt: "2.4 × 10⁻⁹ m⁴ expressed in mm⁴ is…",
         options: ["2.4 × 10³ mm⁴", "2.4 × 10⁻⁶ mm⁴", "2.4 × 10⁻⁹ mm⁴", "2.4 × 10¹² mm⁴"],
         answer: 0,
-        why: "1 m = 10³ mm, so 1 m⁴ = (10³)⁴ = 10¹² mm⁴. 2.4 × 10⁻⁹ × 10¹² = 2.4 × 10³. The exponent multiplies by the power of the unit.",
+        why: "1 m = 10³ mm, so 1 m⁴ = (10³)⁴ mm⁴ = 10¹² mm⁴ (3 × 4 = 12). Then 2.4 × 10⁻⁹ × 10¹² = 2.4 × 10³ mm⁴ = 2400 mm⁴ (−9 + 12 = 3). The 10¹² option drops the original 10⁻⁹; the 10⁻⁶ option uses the factor only once, −9 + 3 = −6; the unchanged 10⁻⁹ just relabels the number. A smaller unit should give a bigger number, but 10⁻⁶ also passes that rough check: the required factor is specifically 10¹².",
       },
       {
         prompt: "150 MPa in pascals is…",
         options: ["1.5 × 10⁸ Pa", "1.5 × 10⁵ Pa", "1.5 × 10⁶ Pa", "1.5 × 10¹¹ Pa"],
         answer: 0,
-        why: "Mega is 10⁶: 150 × 10⁶ = 1.5 × 10⁸. Keeping one digit before the point is the convention, not a rule of nature — but everyone follows it.",
+        why: "Mega supplies 10⁶: 150 MPa = 150 × 10⁶ Pa. Rewrite 150 = 1.5 × 10², then add exponents: (1.5 × 10²) × 10⁶ = 1.5 × 10⁸ Pa. The extra 10² comes from rewriting 150. Check: 150 million is 150,000,000 Pa. This given stress does not specify any particular alloy’s yield strength.",
       },
       {
         prompt: "Every dimension of a part triples. Its volume changes by…",
