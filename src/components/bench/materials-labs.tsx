@@ -1,20 +1,10 @@
+import { EutecticDiagram } from "./phase-diagram";
+import { gradePhaseAnswer } from "../../course/phase-assessment";
 import { CurveReadingPlot } from "./curve-reading-plot";
 import { useEffect, useMemo, useState } from "react";
 import { specificStrength, stocks, type Family, type Stock } from "@/course/stocks";
 import { BenchShell, fmt, Readouts, Slider, useReducedMotion, useTicker, WellButton, Segmented, Segmented as SegmentedControl } from "./ui";
 import { cn } from "@/lib/cn";
-import {
-  BOND_PROFILES,
-  SUBSTANCES,
-  meltingRegime,
-  predictProperties,
-  scorePrediction,
-  type BondKind,
-  type Conduction,
-  type Mechanical,
-  type PropertyPack,
-  type Thermal,
-} from "@/course/bonding";
 import {
   STRUCTURES,
   cubicCellVolumeCm3,
@@ -60,8 +50,8 @@ import { basquinLife, larsonMiller, ruptureTime } from "@/course/fracture";
 import {
   CU_NI,
   EUTECTIC_REGION_LABELS,
-  PB_SN,
   coringSpread,
+  PHASE_LABELS,
   eutecticRegionAt,
   eutecticTieLineAt,
   isoRegionAt,
@@ -321,9 +311,9 @@ const bonds = [
     label: "Metallic",
     conduction: "High",
     melt: "Wide",
-    ductility: "High",
+    ductility: "Material-dependent",
     title: "A sea of electrons",
-    body: "Positive cores sit in shared electrons. The electrons carry current and still hold the metal together after atomic planes slip, so it conducts and it bends.",
+    body: "Delocalized electrons carry current. Relatively non-directional metallic bonding can permit slip, but processing, crystal structure and temperature determine how readily a particular metal deforms.",
   },
   {
     id: "ionic",
@@ -332,25 +322,25 @@ const bonds = [
     melt: "High",
     ductility: "Low",
     title: "Charges, locked",
-    body: "Electrons have been transferred. Opposite ions make a strong, high-melting lattice. Slide a plane and like charges meet, so the crystal cracks. Melt it, and the ions themselves can move and conduct.",
+    body: "Many salt crystals are insulating and relatively brittle under room-temperature loading. Some slip directions bring like charges together. Molten salts conduct through mobile ions; temperature and defects can also affect solid-state behavior.",
   },
   {
     id: "network",
     label: "Covalent network",
-    conduction: "Low",
-    melt: "Very high",
+    conduction: "Material-dependent",
+    melt: "Check phase behavior",
     ductility: "Low",
     title: "One giant molecule",
-    body: "Atoms share electrons across the whole solid, as in diamond or silica. Breaking it means breaking covalent bonds, not peeling neighbors apart. Hard, brittle, and unwilling to melt.",
+    body: "An extended directional network often gives high stiffness and limited easy slip. Electrical and thermal behavior need the material: diamond is insulating, silicon carbide is semiconducting, and graphite is directional. Pressure and atmosphere affect transformation, melting and decomposition.",
   },
   {
     id: "molecular",
     label: "Molecular",
     conduction: "Low",
-    melt: "Low",
+    melt: "Material-dependent",
     ductility: "Varies",
     title: "Strong inside, weak between",
-    body: "Covalent bonds hold each molecule together. Only weak forces hold molecules to each other, so the solid melts early. Polymers are the long-chain version: strong backbones, weak ties between chains.",
+    body: "Strong covalent bonds hold each molecule together while weaker interactions act between molecules. Sulfur illustrates relatively low-temperature melting without dissociating each ring. Polymers add chain mobility, crystallinity and crosslink effects; softening, melting and degradation are not interchangeable.",
   },
 ] as const;
 
@@ -359,8 +349,8 @@ export function BondBench() {
   const bond = bonds.find((b) => b.id === id) ?? bonds[0];
   return (
     <BenchShell
-      prompt="Select one bond type. || Conduction, melting, and ductility change together. They are not three separate choices."
-      note="These are the textbook extremes. Graphite is covalent in the sheet and weak between sheets. Many ceramics are partly ionic and partly covalent."
+      prompt="Select one structural family. || Read the qualified tendencies, then name a material or condition needed to make the prediction more specific."
+      note="A bond family does not fix every property. Temperature, processing, direction and phase matter. The sketch is a structural analogy, not a measured electronic or mechanical model."
       controls={
         <div className="flex flex-wrap gap-2 sm:col-span-2">
           {bonds.map((b) => (
@@ -388,7 +378,7 @@ export function BondBench() {
       <p className="mt-2 max-w-prose text-sm leading-relaxed text-well-dim">{bond.body}</p>
       <dl className="mt-5 grid grid-cols-3 gap-3 text-sm">
         <Meter label="Conduction" value={bond.conduction} />
-        <Meter label="Melting" value={bond.melt} />
+        <Meter label="Thermal behavior" value={bond.melt} />
         <Meter label="Ductility" value={bond.ductility} />
       </dl>
     </BenchShell>
@@ -1163,236 +1153,7 @@ export function StrainBench() {
 /* Materials 101 Week 11 — bond-energy explorer and property predictor */
 /* ------------------------------------------------------------------ */
 
-const bondKinds: BondKind[] = ["metallic", "ionic", "covalent-network", "covalent-molecular", "secondary"];
-
-const conductionLabel: Record<Conduction, string> = {
-  conductor: "Conducts",
-  insulator: "Insulates",
-  "insulator-until-molten": "Insulates solid · conducts molten",
-};
-
-const mechanicalLabel: Record<Mechanical, string> = {
-  ductile: "Ductile",
-  brittle: "Brittle",
-  soft: "Soft / deforms easily",
-};
-
-const thermalLabel: Record<Thermal, string> = {
-  "high-melting": "High melting point",
-  "decomposes-or-softens": "Softens or decomposes early",
-  "low-melting": "Low melting point",
-};
-
-const regimeLabel = { low: "Low — waxes, polymers, molecular solids", moderate: "Moderate — most metals", high: "High — ceramics, refractory metals, networks" } as const;
-
-export function BondEnergyBench() {
-  const [kind, setKind] = useState<BondKind>("metallic");
-  const profile = BOND_PROFILES[kind];
-  const [lo, hi] = profile.energyRangeKJ;
-  return (
-    <BenchShell
-      prompt="Select each bond type. || Read its energy range against its melting behavior and property pack. || Find the widest and narrowest energy ranges, and say what that width means for prediction precision."
-      note="Energy numbers are orders of magnitude. The correlation between bond energy and melting point has wide scatter — network topology, entropy, and decomposition all move the real number. If you want a melting point, measure it."
-      controls={
-        <div className="flex flex-wrap gap-2 sm:col-span-2">
-          {bondKinds.map((k) => (
-            <button
-              key={k}
-              type="button"
-              aria-pressed={k === kind}
-              onClick={() => setKind(k)}
-              className={cn(
-                "min-h-11 rounded-lg px-3 py-2 text-sm transition-transform duration-150 active:scale-[0.96]",
-                k === kind ? "bg-well-fg text-well" : "ring-1 ring-white/25",
-              )}
-            >
-              {BOND_PROFILES[k].label}
-            </button>
-          ))}
-        </div>
-      }
-    >
-      <Readouts
-        items={[
-          { label: "Bond energy", value: `${lo}–${hi} kJ/mol` },
-          { label: "Rough melting regime", value: regimeLabel[meltingRegime(hi)] },
-          { label: "Examples", value: profile.examples },
-        ]}
-      />
-      <div className="grid grid-cols-3 gap-3 text-sm">
-        <div>
-          <div className="text-well-dim">Conduction</div>
-          <div className="mt-1 font-medium">{conductionLabel[profile.conduction]}</div>
-        </div>
-        <div>
-          <div className="text-well-dim">Mechanical</div>
-          <div className="mt-1 font-medium">{mechanicalLabel[profile.mechanical]}</div>
-        </div>
-        <div>
-          <div className="text-well-dim">Thermal</div>
-          <div className="mt-1 font-medium">{thermalLabel[profile.thermal]}</div>
-        </div>
-      </div>
-      <p className="mt-4 max-w-prose text-sm leading-relaxed text-well-dim">{profile.why}</p>
-    </BenchShell>
-  );
-}
-
-const BEST_KEY = "ff:bondpredict-w11";
-
-function loadBest(): number | null {
-  try {
-    const raw = localStorage.getItem(BEST_KEY);
-    if (raw == null) return null;
-    const n = Number(raw);
-    return Number.isFinite(n) ? n : null;
-  } catch {
-    return null;
-  }
-}
-
-export function BondPredictBench() {
-  const [i, setI] = useState(0);
-  const [guess, setGuess] = useState<PropertyPack>({ conduction: "conductor", mechanical: "ductile", thermal: "high-melting" });
-  const [revealed, setRevealed] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [best, setBest] = useState<number | null>(() => loadBest());
-  const done = i >= SUBSTANCES.length;
-  const item = SUBSTANCES[i];
-  const actual = item ? predictProperties(item.kind) : null;
-  const roundScore = actual && revealed ? scorePrediction(guess, actual) : 0;
-
-  const next = () => {
-    const t = total + (actual ? scorePrediction(guess, actual) : 0);
-    setTotal(t);
-    if (i + 1 >= SUBSTANCES.length) {
-      if (best == null || t > best) {
-        setBest(t);
-        try {
-          localStorage.setItem(BEST_KEY, String(t));
-        } catch {
-          /* storage unavailable — the score still shows */
-        }
-      }
-    }
-    setI(i + 1);
-    setRevealed(false);
-    setGuess({ conduction: "conductor", mechanical: "ductile", thermal: "high-melting" });
-  };
-
-  return (
-    <BenchShell
-      prompt="Read the structural hint, then predict all three properties before revealing. || The reveal names the bond behind the answer — score yourself 0–3 per round. || When you finish, write down the cause of each miss."
-      note="Six substances, three properties each. Graphite is in there on purpose: it punishes anyone who assigns one bond per material. Your best score is saved on this device."
-      controls={
-        done ? (
-          <div className="sm:col-span-2">
-            <WellButton
-              onClick={() => {
-                setI(0);
-                setTotal(0);
-                setRevealed(false);
-                setGuess({ conduction: "conductor", mechanical: "ductile", thermal: "high-melting" });
-              }}
-            >
-              Run it again
-            </WellButton>
-          </div>
-        ) : (
-          <>
-            <Segmented<Conduction>
-              label="Electrical"
-              value={guess.conduction}
-              onChange={(v) => setGuess({ ...guess, conduction: v })}
-              options={[
-                { value: "conductor", label: "Conductor" },
-                { value: "insulator", label: "Insulator" },
-                { value: "insulator-until-molten", label: "Insulates solid, conducts molten" },
-              ]}
-            />
-            <Segmented<Mechanical>
-              label="Mechanical"
-              value={guess.mechanical}
-              onChange={(v) => setGuess({ ...guess, mechanical: v })}
-              options={[
-                { value: "ductile", label: "Ductile — bends" },
-                { value: "brittle", label: "Brittle — snaps" },
-                { value: "soft", label: "Soft — deforms easily" },
-              ]}
-            />
-            <Segmented<Thermal>
-              label="Thermal"
-              value={guess.thermal}
-              onChange={(v) => setGuess({ ...guess, thermal: v })}
-              options={[
-                { value: "high-melting", label: "High melting point" },
-                { value: "low-melting", label: "Low melting point" },
-                { value: "decomposes-or-softens", label: "Softens or decomposes early" },
-              ]}
-            />
-            <div className="sm:col-span-2">
-              {revealed ? (
-                <WellButton onClick={next}>{i + 1 >= SUBSTANCES.length ? "Finish" : "Next substance"}</WellButton>
-              ) : (
-                <WellButton onClick={() => setRevealed(true)}>Reveal the bond</WellButton>
-              )}
-            </div>
-          </>
-        )
-      }
-    >
-      {done ? (
-        <div>
-          <Readouts
-            items={[
-              { label: "Score", value: `${total} / ${SUBSTANCES.length * 3}` },
-              { label: "Best on this device", value: best != null ? `${best} / ${SUBSTANCES.length * 3}` : "—" },
-            ]}
-          />
-          <p className="max-w-prose text-sm leading-relaxed text-well-dim">
-            Now the actual work: for each round you missed, name the cause. “Missed the second bond” and “called it a network when it was molecular” are diagnoses. “Guessed wrong” is not.
-          </p>
-        </div>
-      ) : (
-        <div>
-          <Readouts
-            items={[
-              { label: "Substance", value: `${i + 1} of ${SUBSTANCES.length}` },
-              { label: "Running score", value: `${total}` },
-            ]}
-          />
-          <h3 className="font-serif text-2xl">{item.name}</h3>
-          <p className="mt-2 max-w-prose text-sm leading-relaxed text-well-dim">{item.hint}</p>
-          {revealed && actual ? (
-            <div className="mt-4 rounded-lg ring-1 ring-white/25 p-4">
-              <p className="text-sm">
-                <span className="text-well-dim">Bond: </span>
-                <span className="font-medium">{BOND_PROFILES[item.kind].label}</span>
-                <span className="text-well-dim"> · this round: </span>
-                <span className="font-medium">{roundScore} / 3</span>
-              </p>
-              <dl className="mt-3 grid grid-cols-3 gap-3 text-sm">
-                <div>
-                  <div className="text-well-dim">Conduction</div>
-                  <div className="mt-1">{conductionLabel[actual.conduction]}</div>
-                </div>
-                <div>
-                  <div className="text-well-dim">Mechanical</div>
-                  <div className="mt-1">{mechanicalLabel[actual.mechanical]}</div>
-                </div>
-                <div>
-                  <div className="text-well-dim">Thermal</div>
-                  <div className="mt-1">{thermalLabel[actual.thermal]}</div>
-                </div>
-              </dl>
-              <p className="mt-3 max-w-prose text-sm leading-relaxed text-well-dim">{item.why}</p>
-            </div>
-          ) : null}
-        </div>
-      )}
-    </BenchShell>
-  );
-}
+export { BondEnergyBench, BondPredictBench } from "./bonding-labs";
 
 /* ---------------- Materials 101, Week 12 benches ---------------- */
 
@@ -3195,65 +2956,6 @@ export function CreepLifeBench() {
 
 const W = 320;
 const H = 220;
-/** Eutectic-diagram SVG mapping: 0–100 wt% Sn → x, 60–340 °C → y. */
-const ex = (c: number) => 28 + (c / 100) * 264;
-const ey = (t: number) => 196 - ((t - 60) / 280) * 176;
-
-function EutecticDiagram({
-  c0,
-  t,
-  showPoint = true,
-}: {
-  c0?: number;
-  t?: number;
-  showPoint?: boolean;
-}) {
-  const liq = `${ex(0)},${ey(327)} ${ex(PB_SN.eutecticC)},${ey(PB_SN.eutecticT)} ${ex(100)},${ey(232)}`;
-  const solA = `${ex(0)},${ey(327)} ${ex(19.2)},${ey(PB_SN.eutecticT)}`;
-  const solB = `${ex(100)},${ey(232)} ${ex(97.5)},${ey(PB_SN.eutecticT)}`;
-  const svA = `${ex(19.2)},${ey(PB_SN.eutecticT)} ${ex(0)},${ey(60)}`;
-  const svB = `${ex(97.5)},${ey(PB_SN.eutecticT)} ${ex(100)},${ey(60)}`;
-  const tie = eutecticTieLineAt(c0 ?? -1, t ?? -1);
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label="Lead tin phase diagram">
-      <line x1={28} y1={196} x2={292} y2={196} stroke="currentColor" strokeOpacity="0.4" />
-      <line x1={28} y1={196} x2={28} y2={20} stroke="currentColor" strokeOpacity="0.4" />
-      <text x={286} y={212} fontSize="9" fill="currentColor" opacity="0.7" textAnchor="end">wt% Sn →</text>
-      <text x={22} y={28} fontSize="9" fill="currentColor" opacity="0.7">T °C</text>
-      <polyline points={liq} fill="none" stroke="currentColor" strokeWidth="2" />
-      <polyline points={solA} fill="none" stroke="currentColor" strokeWidth="1.4" strokeOpacity="0.75" />
-      <polyline points={solB} fill="none" stroke="currentColor" strokeWidth="1.4" strokeOpacity="0.75" />
-      <polyline points={svA} fill="none" stroke="currentColor" strokeWidth="1.4" strokeOpacity="0.75" />
-      <polyline points={svB} fill="none" stroke="currentColor" strokeWidth="1.4" strokeOpacity="0.75" />
-      <line
-        x1={ex(19.2)} y1={ey(PB_SN.eutecticT)} x2={ex(97.5)} y2={ey(PB_SN.eutecticT)}
-        stroke="currentColor" strokeWidth="1.2" strokeDasharray="5 3" strokeOpacity="0.8"
-      />
-      <text x={ex(30)} y={ey(280)} fontSize="10" fill="currentColor" opacity="0.8">L</text>
-      <text x={ex(8)} y={ey(140)} fontSize="10" fill="currentColor" opacity="0.8">α</text>
-      <text x={ex(99)} y={ey(140)} fontSize="10" fill="currentColor" opacity="0.8" textAnchor="end">β</text>
-      <text x={ex(30)} y={ey(215)} fontSize="9" fill="currentColor" opacity="0.65">L + α</text>
-      <text x={ex(88)} y={ey(215)} fontSize="9" fill="currentColor" opacity="0.65">L + β</text>
-      <text x={ex(58)} y={ey(120)} fontSize="9" fill="currentColor" opacity="0.65">α + β</text>
-      <circle cx={ex(PB_SN.eutecticC)} cy={ey(PB_SN.eutecticT)} r="3" fill="currentColor" />
-      <text x={ex(PB_SN.eutecticC)} y={ey(PB_SN.eutecticT) - 8} fontSize="9" fill="currentColor" opacity="0.8" textAnchor="middle">
-        eutectic 183°C
-      </text>
-      {showPoint && c0 !== undefined && t !== undefined && (
-        <>
-          {tie && (
-            <line
-              x1={ex(tie.cLeft)} y1={ey(t)} x2={ex(tie.cRight)} y2={ey(t)}
-              stroke="currentColor" strokeWidth="2.5" strokeOpacity="0.45"
-            />
-          )}
-          <circle cx={ex(c0)} cy={ey(t)} r="4.5" fill="none" stroke="currentColor" strokeWidth="2" />
-        </>
-      )}
-    </svg>
-  );
-}
-
 interface PhaseProblem {
   c0: number;
   t: number;
@@ -3280,6 +2982,7 @@ function numInput(value: string, set: (v: string) => void, placeholder: string) 
       step="any"
       value={value}
       placeholder={placeholder}
+      aria-label={placeholder}
       onChange={(e) => set(e.target.value)}
       className="w-28 rounded-md bg-white/10 px-2 py-1.5 text-sm tabular-nums text-well-fg placeholder:text-well-dim/60"
     />
@@ -3319,42 +3022,9 @@ export function PhaseSetBench() {
   };
 
   const grade = () => {
-    const { c0, t } = problem;
-    const expRegion = eutecticRegionAt(c0, t);
-    const tie = eutecticTieLineAt(c0, t);
-    const regionOk = region === expRegion;
-    let tieOk: boolean;
-    let expTie: string;
-    let fracOk: boolean;
-    let expFrac: string;
-    if (!tie) {
-      tieOk = cA.trim() === "" && cB.trim() === "";
-      expTie = "no tie line — single phase or the eutectic point (leave both blank)";
-      fracOk = wA.trim() === "" && wB.trim() === "";
-      expFrac = "no fractions to compute (leave both blank)";
-    } else {
-      const a = Number(cA);
-      const b = Number(cB);
-      tieOk =
-        Number.isFinite(a) &&
-        Number.isFinite(b) &&
-        Math.abs(a - tie.cLeft) <= 1.5 &&
-        Math.abs(b - tie.cRight) <= 1.5;
-      expTie = `${fmt(tie.cLeft, 1)} wt% Sn → ${fmt(tie.cRight, 1)} wt% Sn`;
-      const { wA: ewA, wB: ewB } = leverFractions(c0, tie.cLeft, tie.cRight);
-      const fa = Number(wA);
-      const fb = Number(wB);
-      fracOk =
-        Number.isFinite(fa) &&
-        Number.isFinite(fb) &&
-        Math.abs(fa - ewA) <= 0.03 &&
-        Math.abs(fb - ewB) <= 0.03;
-      expFrac = `${fmt(ewA, 3)} of the low-end phase, ${fmt(ewB, 3)} of the high-end phase`;
-    }
-    setGraded({ regionOk, tieOk, fracOk, expRegion: EUTECTIC_REGION_LABELS[expRegion], expTie, expFrac });
-    if (regionOk && tieOk && fracOk) {
-      setScores((s) => s.map((v, i) => (i === pi ? true : v)));
-    }
+    const result = gradePhaseAnswer(problem.c0, problem.t, { region, cLeft: cA, cRight: cB, wLeft: wA, wRight: wB });
+    setGraded(result);
+    if (result.regionOk && result.tieOk && result.fracOk) setScores(old => old.map((v, i) => i === pi ? true : v));
   };
 
   const eRegion = eutecticRegionAt(ec0, et);
@@ -3364,8 +3034,8 @@ export function PhaseSetBench() {
 
   return (
     <BenchShell
-      prompt="Six alloys, six temperatures. For each: name the phase field, read the tie-line ends, and compute the phase fractions. || The diagram is drawn with your point marked; the tie line appears only after you grade, so read before you check. || Clear all six — the eutectic problem has no tie line to draw, which is itself the test."
-      note="Teaching linearization of Pb–Sn: real boundaries curve and the numbers are rounded, but every reading rule here transfers to a real diagram."
+      prompt="Six alloys, six temperatures. For each: name the phase field, read the tie-line ends, and compute the phase fractions. || The diagram is drawn with your point marked; the tie line appears only after you grade, so read before you check. || Clear all six — the eutectic problem has no unique two-phase tie line to draw, which is itself the test."
+      note="Pb–Sn classroom approximation at fixed pressure. Enter endpoint compositions in wt% Sn, ordered low to high, and mass fractions from 0 to 1 (not percentages). Leave all four two-phase fields blank for a single-phase or eutectic-reaction state. Endpoint tolerance is 1.5 wt%; fraction tolerance is 0.03 and the sum must be within 0.02 of 1."
       controls={
         <>
           <Segmented
@@ -3391,17 +3061,16 @@ export function PhaseSetBench() {
           <Readouts
             items={[
               { label: "Phase field", value: EUTECTIC_REGION_LABELS[eRegion] },
-              { label: "Tie-line ends", value: eTie ? `${fmt(eTie.cLeft, 1)} → ${fmt(eTie.cRight, 1)} wt%` : "—" },
+              { label: "Tie-line ends", value: eTie ? `${PHASE_LABELS[eTie.leftPhase]} ${fmt(eTie.cLeft, 2)} → ${PHASE_LABELS[eTie.rightPhase]} ${fmt(eTie.cRight, 2)} wt% Sn` : "No two-phase tie line" },
               {
                 label: "Phase fractions",
-                value: eFrac ? `${fmt(eFrac.wA, 2)} / ${fmt(eFrac.wB, 2)}` : "—",
+                value: eFrac && eTie ? `${fmt(eFrac.wA, 3)} ${PHASE_LABELS[eTie.leftPhase]} / ${fmt(eFrac.wB, 3)} ${PHASE_LABELS[eTie.rightPhase]}` : (eRegion === "eutectic" || eRegion === "pure-melting") ? "Coexisting phase amounts not uniquely fixed" : "100% of the named phase",
               },
             ]}
           />
           <EutecticDiagram c0={ec0} t={et} />
           <p className="mt-2 text-sm text-well-dim">
-            Move the sliders and watch the point cross boundaries. The tie line only exists in two-phase
-            fields; at the eutectic point three phases meet and the lever rule takes the day off.
+            Move the sliders and watch the point cross boundaries. A nonzero two-phase tie line is used in the two-phase fields. At a pure component’s melting point, temperature alone does not fix the solid/liquid amounts. At the eutectic reaction temperature, three phases can coexist; composition and temperature alone do not determine their three amounts. At a single-phase boundary this reader reports the limiting state with the second phase at zero fraction.
           </p>
         </>
       ) : (
@@ -3414,7 +3083,7 @@ export function PhaseSetBench() {
               { label: "Solved", value: `${solved} of ${PHASE_PROBLEMS.length}` },
             ]}
           />
-          <EutecticDiagram c0={problem.c0} t={problem.t} />
+          <EutecticDiagram c0={problem.c0} t={problem.t} showTie={graded !== null} />
           <p className="mt-2 text-sm text-well-dim">Hint: {problem.hint}</p>
           <div className="mt-4 space-y-4">
             <Segmented label="Phase field" value={region} onChange={(v) => { setRegion(v); setGraded(null); }} options={REGION_OPTIONS} />
@@ -3443,7 +3112,7 @@ export function PhaseSetBench() {
               </WellButton>
             </div>
             {graded && (
-              <div className="space-y-1 text-sm leading-relaxed">
+              <div data-phase-feedback className="space-y-1 text-sm leading-relaxed">
                 <p className={graded.regionOk ? "text-well-fg" : "text-well-dim"}>
                   {graded.regionOk ? "✓" : "✗"} Field: expected {graded.expRegion}.
                 </p>
@@ -3484,19 +3153,19 @@ export function SolidifyBench() {
 
   return (
     <BenchShell
-      prompt="Pick a Cu–Ni alloy and cool it through freezing, step by step. || Watch the tie line sweep across the lens: liquid and solid compositions at each temperature, the fractions, the width of the mushy zone. || Then flip on coring and compare the dendrite core to its rim — that gradient is what a quench freezes in."
-      note="Linearized Cu–Ni: real liquidus and solidus curve, and real coring follows the Scheil equation. The core-to-rim story — first solid Ni-rich, last solid lean — is the same."
+      prompt="Pick a Cu–Ni alloy and cool it through freezing, step by step. || Watch the tie line sweep across the lens: liquid and solid compositions at each temperature, the fractions, the width of the mushy zone. || Then compare the first equilibrium solid with the final homogeneous solid. Explain why those two values do not predict a quenched core-to-rim profile."
+      note="Cu–Ni straight-line approximation restricted to 20–45 wt% Ni. The comparison shows equilibrium endpoints only; it does not simulate coring or solve a Scheil solidification model. Real nonequilibrium segregation depends on diffusion and cooling history."
       controls={
         <>
-          <Slider label="Alloy composition" min={5} max={60} step={1} value={c0} display={`${fmt(c0, 0)} wt% Ni`} onChange={(v) => { setC0(v); setT(CU_NI.liquidus(v) + 14); }} />
+          <Slider label="Alloy composition" min={20} max={45} step={1} value={c0} display={`${fmt(c0, 0)} wt% Ni`} onChange={(v) => { setC0(v); setT(CU_NI.liquidus(v) + 14); }} />
           <Slider label="Temperature" min={tMin} max={tMax} step={2} value={Math.min(Math.max(t, tMin), tMax)} display={`${fmt(Math.min(Math.max(t, tMin), tMax), 0)} °C`} onChange={setT} />
           <Segmented
-            label="Solid diffusion"
+            label="Composition comparison"
             value={coring ? "coring" : "equilibrium"}
             onChange={(v) => setCoring(v === "coring")}
             options={[
               { value: "equilibrium", label: "Equilibrium — diffusion keeps up" },
-              { value: "coring", label: "Coring — quenched, no solid diffusion" },
+              { value: "coring", label: "Compare first and final equilibrium solid" },
             ]}
           />
         </>
@@ -3510,7 +3179,7 @@ export function SolidifyBench() {
           { label: "Fractions L / α", value: frac ? `${fmt(frac.wA, 2)} / ${fmt(frac.wB, 2)}` : region === "alpha" ? "0 / 1" : "1 / 0" },
           { label: "Mushy-zone width", value: `${fmt(tLiq - tSol, 1)} °C` },
           coring
-            ? { label: "Dendrite core → rim", value: `${fmt(spread.core, 1)} → ${fmt(spread.rim, 1)} wt% Ni` }
+            ? { label: "First solid → final equilibrium solid", value: `${fmt(spread.core, 1)} → ${fmt(spread.rim, 1)} wt% Ni` }
             : { label: "Freezing range", value: `${fmt(tSol, 0)}–${fmt(tLiq, 0)} °C` },
         ]}
       />
@@ -3540,11 +3209,11 @@ export function SolidifyBench() {
       </svg>
       <div className="mt-3 space-y-1 text-sm leading-relaxed text-well-dim">
         <p>
-          {`First solid appears at ${fmt(tLiq, 0)}°C; the last liquid freezes at ${fmt(tSol, 0)}°C. Between them the alloy is mushy — which is why castings shrink and feeders exist.`}
+          {`First solid appears at ${fmt(tLiq, 0)}°C; the last liquid freezes at ${fmt(tSol, 0)}°C. Between them, liquid and solid coexist. Shrinkage and feeding also require density and casting-process information not modeled here.`}
         </p>
         {coring && (
           <p>
-            {`Cored: the dendrite core froze first at ${fmt(spread.core, 1)} wt% Ni and the rim last at ${fmt(spread.rim, 1)} wt% Ni. The average is still ${fmt(c0, 0)}% — coring redistributes, it never creates or destroys solute. A homogenizing anneal erases the gradient.`}
+            {`First equilibrium solid: ${fmt(spread.core, 1)} wt% Ni. Final homogeneous equilibrium solid: ${fmt(spread.rim, 1)} wt% Ni. This comparison does not predict a quenched rim or a core-to-rim profile. Modeling segregation requires additional nonequilibrium assumptions.`}
           </p>
         )}
         <p className="opacity-75">

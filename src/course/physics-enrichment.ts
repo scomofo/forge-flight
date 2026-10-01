@@ -156,7 +156,7 @@ export const physicsEnrichment: Record<string, LessonEnrichment> = {
   },
   lift: {
     sections: [
-      inline('idea-2', 'Read static margin by regime', table(['Static margin', 'Teaching-model interpretation'], [['Below 0', 'CG aft of neutral point; statically unstable'], ['0 to below 0.05', 'Little restoring margin; twitchy'], ['0.05–0.25', 'The course’s target band'], ['Above 0.25', 'CG far forward; over-stable, nose-heavy and sluggish']])),
+      inline('idea-2', 'Read static margin by regime', table(['Static margin', 'Teaching-model interpretation'], [['Below 0', 'CG aft of neutral point; statically unstable'], ['Exactly 0', 'Neutral: no linear restoring tendency'], ['Above 0 to below 0.05', 'Positive static stability, below classroom target'], ['0.05–0.25 inclusive', 'Positive static stability, within classroom target'], ['Above 0.25', 'Positive static stability, above classroom target; trim and control authority not established']])),
       help('example', 'Finish the cruise balance', p('At the supplied 0.25 kg, S = 0.06 m² and ρ = 1.225 kg/m³, weight is 2.45 N. Holding CL = 0.6 needs v = √(2W/(ρSCL)) = 10.5 m/s. Holding 9 m/s instead needs CL = W/(½ρv²S) = 0.824. Stall is an angle-of-attack limit, not an engine stopping. Higher aspect ratio reduces induced drag at the same CL and efficiency.')),
       help('idea-0', 'Dynamic pressure rises with speed squared', table(['Speed with ρ = 1.225 kg/m³', 'q = ½ρv²'], [['5 m/s', '15.3 Pa'], ['10 m/s', '61.3 Pa'], ['20 m/s', '245 Pa']])),
     ],

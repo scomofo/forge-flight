@@ -179,7 +179,7 @@ export const physicsW8Lessons: Lesson[] = [
     index: 24,
     title: "Lift, drag, stall, static margin",
     minutes: 40,
-    lede: "Predict a glider's stall speed from its wing loading, read a lift curve up to and past stall, and compute the static margin that decides whether the glider flies itself.",
+    lede: "Predict a glider's stall speed from its wing loading, read a lift curve up to and past stall, and compute static margin while separating restoring tendency from the classroom target.",
     opening: { mode: "prose", heading: "Lift is not enough; the glider must also be stable" },
     readFlow: [
       { kind: "idea", idea: 0, label: "Dynamic pressure" },
@@ -190,9 +190,9 @@ export const physicsW8Lessons: Lesson[] = [
     ],
     start:
       "A glider can have enough wing area to make lift and still be unpleasant or impossible to fly if its center of gravity is in the wrong place. || Lift and drag scale with dynamic pressure q = ½ρv², wing area S, and the coefficients C_L and C_D. C_L increases with angle of attack until stall, after which lift falls and drag rises. || Static margin compares the center of gravity with the neutral point. A positive margin gives a restoring tendency after a small pitch disturbance; a negative margin is statically unstable.",
-    use: "Sizing a wing, checking a design's stability number, reading Glider Lab's verdicts instead of taking them on faith. || Compute wing loading W/S — the single number that sets stall speed. Compute v_stall = √(2W/(ρS·C_Lmax)): below this speed, level flight is impossible at any angle of attack. Compute the static margin and demand roughly 0.05–0.25: below 0.05 the glider is twitchy, negative is unflyable, far above 0.25 it is nose-heavy and mushy. || Stop when you can predict the stall speed from wing loading alone and call stable/marginal/unstable from the margin without touching a simulator.",
+    use: "Sizing a wing, checking a design's stability number, reading Glider Lab's verdicts instead of taking them on faith. || Compute wing loading W/S, where W is weight in newtons and S is wing area in square metres. Stall speed also depends on air density and maximum lift coefficient. Compute v_stall = √(2W/(ρS·C_Lmax)): below this speed, level flight is impossible at any angle of attack. Compute static margin: negative is statically unstable, zero is neutral, and any positive value is restoring in the linear attached-flow model. Then compare it with the inclusive 0.05–0.25 classroom target: a positive value outside that band misses the target but is not negative-margin instability. || Stop when you can predict stall speed with the supplied density and lift coefficient and classify the sign and target band from the margin without touching a simulator.",
     example:
-      "Assume ρ_air = 1.225 kg/m³ for this exercise atmosphere and g = 9.81 m/s². Air density is supplied, not obtained from the wing dimensions; it changes with atmospheric conditions. C_Lmax and e below are chosen aerodynamic-model inputs. A balsa glider: mass 0.25 kg, wing area 0.06 m², C_Lmax 1.1. || Stall speed: v = √(2 × 0.25 × 9.81 / (1.225 × 0.06 × 1.1)) = √(4.905 / 0.08085) = √60.67 ≈ 7.79 m/s. Fly slower than ~7.8 m/s and no angle of attack will hold it up — the wing simply cannot make enough lift. Static margin: neutral point 0.30 m from the nose, CG at 0.27 m, mean chord 0.12 m → SM = (0.30 − 0.27)/0.12 = 0.25, right at the top of the stable band. || Now the force balance at cruise. At 9 m/s with C_L = 0.6: q = ½ × 1.225 × 81 = 49.6 Pa, L = 49.6 × 0.06 × 0.6 = 1.79 N against a weight of 2.45 N — short. The glider must fly faster or at a higher angle of attack; the numbers say so before the bench does. And that lift is not free: the 0.12 m chord on 0.06 m² means a 0.50 m span, so AR = b²/S = 0.25/0.06 = 4.17. The lift slope is a = 2π × 4.17/(4.17 + 2) = 4.25 per radian, and with e = 0.85 the induced drag at C_L = 0.6 is C_Di = 0.36/(π × 4.17 × 0.85) = 0.0324 — about 49.6 × 0.06 × 0.0324 = 0.096 N of drag spent just making lift.",
+      "Assume ρ_air = 1.225 kg/m³ for this exercise atmosphere and g = 9.81 m/s². Air density is supplied, not obtained from the wing dimensions; it changes with atmospheric conditions. C_Lmax and e below are chosen aerodynamic-model inputs. A balsa glider: mass 0.25 kg, wing area 0.06 m², C_Lmax 1.1. || Stall speed: v = √(2 × 0.25 × 9.81 / (1.225 × 0.06 × 1.1)) = √(4.905 / 0.08085) = √60.67 ≈ 7.79 m/s. In the stated steady level-flight model, below ~7.8 m/s no angle of attack supplies the required lift — the wing simply cannot make enough lift. Static margin: neutral point 0.30 m from the nose, CG at 0.27 m, mean chord 0.12 m → SM = (0.30 − 0.27)/0.12 = 0.25, right at the inclusive upper edge of the classroom target. It has positive static stability in this model, but this alone does not establish trim or dynamic stability. || Now the force balance at cruise. At 9 m/s with C_L = 0.6: q = ½ × 1.225 × 81 = 49.6 Pa, L = 49.6 × 0.06 × 0.6 = 1.79 N against a weight of 2.45 N — short. The glider must fly faster or at a higher angle of attack; the numbers say so before the bench does. And that lift is not free: the 0.12 m chord on 0.06 m² means a 0.50 m span, so AR = b²/S = 0.25/0.06 = 4.17. The lift slope is a = 2π × 4.17/(4.17 + 2) = 4.25 per radian, and with e = 0.85 the induced drag at C_L = 0.6 is C_Di = 0.36/(π × 4.17 × 0.85) = 0.0324 — about 49.6 × 0.06 × 0.0324 = 0.096 N of drag spent just making lift.",
     ideas: [
       {
         heading: "Aerodynamic forces scale with dynamic pressure",
@@ -206,17 +206,17 @@ export const physicsW8Lessons: Lesson[] = [
       },
       {
         heading: "Static margin is a quick stability check",
-        body: "The neutral point is where the wing-plus-tail lift effectively acts; the CG is where the weight acts. If the CG sits ahead of the neutral point, a nose-up disturbance increases lift behind the CG and pushes the nose back down — restoring. Static margin = (x_NP − x_CG)/MAC measures that lever arm in chord lengths. The Glider Lab wants 0.05–0.25: enough authority to self-correct, not so much the glider plows nose-down through every gust.",
+        body: "The neutral point (NP) is the center-of-gravity position at which the modeled pitching-moment response to a small angle-of-attack change is neutral; it is not generally the center of pressure. CG means center of gravity. Measure x_NP and x_CG aft from the same datum, in metres, and divide their difference by the mean aerodynamic chord (MAC), also in metres. Static margin (SM) is a dimensionless ratio: 0.05 means 5%. Negative SM is statically unstable, zero is neutral, and positive SM gives a restoring tendency for attached flow. The inclusive 5–25% classroom target is a separate design choice. A positive margin below or above it is still statically stable; trim, control authority and dynamic stability need separate checks.",
         formula: "SM = (x_NP − x_CG) / MAC",
       },
     ],
     bench: "gliderprelab",
     prompt:
       "Predict the stall speed and the stability verdict for the given glider — on paper, before touching a slider. || Then set the model to match and compare: where did your prediction miss, and which input drove the miss? || Write the force balance: at your chosen cruise, does lift carry the weight, what is the margin, and what would you change?",
-    note: "The pre-lab uses the same lift, drag, and static-margin formulas Glider Lab evaluates — your predictions are checked against the model you will meet in the lab, not a simplified copy.",
+    note: "The pre-lab shares the static-margin equation with Glider Lab but uses its own supplied constants. Zero is neutral; any positive margin is restoring in the linear model. The 5–25% band is an inclusive classroom target, not a universal flight standard.",
     checks: [
       {
-        prompt: "A glider's wing loading W/S doubles at the same C_Lmax. Stall speed…",
+        prompt: "A glider's wing loading W/S doubles at the same air density and C_Lmax. Stall speed…",
         options: [
           "Increases by √2",
           "Doubles",
@@ -246,7 +246,7 @@ export const physicsW8Lessons: Lesson[] = [
           "Stable but slower",
         ],
         answer: 0,
-        why: "Static margin = (x_NP − x_CG)/MAC goes negative, so a nose-up gust creates a nose-up moment — the disturbance amplifies. This is unflyable without active control, which is why the CG must sit ahead of the neutral point.",
+        why: "Static margin = (x_NP − x_CG)/MAC goes negative, so a nose-up gust creates a nose-up moment — the disturbance amplifies. That is negative longitudinal static stability in this attached-flow model; it is not a full simulation of the controlled aircraft.",
       },
       {
         prompt: "The balsa glider's wing (AR = 4.17, e = 0.85) makes C_Di = 0.032 at C_L = 0.6. You build a slimmer wing of the same area with AR = 8.33 and fly it at the same C_L. Its induced drag coefficient is…",

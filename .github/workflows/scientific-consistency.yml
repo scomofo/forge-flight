@@ -1,0 +1,59 @@
+name: Scientific consistency desktop
+on:
+  pull_request:
+    paths:
+      - 'src/course/**'
+      - 'src/components/**'
+      - 'scripts/**'
+      - 'docs/lesson-sources/**'
+      - 'docs/scientific-consistency-pass.md'
+      - '.github/workflows/scientific-consistency.yml'
+permissions:
+  contents: read
+jobs:
+  desktop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Registered and discovered tests
+        run: |
+          mkdir -p artifacts/scientific-consistency/checks
+          git rev-parse HEAD > artifacts/scientific-consistency/checks/revision.txt
+          set -o pipefail
+          npm test 2>&1 | tee artifacts/scientific-consistency/checks/tests.txt
+          node --experimental-strip-types --import ./scripts/register-alias.mjs --test src/course/*.test.ts src/forge/sim/*.test.ts 2>&1 | tee artifacts/scientific-consistency/checks/discovery.txt
+      - run: npm run typecheck
+      - run: npm run build
+      - name: Reviewed-source freshness
+        run: |
+          node scripts/import-materials-walkthroughs.mjs --check
+          node --experimental-strip-types scripts/course-enrichment-coverage.mjs --check
+      - name: Lint edited science code
+        run: |
+          npx eslint src/course/phasediagrams.ts src/course/phase-assessment.ts src/course/fluids.ts src/course/bonding.ts src/course/materials-w11.ts src/course/materials-w17.ts src/course/physics-w8.ts src/course/physics-enrichment.ts src/course/physics-w8.test.ts src/course/scientific-consistency.test.ts src/course/materials-walkthroughs.ts src/components/bench/materials-labs.tsx src/components/bench/physics-labs.tsx src/components/bench/bonding-labs.tsx src/components/bench/phase-diagram.tsx src/components/bench/stability-sketch.tsx src/components/figures/materials-a.tsx src/components/figures/materials-b.tsx scripts/import-materials-walkthroughs.mjs scripts/scientific-consistency.test.mjs scripts/browser-scientific-consistency.mjs
+      - name: Use installed Chrome
+        run: |
+          BROWSER=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          "$BROWSER" --version
+          echo "CHROMIUM_EXECUTABLE_PATH=$BROWSER" >> "$GITHUB_ENV"
+      - name: Development scientific acceptance
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/browser-scientific-consistency.mjs
+      - name: Production scientific acceptance
+        if: ${{ !cancelled() }}
+        env:
+          ACCEPTANCE_BUILD: '1'
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/browser-scientific-consistency.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: scientific-consistency-evidence
+          path: artifacts/scientific-consistency/
+          retention-days: 7

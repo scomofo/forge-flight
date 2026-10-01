@@ -648,7 +648,7 @@
       ],
       "practice": true,
       "practiceTables": 0,
-      "contentSha256": "323e589d244448cd2ca72cbad035b37d947c3f8b973d2bb3b3d26114b7b0b5d3"
+      "contentSha256": "6337f4acac55b08f1ace10405cacb9b722b5bec69b791da68f65c853dbb8d1e3"
     },
     {
       "key": "physics/shm",
@@ -900,7 +900,7 @@
       ],
       "practice": true,
       "practiceTables": 0,
-      "contentSha256": "bd1170493a8d745558bd17752cc6f93b41c543052277a7b675d4754547798665"
+      "contentSha256": "934b5264c9267b1affd7a8acefd75d17945b0ebdc6d6d1a9ce65888353f6f827"
     },
     {
       "key": "materials/bondpacks",
@@ -931,7 +931,7 @@
         },
         {
           "id": "materials-2",
-          "heading": "Melting point follows bond strength (roughly)",
+          "heading": "Energy scales and independent melting data",
           "at": "idea-0",
           "mode": "help",
           "tables": 1
@@ -945,7 +945,7 @@
         },
         {
           "id": "materials-4",
-          "heading": "Tungsten: one bond, two opposite effects",
+          "heading": "Tungsten: processing matters for ductility",
           "at": "idea-1",
           "mode": "help",
           "tables": 0
@@ -974,7 +974,7 @@
       ],
       "practice": true,
       "practiceTables": 0,
-      "contentSha256": "4f638357a54444c702a5b6e9daeed47da820fe0c50dc4171b064911523c8102b"
+      "contentSha256": "5d5a4b8f2dab7158222c4ec7ed70cf03fdc64b881db016aeeeefc8a4fe80d7d5"
     },
     {
       "key": "materials/bondread",
@@ -1041,7 +1041,7 @@
       ],
       "practice": true,
       "practiceTables": 0,
-      "contentSha256": "97762dfcf9ded998310af4b99c0d28bfdb1023cea899e483c111004b4ded69e4"
+      "contentSha256": "d05f6a8c493c4d8b33e1871d7c545634c88c11585158729359a7b8e0d601b95a"
     },
     {
       "key": "materials/crystal",
@@ -2197,7 +2197,7 @@
       ],
       "practice": true,
       "practiceTables": 0,
-      "contentSha256": "d490db0a14b3b1e4e0b9b77c4c2d33878462fd549151fc7124c2d99c205ea0a9"
+      "contentSha256": "366b9df8f6d50a554c979493e37ccfa1fb222b60560a0adec1fd4ecf123a4ac9"
     },
     {
       "key": "materials/leverrule",
@@ -2271,7 +2271,7 @@
       ],
       "practice": true,
       "practiceTables": 0,
-      "contentSha256": "7db585612b0469af68f07ba2ab158443e47053b8d3387834723f1445e037603d"
+      "contentSha256": "6af3c57e799f051f8aeaf000985b0ef48b1bf1dde15df0ec120a71e4aafc897b"
     },
     {
       "key": "materials/transformations",
@@ -2331,7 +2331,7 @@
       ],
       "practice": true,
       "practiceTables": 0,
-      "contentSha256": "9fbd3d56bcf458ee4f6f6616073f82b0f0733dd283ef469be409f0241654ea17"
+      "contentSha256": "4578510163e650747ef30f8fd146381081504ab4dcc8ae32f18424e60f079e3c"
     },
     {
       "key": "materials/famlook",

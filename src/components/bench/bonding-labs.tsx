@@ -12,13 +12,15 @@ const electrical = [
 const mechanical = [
   { value: "ductile", label: "Ductile" },
   { value: "brittle", label: "Brittle" },
+  { value: "material-dependent", label: "Needs material and conditions" },
   { value: "soft", label: "Soft / easy layer sliding" },
 ] as const;
 const thermal = [
+  { value: "material-dependent", label: "Needs material and conditions" },
   { value: "high-melting", label: "High melting point" },
   { value: "high-temperature", label: "High-temperature resistance" },
   { value: "low-melting", label: "Low melting point" },
-  { value: "decomposes-or-softens", label: "Softens or decomposes early" },
+  { value: "decomposes-or-softens", label: "Softening / degradation: distinguish the process" },
 ] as const;
 const label = (items: readonly { value: string; label: string }[], value: string) => items.find(i => i.value === value)?.label ?? value;
 const blank = (): ReferencePropertyPack => ({ conduction: "conductor", mechanical: "ductile", thermal: "high-melting" });
@@ -43,12 +45,13 @@ export function BondEnergyBench() {
     controls={<div className="flex flex-wrap gap-2 sm:col-span-2">{(Object.keys(BOND_PROFILES) as BondKind[]).map(k => <button type="button" key={k} aria-pressed={kind === k} onClick={() => setKind(k)} className="min-h-11 rounded-lg px-3 py-2 ring-1 ring-white/25">{BOND_PROFILES[k].label}</button>)}</div>}
   >
     <Readouts items={[
-      { label: "Illustrative bond energy", value: `${profile.energyRangeKJ[0]}–${profile.energyRangeKJ[1]} kJ/mol` },
+      { label: "Illustrative separation energy", value: `${profile.energyRangeKJ[0]}–${profile.energyRangeKJ[1]} kJ/mol` },
       { label: "Electrical behavior", value: label(electrical, pack.conduction) },
       { label: "Typical mechanical behavior", value: label(mechanical, pack.mechanical) },
       { label: "Thermal tendency", value: label(thermal, pack.thermal) },
     ]}/>
-    <p className="text-sm leading-relaxed text-well-dim">{profile.why}</p>
+    <p className="text-sm leading-relaxed text-well-dim">Reference basis: {profile.energyBasis}.</p>
+    <p className="mt-3 text-sm leading-relaxed text-well-dim">{profile.why}</p>
     <p className="mt-3 text-sm text-well-dim">Examples: {profile.examples}.</p>
   </BenchShell>;
 }

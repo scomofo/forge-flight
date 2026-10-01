@@ -602,13 +602,13 @@ function Transformations() {
           at: 4.2,
           label: "Eutectic",
           caption:
-            "Cool Pb–40 Sn: α dendrites grow first, then at 183°C the leftover 49% liquid freezes all at once into fine α + β lamellae.",
+            "Cool Pb–40 Sn: α dendrites grow first, then at 183°C the leftover 49% liquid transforms at the fixed eutectic temperature into α + β lamellae as heat is removed.",
         },
       ]}
     >
       {({ t }) => {
         // The alloy's vertical grows down as it cools: to the liquidus, to just above 183°C, then through it.
-        const yEnd = lerp(lerp(lerp(yTop, b.py(tStart), seg(t, 0.4, 1.2)), b.py(190), seg(t, 1.6, 2.4)), base, seg(t, 4.2, 4.7));
+        const yEnd = lerp(lerp(lerp(yTop, b.py(tStart), seg(t, 0.4, 1.2)), b.py(183), seg(t, 1.6, 2.4)), base, seg(t, 4.2, 4.7));
         const tie = seg(t, 2.8, 3.4);
         const inset = op(seg(t, 1.5, 2));
         return (
@@ -622,8 +622,8 @@ function Transformations() {
             {/* liquidus */}
             <path d={`M${P(0, 327)} L${P(61.9, 183)} L${P(100, 232)}`} fill="none" stroke={C.ink} strokeWidth={2.5} />
             {/* solidus + solvus, α side and β side */}
-            <path d={`M${P(0, 327)} L${P(19.2, 183)} Q${P(8, 60)} ${P(2, 0)}`} fill="none" stroke={C.ink} strokeWidth={2} />
-            <path d={`M${P(100, 232)} L${P(97.5, 183)} Q${P(99.5, 80)} ${P(99.5, 0)}`} fill="none" stroke={C.ink} strokeWidth={2} />
+            <path d={`M${P(0, 327)} L${P(19.2, 183)} L${P(0, 0)}`} fill="none" stroke={C.ink} strokeWidth={2} />
+            <path d={`M${P(100, 232)} L${P(97.5, 183)} L${P(100, 0)}`} fill="none" stroke={C.ink} strokeWidth={2} />
             {/* eutectic isotherm */}
             <line x1={b.px(19.2)} y1={b.py(183)} x2={b.px(97.5)} y2={b.py(183)} stroke={C.ink} strokeWidth={2.5} />
 
@@ -648,11 +648,11 @@ function Transformations() {
               <Dot x={b.px(40)} y={b.py(tStart)} tone="ink" r={4.5} />
             </Reveal>
             {tie > 0.02 ? (
-              <line x1={lerp(b.px(40), b.px(19.2), tie)} y1={b.py(190)} x2={lerp(b.px(40), b.px(61.9), tie)} y2={b.py(190)} stroke={C.accent} strokeWidth={4} />
+              <line x1={lerp(b.px(40), b.px(19.2), tie)} y1={b.py(183)} x2={lerp(b.px(40), b.px(61.9), tie)} y2={b.py(183)} stroke={C.accent} strokeWidth={4} />
             ) : null}
             <Reveal t={t} at={3.3} dur={0.4}>
-              <Dot x={b.px(19.2)} y={b.py(190)} />
-              <Dot x={b.px(61.9)} y={b.py(190)} />
+              <Dot x={b.px(19.2)} y={b.py(183)} />
+              <Dot x={b.px(61.9)} y={b.py(183)} />
             </Reveal>
             <Reveal t={t} at={3.4}>
               <Guide x1={b.px(61.9)} y1={b.py(183)} x2={b.px(61.9)} y2={base} />

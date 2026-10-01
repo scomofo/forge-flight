@@ -197,7 +197,7 @@ test("stall speed and static margin match the glider pre-lab numbers", () => {
 
 test("stability verdict follows the glider model's teaching band", () => {
   assert.equal(stabilityVerdict(-0.02), "unstable");
-  assert.equal(stabilityVerdict(0.049), "unstable");
+  assert.equal(stabilityVerdict(0.049), "marginal");
   assert.equal(stabilityVerdict(0.05), "stable");
   assert.equal(stabilityVerdict(0.25), "stable");
   assert.equal(stabilityVerdict(0.3), "overstable");

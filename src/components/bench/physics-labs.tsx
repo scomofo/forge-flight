@@ -1,3 +1,4 @@
+import { StabilitySketch } from "./stability-sketch";
 import { useEffect, useState } from "react";
 import { BenchShell, fmt, Readouts, Segmented, Slider, useReducedMotion, useTicker, WellButton } from "./ui";
 import {
@@ -49,6 +50,8 @@ import {
   RHO_SEAWATER,
   RHO_WATER,
   stabilityVerdict,
+  STABILITY_LABELS,
+  type StabilityVerdict,
   stallSpeed,
   staticMargin,
   venturiPressureDrop,
@@ -2954,7 +2957,7 @@ export function VenturiBench() {
   );
 }
 
-type StabilityPick = "unstable" | "stable" | "overstable";
+type StabilityPick = Exclude<StabilityVerdict, "invalid">;
 
 export function GliderPreLabBench() {
   const [mass, setMass] = useState(0.25);
@@ -3001,18 +3004,18 @@ export function GliderPreLabBench() {
   return (
     <BenchShell
       prompt="Predict the stall speed and the stability verdict for the given glider — on paper, before touching a slider. || Then set the model to match and compare: where did your prediction miss, and which input drove the miss? || Write the force balance: at your chosen cruise, does lift carry the weight, what is the margin, and what would you change?"
-      note="The pre-lab uses the same lift, drag, and static-margin formulas Glider Lab evaluates — your predictions are checked against the model you will meet in the lab, not a simplified copy."
+      note="The static-margin equation is shared with Glider Lab. This pre-lab uses supplied aerodynamic constants; matching it is a model check, not an independent flight test. Classify negative, zero and positive margins first; then compare positive values with the inclusive 5–25% classroom target."
       controls={
         <>
-          <Slider label="Mass" min={0.1} max={0.6} step={0.01} value={mass} display={`${fmt(mass * 1000, 0)} g`} onChange={setMass} />
-          <Slider label="Wing area" min={0.02} max={0.12} step={0.005} value={area} display={`${fmt(area, 3)} m²`} onChange={setArea} />
-          <Slider label="C_L max" min={0.8} max={1.4} step={0.05} value={clMax} display={fmt(clMax, 2)} onChange={setClMax} />
-          <Slider label="CG from nose" min={0.15} max={0.4} step={0.005} value={xCg} display={`${fmt(xCg * 100, 1)} cm`} onChange={setXCg} />
-          <Slider label="Neutral point from nose" min={0.15} max={0.45} step={0.005} value={xNp} display={`${fmt(xNp * 100, 1)} cm`} onChange={setXNp} />
-          <Slider label="Mean chord" min={0.08} max={0.2} step={0.005} value={mac} display={`${fmt(mac * 100, 1)} cm`} onChange={setMac} />
-          <Slider label="Cruise speed" min={4} max={16} step={0.5} value={speed} display={`${fmt(speed, 1)} m/s`} onChange={setSpeed} />
-          <Slider label="Cruise C_L" min={0.2} max={1.2} step={0.05} value={cl} display={fmt(cl, 2)} onChange={setCl} />
-          <Slider label="Aspect ratio" min={3} max={10} step={0.5} value={ar} display={fmt(ar, 1)} onChange={setAr} />
+          <Slider label="Mass" min={0.1} max={0.6} step={0.01} value={mass} display={`${fmt(mass * 1000, 0)} g`} onChange={(v) => { setMass(v); setChecked(false); }} />
+          <Slider label="Wing area" min={0.02} max={0.12} step={0.005} value={area} display={`${fmt(area, 3)} m²`} onChange={(v) => { setArea(v); setChecked(false); }} />
+          <Slider label="C_L max" min={0.8} max={1.4} step={0.05} value={clMax} display={fmt(clMax, 2)} onChange={(v) => { setClMax(v); setChecked(false); }} />
+          <Slider label="CG from nose" min={0.15} max={0.4} step={0.005} value={xCg} display={`${fmt(xCg * 100, 1)} cm`} onChange={(v) => { setXCg(v); setChecked(false); }} />
+          <Slider label="Neutral point from nose" min={0.15} max={0.45} step={0.005} value={xNp} display={`${fmt(xNp * 100, 1)} cm`} onChange={(v) => { setXNp(v); setChecked(false); }} />
+          <Slider label="Mean chord" min={0.08} max={0.2} step={0.005} value={mac} display={`${fmt(mac * 100, 1)} cm`} onChange={(v) => { setMac(v); setChecked(false); }} />
+          <Slider label="Cruise speed" min={4} max={16} step={0.5} value={speed} display={`${fmt(speed, 1)} m/s`} onChange={(v) => { setSpeed(v); setChecked(false); }} />
+          <Slider label="Cruise C_L" min={0.2} max={1.2} step={0.05} value={cl} display={fmt(cl, 2)} onChange={(v) => { setCl(v); setChecked(false); }} />
+          <Slider label="Aspect ratio" min={3} max={10} step={0.5} value={ar} display={fmt(ar, 1)} onChange={(v) => { setAr(v); setChecked(false); }} />
         </>
       }
     >
@@ -3020,9 +3023,10 @@ export function GliderPreLabBench() {
         items={[
           { label: "Wing loading", value: `${fmt(wl, 1)} N/m²` },
           { label: "Stall speed", value: `${fmt(vStall, 2)} m/s` },
-          { label: "Static margin", value: `${fmt(sm * 100, 1)}% — ${verdict}` },
+          { label: "Static margin", value: `${fmt(sm * 100, 2)}% — ${STABILITY_LABELS[verdict]}` },
         ]}
       />
+      <StabilitySketch cg={xCg} np={xNp} chord={mac} />
       <div className="mt-4 rounded-lg p-3 ring-1 ring-white/15">
         <div className="mb-2 text-sm font-semibold text-well-fg">Predict first</div>
         <div className="flex flex-wrap items-end gap-3">
@@ -3046,17 +3050,19 @@ export function GliderPreLabBench() {
               setChecked(false);
             }}
             options={[
-              { value: "unstable", label: "Unstable" },
-              { value: "stable", label: "Stable" },
-              { value: "overstable", label: "Overstable" },
+              { value: "unstable", label: STABILITY_LABELS.unstable },
+              { value: "neutral", label: STABILITY_LABELS.neutral },
+              { value: "marginal", label: STABILITY_LABELS.marginal },
+              { value: "stable", label: STABILITY_LABELS.stable },
+              { value: "overstable", label: STABILITY_LABELS.overstable },
             ]}
           />
           <WellButton onClick={() => setChecked(true)}>Check against model</WellButton>
         </div>
         {checked && (
-          <p className="mt-2 text-sm text-well-dim">
+          <p data-stability-feedback className="mt-2 text-sm text-well-dim">
             Stall speed: {vOk ? "✓ within 10% — your wing-loading arithmetic holds." : `✕ the model says ${fmt(vStall, 2)} m/s — recheck √(2(W/S)/(ρ·C_Lmax)).`}{" "}
-            Stability: {sOk ? "✓ you read the margin correctly." : `✕ the model says ${verdict} (SM ${fmt(sm * 100, 1)}%) — recheck (x_NP − x_CG)/MAC.`}
+            Stability: {sOk ? "✓ you read the margin correctly." : `✕ the model says ${STABILITY_LABELS[verdict]} (SM ${fmt(sm * 100, 1)}%) — recheck (x_NP − x_CG)/MAC.`}
           </p>
         )}
       </div>
@@ -3069,7 +3075,7 @@ export function GliderPreLabBench() {
             { label: "Drag", value: `${fmt(fb.drag_N, 2)} N` },
             { label: "L / W", value: fmt(fb.liftOverWeight, 2) },
             { label: "Glide ratio L/D", value: fmt(fb.glideRatio, 1) },
-            { label: "Verdict", value: fb.balanced ? "Balanced — lift carries the weight" : "Not balanced" },
+            { label: "Verdict", value: fb.balanced ? "Within 10% lift/weight screen" : "Not balanced" },
           ]}
         />
         <svg viewBox="0 0 320 90" className="mt-2 h-auto w-full" aria-hidden>
@@ -3080,7 +3086,7 @@ export function GliderPreLabBench() {
         </svg>
         <p className="mt-1 text-sm text-well-dim">
           Bright arrow up is lift, pale arrow down is weight, pale arrow left is drag — all drawn from the same
-          point, the way a free-body diagram demands. {fb.balanced ? "They balance: this is steady glide." : "Lift does not carry the weight here — fly faster, raise the angle of attack, or lighten the glider."}
+          point in this translational sketch; force locations and pitching moments require a separate model. {fb.balanced ? "This meets the pre-lab’s approximate lift/weight screen, not a full steady-glide or pitching-moment balance." : "Lift does not carry the weight here — fly faster, raise the angle of attack, or lighten the glider."}
         </p>
       </div>
       <div className="mt-4">
