@@ -456,7 +456,7 @@ function Crystal() {
         {
           at: 0,
           label: "Cell face",
-          caption: "Aluminum is FCC with atomic radius 143 pm; this is one face of its unit cell, drawn to scale.",
+          caption: "Given FCC aluminum with radius 143 pm. Supplied molar mass is 26.98 g/mol; Avogadro’s constant is 6.02214076 × 10²³ mol⁻¹. Geometry alone cannot supply atom mass.",
         },
         {
           at: 1.4,
@@ -471,7 +471,7 @@ function Crystal() {
         {
           at: 4.8,
           label: "Density",
-          caption: "Atoms touch along the face diagonal, not the edge — so the diagonal is 4r, the edge is 2√2·r, and the density follows from the count.",
+          caption: "Mass per cell = 4 × 26.98/N_A ≈ 1.792 × 10⁻²² g. Divide by the cell volume using the unrounded edge: density ≈ 2.71 g/cm³, close to the 2.70 reference.",
         },
       ]}
     >
@@ -514,7 +514,7 @@ function Crystal() {
               <Label x={0} y={192} anchor="start" size={15} tone="muted" opacity={op(seg(t, 3.7, 4.2))}>faces 6 × 1/2 = 3</Label>
               <Label x={0} y={218} anchor="start" opacity={op(seg(t, 4.1, 4.6))}>4 atoms per cell</Label>
               <Label x={0} y={256} anchor="start" tone="accent" size={20} weight={600} serif opacity={op(seg(t, 4.9, 5.4))}>
-                ρ ≈ 2.70 g/cm³
+                ρ ≈ 2.71 g/cm³
               </Label>
             </g>
           </>

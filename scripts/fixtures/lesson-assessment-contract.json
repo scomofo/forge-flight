@@ -1,0 +1,2167 @@
+{
+  "base": "4e6d6879db8293ed288fecf8bbfe57369a8db16b",
+  "reviewedWording": [
+    "engineering/standards",
+    "manufacturing-301/bonus"
+  ],
+  "contracts": [
+    {
+      "key": "math/ratios-units",
+      "index": 1,
+      "bench": "units",
+      "passAt": 4,
+      "answers": [
+        0,
+        0,
+        0,
+        2
+      ],
+      "optionsSha256": "adb111d97adc07cfcefbc2d084d6b46a597a83abd7be568c3fe729bf61a21712"
+    },
+    {
+      "key": "math/algebra",
+      "index": 2,
+      "bench": "rearrange",
+      "passAt": 4,
+      "answers": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "optionsSha256": "00fdc05b0a5e90227e444fe3e546f33888c272ec1b9d2ed776cd9010f8d4875c"
+    },
+    {
+      "key": "math/powers",
+      "index": 3,
+      "bench": "powers",
+      "passAt": 4,
+      "answers": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "optionsSha256": "4a533a32ac43674b9a206e063df784bdd0c4dcbfb931ee8fff56da70afdfc5e4"
+    },
+    {
+      "key": "math/graphs",
+      "index": 4,
+      "bench": "slope",
+      "passAt": 4,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "f63f8915e6ac28d22bd8fc654379b9682f38c5238c656fc47bcb2ede6a2f3973"
+    },
+    {
+      "key": "math/triangles-vectors",
+      "index": 5,
+      "bench": "trig",
+      "passAt": 4,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "d971b13a544a21eab55a851679343923d6cfe8ef9beba37078f22cc5700c0a0b"
+    },
+    {
+      "key": "physics/measure",
+      "index": 1,
+      "bench": "dimcheck",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "4aaa3799bbdb268797f37a9b13975fc1ef56c8f4850f22815c3ec4fef9847a30"
+    },
+    {
+      "key": "physics/sigfigs",
+      "index": 2,
+      "bench": "memo",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "39748dc4a2567f53376350fd5731227dde52f76367d2267038a7c22f6bc5a124"
+    },
+    {
+      "key": "physics/fermi",
+      "index": 3,
+      "bench": "fermi",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "f7277a0d2abb565cfaebd620a526f57414f995231cd96e7536c72f0701e6f8a6"
+    },
+    {
+      "key": "physics/veccomp",
+      "index": 4,
+      "bench": "vectors",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "optionsSha256": "ad081d6bb6550f0afe2d3c92ff27294ab5ede64da65927d626a18fce443b0b44"
+    },
+    {
+      "key": "physics/kingraphs",
+      "index": 5,
+      "bench": "motionrecon",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "optionsSha256": "3e8f757d92488190b72a50adca9f37e8127a09fbe2156df5f20c7fb889fa814b"
+    },
+    {
+      "key": "physics/projectiles",
+      "index": 6,
+      "bench": "projrange",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "8524164eb4a780ca2f9cdd3ecf5960a1427c86879a3e0775c4fce81d9422c055"
+    },
+    {
+      "key": "physics/newton",
+      "index": 7,
+      "bench": "newton",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "5ddd6b8853334225f174023355bb1de2b64d23800fe40703236b3d7845563cc6"
+    },
+    {
+      "key": "physics/contact",
+      "index": 8,
+      "bench": "incline",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "8c245b8855ad2e52e33c81fafc31858ab2168bd64b3dc024f45a7ffb5b798012"
+    },
+    {
+      "key": "physics/fbd",
+      "index": 9,
+      "bench": "fbdbuilder",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "67d987864cf5019ac8f003c4e049b1d206ad7d4842c9574692710988ae86917f"
+    },
+    {
+      "key": "physics/work",
+      "index": 10,
+      "bench": "dropspeed",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "74126e7c1a6fb2b815f8468f7ecdcf050792d3b9d34eacc6791cdada2503752c"
+    },
+    {
+      "key": "physics/potential",
+      "index": 11,
+      "bench": "energy",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "ba8b70d282ec7042be926c23916cf3ad1ddc6c5a4bb8e8dba59a632eb50cafed"
+    },
+    {
+      "key": "physics/power",
+      "index": 12,
+      "bench": "energyaudit",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "76288d183226acfdb2b7aa1f865b79fd0fec4fe8122ab6d6e08b44b475db5ffe"
+    },
+    {
+      "key": "physics/impulse",
+      "index": 13,
+      "bench": "impactlab",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        2,
+        1
+      ],
+      "optionsSha256": "379fb31ccd301b3de3866d2b754e7df7aa9dd58cedb47fa818dd8f0f46b1fc2f"
+    },
+    {
+      "key": "physics/conserve",
+      "index": 14,
+      "bench": "cmexplore",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "optionsSha256": "cbf0545145141b9807e0e2c33e8290e3eab749a2a3a3bfdea2d023abc4e7448d"
+    },
+    {
+      "key": "physics/collisions",
+      "index": 15,
+      "bench": "restitute",
+      "passAt": 3,
+      "answers": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "optionsSha256": "23ec5f6a769c868c8067cfd7eb3e82cbae6a905a0cd34e5e61fc6c47574bb3d0"
+    },
+    {
+      "key": "physics/torque",
+      "index": 16,
+      "bench": "torquebal",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "788738caa9de783a4c563015d62c95779ea558c03e1e0bfca58ded892737da79"
+    },
+    {
+      "key": "physics/rotation",
+      "index": 17,
+      "bench": "rotinertia",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "5b884980495f32a5c34af16786fba989fb80defd5234c5d09bc3f2842d474292"
+    },
+    {
+      "key": "physics/equilibrium",
+      "index": 18,
+      "bench": "beamrxn",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "bec40ac22cac9ee713fb59e02417b7805164fbb7ade2491df99737e506707eac"
+    },
+    {
+      "key": "physics/elastic",
+      "index": 19,
+      "bench": "stressstrain",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "7dbf6b0934dd46b65996f54024f0a92ed57382dda1f48ba394b293cb84307358"
+    },
+    {
+      "key": "physics/bending",
+      "index": 20,
+      "bench": "beamdefl",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "3553c2b48a59046ad094f7e839962ea3abe8b01c765e795ab604bae707a06178"
+    },
+    {
+      "key": "physics/fos",
+      "index": 21,
+      "bench": "beamdefl",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "542f8d0f8c0dc6d2f6e2b750879ab4ba72eee8d182878344e57c1593aa612211"
+    },
+    {
+      "key": "physics/pressure",
+      "index": 22,
+      "bench": "hydro",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "d0a593bbb1145c552ddeb58f29288e4f529533a118772d4c924e6807d2680e36"
+    },
+    {
+      "key": "physics/movingfluids",
+      "index": 23,
+      "bench": "venturi",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "f554945476396ee4bcd49576a56c37fa7abbc89c7b14d043134c3ffc483a58bc"
+    },
+    {
+      "key": "physics/lift",
+      "index": 24,
+      "bench": "gliderprelab",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "1efc5cc3c0bec5620a09abdc21cb74b53185737615e8b1d5ff95e544b693dfdb"
+    },
+    {
+      "key": "physics/shm",
+      "index": 25,
+      "bench": "shmlab",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "86001535becf9dbacceb4179a1bc880c61194cd5d488539247dc6e6928de9255"
+    },
+    {
+      "key": "physics/reswaves",
+      "index": 26,
+      "bench": "resonancesweep",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "optionsSha256": "5cebd8da69195c3692b3361b27d1332eaad1c22788f4076df925fb95a71d867d"
+    },
+    {
+      "key": "physics/thermal",
+      "index": 27,
+      "bench": "thermalstress",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "37e4448ff01d603d820e6438c26ac07445fe591252e8ccc4e9eda88df07bd6d4"
+    },
+    {
+      "key": "physics/synthmethod",
+      "index": 28,
+      "bench": "synthledger",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "355dce8df11f6711567c3e41b5af4384da7b75c9e5f874a526be9c67422baee7"
+    },
+    {
+      "key": "physics/towlaunch",
+      "index": 29,
+      "bench": "gliderlab",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "ae6832c0e8696214236cffc94758ec2ba92fb43f0585fd73bb3ce617680616e2"
+    },
+    {
+      "key": "physics/masterycheck",
+      "index": 30,
+      "bench": "mastery",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "19541d5556cc23eea1362300ed787b35b800987ea6b798d31a2abaa6c7458cb1"
+    },
+    {
+      "key": "materials/bondzoo",
+      "index": 1,
+      "bench": "bonding",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "79798118251db68b996ce52b7ac06ee9237aaa1b81a82e386ba8e96c6aad33b0"
+    },
+    {
+      "key": "materials/bondpacks",
+      "index": 2,
+      "bench": "bondenergy",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "9ab8309c7e3b445eefd2f47472d72636987298ad020e6bedb4293fd014503653"
+    },
+    {
+      "key": "materials/bondread",
+      "index": 3,
+      "bench": "bondpredict",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "84820314bcf698958ea91764c4959ada55a18da03f1925fe06ffadb2adc3ccaf"
+    },
+    {
+      "key": "materials/crystal",
+      "index": 4,
+      "bench": "unitcell",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "6b19a8812aac5af921ad5e4a7fe830961597638426e8eba198d4d7324dd4ad6d"
+    },
+    {
+      "key": "materials/graintex",
+      "index": 5,
+      "bench": "microinterp",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "b316ede433278adbe1774a24abd967931a7ab0aa643cf19786db50126e395efe"
+    },
+    {
+      "key": "materials/disorder",
+      "index": 6,
+      "bench": "glassform",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "8df27e2210654a03e129ad9f357fac20102d633945f2b6920ad9eb51d4b9fea4"
+    },
+    {
+      "key": "materials/defects",
+      "index": 7,
+      "bench": "defects",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "949de3f5031b8ae6660f9dcaebd71cac0f1918b3b1da57114b952db989a00812"
+    },
+    {
+      "key": "materials/diffusion",
+      "index": 8,
+      "bench": "diffprofile",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "0603be68f84779cc9d93d2963716c7ce8c1c1ea854eb2f028fd32eb7272ea94f"
+    },
+    {
+      "key": "materials/heat-treat",
+      "index": 9,
+      "bench": "grains",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "2d1d82c2eb812cc04b99a568df8c24404085af49eed504f53e0f6d9474586ce0"
+    },
+    {
+      "key": "materials/readcurve",
+      "index": 10,
+      "bench": "curveread",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "optionsSha256": "d7024214b576d1b25610c610c6912ebac583b6246620cc74e2d7a95f4de79448"
+    },
+    {
+      "key": "materials/toughduct",
+      "index": 11,
+      "bench": "propcompare",
+      "passAt": 3,
+      "answers": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "optionsSha256": "cb38a1720774662d6189c30ef6a24e79dcd36bafabfccade3a756a8f70cb90c8"
+    },
+    {
+      "key": "materials/allowables",
+      "index": 12,
+      "bench": "allowable",
+      "passAt": 3,
+      "answers": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "optionsSha256": "8a324acfd00bfe8e766f9ec9b8fd16fb536220cea7119df0b20cd068871f8427"
+    },
+    {
+      "key": "materials/strengthen",
+      "index": 13,
+      "bench": "strengthlab",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "9467ee108d68060c1911feb6ab0aa4766d0070c4e95a838918aa04d38576666b"
+    },
+    {
+      "key": "materials/heattreat",
+      "index": 14,
+      "bench": "strengthlab",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "281493a85baa5add29fc574ca7ef6a0ee071da76b4062f008a42f7a1fe0c2007"
+    },
+    {
+      "key": "materials/processchoice",
+      "index": 15,
+      "bench": "processmemo",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "c2943184f3ba5288737f898328e954f8ff2d4b0910615e8bf271ab959e95ca17"
+    },
+    {
+      "key": "materials/fracture",
+      "index": 16,
+      "bench": "forensics",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "101ae81c59e7341f197f46dec6ff0f7016244e7c508d4aba72e1408cb6e3347f"
+    },
+    {
+      "key": "materials/fatigue",
+      "index": 17,
+      "bench": "snlife",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "c70b3783f984022c479680acc1857627f308897591afc9a94f888de2ed5de091"
+    },
+    {
+      "key": "materials/creep",
+      "index": 18,
+      "bench": "creeplife",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "fde3bb32bcec28e5ed02693ea90c75b7b495beb24b60d9e93899625a9c379094"
+    },
+    {
+      "key": "materials/phasediagram",
+      "index": 19,
+      "bench": "phaseset",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "90c3403d38bd952d7dbe94be41e90a20bc83f9ff3bd97102615bb8a082958087"
+    },
+    {
+      "key": "materials/leverrule",
+      "index": 20,
+      "bench": "phaseset",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "a4ea1a59113ee333c9addfe2d575a1950ebf153a866856270f2c6b8b293e8d93"
+    },
+    {
+      "key": "materials/transformations",
+      "index": 21,
+      "bench": "solidify",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "0d63d2cd49b0d28f2b58ad20366a6abe780ae83323721899a5076e01fac2d32a"
+    },
+    {
+      "key": "materials/famlook",
+      "index": 22,
+      "bench": "famcompare",
+      "passAt": 3,
+      "answers": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "optionsSha256": "7caf43c49c53b332edeb9fd988463d2e04c3bb93fc328e37c926ba27917eec1d"
+    },
+    {
+      "key": "materials/dirtemp",
+      "index": 23,
+      "bench": "templim",
+      "passAt": 3,
+      "answers": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "b78f55fd29d830fcbdbcc60d40eb259cf114ace6233aa10f18012e4e75ae8228"
+    },
+    {
+      "key": "materials/choosefam",
+      "index": 24,
+      "bench": "famdecision",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "ae464be6d01191bcbcc54b640ada614d839aff4d6a6e824affab3e65d9e9c74d"
+    },
+    {
+      "key": "materials/screenrank",
+      "index": 25,
+      "bench": "shortlist",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "382f2d8b170ab8133a25a5792b49e30d5b09935669c75a14c4db6ffd77cb32b8"
+    },
+    {
+      "key": "materials/corrosion",
+      "index": 26,
+      "bench": "corrocheck",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "ece73985d6852181474072c2a06a0b06bf861886f7791e2310ca8a48f0d9bb45"
+    },
+    {
+      "key": "materials/sustain",
+      "index": 27,
+      "bench": "shortlist",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "0000a983ade9a6747e8cf690db56075b9d393061cfb393f597f20d3c48e66220"
+    },
+    {
+      "key": "materials/matmethod",
+      "index": 28,
+      "bench": "matledger",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "95b099096337971222b1c594871686b6af3920db4378fb37e423d7caa3af2eeb"
+    },
+    {
+      "key": "materials/sparsynth",
+      "index": 29,
+      "bench": "sparlab",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "f732f3d3681a0864ead8076330a14132c46d1770f3b795e28c5c8f31747d6846"
+    },
+    {
+      "key": "materials/matmastery",
+      "index": 30,
+      "bench": "matcheck",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "54564996ab434e50b54e11f244946ff5729a41329b8e8fb1e00618b55a749f49"
+    },
+    {
+      "key": "engineering/requirements",
+      "index": 1,
+      "bench": "reqpacket",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "f1652eb931f8ee94e85618660265f0f1c919a2339bf5754dde07c76cc0f87ca2"
+    },
+    {
+      "key": "engineering/verifyvalidate",
+      "index": 2,
+      "bench": "reqpacket",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "d44a1ea033a9488c2b5e0e8f150d303f84d37cfceb1fa387dcf87f72ec82953f"
+    },
+    {
+      "key": "engineering/ledger",
+      "index": 3,
+      "bench": "ledger",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "4de7cb6875c8631b39f1c37d5fd1cc3f843b87f70fee9b9f1d315dfe9bb43ebf"
+    },
+    {
+      "key": "engineering/modelvalid",
+      "index": 4,
+      "bench": "sensbench",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "473d78b25bfd7f9b3d20489766c11384722f385e6baf50aa68bf12b5c365d031"
+    },
+    {
+      "key": "engineering/errprop",
+      "index": 5,
+      "bench": "errbudget",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "1d873381f3a7df0a3f85a343c94de144ef4ead4802a5fd3493b9750fa21470ef"
+    },
+    {
+      "key": "engineering/sensitivity",
+      "index": 6,
+      "bench": "errbudget",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "d5e9953913b90ea16d283f168cd6d5838828d7cdcb185e6dfa769fe627afc212"
+    },
+    {
+      "key": "engineering/loadpath",
+      "index": 7,
+      "bench": "loadpath",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "c1137ef6a20d9268e8bcda19e74f2dd8cabddc5c54b11f16a5f0b102455afc74"
+    },
+    {
+      "key": "engineering/margins",
+      "index": 8,
+      "bench": "loadpath",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "e65eac14c5f30c3b7690e87cdf472f59ae2b5375b6d296ffe26277c61e781c06"
+    },
+    {
+      "key": "engineering/fmea",
+      "index": 9,
+      "bench": "fmea",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "37ee933092bfad32c4487422ab5cbc9f71e8d0264a9802113780bd940f77fe60"
+    },
+    {
+      "key": "engineering/bending",
+      "index": 10,
+      "bench": "sections",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "fb31b567763b1669933772932e17330aa9a7ba00d5ded101b3de0592492ff43d"
+    },
+    {
+      "key": "engineering/buckle",
+      "index": 11,
+      "bench": "sizebeam",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "2224b0fcd7ed25bb61ee7b7f8c7ec86090b66487133adb20bc5f1a002fcaebc3"
+    },
+    {
+      "key": "engineering/combined",
+      "index": 12,
+      "bench": "sizebeam",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "7a5682a022d8953aea092205728abc92540df30644826ab40a5f7d6ea90f555b"
+    },
+    {
+      "key": "engineering/indicescontext",
+      "index": 13,
+      "bench": "jointrecord",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "5f97877cb190dbe37978b590988a430a6161a185f31006e53550a4d43f44deb8"
+    },
+    {
+      "key": "engineering/interfaces",
+      "index": 14,
+      "bench": "jointstrength",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "3c39e14bdd459285606517454c927f125b93ffdcc24dcb6d9f55edec3d67fa75"
+    },
+    {
+      "key": "engineering/systemdecision",
+      "index": 15,
+      "bench": "jointrecord",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "6e8fade8debe282bcfda41a26c7a217e3f8490fcf62f271ce4c8aa4f420c0949"
+    },
+    {
+      "key": "engineering/processes",
+      "index": 16,
+      "bench": "procchoice",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "453c5ecd2f5e3e576701a786fb549a2523a84a014fd4c811b5c5e45133d60048"
+    },
+    {
+      "key": "engineering/tolerances",
+      "index": 17,
+      "bench": "tolstack",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "c700c4e79c180450d093dfd72b1da42b68a98ed7610ac1b2b158af5144a1b73e"
+    },
+    {
+      "key": "engineering/dfm",
+      "index": 18,
+      "bench": "procchoice",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "8ebde5e71308cec96559d77b0a9e4325ecaeb551371c988a5c52cd4f452ca1a5"
+    },
+    {
+      "key": "engineering/doeplan",
+      "index": 19,
+      "bench": "doe",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "02cfe01faa5698b74c330b8ae7c861629092496152d8a62992a04f9bb9161f5a"
+    },
+    {
+      "key": "engineering/smallsample",
+      "index": 20,
+      "bench": "labreport",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "50fe18c96c26501cc689958dc5de603bb925d2f6114c2152162cb4d5a4d7659c"
+    },
+    {
+      "key": "engineering/honestgraph",
+      "index": 21,
+      "bench": "labreport",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "740f5d895b4d0ed3ef6780ced073e064eb3857923b5b9a947922bda54ccaf780"
+    },
+    {
+      "key": "engineering/tradestudy",
+      "index": 22,
+      "bench": "tradestudy",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "58b7b41c54e22de460fb714a8cfdbedc3e22a192a49cb2791edcb86f813fe3f5"
+    },
+    {
+      "key": "engineering/paramsweep",
+      "index": 23,
+      "bench": "sweepconv",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "195b3eff37b705a856e0cc43ca53d0d6914324f65d8d55c22745976bb57a8bc8"
+    },
+    {
+      "key": "engineering/convergence",
+      "index": 24,
+      "bench": "sweepconv",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "63c60ca61ff21ef445c4f07e212d744c66cb76e4a2dc7198a124c8f62f6a8b2c"
+    },
+    {
+      "key": "engineering/safetyfactor",
+      "index": 25,
+      "bench": "standards",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "b8fa926654f16544f62e1312059c1c4e0570e72fc16202ed771205fca9bbef8c"
+    },
+    {
+      "key": "engineering/standards",
+      "index": 26,
+      "bench": "standards",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "d0ab744fbdc373d6eb634806b46746ebf529d4425f7326630b9798d8a978125d"
+    },
+    {
+      "key": "engineering/designreview",
+      "index": 27,
+      "bench": "designreview",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "optionsSha256": "3f96f012d081a2b5e360363851d3147753eff9d2ce3eebe8486f2d8186380bae"
+    },
+    {
+      "key": "engineering/capmethod",
+      "index": 28,
+      "bench": "cappackage",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "af664159486eb2663d399c58449b757c4ce54dc704964ddc3ccaca0f8a6f2591"
+    },
+    {
+      "key": "engineering/glidersynth",
+      "index": 29,
+      "bench": "cappredict",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "ebc7a8607f4c445d7f16f0f13ba3fee7034b8ef99d5b74a8eceb6817faf6711d"
+    },
+    {
+      "key": "engineering/capmastery",
+      "index": 30,
+      "bench": "capreview",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "3c3db4408fd6a2bd377fa17693f05577c302cf0999f7c2c564d0bebbba8e9cfe"
+    },
+    {
+      "key": "manufacturing/mechanism",
+      "index": 1,
+      "bench": "mechanism",
+      "passAt": 3,
+      "answers": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "optionsSha256": "c3426f4894e79d0e17b9dc64e215ae19e57b8ad67f67047f61eff020fad03bec"
+    },
+    {
+      "key": "manufacturing/chip",
+      "index": 2,
+      "bench": "chip",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "optionsSha256": "7f63ace57c61f755f817163d5ed8838d5f66fa8e7533fb7285cf78b75a40a956"
+    },
+    {
+      "key": "manufacturing/springback",
+      "index": 3,
+      "bench": "springback",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "optionsSha256": "d73d742b93b4c22189c0810ae114d8ce7ae9b25d47027cf1affe21faa525866f"
+    },
+    {
+      "key": "manufacturing/freeze",
+      "index": 4,
+      "bench": "freeze",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "df09bf5a712c456ab2b002b96ab5ae8c22b9491db8813e143504be06d62e03bf"
+    },
+    {
+      "key": "manufacturing/haz",
+      "index": 5,
+      "bench": "haz",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "62895fc24f790175f587fcfe3bc3666f160bcba5f9f835d70137a7ccbb233e84"
+    },
+    {
+      "key": "manufacturing/spread",
+      "index": 6,
+      "bench": "spread",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "aa4566b4edff6e9706cfdea97053286e064356255a5a277b72d0703b75ebce08"
+    },
+    {
+      "key": "manufacturing/stack",
+      "index": 7,
+      "bench": "stack",
+      "passAt": 3,
+      "answers": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "optionsSha256": "bf559fc840b5c6c02dbff5c9abc8ffadac359a693b8df64e65134d0b837cf7af"
+    },
+    {
+      "key": "physics-201/torque",
+      "index": 1,
+      "bench": "torque",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "0cacec9c4bde0ca41f4b45bfee3e2f8be72131affd0fc2d59c534dd83ffaf021"
+    },
+    {
+      "key": "physics-201/inertia",
+      "index": 2,
+      "bench": "inertia",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "82fbd05eda0b98469e5e4d2eb4e4aadd6dcf622cf394997643007e0885666013"
+    },
+    {
+      "key": "physics-201/spin",
+      "index": 3,
+      "bench": "spin",
+      "passAt": 3,
+      "answers": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "optionsSha256": "fcd45f8eeb0893f4577105011ae9022fe96f11f2cc5407c45a6d1ae1edf8c813"
+    },
+    {
+      "key": "physics-201/period",
+      "index": 4,
+      "bench": "period",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "3d5f32d9b694a5bcffdec7c098db5188d7e678a18b9bb253f618c33d60177547"
+    },
+    {
+      "key": "physics-301/depth",
+      "index": 1,
+      "bench": "depth",
+      "passAt": 3,
+      "answers": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "optionsSha256": "9fd3f7bf258c7fc296996378d8e5c6dc126342efd4830271ed1e9a55e120363d"
+    },
+    {
+      "key": "physics-301/flow",
+      "index": 2,
+      "bench": "bernoulli",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "0a35a10667a4db90b5a46f59dd303953a0cfe4abc5b5e7816d7ae0b36ac551af"
+    },
+    {
+      "key": "physics-301/drag",
+      "index": 3,
+      "bench": "drag",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "283fc59af9e98b499828606272583fa5e003220602709fa1d636114ee125256e"
+    },
+    {
+      "key": "physics-301/thermal",
+      "index": 4,
+      "bench": "thermal",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "e7a4686dc70534f6da4395fd5eaf6dd84b70d5dd69209546c31165eb38261936"
+    },
+    {
+      "key": "physics-401/rodspeed",
+      "index": 1,
+      "bench": "rodspeed",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "optionsSha256": "fc18042f8aaf739375d06ea423eb061a5ca99cb2667936478a04a51aa044b2ae"
+    },
+    {
+      "key": "physics-401/modeshape",
+      "index": 2,
+      "bench": "modeshape",
+      "passAt": 3,
+      "answers": [
+        2,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "d2e91a4a8932a128b5091953e0d87c312619b55262f2789e64a9fb25476366db"
+    },
+    {
+      "key": "physics-401/impact",
+      "index": 3,
+      "bench": "impact",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "0840bfe3eaab1c0b188f6468440a02a4633f4bd8262aecc8f096f6dfee95b416"
+    },
+    {
+      "key": "physics-401/resonance",
+      "index": 4,
+      "bench": "resonance",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "fdc75b39b170e1f956803cbc7d6618102ccb63b0dff62039bb681a4c2fba49e6"
+    },
+    {
+      "key": "materials-201/creeprate",
+      "index": 1,
+      "bench": "creeprate",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "optionsSha256": "388f288714e6195049fa276473b7cdb8542a6d3d47e78a11e43d0c6c2f714f42"
+    },
+    {
+      "key": "materials-201/hardness",
+      "index": 2,
+      "bench": "hardness",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "c2494eff9433e1ddbfa9330b74bfbbf05730d6224b4768cf2ecdcae145ecd9ed"
+    },
+    {
+      "key": "materials-201/leak",
+      "index": 3,
+      "bench": "leak",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "6953d6c477c19cd99dcb3e11061d13145d4ce075fbd435578e3321ab459631e0"
+    },
+    {
+      "key": "materials-201/thinning",
+      "index": 4,
+      "bench": "thinning",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "e6b883eef67f966b598e8d30171e17af6f5d693736058342da317e5156119719"
+    },
+    {
+      "key": "materials-301/coldwork",
+      "index": 1,
+      "bench": "coldwork",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "9104aabe32db78083f10ca036b1dc697e407f4a0b30af9112b3ce5a1857e59bf"
+    },
+    {
+      "key": "materials-301/quench",
+      "index": 2,
+      "bench": "quench",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "820b8d8627379655603e8fc1ca3bedd4a2539d3a208c35e313e0772bbd195625"
+    },
+    {
+      "key": "materials-301/lever",
+      "index": 3,
+      "bench": "lever",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "dbf185a0fe8adf892254f08730958523f7bfb39928fa042cd15f54750d3a866c"
+    },
+    {
+      "key": "materials-301/fiber",
+      "index": 4,
+      "bench": "fiber",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "d45957ff2979fcf55c1c944e7f942e33bde07d954536b11d01c16a452302587d"
+    },
+    {
+      "key": "materials-401/panel",
+      "index": 1,
+      "bench": "panel",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "6458f6eae3110d7ae45ddd0dcf10a6d4db3c21e65067b018b1ff1623105b5f49"
+    },
+    {
+      "key": "materials-401/sensitive",
+      "index": 2,
+      "bench": "sensitive",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "088296de8b93b84e63dfbbaca777be802ff6c46c8de8245e3bd75a2e7c2e3399"
+    },
+    {
+      "key": "materials-401/temper",
+      "index": 3,
+      "bench": "temper",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "9933b11ad047fc2ea76fe6e2014fb6514910aa2653ef6c1656ad268f3cb4e5b4"
+    },
+    {
+      "key": "materials-401/duty",
+      "index": 4,
+      "bench": "duty",
+      "passAt": 3,
+      "answers": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "optionsSha256": "9a4b9f7e4106ea923b79589de9dd85e863e912e3259a03a5bb0955f519a69814"
+    },
+    {
+      "key": "engineering-201/mises",
+      "index": 1,
+      "bench": "mises",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "a85388b6e9a0e35f33746d4397c6a9097e5d9884c3588c6f5720601c01bbb53d"
+    },
+    {
+      "key": "engineering-201/torsion",
+      "index": 2,
+      "bench": "torsion",
+      "passAt": 3,
+      "answers": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "6bbd87e3c2c090300dbc47e8749efd245e15ed3480d7b49b06d52f990ecb1c2f"
+    },
+    {
+      "key": "engineering-201/hoop",
+      "index": 3,
+      "bench": "hoop",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "1778709b7b4f1ffaab53f806add21a128cfa4052f6e238bcbeaf630468d39321"
+    },
+    {
+      "key": "engineering-201/eccentric",
+      "index": 4,
+      "bench": "eccentric",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "67819d91804d09d5534f03ab80740372ee065a11474b481d580f9379b2120112"
+    },
+    {
+      "key": "engineering-301/whirl",
+      "index": 1,
+      "bench": "whirl",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "7c6c76e51a59a4c9a2e393a079621303dfda888a7cd5ace4898b5d53467d28ee"
+    },
+    {
+      "key": "engineering-301/gears",
+      "index": 2,
+      "bench": "gears",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "cf659fb1f6b3e0ab9a9ccae66373856730ea2a74088a72cbdbc5e980245a79f7"
+    },
+    {
+      "key": "engineering-301/bearing",
+      "index": 3,
+      "bench": "bearing",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "f54c601e84addf694ff02310ab7ad8e7245fc61f70a05001a29431fed5ca0a99"
+    },
+    {
+      "key": "engineering-301/preload",
+      "index": 4,
+      "bench": "preload",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "2ae7c59d602f4b0e0d57e2c022f0426e4638cdbc03b01e283a5f247a6c191be0"
+    },
+    {
+      "key": "engineering-401/miner",
+      "index": 1,
+      "bench": "miner",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "12dcd4ade490d7f3546490c248122831712bebd6aabb643db026156be2e4d228"
+    },
+    {
+      "key": "engineering-401/thermomech",
+      "index": 2,
+      "bench": "thermomech",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "optionsSha256": "224a6a7fc25d13fbf30fa6c0651f4217924c58f9b837b37ea126ad64d2af1bc0"
+    },
+    {
+      "key": "engineering-401/interval",
+      "index": 3,
+      "bench": "interval",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "72a54ba830ab850d5f14fbf60962e5088158b6aea37df4910db135d233bbdaac"
+    },
+    {
+      "key": "engineering-401/review",
+      "index": 4,
+      "bench": "review",
+      "passAt": 3,
+      "answers": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "optionsSha256": "63efd7a6eceebf0a07e41ea877e5be29f0bc2aa5f641b71d83540d38451b6d7f"
+    },
+    {
+      "key": "manufacturing-201/rolling",
+      "index": 1,
+      "bench": "rolling",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "ddd1337779bee0651af645ef4adaf51ccde4f4f8e9f088a09691a2dfc71426fa"
+    },
+    {
+      "key": "manufacturing-201/taylor",
+      "index": 2,
+      "bench": "taylor",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "3029367a0f8df32344877e81074b3ffa0a0a1fa385fe30670211832ccb8b98be"
+    },
+    {
+      "key": "manufacturing-201/pattern",
+      "index": 3,
+      "bench": "pattern",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "7f79f485f053a18b4e17847ef89a75ddb03f19a985d8db65fcbf8980bdc31ac3"
+    },
+    {
+      "key": "manufacturing-201/distort",
+      "index": 4,
+      "bench": "distort",
+      "passAt": 3,
+      "answers": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "optionsSha256": "dd43020003f7942b0da8884da2437136a2f43d62ea8ed9d30e87a44db17f8400"
+    },
+    {
+      "key": "manufacturing-301/bonus",
+      "index": 1,
+      "bench": "bonus",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "0ae63112dc5d7cd006cf7080fc2de1406aa01c6326bdc77b57f9da43e806d21d"
+    },
+    {
+      "key": "manufacturing-301/surface",
+      "index": 2,
+      "bench": "surface",
+      "passAt": 3,
+      "answers": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "bc31c2504fa41652f771b58908103de991cdab0212f2307b05980d54632604b7"
+    },
+    {
+      "key": "manufacturing-301/travel",
+      "index": 3,
+      "bench": "travel",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "cd7d31056655b17e91deeb0251f82fffc8047494324d667e3dd486ff1a71ac43"
+    },
+    {
+      "key": "manufacturing-301/passes",
+      "index": 4,
+      "bench": "passes",
+      "passAt": 3,
+      "answers": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "optionsSha256": "f551af53664d4c51461c6b9d30dd96e727b98fea7bbafeb3a3ac8cb0b22295c4"
+    },
+    {
+      "key": "manufacturing-401/bottleneck",
+      "index": 1,
+      "bench": "bottleneck",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "2aae06d7006c77f4185c933a8b01a8874654c998f4580d36d7da5bc99021a732"
+    },
+    {
+      "key": "manufacturing-401/piececost",
+      "index": 2,
+      "bench": "piececost",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "2a033b2f024de77da3666272395d47749f28b13ee5aff2d76f16d3f7a2ffbe28"
+    },
+    {
+      "key": "manufacturing-401/dfa",
+      "index": 3,
+      "bench": "dfa",
+      "passAt": 3,
+      "answers": [
+        2,
+        0,
+        1,
+        1
+      ],
+      "optionsSha256": "dfc97387f66d145f03c548b05e55408cb95fd6e92f9a21981a759918f3a0c521"
+    },
+    {
+      "key": "manufacturing-401/scrap",
+      "index": 4,
+      "bench": "scrap",
+      "passAt": 3,
+      "answers": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "9067d1587293eab239eed7c6027f6225574d66a5d527416713347378a263129c"
+    },
+    {
+      "key": "physics-201/float",
+      "index": 5,
+      "bench": "float",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "7057e1288e87e8f0970ebd70457ea9be64ef90fe96f8c54ce6270a1d257bac65"
+    },
+    {
+      "key": "physics-301/pipe",
+      "index": 5,
+      "bench": "pipe",
+      "passAt": 3,
+      "answers": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "optionsSha256": "e37877ec787045a2f87ee884aa3ca72311289cc4d361e9fded0e204166bb1db4"
+    },
+    {
+      "key": "physics-401/turn",
+      "index": 5,
+      "bench": "turn",
+      "passAt": 3,
+      "answers": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "optionsSha256": "7f83fdb78b83bd6f86c4225e37f3b3f6f5acf5cd214ad9fc50a6157e370a7e9a"
+    },
+    {
+      "key": "materials-201/diffuse",
+      "index": 5,
+      "bench": "diffuse",
+      "passAt": 3,
+      "answers": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "optionsSha256": "2c2ec13cba11f1b7e2c8a6f2106275ea175b5e38e7f5b22a5af099b274009b40"
+    },
+    {
+      "key": "materials-301/mixture",
+      "index": 5,
+      "bench": "mixture",
+      "passAt": 3,
+      "answers": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "optionsSha256": "adfae1e0855b9c6244b33df069805a006afef80fa1f79655ff99f9c73427d395"
+    },
+    {
+      "key": "engineering-201/pinshear",
+      "index": 5,
+      "bench": "pinshear",
+      "passAt": 3,
+      "answers": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "optionsSha256": "9617a7872dee386de982b461a26c53f086ce70ccfb80c8dd000cbdd2c3419b19"
+    },
+    {
+      "key": "engineering-301/coilspring",
+      "index": 5,
+      "bench": "coilspring",
+      "passAt": 3,
+      "answers": [
+        1,
+        3,
+        1,
+        1
+      ],
+      "optionsSha256": "140c04ab55a2e101592acaa8eb34d2476940bdede7c23c62a235382a5eed50d4"
+    },
+    {
+      "key": "manufacturing-201/locate",
+      "index": 5,
+      "bench": "locate",
+      "passAt": 3,
+      "answers": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "ab7722b209c5accd2b07f108c20eaef01b35e1038e65cefa8c98cb36f97f1083"
+    },
+    {
+      "key": "manufacturing-301/layers",
+      "index": 5,
+      "bench": "layers",
+      "passAt": 3,
+      "answers": [
+        2,
+        1,
+        0,
+        1
+      ],
+      "optionsSha256": "910648c694df1b31fad5310483c620f4bd17ee6248f5f9782121d7942f80e559"
+    },
+    {
+      "key": "manufacturing-401/takt",
+      "index": 5,
+      "bench": "takt",
+      "passAt": 3,
+      "answers": [
+        2,
+        2,
+        1,
+        0
+      ],
+      "optionsSha256": "8c4dbf1d4130434ecc82affd676494ddcb205ee508ca35d0e93ae77c52ed8c2d"
+    },
+    {
+      "key": "materials-201/face",
+      "index": 6,
+      "bench": "face",
+      "passAt": 3,
+      "answers": [
+        2,
+        0,
+        1,
+        1
+      ],
+      "optionsSha256": "ffde97e206a96e4dd7dea9601385f8cb23e37e646b425ceb214d5e21cfcbb18b"
+    },
+    {
+      "key": "materials-301/transition",
+      "index": 6,
+      "bench": "transition",
+      "passAt": 3,
+      "answers": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "1fc56b3032be6818fde9663cb224a468b9f9cec34c37d2619fd7cfbc4f95a7fa"
+    },
+    {
+      "key": "materials-401/scc",
+      "index": 5,
+      "bench": "scc",
+      "passAt": 3,
+      "answers": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "c247987323baf35751464b68d27ccbdfd7afddafead8a48d0bd35ccf500350ab"
+    },
+    {
+      "key": "engineering-201/wear",
+      "index": 6,
+      "bench": "wear",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "optionsSha256": "96b1153dc49558ef20979261c909b587df9b4e9cb7c145e87e0f5c85c33a8ebb"
+    },
+    {
+      "key": "engineering-301/scale",
+      "index": 6,
+      "bench": "scale",
+      "passAt": 3,
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "optionsSha256": "3609576a4f089efc6689b8e9ea61259b68fff05aa133a1042c5d806f8c9e8047"
+    },
+    {
+      "key": "engineering-401/clocks",
+      "index": 5,
+      "bench": "clocks",
+      "passAt": 3,
+      "answers": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "optionsSha256": "74af3c16d2893b7f9006d35afdef4d3cb7ac00fd65d8b7e716bac5b013ead009"
+    }
+  ]
+}

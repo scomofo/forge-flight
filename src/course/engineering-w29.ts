@@ -26,7 +26,7 @@ export const engineeringW29Lessons: Lesson[] = [
       "A factor of safety is not a universal material constant. It is part of the design basis. || Choose it from the applicable standard, uncertainty in loads and strength, inspection and maintenance assumptions, and the consequence of failure. FoS = capability / demand only has meaning when both terms are clearly defined. || Record where the chosen factor came from. An unexplained safety factor is difficult to review and easy to misuse.",
     use: "When you are about to size a part and the spreadsheet is asking for an allowable stress, or when a review asks why this number and not a smaller one. || Name the consequence class: low (property only), moderate (minor injury), high (serious injury), catastrophic (loss of life). Read the factor of safety off that class, adjusted for how well you know the loads and how often the part is inspected. Write the consequence class next to the number, every time. || Stop when the factor of safety, the consequence, and the inspection plan all appear on the same page. A bare number with no consequence attached is a guess, and no reviewer can check a guess.",
     example:
-      "A tow-bar lug for a light trailer, demand 12 kN, material yield 250 MPa. || The consequence is moderate — the trailer has a safety chain, so a lug failure means a dropped hitch at low speed, not a runaway trailer; the loads are ordinary highway loads. The class says FoS 2.0. Allowable stress = 250 ÷ 2.0 = 125 MPa. Required area = 12,000 N ÷ 125 MPa = 96 mm². The designer picks 100 mm² and writes 'FoS 2.0, consequence moderate, inspected at each service' on the drawing. || The area is arithmetic. The 2.0 is the ethics: it says 'I do not trust my knowledge of pothole loads enough to bet a highway on 1.4.'",
+      "Fictional teaching example—not a real code or trailer specification. The exercise assigns a factor of 2.0 and a 250 MPa material yield for arithmetic. A real design needs the applicable standard and a justified load and consequence assessment; the presence of a safety chain alone does not establish low consequence. A tow-bar lug for a light trailer, demand 12 kN, material yield 250 MPa. || The fictional classroom table calls this a moderate-consequence case and supplies FoS 2.0. That classification is an exercise input, not a conclusion we can draw about road safety. Allowable stress = 250 ÷ 2.0 = 125 MPa. Required area = 12,000 N ÷ 125 MPa = 96 mm². The designer picks 100 mm² and writes 'FoS 2.0, consequence moderate, inspected at each service' on the drawing. || The area is arithmetic. The 2.0 is the ethics: it says 'I do not trust my knowledge of pothole loads enough to bet a highway on 1.4.'",
     ideas: [
       {
         heading: "Define both capability and demand before quoting a factor of safety",
@@ -35,7 +35,7 @@ export const engineeringW29Lessons: Lesson[] = [
       },
       {
         heading: "Safety factors reflect uncertainty and consequence, not just material choice",
-        body: "Low consequence and well-known loads: 1.5. Moderate: 2.0. High with uncertain loads: 3.0. Catastrophic: 5.0. These are starting points, not verdicts: well-known loads plus scheduled inspection can justify less. An airliner wing carries lives at 1.5 ultimate because its loads are measured and its inspections are mandated. Nor are they material constants — the same alloy gets all four numbers depending on whose life is underneath it. When someone asks 'why 3?', the answer is the consequence class and the inspection plan, never 'that is what we always use.'",
+        body: "Fictional classroom factor table—not a real code: low consequence and well-known loads 1.5; moderate 2.0; high with uncertain loads 3.0; catastrophic 5.0. These are starting points, not verdicts: well-known loads plus scheduled inspection can justify less. Do not compare this classroom table directly with an aircraft ultimate-load factor: the load definitions, failure criteria and governing requirements differ. Nor are they material constants — the same alloy gets all four numbers depending on whose life is underneath it. When someone asks 'why 3?', the answer is the consequence class and the inspection plan, never 'that is what we always use.'",
         formula: "FoS ← consequence class × load knowledge × inspection",
       },
       {
@@ -50,7 +50,7 @@ export const engineeringW29Lessons: Lesson[] = [
     note: "The table values are classroom-grade conventions, not a real code. Real codes (ASME, API, Eurocode) set their own numbers — the lesson is the reasoning that produces a number, not the number itself.",
     checks: [
       {
-        prompt: "A crane hook and an airliner wing use factors of safety 5 and 1.5. What does the difference say?",
+        prompt: "In a simplified comparison, two parts have the same factor definition but different load uncertainty and inspection assumptions. One uses 5 and a well-characterized wing example uses 1.5. What is the intended lesson?",
         options: [
           "The wing's loads and inspections are far better known, so less uncertainty needs covering",
           "The wing is made of stronger material",
@@ -58,7 +58,7 @@ export const engineeringW29Lessons: Lesson[] = [
           "The wing is less important if it fails",
         ],
         answer: 0,
-        why: "The factor of safety covers uncertainty, not material quality. The wing earns the smaller number through measured loads and scheduled inspection; the hook pays the larger number for sloppy loads and rare inspection.",
+        why: "Within the stated simplified comparison, better load knowledge and inspection can reduce uncertainty. Real hook and aircraft requirements use different design bases; their numerical factors cannot be interchanged or justified from this example.",
       },
       {
         prompt: "A designer writes 'FoS = 2.0' with no consequence class, no loads named, and no inspection plan. The review should…",
@@ -114,11 +114,11 @@ export const engineeringW29Lessons: Lesson[] = [
       "Codes and standards convert accumulated experience into explicit design and verification requirements. || Start with scope and applicability, then identify the normative requirements and referenced documents. In standards language, words such as shall, should, and may have different force, so read them carefully. || For every applicable requirement, identify the evidence that will show compliance. A clause without a verification plan is not yet integrated into the design.",
     use: "When a project says 'comply with' anything, or when you inherit a design and need to know what it was promised. || Read scope first — if your part is outside it, the standard does not apply and citing it is theater. Then list every shall that touches your part. For each shall, write the evidence: the test, the calculation, the inspection. || Stop when every shall has an evidence entry or an explicit waiver with a signature. A shall with no evidence is an unkept promise; the review in lesson 3 treats it as a finding.",
     example:
-      "Tow-bar standard §4.2: 'The tow bar shall withstand three times the rated tow load without permanent deformation.' || That is one shall. The evidence: a pull test at 3× rated load, measured for permanent set — or a calculation traceable to a validated model, if the code allows analysis. The 'should be tested at room temperature' in the same paragraph is a should: advice, not a demand. Appendix A's fixture guidance is informative. || The compliance table has one row for the shall with the test report number, and nothing for the shoulds. Mixing them up — treating guidance as demand, or a shall as advice — is how designs fail audits.",
+      "The following §4.2 is a fictional teaching excerpt—not an identified real tow-bar standard. Its multiplier and wording are supplied only to practice reading requirements. Tow-bar standard §4.2: 'The tow bar shall withstand three times the rated tow load without permanent deformation.' || That is one shall. The evidence: a pull test at 3× rated load, measured for permanent set — or a calculation traceable to a validated model, if the code allows analysis. The 'should be tested at room temperature' in the same paragraph is a should: advice, not a demand. Appendix A's fixture guidance is informative. || The compliance table has one row for the shall with the test report number, and nothing for the shoulds. Mixing them up — treating guidance as demand, or a shall as advice — is how designs fail audits.",
     ideas: [
       {
         heading: "Read requirement words according to the standard's definitions",
-        body: "'Shall' is a demand: break it and the design does not comply. 'Should' is a recommendation: break it and you owe an explanation. 'May' is permission. Appendices and guidance are informative unless the shall points at them. Reading a standard is mostly the discipline of not promoting a should to a shall, or demoting a shall to a should.",
+        body: "'Shall' is a demand: break it and the design does not comply. 'Should' is a recommendation: break it and you owe an explanation. 'May' is permission. Read each annex or appendix’s declared status: it may be normative or informative. An applicable requirement can also incorporate referenced material. Reading a standard is mostly the discipline of not promoting a should to a shall, or demoting a shall to a should.",
         formula: "shall = demand · should = recommendation · may = permission",
       },
       {
@@ -151,13 +151,13 @@ export const engineeringW29Lessons: Lesson[] = [
       {
         prompt: "A designer cites a standard's appendix as the reason a design complies. The reviewer should ask…",
         options: [
-          "'Which shall points at this appendix?' — appendices are informative unless a shall invokes them",
+          "'Is this appendix normative or incorporated by an applicable requirement?' — check its declared status and applicability",
           "Nothing — appendices are always binding",
           "For the appendix to be rewritten as a shall",
           "Whether the appendix is printed on company letterhead",
         ],
         answer: 0,
-        why: "Guidance becomes binding only when a shall-statement invokes it. An appendix cited on its own authority is commentary, not compliance.",
+        why: "An appendix may be normative in its own right, or incorporated by an applicable requirement; informative guidance is not automatically mandatory. Check its declared status and applicability rather than assuming all appendices are merely commentary.",
       },
       {
         prompt: "Why does the course insist every shall gets an evidence entry?",

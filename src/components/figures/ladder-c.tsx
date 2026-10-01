@@ -870,12 +870,12 @@ function Bonus() {
     <AnimatedFigure
       height={290}
       duration={4}
-      alt="Allowed position tolerance against measured hole size: 0.20 mm at the 10.0 mm maximum-material size, rising one-for-one to 0.40 mm at 10.2 mm, the extra 0.20 marked as bonus."
+      alt="Position-zone diameter against measured hole size (radial offset is half this diameter): 0.20 mm at the 10.0 mm maximum-material size, rising one-for-one to 0.40 mm at 10.2 mm, the extra 0.20 marked as bonus."
       steps={[
         {
           at: 0,
           label: "MMC",
-          caption: "A hole at its smallest, 10.0 mm, is the maximum-material condition, and the stated 0.20 mm applies there.",
+          caption: "At the 10.0 mm maximum-material hole size, the position-zone diameter is ⌀0.20 mm: maximum radial axis offset 0.10 mm. No datum shift is assumed.",
         },
         {
           at: 1.2,
@@ -886,7 +886,7 @@ function Bonus() {
           at: 3.1,
           label: "10.2 mm",
           caption:
-            "Every bit of size above the 10.0 mm MMC hole is added to the stated 0.20: a 10.2 mm hole may sit 0.40 off, if the callout is at MMC.",
+            "The 10.2 mm hole gains 0.20 mm bonus: zone diameter ⌀0.40 mm, maximum radial axis offset 0.20 mm. The callout must permit MMC bonus.",
         },
       ]}
       readouts={(t) => {
@@ -894,7 +894,7 @@ function Bonus() {
         return [
           { label: "hole", value: `${lerp(10, 10.2, p).toFixed(2)} mm` },
           { label: "bonus", value: `${lerp(0, 0.2, p).toFixed(2)} mm` },
-          { label: "allowed", value: `${lerp(0.2, 0.4, p).toFixed(2)} mm`, tone: "accent" },
+          { label: "zone ⌀", value: `${lerp(0.2, 0.4, p).toFixed(2)} mm`, tone: "accent" },
         ];
       }}
     >
@@ -906,7 +906,7 @@ function Bonus() {
         const end = op(seg(t, 3, 3.5));
         return (
           <>
-            <Axes box={b} xLabel="hole size, mm" yLabel="position allowed, mm" />
+            <Axes box={b} xLabel="hole size, mm" yLabel="zone ⌀, mm" />
             <Guide x1={b.px(9.95)} y1={b.py(0.2)} x2={b.px(10.35)} y2={b.py(0.2)} opacity={mmc} />
             <Label x={b.px(10.03)} y={b.py(0.2) + 16} anchor="start" tone="muted" size={15} opacity={mmc}>stated 0.20</Label>
             {p > 0 ? <path d={b.path([[10.0, 0.2], [size, allowed]])} fill="none" stroke={C.accent} strokeWidth={3} /> : null}
@@ -1380,7 +1380,7 @@ function Dfa() {
     <AnimatedFigure
       height={230}
       duration={5}
-      alt="Two time bars: six parts take a 20 s base plus five 8 s handlings, 60 s; three parts take 20 s plus two handlings, 36 s, saving 16 s."
+      alt="Two time bars: six parts take a 20 s base plus five 8 s handlings, 60 s; three parts take 20 s plus two handlings, 36 s, saving 24 s."
       steps={[
         { at: 0, label: "6 parts", caption: "Six parts take 20 + 5 × 8 = 60 s: a 20 s base, then 8 s to handle each extra part." },
         { at: 2.5, label: "3 parts", caption: "Three parts take 20 + 2 × 8 = 36 s." },
@@ -1411,7 +1411,7 @@ function Dfa() {
             opacity={op(seg(t, 3.8, 4.3))}
           />
           <g opacity={op(seg(t, 4.1, 4.6))}>
-            <DimH x1={x0 + 36 * k} x2={x0 + 60 * k} y={206} label="16 s saved" tone="accent" />
+            <DimH x1={x0 + 36 * k} x2={x0 + 60 * k} y={206} label="24 s saved" tone="accent" />
           </g>
         </>
       )}

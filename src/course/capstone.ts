@@ -219,7 +219,7 @@ export const CAP_MISMATCH = {
   measuredDeflectionMm: 0.61,
   measurementUncertaintyMm: 0.05,
   description:
-    "Static tip-load test on the 7075-T6 spar: predicted 0.46 mm from the uniform-beam model, measured 0.61 ± 0.05 mm.",
+    "Hypothetical static distributed-load test on the 7075-T6 spar, matching the model load case: nominal prediction 0.46 mm, supplied measurement 0.61 ± 0.05 mm; prediction uncertainty is not yet quantified.",
 } as const;
 
 export type MismatchSuspect = {

@@ -341,7 +341,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Separate gauge pressure from the atmosphere that was already at the surface.",
     start: "Swim down in a lake and your ears hurt more the deeper you go. At the surface they already felt the air. The hurt is the extra from the water above you. || Gauge pressure is that extra: the weight of a column of liquid, density times gravity times depth. Each meter of fresh water adds the same amount, about 9.8 kPa. Absolute pressure is the gauge reading plus the air that was already there. The width of the lake does not appear. || Add a constant extra per meter. Do not treat the surface as zero of all pressure, unless you only wanted the extra.",
     use: "You need the pressure at a depth in a liquid. || Gauge pressure is density times gravity times depth. Add the atmosphere if you need the absolute pressure. The width of the tank does not appear. || Each extra meter adds the same extra gauge pressure. Do not treat the surface as zero absolute.",
-    example: "A diver's gauge at the surface, then at 10 m in a lake. || Each meter of fresh water adds 9.81 kPa. At 10 m the gauge reads about 98 kPa. The air was already pressing at the surface, so the absolute pressure is that extra plus about one atmosphere. || The gauge is not the whole pressure. The width of the lake does not appear.",
+    example: "Supplied inputs: freshwater density ρ = 1000 kg/m³ and g = 9.81 m/s². Their product gives 9810 Pa of extra pressure per metre = 9.81 kPa/m. Surface pressure is approximated as 101 kPa when absolute pressure is wanted. A diver's gauge at the surface, then at 10 m in a lake. || Each meter of fresh water adds 9.81 kPa. At 10 m the gauge reads about 98 kPa. The air was already pressing at the surface, so the absolute pressure is that extra plus about one atmosphere. || The gauge is not the whole pressure. The width of the lake does not appear.",
     ideas: [
       {
         heading: "Hydrostatic gauge pressure increases linearly with depth",
@@ -397,7 +397,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Trade pressure for speed in a level stream and name the term that moved.",
     start: "Put your thumb over a garden hose. The water speeds up in the gap, and the stream feels like it is being pulled through, not pushed harder from behind. || In a level pipe that does not leak, the pressure plus a term that grows with speed squared stays constant, until friction spends some of it. A faster section has spent pressure to buy speed. || Speed up the water and the pressure falls. Do not expect a faster throat to be a higher pressure.",
     use: "A level stream speeds up and you need the pressure. || Pressure plus the speed term stays constant, until friction spends it. A faster section is a lower pressure. || Name which term moved. Do not expect the pressure to rise because the fluid is moving faster.",
-    example: "Water in a level venturi, starting at 200 kPa with almost no speed, then at 10 m/s. || Half of 1000 times 10 squared is 50 kPa. That 50 kPa comes out of the 200, leaving 150 kPa. The pipe did not go uphill. || A faster throat is a lower pressure. Do not expect the pressure to rise because the water sped up.",
+    example: "Use ρ = 1000 kg/m³ for the classroom water model. Pressure budget = 200 kPa at negligible inlet speed; assume a horizontal, steady, incompressible loss-free streamline. The 1000 is a supplied density, not calculated from speed. Water in a level venturi, starting at 200 kPa with almost no speed, then at 10 m/s. || Half of 1000 times 10 squared is 50 kPa. That 50 kPa comes out of the 200, leaving 150 kPa. The pipe did not go uphill. || A faster throat is a lower pressure. Do not expect the pressure to rise because the water sped up.",
     ideas: [
       {
         heading: "The sum is the budget",
@@ -508,7 +508,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Turn a temperature rise into either growth or stress, and not into both at once.",
     start: "A metal rail in the sun grows longer. Bolt the ends so it cannot grow, and the rail pushes on the bolts instead. You do not get the longer rail and the huge push at the same time. || Free growth is a small fraction, alpha, times the length times the temperature rise. If the ends are fixed, that growth is prevented and becomes a stress: stiffness times alpha times the rise. A partial restraint is a fraction of that stress. || Report the growth or the stress, depending on whether it was free. Do not add the free growth on top of the fully fixed stress.",
     use: "A bar is heated, and it may or may not be free to grow. || If it is free, report the growth and zero stress. If the ends are fixed, report the stress and zero growth. A partial restraint is a fraction of that stress. || Report one of them, not both. Do not add them.",
-    example: "A 1 m steel bar heated by 50°. || Free, it grows by about 0.60 mm and the stress is zero. Ends fixed, the growth is zero and the stress is about 120 MPa. || Report one of those, not both. The same 50° does not produce both.",
+    example: "Supplied steel properties: E = 200 GPa and α = 12 × 10⁻⁶/K. Eα = 200,000 × 12 × 10⁻⁶ = 2.4 MPa per kelvin. The length is 1 m and the temperature change is 50 K (the same size change as 50 °C). A 1 m steel bar heated by 50°. || Free, it grows by about 0.60 mm and the stress is zero. Ends fixed, the growth is zero and the stress is about 120 MPa. || Report one of those, not both. The same 50° does not produce both.",
     ideas: [
       {
         heading: "Free thermal expansion follows αLΔT",
@@ -565,7 +565,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Compare wave speeds from modulus and density, and refuse to rank them by density alone.",
     start: "Tap one end of a long steel rod and a long plastic rod. The tap arrives at the far end sooner in the steel, even though steel is heavier. || The speed of that pulse is the square root of stiffness over density. Steel is dense, but it is so much stiffer that the news outruns the plastic. || You need both numbers. A light rod is not automatically fast, and a heavy rod is not automatically slow.",
     use: "A wave will run down a rod and you need the speed. || Speed is the square root of modulus over density. A light, stiff rod is fast. || Do not rank two rods by density alone. Do not forget the modulus.",
-    example: "A tap on the end of a steel rod and on a polyethylene rod. || Steel: √(200 GPa / 7800) is about 5060 m/s. Polyethylene: √(2 GPa / 950) is about 1450 m/s. Steel is eight times denser, but a hundred times stiffer. || Do not rank the rods by density alone. A light rod can still be slow if it is soft.",
+    example: "Use the table below: E in pascals and density in kg/m³. For steel E = 200 × 10⁹ Pa and ρ = 7800 kg/m³; for polyethylene E = 2 × 10⁹ Pa and ρ = 950 kg/m³. These are selected classroom properties. A tap on the end of a steel rod and on a polyethylene rod. || Steel: √(200 GPa / 7800) is about 5060 m/s. Polyethylene: √(2 GPa / 950) is about 1450 m/s. Steel is eight times denser, but a hundred times stiffer. || Do not rank the rods by density alone. A light rod can still be slow if it is soft.",
     ideas: [
       {
         heading: "Stiffness over density, under a root",
@@ -620,7 +620,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Shorten a span and watch the first-mode frequency rise with one over length squared.",
     start: "A short ruler, held at the ends and plucked, hums a higher note than a long one. The ruler did not get stiffer. It got shorter. || The note is the beam's preferred frequency. For the simplest support, that frequency falls with the square of the span. Double the span and the note drops by about four, not by two. || Shorten the span if you need the note up. This is one shape and one way of holding the ends, not every beam.",
     use: "A beam can ring and you need the first frequency. || Shorten the span if you need the frequency up. Span is squared. Stiffness and mass per length share a root. || Doubling the span cuts the frequency by about four, not by two. Do not treat this shape as every support condition.",
-    example: "A pinned steel bar, 20 mm square, ringing in its first mode. || At a 0.60 m span the first mode is about 128 Hz. At 1.20 m it is about 32 Hz, a quarter. The steel did not get softer. Span is squared. || Shorten the span if you need the pitch up. Doubling the length is not a small detuning.",
+    example: "Supplied steel E = 200 GPa, density 7800 kg/m³. For the 0.020 m square, A = 0.0004 m², I = 0.020⁴/12 = 1.333 × 10⁻⁸ m⁴, and mass per length μ = 3.12 kg/m. Calculate angular frequency ω, then divide by 2π to report frequency f in Hz. A pinned steel bar, 20 mm square, ringing in its first mode. || At a 0.60 m span the first mode is about 128 Hz. At 1.20 m it is about 32 Hz, a quarter. The steel did not get softer. Span is squared. || Shorten the span if you need the pitch up. Doubling the length is not a small detuning.",
     ideas: [
       {
         heading: "Span is squared",
@@ -791,7 +791,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Raise stress a little, then temperature a little, and watch a creep life collapse.",
     start: "A candle on a warm windowsill slowly bends under its own weight. It is not melting in a puddle. It is creeping. A slightly hotter sill, or a heavier candle, bends much sooner. || Creep is ongoing stretch under a steady load at a high temperature, for a metal as well as a candle. The time to a given sag falls sharply if you raise the stress, because stress is raised to a power, and even more sharply if you raise the temperature, because temperature sits in an exponential. || A small change in stress or temperature is a large change in life. The strength measured in a quick pull at room temperature is the wrong chapter.",
     use: "A part sits hot, under stress, for a long time. || Treat both stress and temperature as life inputs. A small rise in either one cuts the life by a lot. || The room-temperature yield is not the answer. Do not use it for a thousand hot hours.",
-    example: "A hanger at 800 K and 100 MPa, then the same hanger with the stress doubled, then with the temperature raised 50 K instead. || Doubling the stress cuts the time to 1% strain by about 32, because stress is raised to a power. The extra 50 K cuts it to about a tenth, because temperature sits in an exponential. || A small change in the inputs is a large change in the life. The room-temperature yield is the wrong chapter.",
+    example: "Given teaching reference: 1000 h to 1% strain at 100 MPa and 800 K. The fitted stress exponent is 5 and Q/R = 30,000 K; t = 1000(100/σ)⁵ exp[30000(1/T − 1/800)] h. Use absolute kelvin and the stress in MPa. A hanger at 800 K and 100 MPa, then the same hanger with the stress doubled, then with the temperature raised 50 K instead. || Doubling the stress cuts the time to 1% strain by about 32, because stress is raised to a power. The extra 50 K cuts it to about a tenth, because temperature sits in an exponential. || A small change in the inputs is a large change in the life. The room-temperature yield is the wrong chapter.",
     ideas: [
       {
         heading: "Creep life is highly sensitive to stress",
@@ -1244,7 +1244,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Rank materials for a light, stiff panel, and do not reuse that ranking for a tie rod.",
     start: "A light stiff tabletop wants to be deep and not dense, because sagging hates thinness. A hanging rod wants to be strong for its weight, and depth is not the trick, because a rod does not sag that way. || For a flat panel of a given width and stiffness, the material index is the cube root of stiffness divided by density. Wood can beat steel on that index. A stiffness-limited tie rod uses stiffness divided by density, with no cube root, and wood's big lead disappears. || Keep the index with the shape it was built for. Winning as a panel is not a reason to make the rod out of the same material.",
     use: "You are choosing a material for a light, stiff panel. || Rank by modulus to the one-third, over density. A tie rod wants a different index, with no cube root. || Wood can beat steel here, and you can say why that ranking is the wrong boast for a rod. Do not carry one index into a different shape.",
-    example: "A flat panel of fixed width that must not sag, in steel and in wood. || The index is the cube root of modulus divided by density. Steel is about 0.75 and wood about 4.31, nearly six times, because the panel pays heavily for steel's density. A stiffness-limited tie rod, which wants E/ρ with no cube root, puts steel slightly ahead of wood (25.6 against 20). The panel's big lead disappears. || Use this index for the panel only. Wood winning here is not a reason to make the tie rod out of wood.",
+    example: "The supplied property table uses E in GPa and density ρ in g/cm³: steel 200 and 7.8; wood along grain 10 and 0.5. Thus the panel comparisons are ∛200/7.8 and ∛10/0.5. The unit convention is part of the index value. A flat panel of fixed width that must not sag, in steel and in wood. || The index is the cube root of modulus divided by density. Steel is about 0.75 and wood about 4.31, nearly six times, because the panel pays heavily for steel's density. A stiffness-limited tie rod, which wants E/ρ with no cube root, puts steel slightly ahead of wood (25.6 against 20). The panel's big lead disappears. || Use this index for the panel only. Wood winning here is not a reason to make the tie rod out of wood.",
     ideas: [
       {
         heading: "Panel material indices depend on both stiffness and density",
@@ -1685,7 +1685,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Lengthen a shaft and watch its critical speed fall faster than the length grew.",
     start: "A jump rope turns slowly and hangs in a gentle loop. Turn it faster, through one particular speed, and it suddenly stands out in a wide bow. A longer rope does that at a slower turn. || A shaft has a speed where the spin matches the frequency at which the shaft wants to vibrate. That is the critical speed. Lengthening the shaft drops that speed faster than the length grew. || Keep the running speed away from it. Do not stretch the shaft and keep the old rpm.",
     use: "A shaft will spin and you need the speed it must not sit on. || The critical speed is the shaft's natural frequency in revolutions. Lengthening the shaft drops that speed faster than the length grew. || The running speed is not the critical speed. Do not lengthen a shaft and keep the old rpm.",
-    example: "A shaft running happily at 0.40 m long, then the same shaft stretched to 0.80 m with the motor left alone. || Critical speed is the shaft's natural frequency. It is about 7300 rpm at 0.40 m and about 2600 rpm at 0.80 m. Doubling the length divides it by about 2.8, because length is worse than linear. || Recompute the forbidden speed. Do not keep the old rpm on the longer shaft.",
+    example: "Given: 20 mm diameter steel shaft, E = 200 GPa, 2 kg midspan disk, simple end supports, shaft mass neglected. I = π(0.020)⁴/64 = 7.854 × 10⁻⁹ m⁴; k = 48EI/L³. Convert √(k/m) from rad/s to rpm with 60/(2π). A shaft running happily at 0.40 m long, then the same shaft stretched to 0.80 m with the motor left alone. || Critical speed is the shaft's natural frequency. It is about 7300 rpm at 0.40 m and about 2600 rpm at 0.80 m. Doubling the length divides it by about 2.8, because length is worse than linear. || Recompute the forbidden speed. Do not keep the old rpm on the longer shaft.",
     ideas: [
       {
         heading: "Critical speed occurs when running speed meets a shaft mode",
@@ -2024,7 +2024,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Start a crack at the smallest size your inspection can find, and read the cycles left.",
     start: "A small leak in a dam, found early, buys you years. Found as a crack four times wider, it has lost about half its life — not three quarters. For m = 3 the life goes as one over the square root of the starting size, and the slow early growth is the part you skipped. || You integrate how fast the crack grows from the size you can find to the size that fails. Because a short crack grows slowly, most of the cycles are spent while it is small. Finding it later skips that slow chapter. || Four times the length is not four times less life.",
     use: "A crack is already there, and an inspection can find it only after some size. || Integrate the growth from the size you can find out to the size that fails. Finding it smaller buys many cycles, because the early growth is slow. || A later find is not a proportional loss of life. Do not scale the life by the ratio of crack sizes.",
-    example: "An inspector can find a crack at 0.5 mm, or only once it is 2.0 mm. || The cycles left are the integral of growth from the size you find to the size that fails. Most of those cycles are spent while the crack is short, so the 2 mm find has already spent the slow part. || Four times the crack is not four times less life.",
+    example: "Use the supplied teaching crack-growth fit in the input panel: C = 6.9 × 10⁻¹², exponent m = 3, Δσ = 120 MPa, maximum stress = 120 MPa for a 0-to-120 MPa cycle, Y = 1.12 and K_IC = 50 MPa√m. The constant C uses a in metres and ΔK in MPa√m. The calculation is a growth life, not an approved inspection schedule. An inspector can find a crack at 0.5 mm, or only once it is 2.0 mm. || The cycles left are the integral of growth from the size you find to the size that fails. Most of those cycles are spent while the crack is short, so the 2 mm find has already spent the slow part. || Four times the crack is not four times less life.",
     ideas: [
       {
         heading: "Inspection gains the most life while cracks are still small",
@@ -2189,7 +2189,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Raise cutting speed by half, and watch tool life collapse.",
     start: "Whittle a stick slowly and the knife stays sharp. Race, and the edge is gone long before you have whittled proportionally more. || For a cutting tool, speed and life are tied so that speed times life-to-a-power stays constant. A modest increase in speed is a large loss of minutes before the edge is worn. || You price the life you spent to go faster. You also say what 'worn' meant, because that defines the constant.",
     use: "You want to cut faster. || A higher speed spends the tool by much more than the speed rose. Say what worn means for the constant you used. || You can price the life you gave away. Do not raise the speed and expect the same tool to last.",
-    example: "A cut at 100 m/min, then the same cut at 150 m/min. || At 100 m/min the tool lasts about 32 minutes. At 150 m/min it lasts about 4 minutes. V times T to the n stayed constant, and tool life is what changed. || You price the life you spent. You say what 'worn' meant for that constant.",
+    example: "Given teaching fit: n = 0.2 and C = 200 with cutting speed V in m/min and tool time T in minutes. T = (C/V)^(1/n) = (200/V)⁵. C and n are fitted to a tool, workpiece and wear criterion; they are not universal constants. A cut at 100 m/min, then the same cut at 150 m/min. || At 100 m/min the tool lasts about 32 minutes. At 150 m/min it lasts about 4 minutes. V times T to the n stayed constant, and tool life is what changed. || You price the life you spent. You say what 'worn' meant for that constant.",
     ideas: [
       {
         heading: "Taylor tool life links cutting speed and usable tool time",
@@ -2354,15 +2354,15 @@ export const ladderLessons: Lesson[] = [
     lede: "Add a bonus tolerance when a hole is larger than its maximum-material size.",
     start: "A loose peg in a large hole can sit farther off center and still go in. A peg in a hole that is barely big enough has to be almost perfectly centered. || Maximum material is the tightest fit: the smallest allowed hole, or the largest allowed peg. If the real hole is larger than that, some drawings let you add the extra size onto the position tolerance. That extra is the bonus. It exists only when the drawing says so. || A bigger hole may sit farther off center. You do not grant the bonus on a drawing that never offered it.",
     use: "A hole is off its true position, and it is larger than the tightest size the drawing allows. || Add the departure from that tightest size to the position tolerance, and only if the drawing grants the bonus. || A larger hole may sit farther off. Do not grant the bonus on a drawing that does not.",
-    example: "A hole whose tightest allowed size is 10.0 mm, with a position tolerance, and a real hole that measures 10.2 mm. || If the drawing grants a bonus, the extra 0.2 mm of size is added to the position tolerance. At 10.0 mm there is no bonus. || A larger hole may sit farther off center. You do not grant the 0.2 mm on a drawing that never said so.",
+    example: "Read the position callout as the diameter of a cylindrical tolerance zone: ⌀0.20 mm at MMC. The hole axis must lie within that zone, meaning at most 0.10 mm radial offset at MMC. With a 10.20 mm hole, the bonus increases the zone diameter to ⌀0.40 mm, so the maximum radial offset is 0.20 mm, not 0.40 mm. No datum shift is assumed. A hole whose tightest allowed size is 10.0 mm, with a position tolerance, and a real hole that measures 10.2 mm. || If the drawing grants a bonus, the extra 0.2 mm of size is added to the position tolerance. At 10.0 mm there is no bonus. || A larger hole may sit farther off center. You do not grant the 0.2 mm on a drawing that never said so.",
     ideas: [
       {
         heading: "Maximum-material condition is the tightest permitted fit",
-        body: "A hole at its smallest, 10.0 mm here, is the maximum-material condition. The stated position tolerance, 0.20 mm, applies there. A larger hole has more clearance to give away.",
+        body: "A hole at its smallest, 10.0 mm here, is the maximum-material condition. The stated position-zone diameter, ⌀0.20 mm, applies there. A larger hole has more clearance to give away.",
       },
       {
         heading: "The bonus is the extra size",
-        body: "Bonus = measured size minus 10.0 mm. A 10.2 mm hole gets 0.20 mm of bonus, so it may be 0.40 mm off true position. The drawing's 0.20 did not change — the extra came from clearance.",
+        body: "Bonus = measured size minus 10.0 mm. A 10.2 mm hole gets 0.20 mm of bonus, so the zone diameter is 0.40 mm (maximum radial axis offset 0.20 mm). The drawing's 0.20 did not change — the extra came from clearance.",
         formula: "allowed = tolerance at MMC + (size − MMC)",
       },
       {
@@ -2375,13 +2375,13 @@ export const ladderLessons: Lesson[] = [
     note: "MMC hole 10.0 mm. Position at MMC 0.20 mm.",
     checks: [
       {
-        prompt: "A hole at 10.0 mm is allowed…",
-        options: ["0.40 mm off position", "0.20 mm off position", "No position control", "1 mm"],
+        prompt: "A hole at 10.0 mm has what position-zone diameter?",
+        options: ["A ⌀0.40 mm position zone", "A ⌀0.20 mm position zone", "No position control", "1 mm"],
         answer: 1,
         why: "That is MMC. Bonus is zero. The stated 0.20 is the whole allowance.",
       },
       {
-        prompt: "A hole at 10.2 mm is allowed…",
+        prompt: "A hole at 10.2 mm has what position-zone diameter?",
         options: ["0.20 mm", "0.40 mm", "0.10 mm", "10.2 mm"],
         answer: 1,
         why: "0.20 stated plus 0.20 of extra size.",
@@ -2464,7 +2464,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Slow a weld's travel, and watch the heat per length double.",
     start: "Hold a lighter under one spot on a stick and it chars. Sweep the lighter along the stick and each spot barely warms. The flame did not get smaller. It just did not stay. || Heat per length of weld is the electrical power divided by how fast the torch travels. Slow the travel and every millimeter receives more heat. Current and voltage can sit still while the heat per length doubles. || Check the travel speed before reaching for the current knob.",
     use: "Current and voltage are already set, and you can still change how fast the torch moves. || Heat per length is the power divided by the travel. Slowing the torch piles more heat on each millimeter. || Halving the travel doubles the heat. Do not turn the current up before you look at the speed.",
-    example: "A weld at 20 V and 150 A, traveling at 300 mm/min, then at 150 mm/min. || Heat per length is the power spread over the travel. Halving the travel doubles the heat on each millimeter. Current and voltage never moved. || Check the speed before you turn the current up.",
+    example: "The 20 V × 150 A supply delivers 3000 W = 3000 J/s. Convert travel from mm/min to mm/s: 300/60 = 5 mm/s. Then 3000/5 = 600 J/mm = 0.60 kJ/mm. The 60 is seconds per minute; 1000 is joules per kilojoule, not another welding coefficient. Arc efficiency is assumed to be 1. A weld at 20 V and 150 A, traveling at 300 mm/min, then at 150 mm/min. || Heat per length is the power spread over the travel. Halving the travel doubles the heat on each millimeter. Current and voltage never moved. || Check the speed before you turn the current up.",
     ideas: [
       {
         heading: "Weld heat input per length rises as travel speed falls",
@@ -2685,7 +2685,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Remove parts, and watch assembly time fall by the handling you no longer do.",
     start: "Assembling a toy with twelve screws takes longer than one held by two snaps, even when the screws are cheap. Most of the time is picking up and placing, not the price of the screw. || On this count, the first essential part takes a base time and each extra part adds a handling. You delete a part only when the product still does its job without it. || Deleting a part only counts when the joint still holds — do not delete a fastener and call it saved if the joint then falls apart.",
     use: "Assembly takes too long, and the part count is the lever you have. || Each extra part costs a handling. Delete a part only if the function does not need it. || A removed part is one handling you no longer do — as long as the joint still does the job.",
-    example: "A housing in 6 parts, each extra part costing 8 s of handling on top of a 20 s base. || Six parts take 20 + 5 × 8 = 60 s. Three parts take 20 + 2 × 8 = 36 s. The 16 s is real only if the three-part version still does the job. || Delete a part the function does not need — but not a fastener whose loss fails the joint.",
+    example: "A housing in 6 parts, each extra part costing 8 s of handling on top of a 20 s base. || Six parts take 20 + 5 × 8 = 60 s. Three parts take 20 + 2 × 8 = 36 s. The 24 s saving (60 − 36) is real only if the three-part version still does the job. || Delete a part the function does not need — but not a fastener whose loss fails the joint.",
     ideas: [
       {
         heading: "Part count drives assembly handling time",
@@ -3526,7 +3526,7 @@ export const ladderLessons: Lesson[] = [
     lede: "Predict how much material a sliding contact removes, and which lever actually helps.",
     start: "A shoe sole is thin at the heel and fine at the arch. The sidewalk was never stronger than your weight. It only rubbed, a little, for a long way. || Wear is material rubbed off. The loss is a volume of debris. It grows with the load and with the distance slid, and it shrinks if the surface is harder to scratch. A coefficient says how severe the pair is. Oil can make that coefficient tiny. This page is a dry pair. || Hardness, load, and distance are the levers. A yield strength from a pull test does not appear. A part can pass a strength check and still disappear.",
     use: "Two surfaces slide under a load for a known distance. || Volume lost is a wear coefficient times load times distance, divided by hardness. Harder is better. Less load and less distance are better. A strength number does not enter. || You do not size a wearing surface from yield alone. Say whether it is lubricated, because that coefficient assumed a dry pair.",
-    example: "A dry slider, wear coefficient 10⁻⁴, 200 N, 1000 m of travel, hardness 1000 MPa. || In mm³ the page uses 1000 × 10⁻⁴ × 200 × 1000 / 1000 = 20. Double the hardness and you lose 10 mm³. Double the distance and you lose 40 mm³. || Hardness, load, and distance are the three levers. The yield strength was not one of them.",
+    example: "The factor 1000 is a unit conversion: H in MPa is N/mm², so F/H is mm². Convert sliding distance s from metres to millimetres by multiplying by 1000 before forming the wear volume. The separate dimensionless k = 10⁻⁴ is the assumed dry-contact coefficient. A dry slider, wear coefficient 10⁻⁴, 200 N, 1000 m of travel, hardness 1000 MPa. || In mm³ the page uses 1000 × 10⁻⁴ × 200 × 1000 / 1000 = 20. Double the hardness and you lose 10 mm³. Double the distance and you lose 40 mm³. || Hardness, load, and distance are the three levers. The yield strength was not one of them.",
     ideas: [
       {
         heading: "Wear can be modeled as material-volume loss",

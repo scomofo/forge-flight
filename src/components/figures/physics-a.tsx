@@ -1,3 +1,4 @@
+import { PENDULUM_UNIT_CANDIDATES } from "@/course/pendulum-help";
 import { useState } from "react";
 import { Arrow, Axes, C, DimH, DimV, Ground, Label, plotBox, type FigureMap } from "./kit";
 import { AnimatedFigure, clamp, CompareSwitch, GrowArrow, lerp, op, partial, seg } from "./motion";
@@ -22,28 +23,23 @@ function ArcMark({ cx, cy, r, a0, a1 }: { cx: number; cy: number; r: number; a0:
 
 /** measure: pendulum and the three candidate period formulas, checked by dimensions. */
 function Measure() {
-  const rows: Array<[string, string, string, boolean]> = [
-    ["T = 2π√(l/g)", "T", "time ✓", true],
-    ["T = 2π√(g/l)", "T⁻¹", "1/time ✗", false],
-    ["T = 2π·l/g", "T²", "time² ✗", false],
-  ];
   return (
     <AnimatedFigure
-      height={230}
-      duration={7}
-      alt="A swinging pendulum of length l beside three candidate period formulas; only T = 2π√(l/g) comes out with the dimension of time."
+      height={320}
+      duration={9}
+      alt="Schematic pendulum, not a timed experiment. T is one complete cycle, l is pivot-to-bob length and g is acceleration. Checking three proposed formulas gives seconds, inverse seconds and seconds squared. Only the first has period units; that is not proof of its factor or assumptions."
       steps={[
-        { at: 0, label: "Setup", caption: "A pendulum of length l swings under gravity g. Which formula gives its period T?" },
+        { at: 0, label: "Setup", caption: "T is the time for a full back-and-forth cycle (s). l is the pivot-to-bob length (m); g is acceleration (m/s²), not a force. The motion is schematic, not a timed experiment." },
         {
           at: 1.8,
           label: "Check units",
-          caption: "Substitute [l] = L and [g] = LT⁻² into each candidate and read off what comes out.",
+          caption: "Use metres and seconds first: m ÷ (m/s²) = s². The square root gives s. Flipping the ratio gives 1/s after the root; omitting the root gives s². 2π is unitless.",
         },
         {
           at: 5.8,
           label: "Keep time",
           caption:
-            "Swap in [l] = L and [g] = LT⁻²: only one candidate returns a time, and no experiment was needed to reject the other two.",
+            "Keep only the time-unit candidate: 2π√(l/g). The other results are 1/s and s², not a period. This check does not prove 2π or the small-angle model; those need derivation or measurement.",
         },
       ]}
     >
@@ -70,9 +66,12 @@ function Measure() {
             <Label x={175} y={30} anchor="start" tone="muted" size={15} opacity={op(seg(t, 0.8, 1.4))}>
               [l] = L,  [g] = LT⁻²
             </Label>
-            <rect x={164} y={62} width={312} height={36} rx={6} fill={C.soft} opacity={op(verdict)} />
-            {rows.map(([f, d, v, ok], i) => {
-              const y = 80 + i * 52;
+            <Label x={175} y={50} anchor="start" tone="muted" size={13}>
+              L means length; T means time here
+            </Label>
+            <rect x={164} y={71} width={312} height={60} rx={6} fill={C.soft} opacity={op(verdict)} />
+            {PENDULUM_UNIT_CANDIDATES.map(({ formula: f, working, units, possible: ok }, i) => {
+              const y = 90 + i * 70;
               const a = 1.8 + i * 1.2;
               return (
                 <g key={f} opacity={op(seg(t, a, a + 0.5) * (ok ? 1 : dim))}>
@@ -80,11 +79,11 @@ function Measure() {
                     {f}
                   </Label>
                   <g opacity={op(seg(t, a + 0.6, a + 1.1))}>
-                    <Label x={345} y={y} size={18} serif tone={ok ? "accent" : "alarm"}>
-                      {d}
-                    </Label>
                     <Label x={470} y={y} anchor="end" size={16} tone={ok ? "accent" : "alarm"}>
-                      {v}
+                      {units} {ok ? "✓" : "✗"}
+                    </Label>
+                    <Label x={175} y={y + 22} anchor="start" size={12} tone="muted">
+                      {working}
                     </Label>
                   </g>
                   {!ok && verdict > 0.02 ? (
@@ -93,6 +92,7 @@ function Measure() {
                 </g>
               );
             })}
+            <Label x={240} y={287} size={14} tone="muted">Correct units are a check, not proof.</Label>
           </>
         );
       }}
@@ -447,7 +447,7 @@ function Projectiles() {
         {
           at: 0,
           label: "Launch",
-          caption: "Launch at 20 m/s and 30°. That splits into 17.3 m/s across and 10 m/s up.",
+          caption: "Given launch: 20 m/s at 30°. Assume g = 9.81 m/s² downward, no drag, +y upward. The launch components are 17.3 m/s across and 10 m/s up.",
         },
         {
           at: 0.6,
@@ -642,7 +642,7 @@ function Contact() {
         {
           at: 0,
           label: "Normal",
-          caption: "The 5.0 kg block weighs 49.1 N; the slope pushes back with N = mg·cos30° = 42.5 N.",
+          caption: "Given m = 5.0 kg, slope 30°, μs = 0.40 and μk = 0.30; assume g = 9.81 m/s². Weight is 49.1 N and N = mg·cos30° = 42.5 N.",
         },
         { at: 1.8, label: "Pull", caption: "Along the slope, the downslope pull is mg·sin30° = 24.5 N." },
         {

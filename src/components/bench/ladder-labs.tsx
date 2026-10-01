@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { LADDER_INPUTS as L, bonusPosition, ladderCreepHours, ladderModeHz, ladderWhirlRpm, ladderCrackGrowth, ladderToolLifeMinutes } from "@/course/ladder-inputs";
 import type { LadderBenchId } from "@/course/types";
 import { cn } from "@/lib/cn";
 import { BenchShell, fmt, Readouts, Slider, useReducedMotion, useTicker } from "./ui";
@@ -972,7 +973,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     sliders: [{ key: "depth", label: "Depth", min: 0, max: 20, step: 1, digits: 0, suffix: " m" }],
     initial: { depth: 0 },
     view: (v) => {
-      const gauge = (1000 * 9.81 * n(v, "depth")) / 1000;
+      const gauge = (L.water.densityKgM3 * L.water.gravityMPerS2 * n(v, "depth")) / 1000;
       return {
         readouts: [
           { label: "Gauge pressure", value: `${fmt(gauge, 1)} kPa` },
@@ -993,8 +994,8 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     sliders: [{ key: "speed", label: "Speed", min: 0, max: 16, step: 1, digits: 0, suffix: " m/s" }],
     initial: { speed: 0 },
     view: (v) => {
-      const dynamic = (0.5 * 1000 * n(v, "speed") ** 2) / 1000;
-      const pressure = 200 - dynamic;
+      const dynamic = (0.5 * L.water.densityKgM3 * n(v, "speed") ** 2) / 1000;
+      const pressure = L.water.totalPressureKPa - dynamic;
       return {
         readouts: [
           { label: "Pressure", value: `${fmt(pressure, 1)} kPa` },
@@ -1050,8 +1051,9 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     sliders: [{ key: "rise", label: "Temperature rise", min: 0, max: 80, step: 5, digits: 0, suffix: "°" }],
     initial: { fixed: 1, rise: 0 },
     view: (v) => {
-      const stress = n(v, "fixed") * 2.4 * n(v, "rise");
-      const growth = (1 - n(v, "fixed")) * 0.012 * n(v, "rise");
+      const { modulusPa, expansionPerK, lengthM } = L.steelThermal;
+      const stress = n(v, "fixed") * modulusPa / 1e6 * expansionPerK * n(v, "rise");
+      const growth = (1 - n(v, "fixed")) * expansionPerK * lengthM * 1000 * n(v, "rise");
       return {
         readouts: [
           { label: "Stress", value: `${fmt(stress, 0)} MPa` },
@@ -1083,18 +1085,14 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     sliders: [],
     initial: { mat: 0 },
     view: (v) => {
-      const table = [
-        { name: "Steel", e: 200e9, rho: 7800 },
-        { name: "Aluminum", e: 70e9, rho: 2700 },
-        { name: "Polyethylene", e: 2e9, rho: 950 },
-      ];
+      const table = L.rodMaterials;
       const mat = table[n(v, "mat")] ?? table[0];
       const speed = Math.sqrt(mat.e / mat.rho);
       return {
         readouts: [
           { label: "Wave speed", value: `${fmt(speed, 0)} m/s` },
           { label: "Modulus", value: `${fmt(mat.e / 1e9, 0)} GPa` },
-          { label: "Density", value: `${fmt(mat.rho, 0)}` },
+          { label: "Density", value: `${fmt(mat.rho, 0)} kg/m³` },
         ],
         sentence: `${mat.name}: √(E/ρ) is ${fmt(speed, 0)} m/s. A lighter metal is not automatically slower. Both E and ρ moved.`,
         aux: { pace: Math.max(0.45, speed / 2600) },
@@ -1111,11 +1109,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     initial: { span: 0.6 },
     view: (v) => {
       const span = n(v, "span");
-      const side = 0.02;
-      const inertia = side ** 4 / 12;
-      const mu = 7800 * side * side;
-      const omega = (Math.PI / span) ** 2 * Math.sqrt((200e9 * inertia) / mu);
-      const freq = omega / (2 * Math.PI);
+      const freq = ladderModeHz(span);
       return {
         readouts: [
           { label: "Frequency", value: `${fmt(freq, 1)} Hz` },
@@ -1190,8 +1184,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     ],
     initial: { stress: 100, temp: 800 },
     view: (v) => {
-      const hours =
-        1000 * (100 / n(v, "stress")) ** 5 * Math.exp(30000 * (1 / n(v, "temp") - 1 / 800));
+      const hours = ladderCreepHours(n(v, "stress"), n(v, "temp"));
       return {
         readouts: [
           { label: "Time to 1%", value: hours >= 100 ? `${fmt(hours, 0)} h` : `${fmt(hours, 1)} h` },
@@ -1379,20 +1372,15 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     sliders: [],
     initial: { mat: 0 },
     view: (v) => {
-      const table = [
-        { name: "Steel", e: 200, rho: 7.8 },
-        { name: "Aluminum", e: 70, rho: 2.7 },
-        { name: "Composite", e: 140, rho: 1.6 },
-        { name: "Wood", e: 10, rho: 0.5 },
-      ];
+      const table = L.panelMaterials;
       const mat = table[n(v, "mat")] ?? table[0];
       const index = Math.cbrt(mat.e) / mat.rho;
-      const wood = Math.cbrt(10) / 0.5;
+      const wood = Math.cbrt(table[3].e) / table[3].rho;
       return {
         readouts: [
           { label: mat.name, value: fmt(index, 2) },
           { label: "Wood", value: fmt(wood, 2) },
-          { label: "Steel", value: fmt(Math.cbrt(200) / 7.8, 2) },
+          { label: "Steel", value: fmt(Math.cbrt(table[0].e) / table[0].rho, 2) },
         ],
         sentence: `${mat.name} has panel index ${fmt(index, 2)}. Wood leads this set because a panel pays heavily for density. A tie rod, which wants E/ρ or strength/ρ, ranks them differently.`,
         aux: { level: index / wood },
@@ -1561,9 +1549,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     initial: { length: 0.4 },
     view: (v) => {
       const length = n(v, "length");
-      const shaftI = (Math.PI * 0.02 ** 4) / 64;
-      const k = (48 * 200e9 * shaftI) / length ** 3;
-      const rpm = Math.sqrt(k / 2) * (60 / (2 * Math.PI));
+      const rpm = ladderWhirlRpm(length);
       return {
         readouts: [
           { label: "Critical speed", value: `${fmt(rpm, 0)} rpm` },
@@ -1703,13 +1689,10 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     sliders: [{ key: "found", label: "Smallest crack found", min: 0.3, max: 3, step: 0.1, digits: 1, suffix: " mm" }],
     initial: { found: 0.5 },
     view: (v) => {
-      const a0 = n(v, "found") / 1000;
-      const ac = ((50 / (1.12 * 120)) ** 2 / Math.PI);
-      const b = 6.9e-12 * (1.12 * 120 * Math.sqrt(Math.PI)) ** 3;
-      const cycles = a0 >= ac ? 0 : (2 * (1 / Math.sqrt(a0) - 1 / Math.sqrt(ac))) / b;
+      const { cycles, criticalM: ac } = ladderCrackGrowth(n(v, "found"));
       return {
         readouts: [
-          { label: "Interval", value: cycles >= 1e6 ? `${fmt(cycles / 1e6, 2)} million` : `${fmt(cycles / 1e3, 0)} thousand` },
+          { label: "Model growth life", value: cycles >= 1e6 ? `${fmt(cycles / 1e6, 2)} million` : `${fmt(cycles / 1e3, 0)} thousand` },
           { label: "Found", value: `${fmt(n(v, "found"), 1)} mm` },
           { label: "Critical", value: `${fmt(ac * 1000, 0)} mm` },
         ],
@@ -1750,7 +1733,7 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
     sliders: [{ key: "speed", label: "Cutting speed", min: 80, max: 180, step: 10, digits: 0, suffix: " m/min" }],
     initial: { speed: 100 },
     view: (v) => {
-      const life = (200 / n(v, "speed")) ** 5;
+      const life = ladderToolLifeMinutes(n(v, "speed"));
       return {
         readouts: [
           { label: "Tool life", value: `${fmt(life, 1)} min` },
@@ -1809,22 +1792,21 @@ const specs: Record<Exclude<LadderBenchId, "duty" | "review" | "face">, LabSpec>
   },
   bonus: {
     prompt:
-      "Measure the hole at 10.0 mm, then at 10.2 mm. || The position allowance grows from 0.20 mm to 0.40 mm. The stated position did not change. The bonus is the extra size, and only because this callout is at maximum material.",
-    note: "Hole MMC is 10.0 mm. Position tolerance at MMC is 0.20 mm. Bonus = measured size − 10.0, and it is not allowed to go negative. No datum shift.",
+      "Measure the hole at 10.0 mm, then at 10.2 mm. || The position-zone diameter grows from ⌀0.20 mm to ⌀0.40 mm; the radial allowance grows from 0.10 to 0.20 mm. The stated position did not change. The bonus is the extra size, and only because this callout is at maximum material.",
+    note: "Hole MMC is 10.0 mm. Position-zone diameter at MMC is ⌀0.20 mm. Bonus = measured size − 10.0, and it is not allowed to go negative. No datum shift.",
     animate: false,
     sketch: "meter",
     sliders: [{ key: "size", label: "Measured hole", min: 10, max: 10.4, step: 0.05, digits: 2, suffix: " mm" }],
     initial: { size: 10 },
     view: (v) => {
-      const bonus = Math.max(0, n(v, "size") - 10);
-      const allowed = 0.2 + bonus;
+      const { bonusMm: bonus, diameterMm: allowed, radialMm } = bonusPosition(n(v, "size"));
       return {
         readouts: [
-          { label: "Position allowed", value: `${fmt(allowed, 2)} mm` },
+          { label: "Zone diameter", value: `⌀${fmt(allowed, 2)} mm` },
           { label: "Bonus", value: `${fmt(bonus, 2)} mm` },
-          { label: "At MMC", value: "0.20 mm" },
+          { label: "Maximum radial offset", value: `${fmt(radialMm, 2)} mm` },
         ],
-        sentence: `A ${fmt(n(v, "size"), 2)} mm hole is ${fmt(bonus, 2)} mm larger than the maximum-material size, so it may sit ${fmt(allowed, 2)} mm off true position in this rule.`,
+        sentence: `A ${fmt(n(v, "size"), 2)} mm hole is ${fmt(bonus, 2)} mm larger than the maximum-material size, so the position zone is ⌀${fmt(allowed, 2)} mm: maximum radial axis offset ${fmt(radialMm, 2)} mm, not ${fmt(allowed, 2)} mm.`,
         aux: { level: allowed / 0.6 },
       };
     },

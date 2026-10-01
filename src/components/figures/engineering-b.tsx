@@ -386,7 +386,7 @@ function DoePlan() {
         {
           at: 1.8,
           label: "Additive",
-          caption: "The additive prediction for toughened epoxy at 24 h is 9.50 + 1.30 + 1.20 = 12.0 MPa.",
+          caption: "The grand mean is (8.0 + 8.6 + 8.4 + 13.0)/4 = 9.50 MPa. Add the glue and time coefficients: 9.50 + 1.30 + 1.20 = 12.0 MPa.",
         },
         { at: 2.9, label: "Measured", caption: "The (+,+) corner, toughened epoxy with the full 24 h cure, measured 13.0 MPa." },
         {
@@ -495,7 +495,7 @@ function SmallSample() {
         {
           at: 2.8,
           label: "Interval",
-          caption: "The standard error is 0.176 kN; times t = 2.776 for four degrees of freedom, the 95% half-width is 0.49 kN.",
+          caption: "SE = 0.176 kN. A two-sided 95% t-table at df = 4, cumulative probability 0.975, supplies t = 2.776. Half-width = t × SE = 0.49 kN.",
         },
         {
           at: 3.8,
@@ -1006,11 +1006,11 @@ function SafetyFactor() {
       duration={4.9}
       alt="A tow-bar lug pulled by 12 kN beside a stress column: yield at 250 MPa, divided by a factor of safety of 2.0 to an allowable 125 MPa, with the lug's actual 120 MPa filling the column just under the allowable line."
       steps={[
-        { at: 0, label: "Demand", caption: "A tow-bar lug must carry a 12 kN demand, and its material yields at 250 MPa." },
+        { at: 0, label: "Demand", caption: "Fictional teaching case, not a real tow-bar code: given demand 12 kN, supplied yield 250 MPa and assigned factor 2.0." },
         {
           at: 1.6,
           label: "Factor",
-          caption: "The consequence is moderate, so the class says FoS 2.0: allowable stress = 250 ÷ 2.0 = 125 MPa.",
+          caption: "The fictional classroom table supplies FoS 2.0; it is not inferred from the material. Allowable stress = 250 ÷ 2.0 = 125 MPa.",
         },
         { at: 2.8, label: "Area", caption: "Required area = 12,000 N ÷ 125 MPa = 96 mm², and the designer picks 100 mm²." },
         {
@@ -1094,13 +1094,13 @@ function Standards() {
     <AnimatedFigure
       height={290}
       duration={4.6}
-      alt="Three clauses from a tow-bar standard: the shall-statement to withstand three times rated load maps to a compliance-table row with a pull-test report, while the should about room temperature and the Appendix A fixture guidance map to no row."
+      alt="Three clauses from a fictional teaching standard: the shall-statement to withstand three times rated load maps to a compliance-table row with a pull-test report, while the should about room temperature and the Appendix A fixture guidance map to no row."
       steps={[
         {
           at: 0,
           label: "Clauses",
           caption:
-            "Tow-bar standard §4.2: the bar shall withstand 3× rated load, should be tested at room temperature, and Appendix A adds fixture guidance.",
+            "Fictional teaching excerpt §4.2, not a real standard: shall withstand 3× rated load; should be tested at room temperature; Appendix A is explicitly informative here.",
         },
         { at: 1.5, label: "Shall", caption: "The shall is a demand, so it earns a compliance row and named evidence: the pull-test report." },
         { at: 2.5, label: "Should", caption: "A should is advice: break it and you owe an explanation, but it gets no row." },
@@ -1108,14 +1108,14 @@ function Standards() {
           at: 3.5,
           label: "Appendix",
           caption:
-            "Hunt the shalls: each one earns a row in the compliance table and a named piece of evidence. Shoulds and appendices are advice, and get no row.",
+            "Each applicable requirement needs evidence. This example’s Appendix A is informative; real appendices may be normative or incorporated by a requirement. Check their status.",
         },
       ]}
     >
       {({ t }) => (
         <>
           <Label x={20} y={22} anchor="start" size={15} tone="muted">
-            tow-bar standard §4.2
+            teaching excerpt §4.2
           </Label>
           <Label x={290} y={22} anchor="start" size={15} tone="muted">
             compliance table
@@ -1278,13 +1278,13 @@ function CapMethod() {
         {
           at: 2.4,
           label: "Test",
-          caption: "The static rig measures 0.61 ± 0.05 mm: a 33% mismatch, and the uncertainty bars do not touch.",
+          caption: "Hypothetical rig result: 0.61 ± 0.05 mm, about 33% above the nominal 0.46 mm. Prediction uncertainty is not supplied, so combined-interval overlap cannot yet be judged.",
         },
         {
           at: 3.1,
           label: "Revision",
           caption:
-            "Deflection exaggerated. The model clamps the root; the build glues it into a socket that rotates a little. One change, a root spring, explains the 33% gap.",
+            "Deflection exaggerated. The model clamps the root; the build glues it into a socket that rotates a little. A root spring is the proposed explanation; test its prediction at a second load before treating it as confirmed.",
         },
       ]}
     >
@@ -1366,7 +1366,7 @@ function GliderSynth() {
           label: "Chain",
           caption: "Error budget, margins, joints, tolerance stack and trade study each add their link to the same spar.",
         },
-        { at: 2.9, label: "Test", caption: "The test measures 0.61 ± 0.05 mm: a 33% mismatch with the model, bars not touching." },
+        { at: 2.9, label: "Test", caption: "Supplied hypothetical test: 0.61 ± 0.05 mm, about 33% above the nominal prediction. A model uncertainty budget is still needed before judging statistical significance." },
         {
           at: 3.7,
           label: "Revision",

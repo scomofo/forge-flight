@@ -198,6 +198,7 @@ export type ConceptHelpSection = {
   heading: string;
   body?: string;
   items?: string[];
+  table?: ExampleInputTable;
 };
 
 export type ConceptHelp = {
@@ -223,6 +224,10 @@ export type Idea = {
   heading: string;
   body: string;
   formula?: string;
+  /** A local, always-visible reading of notation; never a global symbol replacement. */
+  formulaNote?: string;
+  /** Visible worked comparisons; optional help must not hide required reasoning. */
+  sections?: ConceptHelpSection[];
   help?: IdeaHelp[];
 };
 
@@ -244,6 +249,10 @@ export type Check = {
   options: [string, string, string, string];
   answer: 0 | 1 | 2 | 3;
   why: string;
+  /** Optional worked feedback, revealed only after the learner selects an answer. */
+  feedbackSections?: ConceptHelpSection[];
+  /** Optional extra explanation, also revealed only after an answer. */
+  help?: IdeaHelp[];
 };
 
 export type Clip = {
@@ -311,3 +320,26 @@ export function lessonKey(track: TrackId, id: string) {
 export function isPassed(score: number | undefined, passAt: number = PASS_AT) {
   return score !== undefined && score >= passAt;
 }
+
+/** Data supplied before a worked example, separate from its calculated answer. */
+export type ExampleInput = {
+  label: string;
+  value: string;
+  origin: "Given" | "Reference" | "Assumed" | "Calculated" | "Measured example";
+  detail?: string;
+};
+export type ExampleInputTable = {
+  caption: string;
+  columns: string[];
+  rows: string[][];
+};
+export type ExampleContext = {
+  /** Optional local framing for symbolic examples, which may supply no numbers. */
+  heading?: string;
+  intro?: string;
+  inputs: ExampleInput[];
+  notes?: string[];
+  working?: string[];
+  tables?: ExampleInputTable[];
+  sources?: { label: string; url: string }[];
+};
