@@ -33,10 +33,11 @@ function JobPage() {
         <div className="mt-10">
           <ShelfJob alreadyPassed={isPassed(score)} onPassed={(n) => mark(JOB_KEY, n)} />
         </div>
-        <nav className="mt-16 border-t border-line pt-6">
+        <nav className="mt-16 flex flex-wrap justify-between gap-4 border-t border-line pt-6">
           <Link to="/learn" className="inline-flex min-h-11 items-center text-sm text-ink">
             ← Back to the course
           </Link>
+          <Link to="/learn/$trackId" params={{ trackId: "manufacturing" }} className="inline-flex min-h-11 items-center text-sm text-ink">Next section: Manufacturing →</Link>
         </nav>
       </article>
     </div>

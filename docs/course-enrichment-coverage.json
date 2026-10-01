@@ -1,0 +1,3918 @@
+{
+  "manufacturingSource": "docs/lesson-sources/manfu.txt",
+  "manufacturingSourceSha256": "46ca12a3c0b11529195eb616dee0d7396be63c57222c797a069f94cafe7ffdf2",
+  "source": "docs/lesson-sources/axiom-course-changes-2026-09-30.md",
+  "sourceSha256": "9a6ad5227b572133208756f7a6d0d54bd3681757d9dfbf1bfb889c98e05eaddd",
+  "lessonCount": 110,
+  "inlineSections": 228,
+  "contextualHelp": 150,
+  "practices": 107,
+  "additionalItems": [
+    {
+      "request": "§1 and §3.1–3.3: trig, radians, measurement error, vector feedback",
+      "implementation": [
+        "src/course/math.ts",
+        "src/components/bench/math-labs.tsx"
+      ],
+      "status": "Already present; retained"
+    },
+    {
+      "request": "§3.4: pendulum units and dimension checks",
+      "implementation": [
+        "src/components/figures/physics-a.tsx"
+      ],
+      "status": "Already present; retained"
+    },
+    {
+      "request": "§2.1 and glider: margin regimes, constraint table, hand mass check, design levers",
+      "implementation": [
+        "src/forge/content/catalog.ts",
+        "src/components/forge/bench.tsx"
+      ],
+      "status": "Integrated into Brief and Design"
+    },
+    {
+      "request": "§2.2: finish survey, tow-work and scaffold openings",
+      "implementation": [
+        "src/course/physics-enrichment.ts"
+      ],
+      "status": "Integrated as opening explanations with stated assumptions"
+    },
+    {
+      "request": "§2.3: explain shelf material elimination",
+      "implementation": [
+        "src/components/shelf-job.tsx"
+      ],
+      "status": "Visible with the requirements"
+    },
+    {
+      "request": "§2.4: continue after shelf and Manufacturing 101–401",
+      "implementation": [
+        "src/routes/learn/job.tsx",
+        "src/components/shelf-job.tsx",
+        "src/components/section-continuation.tsx",
+        "src/components/quiz.tsx",
+        "src/components/lesson-view.tsx"
+      ],
+      "status": "Next-section links available"
+    }
+  ],
+  "lessons": [
+    {
+      "key": "physics/fermi",
+      "title": "Orders of magnitude and Fermi estimation",
+      "transcriptLine": 105,
+      "requested": "**Orders of magnitude and Fermi estimation**\n- Add: log-ruler reading of the animation (each step is one defensible guess); why errors partly cancel; second example: air in a 30×20×6 m shop ≈ 4,000 m³ × 1.2 kg/m³ ≈ 5 tonnes.\n- Practice: litres of fuel burned by a city's cars per day (cars × km/day × L/km).",
+      "sections": [
+        {
+          "id": "read-the-logarithmic-ruler",
+          "heading": "Read the logarithmic ruler",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "why-rough-guesses-can-work",
+          "heading": "Why rough guesses can work",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "air-in-a-workshop",
+          "heading": "Air in a workshop",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "ba769baf0015f89ec3390f7c911502157161190c9dc42b602baa99fc28771b68"
+    },
+    {
+      "key": "physics/veccomp",
+      "title": "Vectors by components",
+      "transcriptLine": 109,
+      "requested": "**Vectors by components**\n- Add: sign convention; ramp-tilted axes (100 N crate on 30°: 50 N along, 87 N into); dot product as \"how much points that way\" (200 N rope at 30°, 10 m → 1,730 J).\n- Practice: boat 4 m/s N in a 3 m/s E current → **5 m/s at ~37° E of N**.",
+      "sections": [
+        {
+          "id": "finish-the-survey",
+          "heading": "Finish the survey",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "tilt-the-axes-with-the-ramp",
+          "heading": "Tilt the axes with the ramp",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "projection-as-useful-work",
+          "heading": "Projection as useful work",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "c687c11a37264c2107ee4df549276217ad90a249af5ff522247570add42371dd"
+    },
+    {
+      "key": "physics/kingraphs",
+      "title": "Reading motion graphs",
+      "transcriptLine": 113,
+      "requested": "**Reading motion graphs**\n- Add: ladder table (slope goes down x→v→a, area goes up); central difference explained; signed area out-and-back example (displacement 0, distance 100 m); curvature reading.\n- Practice: forklift v–t flat at 2 m/s for 4 s, then ramps to 0 over 2 s → **10 m, −1 m/s²**.",
+      "sections": [
+        {
+          "id": "the-slope-and-area-ladder",
+          "heading": "The slope and area ladder",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "central-differences-and-a-return-journey",
+          "heading": "Central differences and a return journey",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "fa9e79700bc9df167c68dea8fd999a1dfedfd9cab88c8a031d21625333b42400"
+    },
+    {
+      "key": "physics/projectiles",
+      "title": "Constant acceleration and projectiles",
+      "transcriptLine": 117,
+      "requested": "**Constant acceleration and projectiles**\n- Add: equation-picker table (which variable you don't need); braking example (25 m/s at 5 m/s² → 62.5 m); symmetry; 30°/60° same range; when 45° fails.\n- Practice: bolt rolls off a 1.2 m bench at 2 m/s → lands **≈1.0 m** away.",
+      "sections": [
+        {
+          "id": "choose-an-equation-by-the-missing-variable",
+          "heading": "Choose an equation by the missing variable",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "braking-and-symmetric-flight",
+          "heading": "Braking and symmetric flight",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "f79c52c52f5a71142e1d0cf73610d9560989029658a179fdd99a796067adf097"
+    },
+    {
+      "key": "physics/newton",
+      "title": "Newton's laws and the models they live in",
+      "transcriptLine": 121,
+      "requested": "**Newton's laws**\n- Add: choose-the-body habit; trailer hitch example (2,000 kg at 1.5 m/s², 300 N rolling resistance → 3,300 N); why third-law pairs don't cancel; frames.\n- Practice: hoist with 500 kg engine: steady lift **4,905 N**; accelerating 1 m/s² up **5,405 N**.",
+      "sections": [
+        {
+          "id": "choose-the-body-before-adding-forces",
+          "heading": "Choose the body before adding forces",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "which-frame-is-the-equation-using-",
+          "heading": "Which frame is the equation using?",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "84d04e4246d10ff1db24e9e4a2b0db5db998c4cfa0c257f24affc12ec2e0def7"
+    },
+    {
+      "key": "physics/contact",
+      "title": "Contact forces: normal, friction, tension, springs",
+      "transcriptLine": 125,
+      "requested": "**Contact forces**\n- Add: normal force ≠ mg table (ramp, pushing down, pulling up); static friction \"matches you up to a limit\" table; 20° check (16.8 N pull < 18.4 N limit → holds).\n- Practice: 20 kg box, μs 0.5, μk 0.3: 80 N push → **doesn't move, friction 80 N**; 120 N → **slides, a ≈ 3.1 m/s²**.",
+      "sections": [
+        {
+          "id": "normal-force-comes-from-the-constraint",
+          "heading": "Normal force comes from the constraint",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "static-friction-matches-the-demand",
+          "heading": "Static friction matches the demand",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "why-the-20-block-stays-put",
+          "heading": "Why the 20° block stays put",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "a0b5c81c2c456a804f7a280e0ba13daa5447173f477e1ba6245a7e36455209f1"
+    },
+    {
+      "key": "physics/fbd",
+      "title": "Free-body diagrams: the discipline",
+      "transcriptLine": 129,
+      "requested": "**Free-body diagrams**\n- Add: force checklist table; \"who's pushing?\" test with common invented forces; full example (40 kg crate, 200 N rope at 30°, μk 0.3 → N = 292 N, a ≈ 2.1 m/s²).\n- Practice: 10 kg box on smooth 30° ramp held by rope → **T ≈ 49 N, N ≈ 85 N**.",
+      "sections": [
+        {
+          "id": "a-force-needs-an-interacting-body",
+          "heading": "A force needs an interacting body",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "a-crate-pulled-at-an-angle",
+          "heading": "A crate pulled at an angle",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "0946d66a7376561e2d8d2d26c3405eeb1282ba08b22461d7b30f37004367f2a8"
+    },
+    {
+      "key": "physics/work",
+      "title": "Work and the work-energy theorem",
+      "transcriptLine": 133,
+      "requested": "**Work and the work-energy theorem**\n- Add: cos θ table; zero-work cases; braking distance ∝ v² (1,500 kg car, 7,500 N: 20 m/s → 40 m, 40 m/s → 160 m); work vs Newton chooser.\n- Practice: 2 kg toolbox at 3 m/s, 4 N friction → slides **2.25 m**.",
+      "sections": [
+        {
+          "id": "finish-the-tow-truck-calculation",
+          "heading": "Finish the tow-truck calculation",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "read-the-cosine-before-calculating",
+          "heading": "Read the cosine before calculating",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "why-braking-distance-grows-with-speed-squared",
+          "heading": "Why braking distance grows with speed squared",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "42c94166ebb6b25fc7133e53170a1d7acf12d3510a9048d727dea4cba14c929a"
+    },
+    {
+      "key": "physics/potential",
+      "title": "Potential energy and conservation",
+      "transcriptLine": 137,
+      "requested": "**Potential energy and conservation**\n- Add: datum choice; mass cancels; conservative vs non-conservative; coaster with 20 kJ friction loss → 17.7 m/s; spring launcher (k 800 N/m, 0.1 m, 50 g → 8.2 m).\n- Practice: pendulum at 2 m/s at the bottom rises **≈0.20 m**.",
+      "sections": [
+        {
+          "id": "choose-a-datum-then-track-losses",
+          "heading": "Choose a datum, then track losses",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "two-energy-extensions",
+          "heading": "Two energy extensions",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "fdbaf4a82f1a5d0b3a9341daf3ba5b45d60b61c05e690d74b9330d5f97b0fc63"
+    },
+    {
+      "key": "physics/power",
+      "title": "Power, efficiency, and energy budgets",
+      "transcriptLine": 141,
+      "requested": "**Power, efficiency, and energy budgets**\n- Add: units table (kW, hp, kWh); P = Fv tractor example (20 kN at 2 m/s = 40 kW ≈ 54 hp); chained efficiencies (0.85 × 0.90 × 0.95 = 73%); motor sizing (same lift in 6 s → ~1,600 W input).\n- Practice: conveyor lifting 50 kg bags 2 m, 10/min, motor 250 W → **≈164 W useful, ≈65%**.",
+      "sections": [
+        {
+          "id": "power-units-and-energy-units",
+          "heading": "Power units and energy units",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "tractor-power-and-chained-efficiency",
+          "heading": "Tractor power and chained efficiency",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "42ecf589447a80e0da4bef686b021a09179720cf4bee88f5214130a51f435cdb"
+    },
+    {
+      "key": "physics/impulse",
+      "title": "Impulse and momentum",
+      "transcriptLine": 145,
+      "requested": "**Impulse and momentum**\n- Add: safety-gear examples (airbags, knees, shock-absorbing lanyards); hammer as the reverse (0.5 kg at 10 m/s stopped in 1 ms → 5,000 N); rebound doubles Δp; peak ≈ 2× average.\n- Practice: 80 kg jumper landing at 4 m/s: stiff legs 0.02 s → **16,000 N**; bent knees 0.2 s → **1,600 N** (body weight excluded).",
+      "sections": [
+        {
+          "id": "spend-more-time-stopping",
+          "heading": "Spend more time stopping",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "rebound-and-peak-force",
+          "heading": "Rebound and peak force",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "674fc0819e09b0f4195b9166de6577df577cdfb8993a7cc147d3ca5f7efa0354"
+    },
+    {
+      "key": "physics/conserve",
+      "title": "Conservation and center of mass",
+      "transcriptLine": 149,
+      "requested": "**Conservation and center of mass**\n- Add: boundary table (internal vs external); CM example (70 kg at 0, 50 kg at 3 m → 1.25 m); recoil (4 kg rifle, 10 g at 800 m/s → 2 m/s); \"conserved over which interval\" with car-crash example.\n- Practice: 80 kg worker steps off a 40 kg boat at 2 m/s → boat **4 m/s backward**.",
+      "sections": [
+        {
+          "id": "the-boundary-chooses-internal-and-external",
+          "heading": "The boundary chooses internal and external",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "center-of-mass-and-recoil",
+          "heading": "Center of mass and recoil",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "310cc6864041b6402542b513e39dc9d6c5ecb3c0a24230796596e82e552e7913"
+    },
+    {
+      "key": "physics/collisions",
+      "title": "Collisions: elastic and inelastic",
+      "transcriptLine": 153,
+      "requested": "**Collisions: elastic and inelastic**\n- Add: e = 0.5 worked case (0.4 and 2.4 m/s, 8.8 J kept); bounce test e = √(h/H); patterns (equal masses swap velocities).\n- Practice: 1,000 kg loader at 2 m/s couples with a 3,000 kg trailer → **0.5 m/s, 1,500 J lost (75%)**.",
+      "sections": [
+        {
+          "id": "restitution-between-the-two-extremes",
+          "heading": "Restitution between the two extremes",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "a-bounce-test-for-restitution",
+          "heading": "A bounce test for restitution",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "6ec5896c9e40fc5159b637ef5971d86d373f6fb8c78803ccf9633e43303ffc31"
+    },
+    {
+      "key": "physics/torque",
+      "title": "Torque: force with a lever arm",
+      "transcriptLine": 157,
+      "requested": "**Torque**\n- Add: wrench length needed (110 ÷ 400 = 0.275 m); ft·lb conversion; seesaw balance; torque ≠ energy; P = τω (300 N·m at 3,000 rpm ≈ 94 kW).\n- Practice: seized bolt needs 300 N·m, push 500 N → bar **≥0.6 m**.",
+      "sections": [
+        {
+          "id": "the-wrench-seesaw-and-rotating-motor",
+          "heading": "The wrench, seesaw and rotating motor",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "torque-and-energy-share-units-but-describe-different-things",
+          "heading": "Torque and energy share units but describe different things",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "f68306200eb26281bd5cc70296da028b069d29c605315f6d6b1293cd0a422307"
+    },
+    {
+      "key": "physics/rotation",
+      "title": "Rotation: kinematics and inertia",
+      "transcriptLine": 161,
+      "requested": "**Rotation: kinematics and inertia**\n- Add: linear↔angular translation table; tractor-tire rim speed; flywheel mass at the rim; parallel-axis example (disk on 0.2 m offset axle → 9× I).\n- Practice: grinder wheel 1 kg, r 0.1 m, 0.5 N·m → **I = 0.005, α = 100 rad/s², 3 s to 300 rad/s, rim 30 m/s**.",
+      "sections": [
+        {
+          "id": "translate-between-straight-and-rotary-motion",
+          "heading": "Translate between straight and rotary motion",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "where-the-mass-sits",
+          "heading": "Where the mass sits",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "6f705e101b67c1bdef4f250eb179648754b3e95ed72f73929e3b96edc5db00a9"
+    },
+    {
+      "key": "physics/equilibrium",
+      "title": "Static equilibrium and beam reactions",
+      "transcriptLine": 165,
+      "requested": "**Static equilibrium and beam reactions**\n- Add: support-type table; negative reaction meaning (trailer tongue weight with load behind the axle); statically indeterminate note.\n- Practice: 3 m shelf, 150 N plank weight + 300 N box 1 m from left → **275 N left, 175 N right**.",
+      "sections": [
+        {
+          "id": "finish-the-scaffold-example",
+          "heading": "Finish the scaffold example",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "what-a-support-can-supply",
+          "heading": "What a support can supply",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "negative-reactions-and-extra-supports",
+          "heading": "Negative reactions and extra supports",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "4feb8942380c08867f6fa8678cdc96cbc4fce8ee0eb3a399770607575e791beb"
+    },
+    {
+      "key": "physics/elastic",
+      "title": "Stress and strain",
+      "transcriptLine": 169,
+      "requested": "**Stress and strain**\n- Add: MPa = N/mm² shortcut; stiffness vs strength table (high-strength steel has the same E); aluminium version of the rod (5.5 mm stretch).\n- Practice: 12 mm steel rod, 3 m, 20 kN → **≈177 MPa, 2.65 mm**.",
+      "sections": [
+        {
+          "id": "stiffness-and-strength-answer-different-questions",
+          "heading": "Stiffness and strength answer different questions",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "the-same-rod-in-aluminium",
+          "heading": "The same rod in aluminium",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "56a27080263dd012cff95ad3ae43ba1a7218b31f69c5c0d38f213e1cdefb2da9"
+    },
+    {
+      "key": "physics/bending",
+      "title": "Bending",
+      "transcriptLine": 173,
+      "requested": "**Bending**\n- Add: joists on edge (~38× stiffer than flat); ruler on edge ~156× stiffer; scaling table; don't drill at the root's outer face.\n- Practice: cantilever droops 4 mm → 1.5× longer **13.5 mm**; 2× deeper **0.5 mm**; aluminium **≈11.6 mm**.",
+      "sections": [
+        {
+          "id": "read-the-powers-as-design-levers",
+          "heading": "Read the powers as design levers",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "why-joists-stand-on-edge",
+          "heading": "Why joists stand on edge",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "0d35e5b17f953f30bf8ca62f7994279dc19ea12a6e16e3176b8bd0b1d851855a"
+    },
+    {
+      "key": "physics/fos",
+      "title": "Factor of safety",
+      "transcriptLine": 177,
+      "requested": "**Factor of safety**\n- Add: what FoS doesn't cover (buckling, fatigue, corrosion); typical-n table including rigging; use rated working-load limits; predict-then-measure error %.\n- Practice: chain breaks at 60 kN, n = 4 → **15 kN WLL**, lifts an 11.8 kN engine; 10 mm rod at n = 3 → **≈6.5 kN**.",
+      "sections": [
+        {
+          "id": "name-the-failure-mode-behind-the-ratio",
+          "heading": "Name the failure mode behind the ratio",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "factors-ratings-and-prediction-error",
+          "heading": "Factors, ratings and prediction error",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "a2adffe09080214aa8ed21f744b1b58d99c9e81f0e16084c955c9e569b5ec9fd"
+    },
+    {
+      "key": "physics/pressure",
+      "title": "Pressure and buoyancy",
+      "transcriptLine": 181,
+      "requested": "**Pressure and buoyancy**\n- Add: units table (psi, bar, atm); 10 m ≈ 1 atm; gauge vs absolute with tire example; tank-bottom force.\n- Practice: 200 L sealed drum (20 kg) → **≈1,960 N buoyancy, 180 kg payload**.",
+      "sections": [
+        {
+          "id": "pressure-units-and-reference-zero",
+          "heading": "Pressure units and reference zero",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "tyres-and-tank-bottoms",
+          "heading": "Tyres and tank bottoms",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "1b89d01e0ea1b7fc0ef66bfe8d187e4a27d751bcb4c325d0ccd30aac24569776"
+    },
+    {
+      "key": "physics/movingfluids",
+      "title": "Moving fluids: continuity and Bernoulli",
+      "transcriptLine": 185,
+      "requested": "**Moving fluids: continuity and Bernoulli**\n- Add: Bernoulli as an energy budget table; Venturi uses (carburetor, sprayer eductor); tank drain v = √(2gh); four assumptions with real failure examples; lift myth.\n- Practice: 20 mm hose at 2 m/s into a 5 mm nozzle → **32 m/s, ~38 L/min, ~510 kPa**.",
+      "sections": [
+        {
+          "id": "bernoulli-as-an-energy-budget-per-volume",
+          "heading": "Bernoulli as an energy budget per volume",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "where-the-ideal-budget-stops",
+          "heading": "Where the ideal budget stops",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "5b394c7dfcb3bbb5a448fbbd239c1f7c9ddb457c71c578e8b64062eafc524628"
+    },
+    {
+      "key": "physics/lift",
+      "title": "Lift, drag, stall, static margin",
+      "transcriptLine": 189,
+      "requested": "**Lift, drag, stall, static margin**\n- Add: q table; stall as angle not engine; cruise check (needs ~10.5 m/s or C_L ≈ 0.82); AR and induced drag; static-margin behaviour table.\n- Practice: mass ×2 → stall **≈11.0 m/s**; CG 0.29 → **SM 0.08**; CG 0.31 → **SM −0.08 (unstable)**.",
+      "sections": [
+        {
+          "id": "read-static-margin-by-regime",
+          "heading": "Read static margin by regime",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "finish-the-cruise-balance",
+          "heading": "Finish the cruise balance",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "dynamic-pressure-rises-with-speed-squared",
+          "heading": "Dynamic pressure rises with speed squared",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "323e589d244448cd2ca72cbad035b37d947c3f8b973d2bb3b3d26114b7b0b5d3"
+    },
+    {
+      "key": "physics/shm",
+      "title": "Oscillations and natural frequency",
+      "transcriptLine": 193,
+      "requested": "**Oscillations and natural frequency**\n- Add: amplitude doesn't change frequency (tuning fork); energy sloshing table; suspension and machine-mount examples.\n- Practice: 80 N/m spring with 0.5 kg → **≈2.0 Hz**; 100 kg seat at 1 Hz → **k ≈ 3,950 N/m**.",
+      "sections": [
+        {
+          "id": "where-the-energy-is-during-a-cycle",
+          "heading": "Where the energy is during a cycle",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "a-louder-tuning-fork-keeps-its-pitch",
+          "heading": "A louder tuning fork keeps its pitch",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "71cc2ad7c8d7fa49b0f0a3d35bea7cb767c7e2530a8b0a187ce3c73eb92a6e0e"
+    },
+    {
+      "key": "physics/reswaves",
+      "title": "Resonance and waves",
+      "transcriptLine": 197,
+      "requested": "**Resonance and waves**\n- Add: swing analogy; Q table (1%, 2.5%, 5% damping); washing machine passing through resonance; isolation above r ≈ 1.4; v = fλ with a 440 Hz example.\n- Practice: compressor mounts 10 Hz, ζ 0.05: 1,800 rpm → **r = 3, ≈0.13×**; 600 rpm → **r = 1, 10×**.",
+      "sections": [
+        {
+          "id": "damping-controls-the-resonance-peak",
+          "heading": "Damping controls the resonance peak",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "swings-washing-machines-and-isolation",
+          "heading": "Swings, washing machines and isolation",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "frequency-into-wavelength",
+          "heading": "Frequency into wavelength",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "f68ec9e91fdcc4db9147e43ae021fc7fbf5a086ae73c40422ba8b97be1c61451"
+    },
+    {
+      "key": "physics/thermal",
+      "title": "Thermal expansion and heat transfer",
+      "transcriptLine": 201,
+      "requested": "**Thermal expansion and heat transfer**\n- Add: rule of thumb (1.2 mm per 10 m per 10 °C for steel); prairie −40 to +35 °C swing; shrink fits, welding distortion, mixed-metal bolting; symbol-reuse warning (σ, ε).\n- Practice: 20 m steel pipe, −30 → +30 °C → **14.4 mm free / 144 MPa locked**; shrink-fit bearing 50 mm bore +0.05 mm → **≈83 °C rise**.",
+      "sections": [
+        {
+          "id": "a-steel-expansion-rule-of-thumb",
+          "heading": "A steel expansion rule of thumb",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "the-same-effect-can-help-or-hurt",
+          "heading": "The same effect can help or hurt",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "c54806efd6cac907924225defac23b484ab9098033f946e570eceeaba236d06d"
+    },
+    {
+      "key": "physics/synthmethod",
+      "title": "The synthesis method",
+      "transcriptLine": 205,
+      "requested": "**The synthesis method**\n- Add: example ledger table for the 20 m drop; ramp limit check (θ = 0 and 90°); wrench-drop chain (energy → momentum → force ≈ 2,000 N).\n- Practice: limit-check R = v² cos(2θ)/g at θ = 0 → gives v²/g instead of 0, so it's wrong (should be sin).",
+      "sections": [
+        {
+          "id": "a-ledger-for-the-20-m-drop",
+          "heading": "A ledger for the 20 m drop",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "endpoints-and-a-falling-wrench",
+          "heading": "Endpoints and a falling wrench",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "fa15028684a7163ffde31ab8272252654c37f14616a0be65df1ec9d16b033f6b"
+    },
+    {
+      "key": "physics/towlaunch",
+      "title": "Tow launch, worked end to end",
+      "transcriptLine": 209,
+      "requested": "**Tow launch, worked end to end**\n- Add: five-link chain table with handoff sentences; \"why range = height × L/D\" (glide-ramp picture); range band from cd0 ±30% (210–345 m).\n- Practice: release from 40 m → **≈42.4 J, ≈348 m best guess, ~280–460 m band**.",
+      "sections": [
+        {
+          "id": "keep-the-handoffs-visible",
+          "heading": "Keep the handoffs visible",
+          "at": "move",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "why-height-times-l-d-gives-range",
+          "heading": "Why height times L/D gives range",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "ed4c3858346e6d63eae58ab370a74241226ac592e42ea042c0d925024d60de6b"
+    },
+    {
+      "key": "physics/masterycheck",
+      "title": "The mastery check",
+      "transcriptLine": 213,
+      "requested": "**The mastery check**\n- Add: \"derive, don't recall\" table; limit check that catches g·cos30°; three-part correction template; self-review list.",
+      "sections": [
+        {
+          "id": "derive-the-relation-you-need",
+          "heading": "Derive the relation you need",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "catch-the-cosine-mistake-with-a-limit",
+          "heading": "Catch the cosine mistake with a limit",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "self-review-before-the-check",
+          "heading": "Self-review before the check",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": false,
+      "practiceTables": 0,
+      "contentSha256": "327593c04d4b48eb8bbcf03494710906a6014b2455e312f742110cd3724da46d"
+    },
+    {
+      "key": "materials/bondzoo",
+      "title": "The four bonds",
+      "transcriptLine": 218,
+      "requested": "**The four bonds** — Add: \"what is free to move?\" framing; shop examples (steel bends, inserts chip, plastic sags). Practice: aluminium / SiC / candle wax → metallic / covalent network / secondary.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The one question to ask",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The four bond types",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Why metals bend",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Why ionic materials shatter",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "Covalent: the structure matters",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "Secondary bonds: why plastics soften",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-7",
+          "heading": "The worked prediction: magnesium oxide (MgO)",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-8",
+          "heading": "Where you'll see this in the shop",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-9",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "bd1170493a8d745558bd17752cc6f93b41c543052277a7b675d4754547798665"
+    },
+    {
+      "key": "materials/bondpacks",
+      "title": "Why properties travel together",
+      "transcriptLine": 220,
+      "requested": "**Why properties travel together** — Add: marble-in-a-valley analogy (depth → melting, steepness → E); tungsten trade-off (filaments, TIG electrodes); graphite directional table. Practice: graphite vs diamond; sagging dashboard part → secondary bonds between chains.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The bond-energy curve: a valley",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Melting point follows bond strength (roughly)",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Stiffness is bond stiffness, scaled up",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "Tungsten: one bond, two opposite effects",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Mixed bonding means a mixed package",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "The chain for the whole course",
+          "at": "move",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "4f638357a54444c702a5b6e9daeed47da820fe0c50dc4171b064911523c8102b"
+    },
+    {
+      "key": "materials/bondread",
+      "title": "Reading a material from its bonding",
+      "transcriptLine": 222,
+      "requested": "**Reading a material from its bonding** — Add: mistake-cause table; processing preview (bend a wire, quench, stretch a bag strip). Practice: three mystery descriptions → metallic / polymer / covalent molecular (sulfur).",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The protocol",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "The worked example: a mystery white crystal",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Why predictions go wrong: the usual causes",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Preview: processing changes the structure",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "When to use this",
+          "at": "move",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "97762dfcf9ded998310af4b99c0d28bfdb1023cea899e483c111004b4ded69e4"
+    },
+    {
+      "key": "materials/crystal",
+      "title": "Crystal structures",
+      "transcriptLine": 224,
+      "requested": "**Crystal structures** — Add: sharing-rule table; BCC steel brittle in prairie cold (hitch pins, Titanic); heat-treat summary. Practice: BCC iron, r = 124 pm → **a ≈ 286 pm, 2 atoms, ρ ≈ 7.9 g/cm³**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The unit cell: the repeating box",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The three common metal structures",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Counting atoms: sharing rules",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "What the animation shows (aluminium density, from atoms)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Packing efficiency",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Slip systems: why some metals bend and others crack",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "Iron changes structure, and that's why steel heat treatment works",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "0adc72fdb298f839ab234d21654e5a209adfc4373cc29885d3035283408154d5"
+    },
+    {
+      "key": "materials/graintex",
+      "title": "Grains, texture, and anisotropy",
+      "transcriptLine": 226,
+      "requested": "**Grains, texture, and anisotropy** — Add: rug-wrinkle analogy for dislocations; bend sheet across the rolling direction; forged wrenches follow grain flow. Practice: Hall–Petch at 50 μm → **≈171 MPa**; 10 μm → **≈258 MPa**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Grains: a mosaic of crystals",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "How metals bend: dislocations",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-2",
+          "heading": "Grain boundaries block dislocations",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Hall–Petch: how much stronger?",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "Limits: finer isn't always better",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "Texture and anisotropy: direction matters",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "bfcf711988de954bc418deea16e50f02ee65eaa68d756a8f3f6699ecbf966956"
+    },
+    {
+      "key": "materials/disorder",
+      "title": "Amorphous solids and what microscopes show",
+      "transcriptLine": 228,
+      "requested": "**Amorphous solids and microscopes** — Add: marbles vs crate analogy; window-glass myth; fracture-reading table including beach marks. Practice: −35 °C sparkly pin break / fibrous cup-and-cone / beach marks → brittle / ductile / fatigue.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Crystal vs amorphous",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "Melting vs the glass transition",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Cooling rate decides crystal vs glass",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "What the animation shows: metallic glass vs high-strength steel",
+          "at": "opening",
+          "mode": "help",
+          "tables": 2
+        },
+        {
+          "id": "materials-4",
+          "heading": "The microscope ladder",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "Reading a fracture surface",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "706c243c84ba0da94e023571b3c4d2b5ff311b9e5df9956576be4374ea633e83"
+    },
+    {
+      "key": "materials/defects",
+      "title": "Defects are the material",
+      "transcriptLine": 230,
+      "requested": "**Defects are the material** — Add: step-by-step exp(−Q/kT); processing → defect table; annealing copper tubing. Practice: copper at 600 K → **≈2.7×10⁻⁸**; work-hardened wire → anneal.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The puzzle: real metals are far too weak",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The answer: dislocations",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-2",
+          "heading": "The three defect families (by dimension)",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Vacancies and temperature",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "Two ways to make a metal stronger",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "Processing steps and the defect they target",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "85e3b88c4873d932428d9d9d2f7a1cee278f2c75e32a7dd11788a4e8f0286126"
+    },
+    {
+      "key": "materials/diffusion",
+      "title": "Atoms move downhill",
+      "transcriptLine": 232,
+      "requested": "**Atoms move downhill** — Add: food-colouring analogy; why carburize; inverse-erf as a lookup; unit check. Practice: 1.0 mm case at 950 °C → **≈8.4 h**; 0.69 mm at 1,000 °C → **≈2.3 h**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Diffusion: atoms spreading out",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "Carburizing: the real-world reason this matters",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-2",
+          "heading": "Fick's first law: flow goes downhill",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Diffusion depth grows with √time",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Temperature has a big effect: Arrhenius",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "What the animation shows (carburizing 4 hours at 950 °C)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "The time–temperature trade",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-7",
+          "heading": "Unit check",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-8",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "16df710df104763e2e80d9be2734185076be3ef9315579cb2b8ee7760d393077"
+    },
+    {
+      "key": "materials/heat-treat",
+      "title": "Processing is defect engineering",
+      "transcriptLine": 234,
+      "requested": "**Processing is defect engineering** — Add: HB/HRC context; quench-severity table; temper colours. Practice: chipping chisel → temper; machining hard part → anneal, re-harden; wearing gear → case harden; welded frame → stress relieve.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Same steel, three histories",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Annealing: healing",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Quenching: freezing",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Tempering: toughening",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Case hardening: changing only the skin",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "The TTT diagram",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "71b85255d597f598a8cb2d1fdc5a893fc8df2ba87f378fa7cf9a217cb0e3bf1e"
+    },
+    {
+      "key": "materials/readcurve",
+      "title": "Reading a stress-strain curve",
+      "transcriptLine": 236,
+      "requested": "**Reading a stress-strain curve** — Add: why the curve falls after necking; stiffness/strength/hardness table; axis-scale table. Practice: 10 mm Al bar, 21.2 / 24.4 kN → **270 / 311 MPa, ε_y ≈ 0.004**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The test",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The four landmarks",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "The worked example: 1020 steel bar",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "The 0.2% offset: a standard yield point",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Stiffness ≠ strength ≠ hardness",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "Check the axes first",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "cbbdbd3d974eb51a7d238b5b93a0c2511b11fe878eb012a2c65bddba39e4d35e"
+    },
+    {
+      "key": "materials/toughduct",
+      "title": "Ductility and toughness",
+      "transcriptLine": 238,
+      "requested": "**Ductility and toughness** — Add: area ≈ average stress × fracture strain; ROPS and tow straps; why strengthening costs ductility. Practice: Al 270/310 MPa at 12% → **≈35 MJ/m³**; %EL 12%; %RA ≈ 44%.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Three different things",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Why this matters",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Two ways to measure ductility",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "The strength-ductility trade-off",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "6bf8ef4bffb1dc7204748cf02e8a67c95c5a51dce07305c066dd3a2760c8d2eb"
+    },
+    {
+      "key": "materials/allowables",
+      "title": "From curve to design allowable",
+      "transcriptLine": 240,
+      "requested": "**From curve to design allowable** — Add: step-by-step standard deviation; true vs engineering stress. Practice: 342/358/349 MPa → **mean ≈350, s ≈8.0, char ≈334, allowable ≈167 MPa (FoS 2)**; true stress at 420 MPa, 0.25 → **525 MPa, 0.22**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Real data is noisy",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "Engineering vs true stress",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Scatter → characteristic value",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Allowable = characteristic ÷ factor of safety",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "The allowable belongs to the material and the process",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "3018913878e37972f7a161cc4198cdcf9e76ceb18adff9515e40c38c46074098"
+    },
+    {
+      "key": "materials/strengthen",
+      "title": "The four ways to make a metal strong",
+      "transcriptLine": 242,
+      "requested": "**The four ways to make a metal strong** — Add: mechanism table with real examples; welding 6061-T6 overages the HAZ. Practice: 1045 at 10 μm → **≈316 MPa**; 1 → 4% solute → **2× gain**; T6 bracket / cold-drawn rod / brass → precipitation / work hardening / solid solution.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The big picture",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The four mechanisms",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Grain refinement (Hall–Petch again)",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Work hardening",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Solid solution",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "Precipitation hardening",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "c3a87da3e9112ad0b36b9799e3ad133859c67866c8e2e70ab35ca5f1f505b515"
+    },
+    {
+      "key": "materials/heattreat",
+      "title": "Heat treatment is processing, not chemistry",
+      "transcriptLine": 244,
+      "requested": "**Heat treatment is processing, not chemistry** — Add: TTT race table (pearlite, bainite, martensite); T4 vs T6; icebox rivets. Practice: soft after quench → too slow; over-aged → weak; over-annealed → past recovery.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The blacksmith's chisel",
+          "at": "opening",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows: annealing in three acts",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Quenching: the TTT race",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Tempering: the worked example",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Aging aluminium (precipitation hardening, from lesson 13)",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "021b8688827a86af6a999a94e42f3419939e82499b8d075d1b48ff4ff7d78c00"
+    },
+    {
+      "key": "materials/processchoice",
+      "title": "Choosing the process",
+      "transcriptLine": 246,
+      "requested": "**Choosing the process** — Add: why pay for 4140's margin and hardenability; memo template. Practice: bracket ≥300 MPa, ≥15%, ≤1.5× → **annealed 1020 only, margin ≈1.17**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The problem",
+          "at": "opening",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The five-step sequence",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-2",
+          "heading": "What the animation shows (the bolt)",
+          "at": "example",
+          "mode": "help",
+          "tables": 2
+        },
+        {
+          "id": "materials-3",
+          "heading": "The decision",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "No free strength",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "The chain, end to end",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 1,
+      "contentSha256": "52481bbd1fc1c6948030ef7ffba3d480f33a87acfe48231852a98f7ec7044e3c"
+    },
+    {
+      "key": "materials/fracture",
+      "title": "Fracture: why cracks run",
+      "transcriptLine": 248,
+      "requested": "**Fracture: why cracks run** — Add: round corners; drill stop holes; glass scoring; Schenectady; detection limit. Practice: hole at 100 MPa → **~300 MPa**; 5 mm crack at 300 MPa → **K ≈ 37.6, a_c ≈ 8.8 mm**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Stress concentrations: corners and holes multiply stress",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "Why brittle things break at \"weak\" stresses (Griffith)",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Fracture toughness: when does a crack run?",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "What the animation shows",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Toughness depends on temperature",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Inspection must be able to find it",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "45de2fdba04db9ac0e49c41554d37464537d0b91138c3599e21aff3c5edc1870"
+    },
+    {
+      "key": "materials/fatigue",
+      "title": "Fatigue: death by a thousand cycles",
+      "transcriptLine": 250,
+      "requested": "**Fatigue** — Add: paperclip; Comet windows; Paris \"slow then sprint\"; design takeaways. Practice: 250 MPa → **≈183,000 cycles**; Miner sum **≈0.61**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "What fatigue is",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The S-N curve",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-2",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Endurance limit: steel vs aluminium",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "The de Havilland Comet: square windows",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Paris law: how fast a crack grows",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "Miner's rule: mixed loads",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-7",
+          "heading": "Design takeaways",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-8",
+          "heading": "The method",
+          "at": "move",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "88f8241239e21e12830d7d1379c218de69412471478b2c198ece08ea779f7ea5"
+    },
+    {
+      "key": "materials/creep",
+      "title": "Creep: failure on a slow clock",
+      "transcriptLine": 252,
+      "requested": "**Creep** — Add: 0.4 Tm rule with lead pipes and plastic shelves; single-crystal blades. Practice: 750 °C → **≈13,000 h (≈ one decade)**; +10% stress (n = 5) → **≈1.6×**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "What creep is",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows: the three stages",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Stress and temperature both matter, temperature much more",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Larson–Miller: trading time for temperature",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "Don't over-extrapolate",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "The grain-size reversal",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "319a5676348162f6debf3c78f8301cf0c9dee80e7b9c4e4f6e40608047b59fd9"
+    },
+    {
+      "key": "materials/phasediagram",
+      "title": "Reading a phase diagram",
+      "transcriptLine": 254,
+      "requested": "**Reading a phase diagram** — Add: overall vs phase composition as the classic mistake; 60/40 vs 63/37 solder. Practice: Cu–40Ni → **1,233 / 1,213 °C; at 1,220 °C L ≈36.5%, α ≈42.2%**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The map",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "The regions and lines (copper–nickel)",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "What the animation shows (Cu–30% Ni, cooling slowly)",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "The tie line: what each phase is actually made of",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "Solubility usually drops as it cools",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "d490db0a14b3b1e4e0b9b77c4c2d33878462fd549151fc7124c2d99c205ea0a9"
+    },
+    {
+      "key": "materials/leverrule",
+      "title": "The lever rule",
+      "transcriptLine": 256,
+      "requested": "**The lever rule** — Add: grain-moisture blending analogy; seesaw tie-in. Practice: Cu–30Ni at 1,190 °C → **≈64% liquid, 36% solid**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Everyday version first",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The alloy version",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-2",
+          "heading": "The \"opposite arm\" rule",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "What the animation shows (Cu–40% Ni at 1,220 °C)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Built-in checks",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Mass, not volume",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "If you forget which arm goes where",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "7db585612b0469af68f07ba2ab158443e47053b8d3387834723f1445e037603d"
+    },
+    {
+      "key": "materials/transformations",
+      "title": "Transformations",
+      "transcriptLine": 258,
+      "requested": "**Transformations** — Add: eutectic meaning; microconstituent vs phase; coring and homogenizing; iron–carbon summary. Practice: Pb–50Sn → **28% primary α**; Pb–61.9Sn → **100% eutectic**; Pb–70Sn → **23% primary β**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The eutectic: one special melting point",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows (Pb–40% Sn, cooling from 300 °C)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Cooling rate changes the story",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Iron–carbon: the most important diagram",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "9fbd3d56bcf458ee4f6f6616073f82b0f0733dd283ef469be409f0241654ea17"
+    },
+    {
+      "key": "materials/famlook",
+      "title": "Four families, four property packs",
+      "transcriptLine": 260,
+      "requested": "**Four families, four property packs** — Add: beam index √E/ρ (Al beats steel ~1.7× for beams). Practice: furnace lining / bus bar / chemical tank / bike tube → ceramic / metal / polymer / composite.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The four families",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "Specific stiffness: stiffness per kilogram",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-2",
+          "heading": "What the animation shows (a tie rod, stiff in tension, minimum mass)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "The right index depends on the shape of the job",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 2
+        },
+        {
+          "id": "materials-4",
+          "heading": "Properties come as a bundle",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Selection order",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "b24f1b75a70620c8329affd80ca38c0e536f961347a1018c0281ec4f93702647"
+    },
+    {
+      "key": "materials/dirtemp",
+      "title": "Direction and temperature",
+      "transcriptLine": 262,
+      "requested": "**Direction and temperature** — Add: springs in parallel vs series; borosilicate vs soda-lime glass. Practice: 50% glass/epoxy → **37.5 / 5.8 GPa (~6.5:1)**; 100 K shock → **~63 vs ~21 MPa**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Direction: the rule of mixtures",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows (carbon fibre / epoxy)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Temperature: three families, three ways to fail",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Thermal shock, worked",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "Design to the worst case",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "5d4bda740d1c83595628ff11149f36084f683d67e32c119c27c2076955c81a05"
+    },
+    {
+      "key": "materials/choosefam",
+      "title": "Choosing under constraints",
+      "transcriptLine": 264,
+      "requested": "**Choosing under constraints** — Add: price-of-each-family table; thermal mismatch on the 900 °C bracket; Challenger O-ring. Practice: outdoor hopper liner → **UV-stabilized PE**, price: low stiffness and creep.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Screens vs trade-offs",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows (bracket at 900 °C)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Saying the price out loud",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Process and environment are screens too",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "43ca5ffb3f5d2336f3dbb1b5b1333c437c927d540955d64e9bec49923ddf17e6"
+    },
+    {
+      "key": "materials/screenrank",
+      "title": "Screen, then rank",
+      "transcriptLine": 266,
+      "requested": "**Screen, then rank** — Add: three-line index derivation; wood beats aluminium as a beam and everything as a panel. Practice: indoor trailer floor panel → **wood (E^⅓/ρ ≈ 3.6)**.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The Ashby chart",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows (a 1 m tie rod)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Where the index comes from (tie rod example)",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Different jobs, different indices",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 2
+        },
+        {
+          "id": "materials-4",
+          "heading": "Relaxing a screen is a decision",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "The trade study",
+          "at": "move",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "699b7aad55c7ff0e0496aa49ec63a2cda82ee71dee6a1e43180d001f2b93f8be"
+    },
+    {
+      "key": "materials/corrosion",
+      "title": "Corrosion is a design load",
+      "transcriptLine": 268,
+      "requested": "**Corrosion is a design load** — Add: galvanizing as a sacrificial anode; protection table (break the cell). Practice: copper to galvanized pipe → dielectric union; scratched fence post; Al rivets in steel → bad idea.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Corrosion is a battery",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "Which metal dissolves? The galvanic series",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Area ratio: how fast",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "What the animation shows (steel bolt in an aluminium cleat, salt spray)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Crevices and pitting: no second metal needed",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Stress-corrosion cracking (SCC)",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-6",
+          "heading": "Protection = break the cell",
+          "at": "move",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-7",
+          "heading": "The method",
+          "at": "move",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "e3848cebaa633b93815ae074d021862dc6ec15c0283648791e07c9b39b2ba482"
+    },
+    {
+      "key": "materials/sustain",
+      "title": "Embodied impacts and repair",
+      "transcriptLine": 270,
+      "requested": "**Embodied impacts and repair** — Add: bolt-on wear parts. Practice: 50,000 km → **steel 165 MJ vs Al 400 MJ**; break-even **≈207,000 km**; recycled Al wins everywhere.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "Embodied energy",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "What the animation shows",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "Recyclability depends on the whole system",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Repair: the longest life is the one already built",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "9b76736e6ce407991079aea30f5e06873d3ca4164564a1e3ff6c5f8ef6af9ee7"
+    },
+    {
+      "key": "materials/matmethod",
+      "title": "The synthesis method for materials",
+      "transcriptLine": 272,
+      "requested": "**The synthesis method for materials** — Add: thermocouple check (890 °C → 0.55 mm matches). Practice: 4140 measured 50 HRC instead of 42 → ledger lines for temper temperature and time.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "What the animation shows (a carburizing miss)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-1",
+          "heading": "Provenance: every number comes from somewhere",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "The ledger (three columns, like physics lesson 28)",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-3",
+          "heading": "Check each handoff",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "Limit checks",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "The method",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "969802e8f731abcf71e99c81ff79a05b3a249bd0c7936be9fc68dd4d5202c5fa"
+    },
+    {
+      "key": "materials/sparsynth",
+      "title": "The spar, end to end",
+      "transcriptLine": 274,
+      "requested": "**The spar, end to end** — Add: link-by-link chain. Practice: 4 × 8 mm balsa → **δ ≈ 4.7 mm, ≈1.3 g, beats carbon**; 0.3 mm limit → only carbon.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The setup",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "Link 1: Load (physics, Newton)",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-2",
+          "heading": "Link 2: Root bending moment (physics, torque)",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Link 3: Stress (physics, bending)",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-4",
+          "heading": "Link 4: Strength check (materials, allowables)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-5",
+          "heading": "Link 5: Stiffness check (physics, beam deflection)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-6",
+          "heading": "Link 6: Mass (materials, selection)",
+          "at": "example",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-7",
+          "heading": "What the animation shows",
+          "at": "opening",
+          "mode": "help",
+          "tables": 1
+        },
+        {
+          "id": "materials-8",
+          "heading": "The call",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-9",
+          "heading": "The main point",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-10",
+          "heading": "Sanity checks the page mentions",
+          "at": "move",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-11",
+          "heading": "Every link cites its lesson",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "93b4aff0504a2091a99f715aa1b7b8b646e10ecc65c33c550932a808b3136927"
+    },
+    {
+      "key": "materials/matmastery",
+      "title": "The closed-book mastery check",
+      "transcriptLine": 276,
+      "requested": "**The closed-book mastery check** — Add: failure-diagnosis cheat sheet; chain-crossing checklist.",
+      "sections": [
+        {
+          "id": "context",
+          "heading": "Connecting the ideas",
+          "at": "opening",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-0",
+          "heading": "The format",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-1",
+          "heading": "The two-part gate",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-2",
+          "heading": "A sample correction (the lever rule)",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        },
+        {
+          "id": "materials-3",
+          "heading": "Failure questions: diagnose first, calculate second",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "materials-4",
+          "heading": "Chain questions: the usual crossings",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "materials-5",
+          "heading": "Quick self-review",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": false,
+      "practiceTables": 0,
+      "contentSha256": "9177ed85b9eb52282276cbf36e46b4d3d6e64caf970f58ad20d280768dca610c"
+    },
+    {
+      "key": "engineering/requirements",
+      "title": "Requirements that survive contact with reality",
+      "transcriptLine": 280,
+      "requested": "**Requirements** — Practice: rewrite \"tough enough for farm use,\" \"easy to remove pin,\" \"quiet compressor\" as shall-statements.",
+      "sections": [
+        {
+          "id": "give-each-need-its-own-acceptance-condition",
+          "heading": "Give each need its own acceptance condition",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "f41a6f668f0538620d9609fa390077ddf9208f2c82169bd39dadd252135a2601"
+    },
+    {
+      "key": "engineering/verifyvalidate",
+      "title": "Verification versus validation",
+      "transcriptLine": 281,
+      "requested": "**Verification vs validation** — Add: TIDA table. Practice: verification matrix for those three plus a field-trial validation row.",
+      "sections": [
+        {
+          "id": "choose-a-verification-method",
+          "heading": "Choose a verification method",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "fe88f15ecb8bae342f957c517560ceebda4d4499194610403602f94282fadb61"
+    },
+    {
+      "key": "engineering/ledger",
+      "title": "The assumption ledger",
+      "transcriptLine": 282,
+      "requested": "**The assumption ledger** — Practice: trailer ledger (payload / steel yield / −40 °C).",
+      "sections": [
+        {
+          "id": "an-unresolved-number-needs-an-owner",
+          "heading": "An unresolved number needs an owner",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "fd58e0fb66f7fadb3b70c32212697d2bdbe97579fa81e5ac385113f0d590e472"
+    },
+    {
+      "key": "engineering/modelvalid",
+      "title": "Models are tools, not truth",
+      "transcriptLine": 283,
+      "requested": "**Models are tools** — Add: model-territory table from earlier lessons; FEA still needs a test. Practice: tongue-weight spreadsheet model card; not valid for pothole braking.",
+      "sections": [
+        {
+          "id": "what-question-does-each-model-answer-",
+          "heading": "What question does each model answer?",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "e35bc2eda81436916f8bca2504b1a1b094f0a33b64a30b90e92d9f5ddd06e831"
+    },
+    {
+      "key": "engineering/errprop",
+      "title": "Uncertainty travels with the number",
+      "transcriptLine": 284,
+      "requested": "**Uncertainty** — Add: vector analogy for RSS. Practice: σ = F/A with 2% + 2×1% → **RSS 2.8% (±5.4 MPa), worst 4%**.",
+      "sections": [
+        {
+          "id": "why-rss-resembles-a-vector-length",
+          "heading": "Why RSS resembles a vector length",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "2af78624828a4f4d0a0b23f862156433450ead458736f3408fa64a91b4de4c0c"
+    },
+    {
+      "key": "engineering/sensitivity",
+      "title": "Sensitivity: where to spend the money",
+      "transcriptLine": 285,
+      "requested": "**Sensitivity** — Practice: beam-droop budget → **E and h each 37%, RSS ≈4.9%**.",
+      "sections": [
+        {
+          "id": "multiply-uncertainty-by-leverage-before-ranking-it",
+          "heading": "Multiply uncertainty by leverage before ranking it",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "4112c284b1b91b876ecebb6733fc8aab0e4f62103078e8d79e1786c1eb770c72"
+    },
+    {
+      "key": "engineering/loadpath",
+      "title": "Follow the load",
+      "transcriptLine": 286,
+      "requested": "**Follow the load** — Add: Hyatt Regency walkway. Practice: trailer cargo load path to ground.",
+      "sections": [
+        {
+          "id": "an-interface-change-can-change-the-force",
+          "heading": "An interface change can change the force",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "6b3dd163a380621cc2a820d07af44a9578cc5c5d2a288adab99908c1b29839a5"
+    },
+    {
+      "key": "engineering/margins",
+      "title": "Margins are priced insurance",
+      "transcriptLine": 287,
+      "requested": "**Margins** — Practice: 80 mm² lug → **MS 0.84 / 0.38**; minimum area **58 mm²**; welded 6061 lowers both allowables.",
+      "sections": [
+        {
+          "id": "a-weld-can-change-both-allowable-rows",
+          "heading": "A weld can change both allowable rows",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "6cf7e349eeda1cc957842983c6abc58ea9a7ee0ecaefe4d05fe0ee84ad36a36c"
+    },
+    {
+      "key": "engineering/fmea",
+      "title": "Design against what you fear",
+      "transcriptLine": 288,
+      "requested": "**FMEA** — Add: don't let RPN hide severity. Practice: coupler latch **180 → 30**; tire **120 → 60**.",
+      "sections": [
+        {
+          "id": "severity-deserves-its-own-review",
+          "heading": "Severity deserves its own review",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "5bae0d3e13f050301de4049fbf7c43d1d5c9a0f1de3ea309222b74999ab82535"
+    },
+    {
+      "key": "engineering/bending",
+      "title": "Bending: the stress is My/I",
+      "transcriptLine": 289,
+      "requested": "**Bending My/I** — Add: stiffness check (40×40×3 Al tube sags ~41 mm). Practice: 50×50×3 → **≈72 MPa, ≈20 mm, 1.52 kg/m**.",
+      "sections": [
+        {
+          "id": "the-original-tube-also-needs-a-sag-check",
+          "heading": "The original tube also needs a sag check",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "cd2fae52b459965c66f365b0e5e912f43ab0de8216e6bc6a03e9a626df80f3a1"
+    },
+    {
+      "key": "engineering/buckle",
+      "title": "Buckling and torsion: slender failure",
+      "transcriptLine": 290,
+      "requested": "**Buckling and torsion** — Add: K table; shaft example (25 mm, 200 N·m → 65 MPa, 3.7°/m). Practice: braced pole **≈11.6 kN**; 2 m pole **≈1.64 kN**.",
+      "sections": [
+        {
+          "id": "effective-length-reflects-the-end-restraints",
+          "heading": "Effective length reflects the end restraints",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "a-shaft-must-be-strong-and-twist-little-enough",
+          "heading": "A shaft must be strong and twist little enough",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "f176dfc147084bb02f9d2cc0175f8661a123647d05ebaabfba89f30f07d50683"
+    },
+    {
+      "key": "engineering/combined",
+      "title": "Combined loading: add, then judge",
+      "transcriptLine": 291,
+      "requested": "**Combined loading** — Practice: 25 mm shaft → **σ_vm ≈214 MPa, fails**.",
+      "sections": [
+        {
+          "id": "combine-stresses-at-the-same-location",
+          "heading": "Combine stresses at the same location",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "a049abaabf394f78a71c073e958cd1dbb2725b179ab9f2e1dc7aec4f9ff0b9c2"
+    },
+    {
+      "key": "engineering/indicescontext",
+      "title": "The index picks the material; the joint picks the design",
+      "transcriptLine": 292,
+      "requested": "**Index vs joint** — Practice: joint-efficiency merits (CFRP 206, Al 71, steel 47); epoxy overlap for 30 kN on 40 mm → **50 mm**.",
+      "sections": [
+        {
+          "id": "include-joint-efficiency-in-a-strength-to-mass-merit",
+          "heading": "Include joint efficiency in a strength-to-mass merit",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "51bcfa3bb4298f6a559b328ad81786690847f54a5f3ae4609b2ebaa5349e6d3f"
+    },
+    {
+      "key": "engineering/interfaces",
+      "title": "Interfaces: bolts, welds, and glue",
+      "transcriptLine": 293,
+      "requested": "**Interfaces** — Add: joint-family comparison table. Practice: 10 mm bolt, 6 mm plate, 5 kN → **83 MPa bearing, 64 MPa shear**; AL/CU wiring connectors.",
+      "sections": [
+        {
+          "id": "each-joint-family-has-a-different-price",
+          "heading": "Each joint family has a different price",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "aluminium-and-copper-need-a-compatible-connector",
+          "heading": "Aluminium and copper need a compatible connector",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "e407539ee6c5122b5afbf01d7eb9b904363ecefd01f858a9e1a4c070833faae0"
+    },
+    {
+      "key": "engineering/systemdecision",
+      "title": "The materials decision as a system decision",
+      "transcriptLine": 294,
+      "requested": "**System decision** — Practice: workbench edge → **40×40×3 steel (≈14 mm sag)**.",
+      "sections": [
+        {
+          "id": "reward-the-property-the-requirement-needs",
+          "heading": "Reward the property the requirement needs",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "0e380896c7838d10382c3aa130bf966b46e1ffe968f16e4a12d532371ea0e48c"
+    },
+    {
+      "key": "engineering/processes",
+      "title": "How things get made",
+      "transcriptLine": 295,
+      "requested": "**How things get made** — Practice: die cast + secondary op vs CNC → **crossover ≈460 parts** *(assumed values)*.",
+      "sections": [
+        {
+          "id": "a-secondary-operation-can-reopen-a-screened-process",
+          "heading": "A secondary operation can reopen a screened process",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "97595a64f4dfe70a86b97fb5452be182ca64eaa664e765332e3a4cf29fd6b923"
+    },
+    {
+      "key": "engineering/tolerances",
+      "title": "Tolerances and stacks",
+      "transcriptLine": 296,
+      "requested": "**Tolerances and stacks** — Practice: ±0.05 parts → **100.15 passes**; clearance fit; bearing press fit.",
+      "sections": [
+        {
+          "id": "clearance-and-interference-from-the-endpoints",
+          "heading": "Clearance and interference from the endpoints",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "8afddc2a4381a9e1ebbbfe4d2010198c298e2ad5f6cdcc4fb1c7a81e73fb3d80"
+    },
+    {
+      "key": "engineering/dfm",
+      "title": "Design for making",
+      "transcriptLine": 297,
+      "requested": "**Design for making** — Practice: hitch-bracket tolerance review.",
+      "sections": [
+        {
+          "id": "tie-a-tolerance-to-its-function",
+          "heading": "Tie a tolerance to its function",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "da4b5270b32f916069f1540bced86fbbda3c53670bccdeb2698d637ca67fbeb1"
+    },
+    {
+      "key": "engineering/doeplan",
+      "title": "Design the experiment before you run it",
+      "transcriptLine": 298,
+      "requested": "**Design the experiment** — Practice: paint-adhesion 2² → **interaction +1.0**; block by painter.",
+      "sections": [
+        {
+          "id": "block-the-source-of-nuisance-variation",
+          "heading": "Block the source of nuisance variation",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "5839537c756257ce66b0aff194c180ea869d12d74d2027c413520d9cc7db9f46"
+    },
+    {
+      "key": "engineering/smallsample",
+      "title": "Five readings are data, not noise",
+      "transcriptLine": 299,
+      "requested": "**Five readings** — Practice: clamp forces → **12.4 ± 0.8 kN**, Grubbs 1.69 (keep).",
+      "sections": [
+        {
+          "id": "keep-the-outlier-decision-with-the-data",
+          "heading": "Keep the outlier decision with the data",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "16730f385fb8466c4df38c8ce9f79dcf786d2ca9c16efbc7cbb63b1e223fb256"
+    },
+    {
+      "key": "engineering/honestgraph",
+      "title": "Graphs that don't lie",
+      "transcriptLine": 300,
+      "requested": "**Graphs that don't lie** — Practice: ruler δ vs F slope → **E ≈200 GPa**.",
+      "sections": [
+        {
+          "id": "a-fitted-slope-has-physical-units",
+          "heading": "A fitted slope has physical units",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "32be84282698428fd4a8393177840a1e12828852f114d317c520d3db1d83233d"
+    },
+    {
+      "key": "engineering/tradestudy",
+      "title": "Trade studies: comparison, kept honest",
+      "transcriptLine": 301,
+      "requested": "**Trade studies** — Practice: stiffness weight 0.5 → **Al 0.707 vs CFRP 0.688 (not robust)**.",
+      "sections": [
+        {
+          "id": "when-one-weight-rises-say-what-happens-to-the-others",
+          "heading": "When one weight rises, say what happens to the others",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "55b44ae5f7496dab239494f9719d147dfdf925cbbd4426cc8a6c02a1c02de3df"
+    },
+    {
+      "key": "engineering/paramsweep",
+      "title": "Parametric sweeps: vary one thing",
+      "transcriptLine": 302,
+      "requested": "**Parametric sweeps** — Practice: widen instead of deepen → **~90 mm, ≈9.7 kg vs 5.7 kg**.",
+      "sections": [
+        {
+          "id": "width-and-depth-buy-different-amounts-of-stiffness",
+          "heading": "Width and depth buy different amounts of stiffness",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "000eb2333ea89d95577b91e93c6f01da5addea3cd508ee1e58b678b19638257e"
+    },
+    {
+      "key": "engineering/convergence",
+      "title": "Convergence: knowing when to stop",
+      "transcriptLine": 303,
+      "requested": "**Convergence** — Practice: mesh 180/205/214/217/218 → **converged at 218 MPa**.",
+      "sections": [
+        {
+          "id": "state-the-stopping-rule-before-reading-the-sequence",
+          "heading": "State the stopping rule before reading the sequence",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "3534b6a25fb45f418308686e699b651323616ddbcb7e78a249415459a49b59a8"
+    },
+    {
+      "key": "engineering/safetyfactor",
+      "title": "Safety factors are ethics",
+      "transcriptLine": 304,
+      "requested": "**Safety factors are ethics** — Practice: shelf / hoist hook / walkway sign class and FoS; hook area **200 mm²**.",
+      "sections": [
+        {
+          "id": "consequence-changes-the-decision",
+          "heading": "Consequence changes the decision",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "ece43b797603d67c4ec909f23f005bbfc0408e6308699e25c106ab0628807618"
+    },
+    {
+      "key": "engineering/standards",
+      "title": "Codes, standards, and the paper trail",
+      "transcriptLine": 305,
+      "requested": "**Codes and standards** — Practice: coupler excerpt → two compliance rows (§5.1, §5.3).",
+      "sections": [
+        {
+          "id": "one-compliance-row-for-each-shall",
+          "heading": "One compliance row for each shall",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "2343ba547f9a77fca3bea154181b4e86c9cda0de5d4999bca64edeb1fd92b02f"
+    },
+    {
+      "key": "engineering/designreview",
+      "title": "The review and the signature",
+      "transcriptLine": 306,
+      "requested": "**The review** — Practice: −0.05 MS frame rail → **critical → reject**.",
+      "sections": [
+        {
+          "id": "a-negative-governing-margin-blocks-release",
+          "heading": "A negative governing margin blocks release",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "78f11e8ef05c28af3517834ad900fc0ec8041a325e462434bf03ef7a10c404ac"
+    },
+    {
+      "key": "engineering/capmethod",
+      "title": "The full cycle is the course",
+      "transcriptLine": 307,
+      "requested": "**Full cycle** — Practice: half-load root-spring prediction **≈0.305 mm**.",
+      "sections": [
+        {
+          "id": "predict-a-second-load-after-fitting-the-root",
+          "heading": "Predict a second load after fitting the root",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "82ff1f7ce015cfc5ea971c259e3b44a4a2fc2c78e0902679e1bc5d2e96ab0985"
+    },
+    {
+      "key": "engineering/glidersynth",
+      "title": "The glider, end to end",
+      "transcriptLine": 308,
+      "requested": "**Glider end to end** — Add: lesson-number mapping for the W-week labels. Practice: review findings → **conditional approval**.",
+      "sections": [
+        {
+          "id": "read-the-week-labels-as-lesson-groups",
+          "heading": "Read the week labels as lesson groups",
+          "at": "example",
+          "mode": "inline",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "b17ed2726b7c0d58969dac3072478c07d9b67b0147e43fcde7983520559dbadf"
+    },
+    {
+      "key": "engineering/capmastery",
+      "title": "The final gate",
+      "transcriptLine": 309,
+      "requested": "**Final gate** — Add: Engineering self-review list.",
+      "sections": [
+        {
+          "id": "self-review-across-the-full-design-cycle",
+          "heading": "Self-review across the full design cycle",
+          "at": "move",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": false,
+      "practiceTables": 0,
+      "contentSha256": "4c092a1039b3cba391ad71d3e63121bf414a931c622e3653e4d1f92f10fec743"
+    },
+    {
+      "key": "manufacturing/mechanism",
+      "title": "The act",
+      "transcriptLine": 315,
+      "requested": "**The act** — Practice: cooling-channel shaft / 10k L-brackets / hitch receiver / one-off gear → add / deform / join / cut.",
+      "sections": [
+        {
+          "id": "start-with-the-physical-change",
+          "heading": "Start with the physical change",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "0859b21c5008a82cc3e5d9290c803fb0851526def85f5927ebaa3aa6ca4f61cd"
+    },
+    {
+      "key": "manufacturing/chip",
+      "title": "The chip",
+      "transcriptLine": 316,
+      "requested": "**The chip** — Add: power = u × removal rate (1.25 kW at 100 m/min). Practice: 6 mm width → **1,500 N**; 2 kW → **≈160 m/min**; Al u ≈ 700 *(assumed)* → **210 N**.",
+      "sections": [
+        {
+          "id": "power-is-cutting-energy-per-removed-volume-times-removal-rate",
+          "heading": "Power is cutting energy per removed volume times removal rate",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "9c63020b7baddfd02531989b15873a94ef5b80f08b8d7e22d7de665901dde441"
+    },
+    {
+      "key": "manufacturing/springback",
+      "title": "Springback",
+      "transcriptLine": 317,
+      "requested": "**Springback** — Add: σy/E table including mild steel; springs-flat limit (~130 mm radius for 1 mm Al). Practice: 1 mm mild steel → **≈5°**; 2 mm Al → **≈8°**.",
+      "sections": [
+        {
+          "id": "compare-the-elastic-strain-at-yield",
+          "heading": "Compare the elastic strain at yield",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "the-springs-flat-limit",
+          "heading": "The springs-flat limit",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "6424f1d622e9f594207f20a757b86306f18c5b6b729d6a3fe06a0adacdc4bb06"
+    },
+    {
+      "key": "manufacturing/freeze",
+      "title": "Freeze last",
+      "transcriptLine": 318,
+      "requested": "**Freeze last** — Add: hot spots; thin sections give fine grains. Practice: 200×100×30 plate → **V/A ≈10.3, D > 62 mm, 80 mm riser ≈1.7× later**.",
+      "sections": [
+        {
+          "id": "feed-the-hot-spot-last",
+          "heading": "Feed the hot spot last",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "fb9ac247f0bfe46200281853c6baa6ec7a77739904ff48fc5e0040bdb88ce878"
+    },
+    {
+      "key": "manufacturing/haz",
+      "title": "Beside the weld",
+      "transcriptLine": 319,
+      "requested": "**Beside the weld** — Add: HAZ-by-material table; heat-input formula. Practice: 24 V, 200 A, 300 mm/min, η 0.8 → **≈0.77 kJ/mm**.",
+      "sections": [
+        {
+          "id": "the-same-weld-heat-changes-different-materials-differently",
+          "heading": "The same weld heat changes different materials differently",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        },
+        {
+          "id": "heat-input-from-electrical-power",
+          "heading": "Heat input from electrical power",
+          "at": "example",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "f58893edd71654a42fedf39fd252cc0bca1010ded777bb6097d516811f88ed36"
+    },
+    {
+      "key": "manufacturing/spread",
+      "title": "The spread",
+      "transcriptLine": 320,
+      "requested": "**The spread** — Add: Cpk → scrap table; re-centre vs reduce spread. Practice: 25.00 ± 0.08, mean 25.03, σ 0.02 → **Cp 1.33, Cpk 0.83**.",
+      "sections": [
+        {
+          "id": "from-capability-to-an-illustrative-tail-probability",
+          "heading": "From capability to an illustrative tail probability",
+          "at": "idea-2",
+          "mode": "help",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "cf058e02b46fba7f79b5be107e0f024d3d171609b939b569d7ea12d183d0ab95"
+    },
+    {
+      "key": "manufacturing/stack",
+      "title": "The stack",
+      "transcriptLine": 321,
+      "requested": "**The stack** — Add: RSS needs centred processes (shared drift adds linearly). Practice: 4 × ±0.15 into ±0.40 with 0.04 drift each → **≈0.46, fails**.",
+      "sections": [
+        {
+          "id": "shared-drift-adds-as-a-bias",
+          "heading": "Shared drift adds as a bias",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "274e87b7d786265f6dd5a726443aa15d54c26289b6eb79c7f1a478234c963f80"
+    },
+    {
+      "key": "manufacturing-201/rolling",
+      "title": "The force in the roll gap",
+      "transcriptLine": 325,
+      "requested": "**Roll gap force** — Add: small work rolls with backup rolls. Practice: R 200, w 300, Y 150 MPa, Δh 3 → **≈1.1 MN** *(assumed values)*.",
+      "sections": [
+        {
+          "id": "small-work-rolls-with-backup-rolls",
+          "heading": "Small work rolls with backup rolls",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "00b373aa619ee93076afe0afb3471cd7c31007a4011d022fbcf2b128681c484f"
+    },
+    {
+      "key": "manufacturing-201/taylor",
+      "title": "Speed spends the tool",
+      "transcriptLine": 326,
+      "requested": "**Taylor tool life** — Add: parts-per-edge table. Practice: 120 m/min → **≈12.9 min**; 60 min life → **≈88 m/min**.",
+      "sections": [
+        {
+          "id": "price-the-parts-made-by-each-edge",
+          "heading": "Price the parts made by each edge",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "7823edf61dc526043a0961d5b558de78cc801415ed099c38f6596946bba5cdf6"
+    },
+    {
+      "key": "manufacturing-201/pattern",
+      "title": "The pattern is longer than the part",
+      "transcriptLine": 327,
+      "requested": "**Pattern shrinkage** — Add: machining stock before the shrink scale. Practice: 150 mm iron (1%) → **151.5 mm**; 300 + 3 mm steel (2%) → **≈309.1 mm** *(typical shrink values)*.",
+      "sections": [
+        {
+          "id": "add-machining-stock-before-scaling-the-pattern",
+          "heading": "Add machining stock before scaling the pattern",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "0fb9d264a66269643e8d2504b6addc161fbe40c504e2dbdb14154b2843bf0ca8"
+    },
+    {
+      "key": "manufacturing-201/distort",
+      "title": "Why the weld bows",
+      "transcriptLine": 328,
+      "requested": "**Weld bow** — Add: distortion-control practices. Practice: **4.5 mm / 1.1 mm / 8.5 mm**.",
+      "sections": [
+        {
+          "id": "control-where-contraction-occurs",
+          "heading": "Control where contraction occurs",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "f2f383884edf403e19c6a04b6742a34935b0257891db40a7a6325fb2c2dc3a3a"
+    },
+    {
+      "key": "manufacturing-201/locate",
+      "title": "Six motions, then stop",
+      "transcriptLine": 329,
+      "requested": "**3-2-1 locating** — Add: locators vs clamps; three-legged stool. Practice: 3-1-1 → 1 left; 4-2-1 → 0 with one wasted; 3-2-0 → 1 left.",
+      "sections": [
+        {
+          "id": "locators-establish-position-clamps-keep-contact",
+          "heading": "Locators establish position; clamps keep contact",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "b5834df0497b3a015b9fb65383926fad37db2d2d7ef2a57240e6175ef8b74d76"
+    },
+    {
+      "key": "manufacturing-301/bonus",
+      "title": "A larger hole may sit farther off",
+      "transcriptLine": 333,
+      "requested": "**Bonus tolerance** — Add: position ⌀ = 2√(Δx² + Δy²); RFS default. Practice: 8.15 mm hole, Δ(0.06, 0.07) → **⌀0.18 passes ⌀0.25 at MMC, fails RFS**.",
+      "sections": [
+        {
+          "id": "compare-diameters-with-diameters",
+          "heading": "Compare diameters with diameters",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "12441376f29aaf6ea48f34706d2dcbd070cf145f7dd0167e55da821a8524eff4"
+    },
+    {
+      "key": "manufacturing-301/surface",
+      "title": "The surface is a fatigue input",
+      "transcriptLine": 334,
+      "requested": "**Surface factor** — Add: shot peening, Marin factors. Practice: 220 MPa axle → **machined MS 0.09; forged −0.32**.",
+      "sections": [
+        {
+          "id": "surface-finish-is-one-fatigue-correction",
+          "heading": "Surface finish is one fatigue correction",
+          "at": "idea-1",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "f5226f38b6d653508cdd7f80d74bb42cad90b36f8832e862a340a904f71ec9de"
+    },
+    {
+      "key": "manufacturing-301/travel",
+      "title": "How long the arc stays",
+      "transcriptLine": 335,
+      "requested": "**Heat input** — Practice: 22 V, 180 A, 250 mm/min, η 0.8 → **≈0.76 kJ/mm**; 0.5 kJ/mm → **360 mm/min**.",
+      "sections": [
+        {
+          "id": "put-efficiency-and-travel-units-in-the-same-equation",
+          "heading": "Put efficiency and travel units in the same equation",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "7b4047ea90c70351329453d4bc0d066d31c9cb3a95738922e88e53ae269bd4f1"
+    },
+    {
+      "key": "manufacturing-301/passes",
+      "title": "Yield is a product",
+      "transcriptLine": 336,
+      "requested": "**First-pass yield** — Practice: 20 × 98% → **67%**; remove 5 steps or improve all to 98.5% → **both ≈74%**.",
+      "sections": [
+        {
+          "id": "use-conditional-step-yields",
+          "heading": "Use conditional step yields",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "75f710d57f8bfc67f93d8df329795b860d02da3781fb1b0f05f2e844029c7318"
+    },
+    {
+      "key": "manufacturing-301/layers",
+      "title": "The bond between roads",
+      "transcriptLine": 337,
+      "requested": "**Printed layers** — Practice: 15 MPa L-bracket → **upright FoS 1.33 fails; flat 2.67 passes**.",
+      "sections": [
+        {
+          "id": "orient-the-critical-tensile-stress",
+          "heading": "Orient the critical tensile stress",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "936af25d3c7f2582f945220a1fa6751ef7b4a1dedaff9da1ebb17b10004e6b43"
+    },
+    {
+      "key": "manufacturing-401/bottleneck",
+      "title": "The slow station",
+      "transcriptLine": 341,
+      "requested": "**Bottleneck** — Add: relief options (parallel machine, move work, buffer). Practice: 35/50/40/25 s → **72/h; parallel at 50 s → 90/h**.",
+      "sections": [
+        {
+          "id": "relieve-the-station-that-sets-throughput",
+          "heading": "Relieve the station that sets throughput",
+          "at": "idea-0",
+          "mode": "help",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "52bf1b13cb4fe996432f7e3b8e962c1db7ac8f365dae44dd9211735f7317cf9a"
+    },
+    {
+      "key": "manufacturing-401/piececost",
+      "title": "The tool divided by the count",
+      "transcriptLine": 342,
+      "requested": "**Tooling ÷ count** — Practice: vs CNC $25 → **crossover ≈430**; per good part at 82% → **≈8.78**.",
+      "sections": [
+        {
+          "id": "quantity-and-good-yield-both-affect-the-unit-cost",
+          "heading": "Quantity and good yield both affect the unit cost",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "98a3f573f06ec50e4ae19ef9a969c8d8b0061f2940de1faf53e79a510fd1b78d"
+    },
+    {
+      "key": "manufacturing-401/dfa",
+      "title": "Parts you can delete",
+      "transcriptLine": 343,
+      "requested": "**DFA** — Add: DFA separate-part criteria. Practice: 9 → 5 parts → **84 → 52 s, ≈89 h/yr at 10k**.",
+      "sections": [
+        {
+          "id": "ask-why-a-part-must-remain-separate",
+          "heading": "Ask why a part must remain separate",
+          "at": "idea-1",
+          "mode": "inline",
+          "tables": 1
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "903cde9dadcda29d26e0eec571c0bfb3becb0516ec21784b14dd06bce9abf11e"
+    },
+    {
+      "key": "manufacturing-401/scrap",
+      "title": "Scrap you already paid for",
+      "transcriptLine": 344,
+      "requested": "**Scrap** — Practice: 15 at 90% → **16.67**; with rework → **≈15.75**.",
+      "sections": [
+        {
+          "id": "count-rework-cost-and-recovered-good-parts",
+          "heading": "Count rework cost and recovered good parts",
+          "at": "idea-2",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "3094c057baeb1dd32f42d433dd76fef797fa36a11d08b3085ca6d160355f2108"
+    },
+    {
+      "key": "manufacturing-401/takt",
+      "title": "The pace already set",
+      "transcriptLine": 345,
+      "requested": "**Takt** — Add: tie bottleneck ≤ takt and yield together. Practice: 450 min, 90 parts → **5 min takt; 6 min station 15 short**.",
+      "sections": [
+        {
+          "id": "capacity-must-cover-demand-and-yield-loss",
+          "heading": "Capacity must cover demand and yield loss",
+          "at": "idea-0",
+          "mode": "inline",
+          "tables": 0
+        }
+      ],
+      "practice": true,
+      "practiceTables": 0,
+      "contentSha256": "c288773ec2c285f121ecd8200ce58929a0f9389837f7184e59b04cfbb8270633"
+    }
+  ]
+}

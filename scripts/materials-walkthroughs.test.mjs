@@ -64,8 +64,10 @@ test('practice answer on same line is split from question',()=>{
 });
 test('figure definition and grading code are not replaced by reading imports',()=>{
  const view=readFileSync(new URL('../src/components/lesson-view.tsx',import.meta.url),'utf8');
- assert.match(view,/lesson\.track === "materials" \? materialsWalkthroughs\[lesson\.id\]/);
- assert.match(view,/LessonWalkthroughPanel key=\{key\}/);assert.match(view,/<ReadFlow lesson=\{lesson\}/);
+ assert.match(view,/getLessonEnrichment\(lesson\)/);
+ assert.match(view,/<EnrichmentAt enrichment=\{enrichment\}/);assert.match(view,/<ReadFlow lesson=\{lesson\}/);
+ assert.match(view,/<LessonPractice key=\{key\}/);
+ assert.doesNotMatch(view,/LessonWalkthroughPanel/);
  assert.match(view,/onResult=\{\(n\) => mark\(key, n\)\}/);
 });
 test('diffusion length and concentration-defined depth remain distinct and correct',()=>{

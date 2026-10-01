@@ -5,6 +5,9 @@ on:
       - 'src/course/**'
       - 'src/components/**'
       - 'scripts/**'
+      - 'docs/lesson-sources/**'
+      - 'docs/course-enrichment-coverage.json'
+      - 'docs/materials-import-manifest.json'
       - 'package*.json'
       - '.github/workflows/lesson-givens.yml'
 permissions:
@@ -43,6 +46,13 @@ jobs:
         run: |
           node scripts/browser-lesson-givens.mjs
           node scripts/assert-lesson-acceptance.mjs screenshots/lesson-givens-built/results.json
+      - name: Development course enrichment acceptance
+        run: node scripts/browser-course-enrichment.mjs
+      - name: Production course enrichment acceptance
+        env:
+          ACCEPTANCE_BUILD: '1'
+          ACCEPTANCE_OUT: screenshots/course-enrichment-built
+        run: node scripts/browser-course-enrichment.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -50,4 +60,6 @@ jobs:
           path: |
             screenshots/lesson-givens/
             screenshots/lesson-givens-built/
+            screenshots/course-enrichment/
+            screenshots/course-enrichment-built/
           retention-days: 7

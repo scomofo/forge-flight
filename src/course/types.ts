@@ -1,3 +1,5 @@
+import type { WalkthroughBlock } from "./walkthrough-types.ts";
+
 export type TrackId =
   | "math"
   | "materials"
@@ -197,6 +199,7 @@ export type BenchId =
 export type ConceptHelpSection = {
   heading: string;
   body?: string;
+  blocks?: WalkthroughBlock[];
   items?: string[];
   table?: ExampleInputTable;
 };

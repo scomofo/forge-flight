@@ -34,7 +34,7 @@ const conceptClips: Record<string, { src: string; caption: string }> = {
   },
   margin: {
     src: "/clips/pitch.mp4",
-    caption: "The nose hunts. Your number is the static margin, not the path of this picture.",
+    caption: "This animation illustrates pitch motion. Read the static margin to identify the stability regime; the animation does not simulate your current design.",
   },
   resonance: {
     src: "/clips/resonance.mp4",
@@ -331,6 +331,7 @@ function ConstraintList({ missionId, evaluation }: { missionId: string; evaluati
     c.minSafetyFactor !== undefined ? ["Safety factor", `${num(evaluation.minSafetyFactor, 2)} / ${c.minSafetyFactor}`, evaluation.passStress] : null,
     c.maxDeflection_mm !== undefined ? ["Sag", `${num(evaluation.maxDeflection_mm, 2)} / ${c.maxDeflection_mm} mm`, evaluation.passDeflection] : null,
     ["DFM", `${num(evaluation.dfmScore, 0)} / ${c.dfmScoreMin ?? 70}`, evaluation.passDfm],
+    evaluation.aero ? ["Static margin", `${num(evaluation.aero.sm, 2)} / 0.05–0.25`, evaluation.aero.stable] : null,
   ].filter(Boolean) as [string, string, boolean][];
   return (
     <div className="rounded-lg border border-line-forge bg-panel p-4">
@@ -407,6 +408,32 @@ function explain(id: string, ev: Evaluation) {
   return ev.assumptions[0] ?? "";
 }
 
+function stabilityDescription(sm: number) {
+  if (sm < 0) return "The CG is behind the neutral point. Static margin is negative and the glider is statically unstable.";
+  if (sm < 0.05) return "The CG is only slightly ahead of the neutral point. Restoring margin is weak; move the CG forward to reach the target band.";
+  if (sm > 0.25) return "The nose is heavy. The CG sits too far ahead of the neutral point; move it aft to reduce the margin.";
+  return "The CG is ahead of the neutral point within the target static-margin band.";
+}
+
+function GliderCalculations() {
+  return <details className="rounded-lg border border-line-forge p-3">
+    <summary className="min-h-11 cursor-pointer font-medium text-bone">Default glider: mass and stability calculations</summary>
+    <div className="mt-3 space-y-3 text-sm text-dust">
+      <p>These worked numbers use the starting balsa geometry and density 160 kg/m³. Your current design is shown in Constraints.</p>
+      <div role="region" aria-label="Default part masses" tabIndex={0} className="overflow-x-auto">
+        <table className="w-full text-left"><caption className="sr-only">Volume times density for the default glider</caption><thead><tr><th scope="col">Part (mm)</th><th scope="col">Volume (cm³)</th><th scope="col">Mass (g)</th></tr></thead><tbody>
+          <tr><th scope="row">Wing 500 × 90 × 4</th><td>180</td><td>28.8</td></tr>
+          <tr><th scope="row">Fuselage 420 × 12 × 12</th><td>60.48</td><td>9.68</td></tr>
+          <tr><th scope="row">Tail 160 × 50 × 3</th><td>24</td><td>3.84</td></tr>
+        </tbody></table>
+      </div>
+      <p>Total mass ≈ 42.3 g. Static margin = (neutral point − CG)/chord. At the starting margin of about 0.51, CG 120 mm and chord 90 mm, the neutral point is about 166 mm from the nose.</p>
+      <p>The target band corresponds to CG about 144–161 mm. A middle target is about 152 mm; with the slider’s 5 mm steps, try 150 mm (margin about 0.18) and read the updated result. Passing the neutral point makes the margin negative.</p>
+      <p>Once stability passes, predict a thickness change from 4 to 3 mm: wing mass falls by 7.2 g and sag rises by (4/3)³ ≈ 2.37, from about 1.75 to 4.1 mm at unchanged load. Recheck every limit. PLA is denser than balsa, and printed-layer strength depends on load direction.</p>
+    </div>
+  </details>;
+}
+
 function PhaseBody({
   missionId,
   evaluation,
@@ -426,11 +453,12 @@ function PhaseBody({
         {mission.brief.split("\n\n").map((p) => (
           <p key={p.slice(0, 24)}>{p}</p>
         ))}
+        {missionId === "glider" ? <GliderCalculations /> : null}
       </div>
     );
   }
   if (run.phase === "design") {
-    return <p className="text-sm leading-relaxed">Change a dimension. Mass, sag, and stress come from the same model as the checks. A marked number is outside the brief.</p>;
+    return <div className="space-y-4 text-sm leading-relaxed"><p>Change a dimension. Mass, sag, and stress come from the same model as the checks. A marked number is outside the brief.</p>{missionId === "glider" ? <><p>{stabilityDescription(evaluation.aero?.sm ?? 0)}</p><p>Predict which number will move before changing a slider, then compare. Moving the CG aft reduces static margin; changing tail size or fuselage length also moves the neutral point.</p><GliderCalculations /></> : null}</div>;
   }
   if (run.phase === "materials") {
     return <p className="text-sm leading-relaxed">Pick a material this shop can actually run. The citation under the name is the source of the constants. If the process is not on that material, the make step will say so.</p>;

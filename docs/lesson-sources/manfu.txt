@@ -1,0 +1,1327 @@
+## Manufacturing · Lesson 1: The act
+
+This starts a new course, **Manufacturing**. Engineering lesson 16 screened processes by tolerance and volume. This lesson goes one step earlier: **what physically has to happen to the material?**
+
+### 1. Five physical acts
+
+Every process makes shape by doing **one** of these:
+
+| Act | What happens | Examples |
+|---|---|---|
+| **Freeze** | pour liquid, let it solidify | casting, injection moulding |
+| **Deform** | push a solid into a new shape | bending, forging, rolling, stamping |
+| **Cut** | remove chips | milling, turning, drilling, sawing, grinding |
+| **Join** | connect separate pieces | welding, bolting, gluing |
+| **Add** | build up layer by layer | 3D printing |
+
+**A mill, a lathe and a saw are the same act (cut) with different tooling.** Name the act first, then the machine.
+
+### 2. Let geometry rule acts out
+
+Before cost even comes up, the **shape** eliminates options:
+
+| Geometry | Rules out | Why |
+|---|---|---|
+| A void no tool can reach | **cut** | cutting needs a path **in and out** |
+| An undercut | a simple **rigid die** (freeze, deform) | the part can't be pulled out of the die |
+| A one-off part | a **mould** (as a first choice) | too much tooling cost for one part |
+
+### 3. What the animation shows
+
+| Step | What's shown |
+|---|---|
+| **1. Acts** | the five acts: freeze, deform, cut, join, add |
+| **2. Pocket** | an **open pocket**: a drill or mill has a path in and out → **cut** works |
+| **3. Tunnel** | a **closed tunnel** inside a lattice: no rigid tool can get in → **no path** |
+| **4. Verdict** | pocket → **cut**; tunnel → **add** |
+
+### 4. The worked example
+
+- **500 identical brackets** with a pocket a drill can reach → **cut** (or **deform**), since the tool has a path in and out
+- **One lattice** with an internal tunnel → **add** (3D printing), since no rigid tool can reach it
+
+**The machine brand hasn't come up yet.** The geometry decided first.
+
+### 5. The act also changes the material
+
+What you specified is really **the strength of a process history**, not just a name on a datasheet (Materials lessons 9 and 13–14):
+
+- **Casting** freezes grains in place (and may leave porosity)
+- **Bending** leaves residual stress and springback
+- **Welding** changes the metal next to it (the heat-affected zone)
+
+**Specify the part, then ask what the act does to it.**
+
+### 6. The method
+
+1. **Name the act:** freeze, deform, cut, join, or add.
+2. **Let geometry rule acts out:** tool access, undercuts, one-off vs volume.
+3. **Then** pick the machine.
+4. **Check what the act does** to the material's properties.
+
+**Try one:** which act fits each?
+
+- (a) A hollow shaft with internal cooling channels that twist inside the wall
+- (b) 10,000 identical steel L-brackets from flat sheet
+- (c) A hitch receiver made of a square tube plus a mounting plate
+- (d) A one-off replacement gear for an old machine
+
+Answers: (a) **add**, since no tool can reach twisting internal channels; (b) **deform**: punch and bend the sheet, high volume, simple shape; (c) **join**: weld the tube to the plate; (d) **cut**: machine it from bar stock, since a mould isn't worth it for one part.## Manufacturing · Lesson 2: The chip
+
+This lesson is about the **cut** act from lesson 1: what sets the **force** on the tool, and what sets the **power** the machine needs. They depend on different knobs.
+
+### 1. How metal cutting actually works
+
+The tool doesn't **split** metal the way an axe splits wood. It pushes the metal ahead of the edge up through a thin **shear zone**, and it peels off as a **chip**. Real details (tool angle, friction) matter, but a simple model gets the scaling right.
+
+### 2. Force follows the chip's cross-section
+
+**F = u × b × h**
+
+- **b** = width of cut (mm)
+- **h** = uncut chip thickness (mm), how thick a layer each pass takes
+- **u** = specific cutting energy (N/mm²), how hard the material is to cut
+
+**Thicker or wider chip → more area sheared → more force.** A tougher material (higher u) means more force for the same chip.
+
+### 3. Power is force × speed
+
+**P = F × v** (cutting speed)
+
+**Speed doesn't change the force in this model. It changes the power** (and the heat).
+
+### 4. What the animation shows (steel cut)
+
+b = 3 mm, h = 0.10 mm, u = 2,500 N/mm²
+
+| Step | What's shown |
+|---|---|
+| **1. Layer** | the 0.10 mm layer ahead of the tool |
+| **2. Shear** | it shears up into a chip |
+| **3. Force** | F = 2,500 × 3 × 0.10 = **750 N** |
+| **4. Knobs** | **2× thickness → 1,500 N** · **2× speed → same 750 N, but 2× power** |
+
+### 5. Putting numbers on power
+
+At a cutting speed of **100 m/min** (≈ 1.67 m/s):
+
+- P = 750 N × 1.67 m/s ≈ **1.25 kW**
+- Double the speed → **2.5 kW**, with the same force on the tool
+
+**Another way to see it:** u is also **energy per volume of metal removed** (N/mm² = J/mm³). So **power = u × removal rate**. Here: 3 × 0.10 mm × 1,667 mm/s = 500 mm³/s, and 2,500 × 500 = 1.25 kW ✔.
+
+### 6. Why it matters
+
+- A **heavy, slow** cut and a **light, fast** cut can draw the same power but load the tool very differently.
+- **Force** matters for tool breakage, deflection and chatter, and for holding the part.
+- **Power** matters for the motor and for heat at the edge.
+- "Faster spindle" doesn't automatically mean "harder cut." **Say which knob you turned.**
+
+**Note from the page:** tool sharpness isn't in the formula. It's a model of the **chip**, not of a fresh edge. A dull tool raises the force beyond this estimate.
+
+### 7. The method
+
+1. **Force = u × width × chip thickness.**
+2. **Power = force × cutting speed.**
+3. **Changing the chip** changes force (and power). **Changing the speed** changes only power and heat.
+
+**Try one:**
+
+- (a) Same steel, but double the **width** to 6 mm (h stays 0.10). What's the force?
+- (b) Your lathe has **2 kW** available for cutting. For the original 750 N cut, what's the fastest cutting speed?
+- (c) Aluminium is much easier to cut. Assume **u ≈ 700 N/mm²**. What's the force for the original chip (3 × 0.10 mm)?
+
+You should get (a) **1,500 N**; (b) 2,000 ÷ 750 ≈ 2.7 m/s, about **160 m/min**; (c) 700 × 0.3 = **210 N**.## Manufacturing · Lesson 3: Springback
+
+This lesson is about the **deform** act: why a bend **opens up** after you let go, and which materials open more.
+
+### 1. Why it happens
+
+When you bend sheet metal, part of the bend is **plastic** (it stays) and part is **elastic** (it springs back). The stress-strain curve from Materials lesson 10 is at work here. When you release the punch, the elastic part recovers and **the bend opens**.
+
+**If you want 90°, you have to bend past 90°**, or use a die that forces the bend to set.
+
+### 2. Which materials spring back more
+
+The key ratio is **yield strength ÷ stiffness (σy ÷ E)**:
+
+**high yield + low stiffness → more elastic strain stored → more springback**
+
+| Material | σy / E | Springback |
+|---|---|---|
+| Mild steel (250 MPa / 200 GPa) | 0.0013 | **low** |
+| Aluminium (270 MPa / 70 GPa) | 0.0039 | medium |
+| Titanium (880 MPa / 110 GPa) | **0.0080** | **high** |
+
+**Thin sheet** and a **large bend radius** also mean more springback, because the elastic part is a bigger share of the total bend.
+
+### 3. The quick formula (sharp bends)
+
+**Curvature lost ≈ 3 × σy ÷ (E × t)**
+
+(curvature = 1 ÷ radius)
+
+The final angle follows because the **arc length stays the same**: final angle ≈ bent angle × (R ÷ R_final).
+
+### 4. What the animation shows
+
+A **1 mm** strip bent **90°** over a **15 mm** radius:
+
+| Step | Aluminium | Titanium |
+|---|---|---|
+| **1. Bend** | 90°, R 15 mm | 90°, R 15 mm |
+| **2. Release** | radius grows to **18.1 mm** | radius grows to **23.2 mm** |
+| **3. Compare** | opens **15.6°** (ends ≈ 74°) | opens **31.8°** (ends ≈ 58°) |
+
+**Same punch, same bend, but titanium opens twice as much.** Don't set the die to the angle on the drawing.
+
+### 5. Too gentle a bend: it springs flat
+
+If the radius is so large (or the sheet so thin and strong) that the metal **never yields**, the bend is entirely elastic and **springs back flat**:
+
+**springs flat if 1/R ≤ 2σy ÷ (E × t)**
+
+For 1 mm aluminium: 2 × 270 ÷ 70,000 = 0.0077/mm, so any radius **over about 130 mm** won't hold a bend at all.
+
+That isn't a failure to push hard enough. The metal never had to stay bent.
+
+### 6. Shop practice
+
+- **Overbend** on the press brake to allow for springback.
+- **Bottoming or coining:** press hard enough into the die that the bend sets more fully.
+- **Switching material?** Predict which way the springback moves **before** making parts. Swapping mild steel for a high-strength steel or aluminium will need re-adjustment.
+
+### 7. The method
+
+1. **Compare σy ÷ E.** The higher it is, the more it opens.
+2. **Estimate:** curvature lost ≈ 3σy ÷ (Et).
+3. **Final angle** ≈ bent angle × R ÷ R_final.
+4. **Check** it actually yielded at all (1/R > 2σy/(Et)).
+5. **Set the die past the target angle.**
+
+**Try one:**
+
+- (a) 1 mm **mild steel** (250 MPa, 200 GPa), 90° on a 15 mm radius. How much does it open?
+- (b) **2 mm** aluminium, same bend. Does it open more or less than the 1 mm sheet, and roughly how much?
+
+You should get (a) curvature lost ≈ 0.00375/mm → R_final ≈ 15.9 mm → final ≈ 85°, so it opens **about 5°**; (b) **less**: curvature lost halves to ≈ 0.0058/mm → R_final ≈ 16.4 mm, so it opens **about 8°** instead of about 16°.## Manufacturing · Lesson 4: Freeze last
+
+This lesson is about the **freeze** act (casting). Metal **shrinks as it solidifies**, so the question is **where the shrinkage hole ends up**: in the part you keep, or in a lump you cut off.
+
+### 1. How a casting freezes
+
+Molten metal freezes **from the mould walls inward**. Heat escapes through the surface, so:
+
+- **Thin sections** (lots of surface for their volume) freeze **early**
+- **Chunky sections** (little surface for their volume) stay liquid **late**
+
+**The last place to freeze is where the shrinkage cavity forms.** Metal shrinks as it solidifies, and the last liquid pocket has nothing left to feed it.
+
+### 2. Chvorinov's rule
+
+**Freeze time = C × (V/A)²**
+
+- **V/A** = volume ÷ surface area (the **casting modulus**), a measure of "chunkiness"
+- **C** = a mould and metal constant, which **cancels** when comparing shapes in the same mould
+- **Squared:** a little more chunkiness means a lot longer to freeze
+
+### 3. The riser: a sacrificial reservoir
+
+A **riser** is an extra lump of metal attached to the casting. Its job is to **stay liquid longest**, keep feeding molten metal into the shrinking part, and **take the shrinkage hole itself**. Then you cut it off.
+
+**Rule: the riser's V/A must be bigger than the section it feeds.** A knob that freezes first is decoration, not a riser.
+
+### 4. What the animation shows
+
+A **120 × 80 × 20 mm** plate, fed by a cylindrical riser (height = diameter).
+
+**Plate:** V = 192,000 mm³, A = 27,200 mm² → **V/A = 7.06 mm**
+**Riser** (H = D): **V/A = D ÷ 6**
+
+| Step | Riser | Riser V/A | Result |
+|---|---|---|---|
+| **1. Pour** | | | |
+| **2. Thin riser** | D = 30 mm | 5 mm | **freezes first** → **void left in the plate** ✘ |
+| **3. Plates** | plate | 7.06 mm | |
+| **4. Last liquid** | D = 60 mm | 10 mm | freezes **(10 ÷ 7.06)² ≈ 2× later** ✔ shrinkage stays in the riser |
+
+**Minimum riser:** D ÷ 6 > 7.06 → **D > 42 mm**. Real practice adds margin and checks feeding paths (the page notes that's a simplified estimate).
+
+### 5. Directional solidification
+
+The goal: freezing should progress **from the far end of the part toward the riser**, so there's always liquid metal behind the freezing front to feed it. **Never feed a thick section through a thin one.** The thin neck freezes first and cuts off the supply.
+
+**Watch for "hot spots":** a thick boss on a thin plate freezes last and gets shrinkage porosity unless it has its own riser.
+
+### 6. Bonus: freezing speed sets grain size
+
+The same V/A number does a second job:
+
+- **Thin section → freezes fast → fine grains → stronger** (Hall–Petch, Materials lesson 5)
+- **Thick section → slow → coarse grains → weaker**
+
+A thick and a thin section **in the same casting won't have the same strength.**
+
+### 7. The method
+
+1. **V/A of the section** being fed.
+2. **Riser V/A must be bigger.** For H = D cylinders, V/A = D/6.
+3. **Freeze-time ratio** = (V/A ratio)².
+4. **Check directional freezing:** thick sections fed by thicker risers, never through thin necks.
+
+**Try one:** a **200 × 100 × 30 mm** plate.
+
+- (a) What's its V/A?
+- (b) What's the minimum riser diameter (H = D)?
+- (c) With an 80 mm riser, how much later does the riser freeze?
+
+You should get (a) V = 600,000, A = 58,000, so V/A ≈ **10.3 mm**; (b) D > 6 × 10.3 ≈ **62 mm**; (c) riser V/A = 13.3, so (13.3 ÷ 10.3)² ≈ **1.7× later**.## Manufacturing · Lesson 5: Beside the weld
+
+This lesson is about the **join** act (welding). It ties back to Materials lessons 13–14 and Engineering 14: **the weakest part of a weld is usually not the weld metal. It's the strip of plate right beside it.**
+
+### 1. A weld has three zones
+
+| Zone | What happened | Strength |
+|---|---|---|
+| **Weld metal (filler)** | melted and re-froze, a tiny casting (lesson 4) | usually **stronger** than the plate |
+| **Heat-affected zone (HAZ)** | **never melted**, but got hot enough to change | often the **weak line** |
+| **Base metal** | stayed cool | original properties |
+
+### 2. What the animation shows
+
+| Step | What's shown |
+|---|---|
+| **1. Weld** | the filler bead between two plates is stronger than the plate |
+| **2. HAZ** | the band beside the bead where heat changed the metal |
+| **3. Strength** | strength across the joint dips in the HAZ, which is the **weak line** |
+| **4. More heat** | more heat per length → **wider** weak band |
+
+### 3. What the heat does to the HAZ (depends on the material)
+
+| Material | HAZ effect | Lesson |
+|---|---|---|
+| **6061-T6 aluminium** | precipitates **overage** → much weaker | Materials 13 |
+| **Cold-worked metal** | **annealed** → softer | Materials 14 |
+| **Mild steel** | **grain growth** → coarser, less tough | Materials 5 |
+| **Hardenable steel** (4140) | can form **martensite** on cooling → hard and **brittle**, prone to cracking | Materials 9 |
+
+That last one is why hardenable steels often need **preheat** and controlled cooling.
+
+### 4. More heat = wider weak band
+
+**HAZ width grows with √(heat input per length).**
+
+Welders calculate heat input as:
+
+**heat input (kJ/mm) ≈ volts × amps × 60 ÷ (1,000 × travel speed in mm/min)**, times an arc efficiency factor
+
+Slower travel or higher amps → more heat per mm → wider HAZ.
+
+### 5. Two opposite failures
+
+| Failure | Cause | Fixed by a stronger filler? |
+|---|---|---|
+| **Lack of fusion** | **too little heat**: the filler never actually tied the plates together | ✘ no |
+| **Cooked HAZ** | **too much heat**: a wide band of softened or coarsened plate | ✘ no |
+
+**Buying a stronger filler doesn't fix either one.** And **turning the heat up doesn't make the joint stronger.**
+
+### 6. The method
+
+1. **Judge the joint, not the filler:** weld metal, fusion line, HAZ, base metal.
+2. **Ask what heat does to this material:** overage, anneal, grain growth, or harden?
+3. **Control heat input:** enough for full fusion, not so much that the HAZ is wide and weak.
+4. **Design with the HAZ strength** (Engineering lesson 14's ~70% for 6061-T6).
+
+**Try one:**
+
+- (a) A weld at **24 V, 200 A**, travelling **300 mm/min**, arc efficiency 0.8. What's the heat input?
+- (b) Double the travel speed. What happens to heat input and HAZ width?
+- (c) A welded 6061-T6 bracket broke right beside the bead, not in it. Why, and would a stronger filler have helped?
+
+You should get (a) 24 × 200 × 60 ÷ (1,000 × 300) × 0.8 ≈ **0.77 kJ/mm**; (b) heat input **halves**, and HAZ width shrinks to about 1/√2 ≈ **71%** (but check you still get full fusion); (c) the HAZ was **overaged** and weakened, and a stronger filler **wouldn't help**, because the filler wasn't the weak link.## Manufacturing · Lesson 6: The spread
+
+Engineering lesson 17 set **tolerances** on the drawing. This lesson checks whether the **process** can actually hit them. There are two separate questions: **how wide is the spread**, and **where is it centred**?
+
+### 1. The window and the pile
+
+- **The drawing** gives a **window**: 10.00 ± 0.10 mm, so 9.90 (LSL) to 10.10 (USL).
+- **The process** makes a **pile** of parts with a **mean** and a **spread** (standard deviation σ, from Engineering lesson 20).
+
+A perfect nominal on the drawing doesn't put the pile in the middle. A tight window doesn't shrink the pile. **Both have to be true at once.**
+
+*(Here σ means statistical spread, not stress.)*
+
+### 2. Cp: does the pile fit, if centred?
+
+**Cp = window width ÷ 6σ**
+
+Cp **ignores where the pile sits**. It only asks if it *could* fit.
+
+### 3. Cpk: does it actually fit, where it is?
+
+**Cpk = distance from the mean to the nearer limit ÷ 3σ**
+
+Shift the mean and **Cp stays the same, but Cpk drops**.
+
+A common shop gate is **Cpk ≥ 1.33** (the nearer limit is 4σ away). That's a **policy**, not a law of nature, so name it as one.
+
+### 4. What the animation shows (pins)
+
+Window 9.90–10.10 mm, σ = 0.025 mm (6σ = 0.15, 3σ = 0.075).
+
+| Step | Mean | Cp | Cpk | Result |
+|---|---|---|---|---|
+| **1. Centred** | 10.00 | 0.20 ÷ 0.15 = **1.33** | 0.10 ÷ 0.075 = **1.33** | ✔ |
+| **2. Shift +0.06** | 10.06 | **1.33** (same width) | | |
+| **3. Cpk** | | | 0.04 ÷ 0.075 = **0.53** | ✘ a tail of pins goes over 10.10 |
+
+**Same spread, same Cp, but the pile walked toward one wall.**
+
+### 5. What those Cpk numbers mean in scrap (for a normal distribution)
+
+| Cpk | Nearer limit is… | Out of spec on that side |
+|---|---|---|
+| **1.33** | 4σ away | about **30 per million** |
+| **0.53** | 1.6σ away | about **5–6%** |
+
+That's a big jump in scrap from a 0.06 mm drift.
+
+### 6. Fixing it: two different problems
+
+| Problem | Symptom | Fix |
+|---|---|---|
+| **Off-centre** | Cp fine, Cpk low | **re-centre**: tool offset, adjust the setup (usually cheap) |
+| **Too wide** | Cp low | **reduce variation**: better fixturing, machine, tooling, material (usually costly) |
+
+**Always check Cpk.** Quoting a good Cp as proof the parts are in spec is like saying the truck fits the garage while it's parked half on the lawn.
+
+The page notes this assumes a **stable, roughly normal** process. A drawing tolerance doesn't tell you the process σ. You have to measure it.
+
+### 7. The method
+
+1. **Measure** the process mean and σ.
+2. **Cp** = (USL − LSL) ÷ 6σ, the width check.
+3. **Cpk** = nearer-limit distance ÷ 3σ, the location check.
+4. **Compare with the gate** (e.g. 1.33, as a stated policy).
+5. **Low Cpk with good Cp → re-centre. Low Cp → reduce spread.**
+
+**Try one:** a bushing bore spec is **25.00 ± 0.08 mm**. The process runs at mean **25.03 mm**, σ = **0.02 mm**.
+
+- (a) What are Cp and Cpk?
+- (b) Does it pass a 1.33 gate?
+- (c) What's the cheapest fix, and what would Cpk become?
+
+You should get (a) Cp = 0.16 ÷ 0.12 = **1.33**, Cpk = (25.08 − 25.03) ÷ 0.06 = **0.83**; (b) **no**; (c) **re-centre** to 25.00 with a tool offset, and Cpk becomes **1.33**.## Manufacturing · Lesson 7: The stack
+
+This revisits tolerance stacks (Engineering lesson 17) with one new emphasis: **name the bet you're making**, and connect it to last lesson's centring.
+
+### 1. Two ways to add tolerances
+
+| Method | Formula (n equal tolerances) | What it is |
+|---|---|---|
+| **Worst case** | **n × tolerance** | a **promise**: every assembly fits, even the unlucky one |
+| **RSS** | **tolerance × √n** | a **bet**: independent, centred errors rarely all point the same way |
+
+**Why √n?** If errors are random and independent, some go long and some go short, and they partly cancel. For 3 parts, √3 ≈ 1.73 instead of 3.
+
+**RSS is smaller because you gave up the promise.**
+
+### 2. What the animation shows
+
+Three blocks, each **±0.20 mm**, must fit a **±0.50 mm** allowance.
+
+| Step | Method | Stack | vs ±0.50 |
+|---|---|---|---|
+| **1. Allowance** | | | ±0.50 |
+| **2. Worst case** | 3 × 0.20 | **±0.60** | ✘ doesn't fit |
+| **3. RSS** | 0.20 × √3 | **±0.35** | ✔ fits |
+
+### 3. Say which bet you're making
+
+- **Worst case misses, RSS fits** → you're **betting**, not discovering. Say so in writing (and let consequence decide, as in Engineering 17).
+- **Both miss** → tighten a part or open the allowance.
+- **Never average** 0.60 and 0.35 into a "pass." That isn't a method.
+
+### 4. The link to last lesson: RSS needs centred processes
+
+RSS assumes each part's variation is **random and centred**. If a process has **drifted** (low Cpk, lesson 6), every part leans the same way, and **the shifts add straight up**, not as √n.
+
+**Example:** if each of the three blocks runs **0.05 mm long** on average:
+
+- shifts add directly: 3 × 0.05 = **0.15**
+- plus the random spread: ±0.35
+- total ≈ **0.50**, right at the limit, even though RSS alone said 0.35
+
+**"A stack is the spread lesson with neighbours."** Check each part's centring before trusting RSS.
+
+### 5. The method
+
+1. **Worst case = sum** of tolerances.
+2. **RSS = √(sum of squares)**, or tolerance × √n for equal ones.
+3. **Compare both** with the allowance.
+4. **State the bet:** promise (worst case) or statistics (RSS).
+5. **If using RSS, confirm** the processes are centred (good Cpk) and independent.
+
+**Try one:**
+
+- (a) **Four** parts, each **±0.15 mm**, into a **±0.40 mm** allowance. Worst case? RSS?
+- (b) What tolerance per part would pass **worst case**?
+- (c) If all four come from one machine that runs **0.04 mm long**, what's the realistic stack using RSS for the spread?
+
+You should get (a) worst case **±0.60** ✘, RSS 0.15 × 2 = **±0.30** ✔; (b) **±0.10** each; (c) 4 × 0.04 = 0.16 shift + 0.30 spread ≈ **0.46**, which **fails** the 0.40 allowance. The shared drift broke the RSS bet.
+
+---
+
+## Manufacturing 201 · Lesson 1: The force in the roll gap
+
+This starts **Manufacturing 201**. The first lesson is about **rolling** (a deform process): how much force the rolls need to squeeze a strip thinner.
+
+### 1. The dough analogy
+
+Roll dough thinner and take a bigger bite: the rolling pin touches the dough over a **longer patch**. **The force follows that patch length**, not the thickness removed in straight proportion.
+
+### 2. Contact length
+
+**L ≈ √(R × Δh)**
+
+- **R** = roll radius
+- **Δh** = draft (thickness removed in one pass)
+
+It grows with the **square root** of the draft. Take 4× the bite and the contact length only doubles.
+
+### 3. Rolling force
+
+**F ≈ flow stress × width × L**
+
+**Flow stress** is the stress needed to keep the metal deforming plastically, roughly its yield strength at the rolling temperature and strain.
+
+### 4. What the animation shows
+
+Stock is **10 mm** thick.
+
+| Step | Exit | Draft Δh | Force |
+|---|---|---|---|
+| **1. 8 mm exit** | 8 mm | 2 mm | **520 kN** |
+| **2. 5 mm exit** | 5 mm | 5 mm | **820 kN** |
+| **3. Square root** | | 2.5× the draft | only √2.5 ≈ **1.58×** the force (520 × 1.58 ≈ 820) |
+
+The dashed "in proportion" line would have predicted 1,300 kN. Reality follows the square root.
+
+### 5. Friction adds a "hill"
+
+This simple model **leaves out friction**. In reality, friction between the rolls and the strip makes pressure build up toward the middle of the contact (the **friction hill**), so **real roll force is higher**. The √(RΔh) contact length is still the starting point.
+
+### 6. Why it matters
+
+- **Bigger rolls = longer contact = more force** for the same draft. That's why mills rolling thin, hard strip use **small work rolls** supported by larger **backup rolls**: small rolls keep the contact short and the force down, and the backups stop them bending.
+- **Planning passes:** a heavy draft costs force, but not in direct proportion, which helps decide how many passes a mill needs.
+
+### 7. The method
+
+1. **Contact length** L = √(R Δh).
+2. **Force** ≈ flow stress × width × L.
+3. **Remember:** force scales with **√draft**, not draft.
+4. **Add margin** for friction, which this model leaves out.
+
+**Try one:** roll radius **200 mm**, strip width **300 mm**, flow stress **150 MPa**.
+
+- (a) For a **3 mm** draft, what are the contact length and the force?
+- (b) If you increase the draft to **12 mm** (4×), what happens to the force?
+
+You should get (a) L = √(200 × 3) ≈ **24.5 mm**, F ≈ 150 × 300 × 24.5 ≈ **1.1 MN**; (b) L doubles, so the force **doubles to about 2.2 MN**, not 4×.## Manufacturing 201 · Lesson 2: Speed spends the tool
+
+Manufacturing lesson 2 showed that cutting faster raises **power and heat**, not force. This lesson shows the cost of that heat: **tool life drops sharply when you speed up.**
+
+### 1. The whittling analogy
+
+Whittle slowly and the knife stays sharp. Race, and the edge is gone **long before** you've whittled proportionally more.
+
+### 2. Taylor's tool-life equation
+
+**V × Tⁿ = C**
+
+- **V** = cutting speed (m/min)
+- **T** = tool life (minutes until "worn")
+- **n, C** = constants for a particular tool, workpiece and wear definition
+
+Rearranged: **T = (C ÷ V)^(1/n)**
+
+With **n = 0.2**, that's **T = (C ÷ V)⁵**, so speed is raised to the **fifth power**. Small speed changes cause big life changes.
+
+### 3. What the animation shows (n = 0.2, C = 200)
+
+| Step | Speed | Tool life |
+|---|---|---|
+| **1. 100 m/min** | 100 | (200/100)⁵ = **32 min** |
+| **2. 150 m/min** | 150 (+50%) | (200/150)⁵ ≈ **4.2 min** |
+| **3. Constant** | | V × T^0.2 stays **200** throughout |
+
+**50% faster cost about 87% of the tool life**, roughly an eighth of the life left.
+
+### 4. Price what you spent
+
+Faster cutting means each part takes less time, but **fewer parts per edge**:
+
+**Example:** a part needs 200 m of cutting path.
+
+| Speed | Cut time per part | Tool life | Parts per edge |
+|---|---|---|---|
+| 100 m/min | 2.0 min | 32 min | **16** |
+| 150 m/min | 1.33 min | 4.2 min | **about 3** |
+
+So there's a **best speed** that balances machine time against tool cost and tool-change time. Running flat out isn't automatically cheapest.
+
+### 5. Say what "worn" means
+
+C and n only mean something with a **definition of failure**, often a set **flank-wear land** width (how far the worn strip on the tool's side has grown). Change the wear criterion and the constants change. **Quoting C and n without it is meaningless.**
+
+### 6. The method
+
+1. **T = (C ÷ V)^(1/n)** for your tool, material and wear criterion.
+2. **Before speeding up**, calculate the life you'll lose (it falls much faster than speed rises).
+3. **Price it:** parts per edge, tool cost, change time vs machine time saved.
+4. **State the wear criterion** with the constants.
+
+**Try one:** using C = 200, n = 0.2:
+
+- (a) What's the tool life at **120 m/min**?
+- (b) What speed gives a **60-minute** tool life?
+
+You should get (a) (200/120)⁵ ≈ **12.9 min**; (b) V = 200 ÷ 60^0.2 ≈ 200 ÷ 2.27 ≈ **88 m/min**.## Manufacturing 201 · Lesson 3: The pattern is longer than the part
+
+Back to casting (Manufacturing lesson 4). This time it's about **size**: metal shrinks as it cools, so the **mould has to start bigger** than the drawing.
+
+### 1. The ice-tray analogy
+
+Ice ends up smaller than the compartment you filled. If you needed the ice to match a drawing, **the compartment had to start bigger**.
+
+### 2. Shrinkage allowance
+
+The **pattern** is the shape you use to make the mould cavity.
+
+**pattern = part size × (1 + shrink fraction)**
+
+### 3. What the animation shows (aluminium, 1.3% shrink)
+
+| Step | What's shown | Size |
+|---|---|---|
+| **1. Pattern** | the cavity is made oversize: 200 × 1.013 | **202.6 mm** |
+| **2. Cool** | the poured metal fills it, then shrinks 1.3% | |
+| **3. Drawing** | the cold casting matches the drawing | **200 mm** ✔ |
+
+**Never cut the pattern to the cold drawing dimension.** You'd get a short casting.
+
+### 4. The percentage depends on the metal (and the mould)
+
+1.3% is a teaching value for aluminium. Different metals shrink differently. Typical textbook ballparks are roughly 1% for grey iron and about 2% for steel, but **look up the value for the alloy you're pouring**. Restraint from cores and the mould shape also change it. **Don't reuse 1.3% because it was on this page.**
+
+### 5. Machining allowance: a second addition
+
+Shrink gets you to the **as-cast** size. If a face will be **machined** (a mounting face, a bearing bore), the casting needs **extra metal on that face** to cut away.
+
+**Order:** add the machining stock to the part dimension first, then scale the whole thing for shrink. The cold casting has to include that stock.
+
+Only add machining stock to faces you'll actually cut.
+
+### 6. The method
+
+1. **Start from the drawing size.**
+2. **Add machining stock** to faces that will be machined.
+3. **Multiply by (1 + shrink)** for the alloy you're pouring.
+4. **That's the pattern size.**
+
+**Try one:**
+
+- (a) A **cast-iron** bracket (use 1.0% shrink) must be **150 mm** long. What's the pattern length?
+- (b) A **steel** part (use 2.0%) is **300 mm** long, and one end face gets **3 mm** of machining stock. What's the pattern length?
+
+You should get (a) 150 × 1.010 = **151.5 mm**; (b) (300 + 3) × 1.02 ≈ **309.1 mm**.## Manufacturing 201 · Lesson 4: Why the weld bows
+
+Manufacturing lesson 5 covered what welding does to **strength** (the HAZ). This one covers what it does to **shape**: why welded plates bow, and which lever controls it most.
+
+### 1. Why it happens
+
+The weld bead and the hot band around it **want to shrink as they cool**, but they're stuck to cold plate that **doesn't**. The compromise is a **bow**, and a thin sheet "potato-chips." It's the same idea as constrained thermal expansion (physics lesson 27) and the welding distortion mentioned in Materials lesson 3.
+
+### 2. The scaling (a teaching model)
+
+**bow ∝ heat input ÷ thickness²**
+
+| Lever | Effect |
+|---|---|
+| **Double the heat** | 2× the bow |
+| **Double the thickness** | **¼ the bow** |
+
+**Why thickness is squared:** a thicker plate has a stiffer section resisting the bend (bending stiffness grows fast with thickness, physics lesson 20).
+
+### 3. What the animation shows
+
+| Step | Heat | Thickness | Bow |
+|---|---|---|---|
+| **1. Base** | 100 J/mm | 6 mm | **3 mm** |
+| **2. Double heat** | 200 J/mm | 6 mm | **6 mm** |
+| **3. Double thickness** | 100 J/mm | 12 mm | **0.75 mm** |
+| **4. Powers** | | | heat once, thickness squared |
+
+### 4. The coefficient is made up; the powers are the lesson
+
+The constant was chosen so 100 J/mm on 6 mm gives 3 mm. **Don't quote "3 mm" for a real weld.** Quote the **scaling**: heat to the first power, thickness squared.
+
+The page also notes that **weld sequence and clamping can matter as much as either.**
+
+### 5. Common shop ways to control distortion
+
+These are standard practice (beyond the page's model):
+
+- **Don't over-weld:** a bigger bead than needed is extra heat.
+- **Balance welds:** alternate sides so the pulls cancel.
+- **Intermittent or skip welding:** spread the heat out.
+- **Back-step welding:** short segments laid against the direction of travel.
+- **Clamp or fixture** while it cools.
+- **Pre-set:** bend it slightly the opposite way so it pulls back straight.
+
+### 6. The method
+
+1. **More heat → proportionally more bow.**
+2. **More thickness → bow falls with t².**
+3. For flatness, **thickness is the big lever**. A small heat tweak does much less.
+4. **Use sequence, balance and clamping** for the rest.
+
+**Try one:** using the teaching scaling (base: 100 J/mm, 6 mm → 3 mm bow):
+
+- (a) 6 mm plate at **150 J/mm**?
+- (b) **10 mm** plate at 100 J/mm?
+- (c) What thickness would **halve** the original bow at the same heat?
+
+You should get (a) **4.5 mm**; (b) 3 × (6/10)² ≈ **1.1 mm**; (c) t = 6 × √2 ≈ **8.5 mm**.## Manufacturing 201 · Lesson 5: Six motions, then stop
+
+This lesson is about **fixturing**: how to hold a part so it can't move while you cut it, using exactly enough contact points and no more. It's known as the **3-2-1 locating principle**.
+
+### 1. A free part has six ways to move
+
+| Slides | Turns |
+|---|---|
+| left–right | spin flat (about vertical) |
+| front–back | tip forward–back |
+| up–down | tip side to side |
+
+**Locating** means removing all six.
+
+### 2. The 3-2-1 rule
+
+| Face | Contacts | Removes |
+|---|---|---|
+| **Base** (primary) | **3** | up–down + both tips (3 motions) |
+| **Side** (secondary) | **2** | one slide + spin (2 motions) |
+| **End** (tertiary) | **1** | the last slide (1 motion) |
+| **Total** | **6** | **all 6** ✔ |
+
+**motions left = 6 − min(base, 3) − min(side, 2) − min(end, 1)**
+
+**Why three on the base?** Three points define a plane. A **three-legged stool never wobbles**, but a four-legged chair on an uneven floor rocks on whichever leg is high.
+
+### 3. What the animation shows (a block in a milling vise, seen from above)
+
+| Step | Contacts | Motions left |
+|---|---|---|
+| **1. Base** | 3 under | 3 left |
+| **2. Side, end** | + 2 on the side + 1 on the end | **0** ✔ |
+| **3. Fourth dot** | + a 4th on the base | **still 0**, and it removes nothing |
+
+**There is no seventh motion to take.** The extra contact just **argues** with the other three, and the part **rocks on the high one** (or gets distorted when clamped). That's over-constraint.
+
+### 4. The other mistake: too few
+
+**2 on the base + 2 on the side + 1 on the end = 5**, leaving **1 motion**: the part can still tip. "Almost located" isn't located.
+
+### 5. Locators vs clamps (general shop practice)
+
+- **Locators** (the 3-2-1 points) decide **where** the part sits.
+- **Clamps** push the part **against** the locators to hold it there. They shouldn't fight the locators or define the position themselves.
+
+Aim clamps at or near the locators so clamping force doesn't bend the part.
+
+### 6. The method
+
+1. **Base:** up to 3 contacts.
+2. **Side:** up to 2.
+3. **End:** 1.
+4. **Count:** motions left should be **zero**.
+5. **Point out any wasted contacts** (more than 3, 2 or 1 on a face). They add rocking, not location.
+
+**Try one:** how many motions are left, and are any contacts wasted?
+
+- (a) 3 on the base, 1 on the side, 1 on the end
+- (b) 4 on the base, 2 on the side, 1 on the end
+- (c) 3 on the base, 2 on the side, 0 on the end
+
+You should get (a) **1 left**: the part can still spin flat, because the side needs 2; (b) **0 left**, with **one wasted** base contact (rocking risk); (c) **1 left**: it can still slide along the side.
+
+---
+
+## Manufacturing 301 · Lesson 1: A larger hole may sit farther off
+
+This starts **Manufacturing 301**, opening with a GD&T idea (geometric dimensioning and tolerancing): **bonus tolerance**. It explains why a hole that's **bigger** is allowed to be **further off-centre**, but only when the drawing says so.
+
+### 1. The peg-and-hole idea
+
+A loose peg in a big hole can sit off-centre and still go in. A peg in a barely-big-enough hole has to be almost perfectly centred. **Extra size = extra room for position error.**
+
+### 2. Maximum material condition (MMC)
+
+**MMC is the size with the most material, which means the tightest fit:**
+
+| Feature | MMC |
+|---|---|
+| **Hole** | its **smallest** allowed size |
+| **Pin / shaft** | its **largest** allowed size |
+
+### 3. Position tolerance is a diameter
+
+A position callout like **⌀0.20** means the hole's **centre (axis)** must sit inside a **circle 0.20 mm across**, centred on the true position. That's a **radial** offset of at most **0.10 mm**, not 0.20.
+
+### 4. Bonus tolerance
+
+If the position is specified **at MMC** (the circled-M symbol on the drawing), then:
+
+**allowed zone ⌀ = stated tolerance + (actual size − MMC size)**
+
+The **bonus** is how much bigger than MMC the hole actually came out.
+
+### 5. What the animation shows
+
+Hole MMC = **10.00 mm**, position **⌀0.20 at MMC**.
+
+| Step | Hole size | Bonus | Zone ⌀ | Max radial offset |
+|---|---|---|---|---|
+| **1. MMC** | 10.00 | 0 | 0.20 | 0.10 mm |
+| **2. Bonus** | grows with size | | | |
+| **3. 10.2 mm** | 10.20 | **0.20** | **0.40** | **0.20 mm** |
+
+The drawing's 0.20 didn't change. The extra came from the **clearance** the bigger hole provides.
+
+### 6. Only if the drawing grants it
+
+- **At MMC** (Ⓜ symbol) → bonus allowed.
+- **RFS** (regardless of feature size, the default in current ASME practice when there's no modifier) → **no bonus**. The stated zone applies whatever the size.
+
+**Read the callout before spending the bonus.**
+
+### 7. Measuring the position error
+
+From measured x and y offsets of the hole centre:
+
+**position ⌀ = 2 × √(Δx² + Δy²)**
+
+Compare that with the allowed zone diameter.
+
+### 8. The method
+
+1. **Find MMC:** smallest hole or largest pin.
+2. **Check the callout:** is it at MMC (Ⓜ)?
+3. **Bonus = |actual size − MMC|.**
+4. **Allowed zone ⌀ = stated + bonus.**
+5. **Measured position ⌀ = 2√(Δx² + Δy²).** Pass if it's within the allowed zone.
+
+**Try one:** a hole is toleranced **8.00–8.30 mm** with position **⌀0.10 at MMC**. It measures **8.15 mm**, and its centre is off by **Δx = 0.06, Δy = 0.07 mm**.
+
+- (a) What's the bonus and the allowed zone?
+- (b) What's the measured position ⌀? Pass or fail?
+- (c) Would it pass if the callout were RFS (no bonus)?
+
+You should get (a) bonus 0.15, zone ⌀ **0.25**; (b) 2 × √(0.0036 + 0.0049) ≈ **⌀0.18**, which **passes**; (c) **fails**: 0.18 > 0.10.## Manufacturing 301 · Lesson 2: The surface is a fatigue input
+
+Materials lesson 17 gave fatigue strengths from test bars. This lesson adds a catch: **those bars were polished**. A real part's **surface finish** cuts its fatigue strength, sometimes by half.
+
+### 1. Why roughness matters for fatigue
+
+Fatigue cracks **start at the surface**, at tiny notches (Materials lessons 16–17). A rough surface (tool marks, forge scale, pits) is a **field of ready-made micro-notches**, like the scratch that snaps a glass. It skips part of the crack's "birth" stage.
+
+### 2. The surface factor
+
+**real fatigue strength = polished-bar value × surface factor**
+
+| Surface | Factor (teaching values) | 300 MPa steel becomes |
+|---|---|---|
+| **Polished** | 1.0 | **300 MPa** |
+| **Machined** | ~0.8 | **240 MPa** |
+| **Forged** (as-forged skin) | ~0.5 | **150 MPa** |
+
+**The alloy didn't change. Only the surface did.**
+
+### 3. What the animation shows
+
+| Step | What's shown |
+|---|---|
+| **1. Polished** | 300 MPa fatigue plateau (fully reversed loading), measured on a polished bar |
+| **2. Machined** | × 0.8 → 240 MPa |
+| **3. Forged** | × 0.5 → 150 MPa |
+| **4. Multiply** | apply the factor before claiming a fatigue life |
+
+### 4. Only for fatigue
+
+**Don't apply this to a one-time static yield check.** A single pull to yield doesn't care much about surface roughness. It's **repeated loading** that grows cracks from those notches.
+
+### 5. Stronger steels are punished more
+
+High-strength steels are **more notch-sensitive**, so a rough surface costs them a bigger fraction. These three factors are a teaching set for this 300 MPa steel. A harder steel would get lower factors.
+
+### 6. Practical notes (general practice)
+
+- **Polish or fine-finish the critical spots:** fillets, shoulders, where the bending stress peaks.
+- **Shot peening** leaves the surface in **compression**, which slows crack starts. It's often used on springs, gears and axles.
+- **As-welded toes and as-forged skins** are classic fatigue starting points.
+- Real design codes also apply other factors (part size, load type, temperature, reliability). Surface is just the first one.
+
+### 7. The method
+
+1. **Start from the polished-bar fatigue strength.**
+2. **Multiply by the surface factor** for the actual finish (and the steel's strength).
+3. **Compare with the stress amplitude** the part sees.
+4. **Leave it out of static yield checks.**
+
+**Try one:** using this 300 MPa steel and the page's factors, an axle sees a **220 MPa** fully reversed stress amplitude.
+
+- (a) Machined axle: what's the fatigue strength and the margin (MS)?
+- (b) Left with an **as-forged** surface?
+- (c) Does the surface finish change its **static** yield check?
+
+You should get (a) 240 MPa, MS = 240/220 − 1 ≈ **0.09** (passes, but thin); (b) 150 MPa, MS ≈ **−0.32**, so it **fails** in fatigue; (c) **no**, surface factors are for fatigue only.## Manufacturing 301 · Lesson 3: How long the arc stays
+
+This ties together the two earlier welding lessons. Both said "more heat per length" makes things worse (a wider HAZ, more bow). This lesson shows **where that heat comes from**, and that **travel speed** is often the knob that's moved.
+
+### 1. The lighter analogy
+
+Hold a lighter under one spot and it chars. Sweep it along and each spot barely warms. **The flame didn't get smaller. It just didn't stay.**
+
+### 2. Heat input per length
+
+**HI = (V × I) ÷ travel speed** (× arc efficiency η)
+
+- **V × I** = electrical power (watts = J/s)
+- **Travel speed** in mm/s → result in **J/mm**
+
+Shop shortcut with speed in mm/min: **HI (kJ/mm) = V × I × 60 ÷ (speed × 1,000)**. The 60 is seconds per minute and the 1,000 is J per kJ, not welding constants.
+
+### 3. What the animation shows (20 V, 150 A, one minute of arc)
+
+| Step | Travel | Distance in 1 min | Heat per mm |
+|---|---|---|---|
+| **1. Same arc** | | 3,000 W either way | |
+| **2. Travel** | 300 mm/min (5 mm/s) | 300 mm | 3,000 ÷ 5 = **0.60 kJ/mm** |
+| **3. Heat per mm** | 150 mm/min | 150 mm | **1.20 kJ/mm** |
+
+**Halve the travel speed and each millimetre gets twice the heat.** The current and voltage never changed.
+
+The page uses η = 1, an upper estimate. A real arc delivers less to the workpiece.
+
+### 4. Why it matters (from earlier lessons)
+
+| Doubling the heat input… | Effect |
+|---|---|
+| HAZ width (Mfg lesson 5) | grows about **√2 ≈ 1.4×** |
+| Distortion bow (Mfg 201 lesson 4) | about **2×** |
+
+**A welder who slows down to "get a better bead" can be quietly doubling the heat.**
+
+### 5. The method
+
+1. **Power = V × I.**
+2. **Convert travel** to mm/s.
+3. **HI = power ÷ speed** (× efficiency).
+4. **Check travel speed before turning up the current.**
+
+**Try one:**
+
+- (a) A weld runs at **22 V, 180 A, 250 mm/min**, with arc efficiency **0.8**. What's the heat input?
+- (b) At 20 V, 150 A (η = 1), what travel speed gives **0.50 kJ/mm**?
+- (c) A welder slows from 300 to 200 mm/min. By what factor does the heat input change?
+
+You should get (a) 3,960 W ÷ 4.17 mm/s ≈ 950 J/mm × 0.8 ≈ **0.76 kJ/mm**; (b) 3,000 ÷ 500 = 6 mm/s = **360 mm/min**; (c) **1.5×** more heat per mm.## Manufacturing 301 · Lesson 4: Yield is a product
+
+This lesson is about a **whole production line**: if every step is "pretty good," how many parts come out **perfect the first time**? Fewer than you'd think.
+
+### 1. The coin analogy
+
+A coin that lands well **98%** of the time:
+
+- 10 clean runs in a row: about **82%**
+- 40 clean runs in a row: **under half**
+
+That's **multiplication**, not an average of 98%.
+
+### 2. First-pass yield (FPY)
+
+**FPY = the chance a part survives every step = the product of each step's success rate**
+
+For n identical steps, each with defect chance p:
+
+**FPY = (1 − p)ⁿ**
+
+For different steps, just multiply: 0.99 × 0.95 × 0.98 ≈ **0.92**.
+
+### 3. What the animation shows (each step keeps 98%)
+
+| Step | Steps | FPY |
+|---|---|---|
+| **1. Each step** | 1 | 98% |
+| **2. 10 steps** | 10 | 0.98¹⁰ ≈ **82%** |
+| **3. 40 steps** | 40 | 0.98⁴⁰ ≈ **45%** |
+
+**No single step looked bad**, but more than half the parts need rework or scrap after 40 steps.
+
+### 4. Removing a step often beats tightening all of them
+
+Each step you add multiplies in another chance of failure. **Fewer steps** (combining operations, fewer setups, fewer parts in an assembly) can be worth more than squeezing a percent out of every step. **"A design that needs forty perfect things has a yield problem."**
+
+This connects to Engineering lesson 18 (fewer setups) and Manufacturing 201 lesson 5 (every re-fixture is a chance to mislocate).
+
+### 5. Independence is the hopeful case
+
+The formula assumes each step's defects are **unrelated**. In reality, defects often **cluster**: one root cause (a worn fixture, a bad batch of material) feeds several steps. Then the simple product can be wrong in either direction. **Look for shared causes** before trusting the number.
+
+### 6. The method
+
+1. **List the steps** and each one's success rate.
+2. **Multiply them**, never average.
+3. **Look for steps to remove** before tightening every step.
+4. **Check for shared causes** that break the independence assumption.
+
+**Try one:** a part goes through **20 steps at 98%** each.
+
+- (a) What's the first-pass yield?
+- (b) Option A: **remove 5 steps** (15 left at 98%). New FPY?
+- (c) Option B: keep 20 steps, but **improve every one to 98.5%**. New FPY?
+- (d) Which is easier in practice?
+
+You should get (a) 0.98²⁰ ≈ **67%**; (b) 0.98¹⁵ ≈ **74%**; (c) 0.985²⁰ ≈ **74%**, the same; (d) usually **removing 5 steps**, since improving all 20 processes takes far more effort and keeps all 20 sources of trouble.## Manufacturing 301 · Lesson 5: The bond between roads
+
+This lesson is about the **add** act (3D printing): why a printed part is **weaker in one direction**, and how part orientation decides whether that matters. It's the same idea as composites in Materials lesson 23.
+
+### 1. The paper-stack analogy
+
+A stack of papers glued together is strong if you pull a sheet **along its own plane**. Peel one sheet off the next and you're only fighting the **glue**. The paper didn't get weaker. You changed direction.
+
+### 2. A printed part is a stack
+
+FDM printing lays down **roads** (lines of melted plastic), layer on layer. Each new layer has to **fuse** to the one below, and that bond is usually weaker than the plastic itself.
+
+**strength between layers = strength along roads ÷ knockdown**
+
+### 3. What the animation shows
+
+| Step | Direction | Strength |
+|---|---|---|
+| **1. Print** | layers stacked | |
+| **2. Along** | pulling along the roads | **40 MPa** (the plastic itself) |
+| **3. Peel** | pulling layers apart | 40 ÷ 2 = **20 MPa** (the bond) |
+
+### 4. Knockdown = 1 is a claim, not a measurement
+
+A knockdown of 1 says "the layer bond is as strong as the plastic." **Only say that if you've tested it.** A default of about **2** is a reasonable starting assumption until you measure. Real values depend on material, temperature, speed and cooling.
+
+### 5. The load's direction picks the number
+
+- Load pulls **along** the roads → use **40**.
+- Load **peels** layers apart → use **20**.
+
+**Orientation is a design choice.** Printing a bracket on its side instead of upright can move the weak plane **off** the load path (Engineering lesson 7). Write **both the orientation and the knockdown** next to any strength you quote.
+
+### 6. The method
+
+1. **Find which way the load runs** relative to the layers.
+2. **Along roads:** full strength. **Across layers:** divide by the knockdown.
+3. **Use the measured knockdown**, or about 2 if you haven't measured it. Never 1 by default.
+4. **Consider re-orienting** the print so the main stress runs along the roads.
+
+**Try one:** a printed L-bracket's bending puts **15 MPa** of tension on the critical spot. You need a factor of safety of **2**. Road strength is 40 MPa, knockdown 2.
+
+- (a) Printed **upright**, that tension pulls the layers apart. Does it pass?
+- (b) Printed **flat**, the tension runs along the roads. Does it pass?
+
+You should get (a) the bond is 20 MPa, so FoS = 20/15 ≈ **1.33** → **fails**; (b) 40/15 ≈ **2.67** → **passes**. Same part, same plastic, just rotated on the print bed.
+
+---
+
+## Manufacturing 401 · Lesson 1: The slow station
+
+This starts **Manufacturing 401**, which moves from single parts to **whole production lines**. First idea: **a line runs at the speed of its slowest station.**
+
+### 1. The cafeteria analogy
+
+A cafeteria line moves at the pace of the **slowest server**. Hiring help at a station that was already waiting doesn't feed anyone faster.
+
+### 2. The rule
+
+For stations in a row:
+
+**throughput (parts/hour) = 3,600 ÷ slowest station time (seconds)**
+
+The slowest station is the **bottleneck** (or **constraint**). Speeding up any other station **doesn't change the rate**.
+
+### 3. What the animation shows
+
+Three stations: **20 s, 45 s, 30 s**
+
+| Step | Change | Times | Slowest | Rate |
+|---|---|---|---|---|
+| **1. As built** | | 20 / **45** / 30 | 45 s | **80/h** |
+| **2. Station 1** | 20 → 10 s | 10 / **45** / 30 | 45 s | **still 80/h** ✘ |
+| **3. Station 2** | 45 → 25 s | 20 / 25 / **30** | 30 s | **120/h** ✔ |
+| **4. Rate** | the constraint moved to station 3 | | | |
+
+**Speeding station 1 was wasted effort.** It was already sitting idle part of the time.
+
+**Once you fix the bottleneck, another station becomes the bottleneck.** Here the 30 s station is now in charge.
+
+### 4. Ways to relieve a bottleneck (general practice)
+
+- **Speed it up:** better tooling, faster cycle (watch tool life, Mfg 201 lesson 2)
+- **Add a parallel machine:** two 45 s machines side by side act like one 22.5 s station
+- **Move work** from the bottleneck to an idle station
+- **Never let it sit idle:** keep a small buffer of parts in front of it, schedule maintenance elsewhere
+
+An hour lost at the bottleneck is an hour lost for the whole line. An hour lost at an idle station costs almost nothing.
+
+### 5. What the model leaves out
+
+Real lines have **queues, breakdowns and variable cycle times**. This is the clean version of the idea: **work on the constraint.**
+
+### 6. The method
+
+1. **List the station times.**
+2. **Find the slowest.** That's the bottleneck.
+3. **Rate = 3,600 ÷ bottleneck time.**
+4. **Improve only the bottleneck**, then re-check which station is now slowest.
+
+**Try one:** four stations at **35, 50, 40, 25 s**.
+
+- (a) What's the line rate?
+- (b) You cut the 25 s station to 15 s. New rate?
+- (c) Instead, you add a **second parallel machine** at the 50 s station. New rate, and which station is the bottleneck now?
+- (d) What would it take to reach **100 parts/hour**?
+
+You should get (a) 3,600 ÷ 50 = **72/h**; (b) **still 72/h**; (c) that station becomes effectively 25 s, so the 40 s station is the bottleneck and the rate is **90/h**; (d) every station at **36 s or less**, so the 40 s station must also be improved.## Manufacturing 401 · Lesson 2: The tool divided by the count
+
+This revisits the volume economics from Engineering lesson 16, focusing on **how unit cost falls as the batch grows**.
+
+### 1. The cookie-cutter analogy
+
+A cookie cutter is expensive, but each cookie costs only a bit of dough and time. Bake **10** and the cutter is most of each cookie's cost. Bake **10,000** and it almost disappears.
+
+### 2. The formula
+
+**unit cost = recurring cost per part + tooling ÷ number of parts**
+
+| Cost | Behaviour |
+|---|---|
+| **Recurring** (material + machine minutes) | the same on **every** part, the floor that never moves |
+| **Tooling** (die, mould, fixture) | **shared** across the batch |
+
+### 3. What the animation shows
+
+Material **4.00** + cycle time **2.40** = **6.40** per part. Die = **8,000**.
+
+| Step | Batch | Tool per part | Unit cost |
+|---|---|---|---|
+| **1. Floor** | | | 6.40 (never moves) |
+| **2. 100 parts** | 100 | 80.00 | **86.40** |
+| **3. More parts** | 1,000 | 8.00 | 14.40 |
+| **4. 10,000 parts** | 10,000 | 0.80 | **7.20** |
+
+**The press didn't get faster.** The tool was just shared across more parts.
+
+### 4. The lesson: compare at your actual quantity
+
+**An expensive die is a bad idea at 100 parts and an obvious one at 10,000.** Never compare two processes at one quantity and call the answer general.
+
+**Crossover** between a tooled process and an untooled one:
+**N = tooling ÷ (untooled cost per part − tooled recurring cost per part)**
+
+### 5. What this simple model leaves out
+
+- **Learning:** in real life the 100th part is usually faster than the 1st.
+- **Scrap:** this doesn't divide by yield. Realistically, **cost per good part ≈ unit cost ÷ first-pass yield** (Mfg 301 lesson 4).
+
+### 6. The method
+
+1. **Recurring cost** = material + cycle cost per part.
+2. **Add tooling ÷ quantity.**
+3. **Compare processes at the quantity you'll really make.**
+4. **Find the crossover** if the quantity is uncertain.
+
+**Try one:** the die process above (8,000 tooling + 6.40 per part) vs **CNC machining** at **25.00 per part** with no tooling.
+
+- (a) Which is cheaper at **200** parts?
+- (b) At **2,000** parts?
+- (c) What's the crossover quantity?
+- (d) At 10,000 parts with an **82%** first-pass yield, roughly what's the cost per *good* die-made part?
+
+You should get (a) die = 6.40 + 40 = 46.40 vs CNC 25.00, so **CNC**; (b) die = 6.40 + 4 = **10.40**, so **die**; (c) 8,000 ÷ (25 − 6.40) ≈ **430 parts**; (d) 7.20 ÷ 0.82 ≈ **8.78**.## Manufacturing 401 · Lesson 3: Parts you can delete
+
+This lesson is about **design for assembly (DFA)**: each extra part costs handling time, so **fewer parts usually means faster, cheaper assembly**, as long as the product still works.
+
+### 1. The toy analogy
+
+A toy held together with **twelve screws** takes longer to assemble than one held by **two snaps**, even if the screws are cheap. Most of the time goes into **picking up and placing**, not the price of the part.
+
+### 2. The teaching model
+
+**assembly time = base time + time per extra part × (parts − 1)**
+
+With **20 s base** and **8 s per extra part**.
+
+### 3. What the animation shows
+
+| Step | Parts | Calculation | Time |
+|---|---|---|---|
+| **1. 6 parts** | 6 | 20 + 5 × 8 | **60 s** |
+| **2. 3 parts** | 3 | 20 + 2 × 8 | **36 s** |
+| **3. Delete** | | | **24 s saved** |
+
+Each deleted part is **one 8 s handling** you no longer do.
+
+### 4. Delete only what the function doesn't need
+
+**The formula counts parts, not function.** It doesn't check whether the joint still holds.
+
+**Example:** replacing three screws with one snap saves 16 s, and **might ruin the joint**. Checking strength (Engineering lessons 13–14) is still your job.
+
+**A common DFA test** (from standard DFA practice): a part needs to stay separate only if:
+
+- it **moves** relative to the parts around it
+- it must be a **different material** (insulator, seal, wear surface)
+- it must come apart for **assembly, service or replacement**
+
+If none of those apply, it's a candidate to **merge** into a neighbouring part.
+
+### 5. Bonus: fewer parts helps yield too
+
+Every part is another handling step and another chance of a defect. **Fewer parts = higher first-pass yield** (Mfg 301 lesson 4).
+
+### 6. The method
+
+1. **Count the parts.**
+2. **For each one, ask:** does it move, does it need a different material, does it need to come off for service?
+3. **If not, try merging or deleting it.**
+4. **Recompute assembly time.**
+5. **Verify** the joint and function still hold.
+
+**Try one:** a bracket assembly has **9 parts**: a bracket, a plate, 4 bolts, 2 washers and a spacer.
+
+- (a) What's the assembly time?
+- (b) A redesign merges the spacer into the bracket and uses 2 flanged bolts (no washers), leaving **5 parts**. New time?
+- (c) At **10,000 assemblies a year**, how many hours does that save?
+- (d) What must you check before approving it?
+
+You should get (a) 20 + 8 × 8 = **84 s**; (b) 20 + 4 × 8 = **52 s**; (c) 32 s × 10,000 ≈ **89 hours**; (d) that **2 bolts** carry the load with margin (bolt shear and bearing, Engineering lessons 8 and 14), and that the flanged bolts spread the clamping load like the washers did.## Manufacturing 401 · Lesson 4: Scrap you already paid for
+
+The last lesson in 301 showed yield falls as steps multiply. This lesson puts a **price** on it: scrapped parts were already paid for, so **the good parts have to carry that cost**.
+
+### 1. The bakery analogy
+
+Bake 100 loaves and throw 20 away. **All 100** used flour and oven time. The 80 you sell carry the cost of all 100, so each costs **more** than one loaf's ingredients.
+
+### 2. The rule
+
+**cost per good part = process cost per part ÷ yield**
+
+**Divide, don't subtract.** Taking 20% off the cost ("10 − 2 = 8") pretends the scrap **saved** you money.
+
+### 3. What the animation shows
+
+Every part costs **10** to process.
+
+| Step | What's shown |
+|---|---|
+| **1. Process** | 10 parts × 10 = **100 spent** |
+| **2. Scrap** | 8 good ship, 2 scrapped |
+| **3. Divide** | 100 ÷ 8 = 10 ÷ 0.80 = **12.50 per good part** (not 8) |
+
+**At 95% yield:** 10 ÷ 0.95 ≈ **10.53**.
+
+### 4. What improving yield is worth
+
+**saving per good part = cost ÷ old yield − cost ÷ new yield**
+
+80% → 95%: 12.50 − 10.53 ≈ **1.97 per part**. Multiply by annual volume and you have the budget that justifies a better fixture, tool or inspection.
+
+### 5. Rework is a third path
+
+This calculation assumes bad parts are **thrown away**, losing the full process cost. If a bad part can be **reworked**, it costs somewhere between nothing and a full remake. **Say so** if rework exists, and calculate it separately.
+
+### 6. The method
+
+1. **Process cost per part** (every part started).
+2. **Divide by yield** → cost per good part.
+3. **Value a yield improvement** as the difference, times volume.
+4. **If rework exists**, handle it explicitly. Don't use the pure division.
+
+**Try one:**
+
+- (a) A part costs **15** to process with **90%** yield. What's the cost per good part?
+- (b) A new fixture raises yield to **98%**. What's the saving per good part, and per year at **20,000** good parts?
+- (c) Back at 90% yield: suppose **7 of the 10** bad parts per 100 can be **reworked for 4 each** (the other 3 are scrapped). What's the cost per good part now?
+
+You should get (a) 15 ÷ 0.90 ≈ **16.67**; (b) 15 ÷ 0.98 ≈ 15.31, saving ≈ **1.36 per part**, about **27,000 per year**; (c) per 100 started: 1,500 + 7 × 4 = 1,528 spent for 97 good parts ≈ **15.75 each**.## Manufacturing 401 · Lesson 5: The pace already set
+
+Lesson 1 found the line's speed (the bottleneck). This lesson asks the other half: **how fast does the line *need* to go?** That pace comes from **customer demand**, not from the machines.
+
+### 1. The bakery analogy
+
+You owe **50 loaves** in a **400-minute** morning, so that's one loaf every **8 minutes**, like it or not. Owe **200** and it's one every **2 minutes**. An oven that takes 4 minutes per loaf is **early** for the first order and **late** for the second.
+
+### 2. Takt time
+
+**takt = available minutes ÷ parts owed**
+
+- **Takt** = the pace demand sets
+- **Cycle time** = how long the station actually takes
+
+| Comparison | Meaning |
+|---|---|
+| cycle **<** takt | **slack** each part |
+| cycle **=** takt | exactly on pace |
+| cycle **>** takt | **late** by (cycle − takt) on **every** part, and it **stacks up** |
+
+### 3. What the animation shows
+
+400 minutes available, a **4-minute** station.
+
+| Step | Demand | Takt | vs 4-min station |
+|---|---|---|---|
+| **1. 50 parts** | 50 | 400 ÷ 50 = **8 min** | **4 min slack** each ✔ |
+| **2. 200 parts** | 200 | 400 ÷ 200 = **2 min** | **2 min late** on every part ✘ |
+| **3. Compare** | 100 parts | 4 min | exactly on pace |
+
+### 4. Don't speed up a station that's already inside takt
+
+At 50 parts, making the 4-minute station faster **doesn't serve the customer**. They only need one every 8 minutes. If a station is **outside** takt, nothing else on the line will hide it.
+
+### 5. Putting 401 together
+
+- **Lesson 1:** the line runs at its **bottleneck**.
+- **Lesson 5:** the customer needs **takt**.
+- **The line meets demand only if the bottleneck time ≤ takt.**
+- **Lesson 4:** if yield is less than 100%, you must **start more parts** than you owe, which tightens takt.
+
+### 6. The method
+
+1. **Available time:** shift time minus breaks and planned stops.
+2. **Takt = available ÷ demand** (divide demand by yield if there's scrap).
+3. **Compare every station's cycle with takt**, especially the bottleneck.
+4. **Report slack or late per part.**
+5. **Fix stations over takt** (parallel machines, move work). Leave the ones under it alone.
+
+**Try one:** an 8-hour shift with **30 minutes of breaks**. Demand: **90 parts**. Three stations at **4, 6 and 3 minutes**.
+
+- (a) What's the takt?
+- (b) Which station is late, by how much per part, and how many parts short is the shift?
+- (c) With a **95%** first-pass yield, what does takt become?
+- (d) What's one fix?
+
+You should get (a) 450 ÷ 90 = **5 min**; (b) the **6-minute** station is 1 min late per part, and it can only make 450 ÷ 6 = 75, so **15 short**; (c) you must start about 95 parts, so takt ≈ 450 ÷ 95 ≈ **4.7 min**; (d) add a **parallel machine** at the 6-minute station (effectively 3 min), or move some of its work to the 3-minute station.
+
+---
+
