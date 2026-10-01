@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PASS_AT, type Lesson } from "@/course/types";
+import { SectionContinuation } from "@/components/section-continuation";
 import { ConceptHelp } from "@/components/concept-help";
 import { LessonSections } from "@/components/lesson-sections";
 import { Button } from "@/components/ui/button";
@@ -59,6 +60,7 @@ export function Quiz({
     const passed = correct >= need;
     return (
       <div className="border-t border-line pt-8">
+        {passed && !next ? <SectionContinuation track={lesson.track} /> : null}
         <p className="font-serif text-3xl text-ink">
           {correct} of {lesson.checks.length}.
         </p>

@@ -528,7 +528,7 @@ export const concepts: Record<string, { title: string; body: string }> = {
   },
   margin: {
     title: "Static margin",
-    body: "Static margin is how far the neutral point sits behind the center of gravity, divided by the chord. This shop calls 5% to 25% stable. Ahead of that, the nose wants to keep pitching. Behind it, the glider is sluggish.",
+    body: "Static margin is how far the neutral point sits behind the center of gravity, divided by the chord. The target is 5% to 25%. Below 5%, restoring stability is weak and the glider is twitchy; below zero, it is statically unstable. Above 25%, the CG sits too far forward and the glider is nose-heavy and sluggish.",
   },
   lift: {
     title: "Lift",

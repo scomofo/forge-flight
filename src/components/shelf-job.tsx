@@ -82,7 +82,7 @@ export function ShelfJob({
 
       <section>
         <h2 className="font-serif text-2xl text-ink">Requirements</h2>
-        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">All three are screens. They are not a score you can average.</p>
+        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">All three are screens. They are not a score you can average. If no thickness works for a material, the screens have eliminated it. Try another material instead of searching indefinitely.</p>
         <ul className="mt-4">
           <Requirement
             name="Strength"
@@ -252,8 +252,8 @@ export function ShelfJob({
               : "Not yet. You need 3 of 4. The locked board still meets the brief. Retake the questions and use the reasons."}
           </p>
           {correct >= PASS_AT ? (
-            <Link to="/" className="mt-6 inline-flex min-h-11 items-center text-ink">
-              Back to the course
+            <Link to="/learn/$trackId" params={{ trackId: "manufacturing" }} className="mt-6 inline-flex min-h-11 items-center text-ink">
+              Next section: Manufacturing →
             </Link>
           ) : (
             <Button

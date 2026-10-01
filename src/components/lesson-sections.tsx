@@ -1,10 +1,12 @@
+import { LessonBlocks } from "@/components/lesson-walkthrough";
 import type { ConceptHelpSection } from "@/course/types";
 
 /** Shared readable sections for the lesson and its optional explanations. */
-export function LessonSections({ sections }: { sections: ConceptHelpSection[] }) {
+export function LessonSections({ sections, hideHeading = false }: { sections: ConceptHelpSection[]; hideHeading?: boolean }) {
   return <div className="mt-5 flex min-w-0 flex-col gap-6">
     {sections.map(section => <section key={section.heading}>
-      <h4 className="text-base font-semibold text-ink">{section.heading}</h4>
+      {!hideHeading ? <h4 className="text-base font-semibold text-ink">{section.heading}</h4> : null}
+      {section.blocks ? <div className="mt-3"><LessonBlocks blocks={section.blocks} label={section.heading} /></div> : null}
       {section.body ? <p className="mt-2 max-w-prose leading-relaxed text-muted">{section.body}</p> : null}
       {section.items?.length ? <ul className="mt-3 list-disc space-y-2 pl-5 leading-relaxed text-muted">
         {section.items.map(line => <li key={line}>{line}</li>)}

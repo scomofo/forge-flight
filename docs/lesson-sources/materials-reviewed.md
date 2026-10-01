@@ -2573,7 +2573,7 @@ Name the failure mode **from the evidence**, then let the numbers confirm it:
 Can you carry a number across each of these without notes?
 
 - **Grain size → strength** (Hall–Petch)
-- **Temperature → D → case depth** (Arrhenius → 2√(Dt))
+- **Temperature → D → concentration profile → case depth at a stated concentration** (Arrhenius → Fick’s solution). **2√(Dt) is a characteristic diffusion length**, not the concentration-defined case depth.
 - **Phase diagram → tie line → fractions** (lever rule, **opposite** arm)
 - **Load → moment → stress and deflection → margin** (the spar)
 - **Test data → mean − 2s → ÷ FoS → allowable**

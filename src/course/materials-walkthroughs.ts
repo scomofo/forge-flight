@@ -8057,7 +8057,7 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
                 "text": "**Grain size → strength** (Hall–Petch)"
               },
               {
-                "text": "**Temperature → D → case depth** (Arrhenius → 2√(Dt))"
+                "text": "**Temperature → D → concentration profile → case depth at a stated concentration** (Arrhenius → Fick’s solution). **2√(Dt) is a characteristic diffusion length**, not the concentration-defined case depth."
               },
               {
                 "text": "**Phase diagram → tie line → fractions** (lever rule, **opposite** arm)"

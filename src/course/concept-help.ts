@@ -7,7 +7,7 @@ type RegistryEntry = Omit<ConceptHelp, "trigger"> & { trigger: string };
 export const conceptHelpRegistry: Record<string, RegistryEntry> = {
   ...pendulumConceptHelp,
   "equality-addition": {
-    trigger: "Explain this",
+    trigger: "Why equality is preserved",
     title: "Addition property of equality",
     intro: "If two expressions are equal, adding the same amount to both sides keeps them equal. This is one of the basic rules that lets you solve equations.",
     sections: [

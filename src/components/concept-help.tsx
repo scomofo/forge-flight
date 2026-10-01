@@ -45,11 +45,11 @@ export function ConceptHelp({ help }: { help: IdeaHelp[] }) {
               style={{ maxHeight: "min(70dvh, 36rem, var(--radix-popover-content-available-height))" }}
               className="z-50 w-[min(92vw,34rem)] max-w-[calc(100vw-2rem)] overflow-y-auto overscroll-contain break-words rounded-xl border border-line bg-bg p-5 shadow-xl"
             >
-              <p className="text-sm font-medium text-accent">Explain this</p>
+              <p className="text-sm font-medium text-accent">Further detail</p>
               <h3 className="mt-1 font-serif text-2xl leading-tight text-ink">{item.title}</h3>
-              <p className="mt-3 leading-relaxed text-ink">{item.intro}</p>
+              {item.intro ? <p className="mt-3 leading-relaxed text-ink">{item.intro}</p> : null}
 
-              <LessonSections sections={item.sections} />
+              <LessonSections sections={item.sections} hideHeading={item.sections.length === 1 && item.sections[0].heading === item.title} />
 
               {item.caution ? (
                 <div className="mt-5 rounded-lg border border-line bg-surface px-4 py-3">

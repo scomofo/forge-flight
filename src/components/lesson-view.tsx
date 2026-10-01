@@ -1,13 +1,16 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
+import { SectionContinuation } from "@/components/section-continuation";
+import { nextManufacturingSection } from "@/course/section-navigation";
 import { Bench } from "@/components/bench";
 import { ExampleInputs } from "@/components/example-inputs";
 import { getExampleContext } from "@/course/example-context";
 import type { ExampleContext } from "@/course/types";
 import { ConceptHelp } from "@/components/concept-help";
 import { LessonSections } from "@/components/lesson-sections";
-import { LessonWalkthroughPanel } from "@/components/lesson-walkthrough";
-import { materialsWalkthroughs } from "@/course/materials-walkthroughs";
+import { EnrichmentAt, LessonPractice } from "@/components/lesson-enrichment";
+import { getLessonEnrichment } from "@/course/lesson-enrichment";
+import type { LessonEnrichment } from "@/course/enrichment-types";
 import { LessonClip } from "@/components/lesson-clip";
 import { lessonFigures } from "@/components/figures";
 import { Quiz } from "@/components/quiz";
@@ -23,7 +26,7 @@ const steps = [
   },
   {
     label: "Try",
-    guide: "Use the bench to watch the rule work. Nothing new here — just the same rule with numbers you can change.",
+    guide: "Work through the practice, then use the bench to explore the rule with numbers you can change.",
   },
   {
     label: "Check",
@@ -133,7 +136,7 @@ function legacyReadFlow(): LessonReadBlock[] {
   ];
 }
 
-function ReadFlow({ lesson }: { lesson: Lesson }) {
+function ReadFlow({ lesson, enrichment }: { lesson: Lesson; enrichment?: LessonEnrichment }) {
   const flow = lesson.readFlow ?? legacyReadFlow();
   return (
     <div>
@@ -151,6 +154,7 @@ function ReadFlow({ lesson }: { lesson: Lesson }) {
               {idea.formulaNote ? <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">{idea.formulaNote}</p> : null}
               {idea.sections?.length ? <LessonSections sections={idea.sections} /> : null}
               {idea.help?.length ? <ConceptHelp help={idea.help} /> : null}
+              <EnrichmentAt enrichment={enrichment} at={`idea-${block.idea}`} />
             </section>
           );
         }
@@ -158,6 +162,7 @@ function ReadFlow({ lesson }: { lesson: Lesson }) {
           return (
             <div key={`example-${i}`} className="mt-8">
               <Example text={lesson.example} heading={block.heading} help={lesson.exampleHelp} context={getExampleContext(lesson.track, lesson.id)} />
+              <EnrichmentAt enrichment={enrichment} at="example" />
             </div>
           );
         }
@@ -165,6 +170,7 @@ function ReadFlow({ lesson }: { lesson: Lesson }) {
           return (
             <div key={`move-${i}`} className="mt-4">
               <Move text={lesson.use} heading={block.heading} />
+              <EnrichmentAt enrichment={enrichment} at="move" />
             </div>
           );
         }
@@ -188,7 +194,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
   const need = lesson.passAt ?? PASS_AT;
   const { prev, next } = lessonNeighbors(lesson.track, lesson.id);
   const Figure = lessonFigures[key];
-  const walkthrough = lesson.track === "materials" ? materialsWalkthroughs[lesson.id] : undefined;
+  const enrichment = getLessonEnrichment(lesson);
 
   useEffect(() => {
     visit(key);
@@ -237,8 +243,8 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
 
       {step === 0 ? (
         <div>
-          {walkthrough ? <LessonWalkthroughPanel key={key} walkthrough={walkthrough} /> : null}
-          <ReadFlow lesson={lesson} />
+          <EnrichmentAt enrichment={enrichment} at="opening" />
+          <ReadFlow lesson={lesson} enrichment={enrichment} />
           <button
             type="button"
             onClick={() => setStep(1)}
@@ -251,6 +257,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
 
       {step === 1 ? (
         <div className="pt-8">
+          {enrichment?.practice ? <LessonPractice key={key} practice={enrichment.practice} /> : null}
           <Move text={lesson.use} />
           <div className="mt-8">
             <Bench key={`${lesson.track}/${lesson.id}`} id={lesson.bench} />
@@ -296,6 +303,8 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
           >
             {next.title} →
           </Link>
+        ) : nextManufacturingSection(lesson.track) ? (
+          <SectionContinuation track={lesson.track} />
         ) : isIntroTrack(lesson.track) ? (
           <Link to="/learn/job" className="min-h-11 text-right text-ink">
             The shelf job →

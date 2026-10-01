@@ -5,3 +5,4 @@
 
 # Preserve the supplied teaching source byte-for-byte, including CRLF.
 docs/lesson-sources/materials.txt -text -diff
+docs/lesson-sources/manfu.txt -text -diff

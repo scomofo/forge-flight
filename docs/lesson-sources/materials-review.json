@@ -451,6 +451,12 @@
       "reason": "Do not claim a beyond-geometry crack model clears fracture.",
       "before": "- **Fracture:** the critical crack size comes out larger than the part itself, which means fracture isn't a concern **for this load**. It's not an inspection approval.",
       "after": "- **Fracture:** a predicted critical crack larger than the section warns that the ideal large-plate crack model is outside its geometric range. Check finite-section failure, defects and the material-specific mode; this is not an inspection approval."
+    },
+    {
+      "lesson": 30,
+      "reason": "Keep the mastery reminder consistent with the concentration-defined case depth in lesson 8.",
+      "before": "**Temperature → D → case depth** (Arrhenius → 2√(Dt))",
+      "after": "**Temperature → D → concentration profile → case depth at a stated concentration** (Arrhenius → Fick’s solution). **2√(Dt) is a characteristic diffusion length**, not the concentration-defined case depth."
     }
   ],
   "notes": {
