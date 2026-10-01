@@ -1,0 +1,49 @@
+name: Curriculum verification audit
+on:
+  pull_request:
+    paths:
+      - 'src/course/**'
+      - 'src/forge/**'
+      - 'src/components/**'
+      - 'scripts/**'
+      - 'docs/**'
+      - '.github/workflows/curriculum-audit.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Capture exact source for reproducible review
+        run: |
+          mkdir -p artifacts/curriculum-audit
+          git rev-parse HEAD > artifacts/curriculum-audit/revision.txt
+          git archive --format=zip --output=artifacts/curriculum-audit/audit-source.zip HEAD src scripts docs AGENTS.md package.json package-lock.json tsconfig.json vite.config.ts eslint.config.mjs .github
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: curriculum-audit-source
+          path: artifacts/curriculum-audit/
+          retention-days: 7
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Baseline registered tests
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee artifacts/curriculum-audit/registered-tests.txt
+      - name: Discover every course and simulation test
+        run: |
+          set -o pipefail
+          find src/course src/forge -name '*.test.ts' -print0 | sort -z | xargs -0 node --experimental-strip-types --test 2>&1 | tee artifacts/curriculum-audit/discovered-tests.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: curriculum-audit-results
+          path: artifacts/curriculum-audit/*tests.txt
+          retention-days: 7
