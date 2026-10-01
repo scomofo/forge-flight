@@ -1,0 +1,71 @@
+name: Curveread desktop regression
+on:
+  pull_request:
+    paths:
+      - 'src/course/**'
+      - 'src/components/**'
+      - 'scripts/**'
+      - 'package*.json'
+      - '.github/workflows/curveread-desktop.yml'
+permissions:
+  contents: read
+jobs:
+  desktop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Capture reproducible diagnostic workspace
+        run: |
+          mkdir -p artifacts/curveread-workspace
+          git archive --format=zip --output=artifacts/curveread-workspace/source.zip HEAD
+          git rev-parse HEAD > artifacts/curveread-workspace/revision.txt
+          tar -czf artifacts/curveread-workspace/dependencies.tar.gz node_modules
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: curveread-diagnostic-workspace
+          path: artifacts/curveread-workspace/
+          retention-days: 1
+          compression-level: 0
+      - run: npx playwright install --with-deps chromium
+      - name: Diagnose repeated desktop curveread navigation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/browser-curriculum-audit.mjs')
+          s = p.read_text()
+          s = s.replace("const benches = await registeredBenches();", "const benches = Array(300).fill('curveread');")
+          s = s.replace("for (const lesson of lessons)", "for (const lesson of [])")
+          s = s.replace("for (const mission of missions)", "for (const mission of [])")
+          s = s.replace("[['desktop', 1280, 900], ['mobile', 390, 844]]", "[['desktop', 1280, 900]]")
+          s = s.replace("createRoot(document.getElementById('root')!).render", "(window as any).__audit.router=router;createRoot(document.getElementById('root')!).render")
+          s = s.replace("const page = await ctx.newPage(), errors = [];", """const page = await ctx.newPage(), errors = [];
+              page.__diagnostics = [];
+              for (const event of ['console', 'pageerror', 'requestfailed', 'response']) page.on(event, x => {
+                if (event === 'response' && x.status() < 400) return;
+                const detail = event === 'console' ? { type: x.type(), text: x.text() } : event === 'response' ? { url: x.url(), status: x.status() } : event === 'requestfailed' ? { url: x.url(), error: x.failure() } : { message: x.message };
+                page.__diagnostics.push({ event, ...detail });
+              });""")
+          s = s.replace("const begin = checks.length;", "const begin = checks.length; if (page.__diagnostics) page.__diagnostics.length = 0;")
+          s = s.replace("failures.push(detail); cases.push", """detail.diagnostics = page.__diagnostics;
+              detail.state = await page.evaluate(() => {
+                const r = window.__audit?.router;
+                return { readyState: document.readyState, root: document.getElementById('root')?.innerHTML, auditReady: !!window.__audit, router: r ? { status: r.state.status, isLoading: r.state.isLoading, matches: r.state.matches.map(m => ({ id:m.id,status:m.status,error:String(m.error || '') })), pendingMatches: r.state.pendingMatches?.map(m => ({ id:m.id,status:m.status,error:String(m.error || '') })) } : null };
+              }).catch(e => ({ error: String(e) }));
+              failures.push(detail); cases.push""")
+          Path('scripts/__curveread_diagnose.mjs').write_text(s)
+          PY
+          node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/__curveread_diagnose.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: curveread-desktop-results
+          path: artifacts/curriculum-audit/browser/
+          retention-days: 7
