@@ -152,7 +152,7 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
   };
   await openTrigHelp('Work through the 30° brace','Choose the ratio from the two sides',['24 in','13.9 in','27.7 in'],'trig-brace-help');
   await openTrigHelp('What does one radian mean?','A radian is one radius along the circle',['57.3°','without slipping','15.7 in'],'trig-radian-help');
-  await openTrigHelp('Which calculator mode should I use?','Match the angle unit to the calculation',['−0.428','180/π','2 × 30° = 60°'],'trig-mode-help');
+  await openTrigHelp('Which calculator mode should I use?','Match the angle unit to the calculation',['−0.428','π/180','2 × 30° = 60°'],'trig-mode-help');
   await openTrigHelp('What if the angle is a little wrong?','How an angle error changes the components',['pounds-force','529.9 lbf','34°'],'trig-measurement-help');
   await openTrigHelp('Work through the two pulls','Turn two pulls into one resultant',['Rx = 650','259.8','do not oppose each other']);
   await page.getByRole('tab',{name:/2 Try/}).click();
