@@ -21,6 +21,9 @@ import {
   type CostTerms,
 } from "@/forge/sim/formulas";
 import { hashCanon } from "@/forge/sim/hash";
+import { designInputErrors } from "@/forge/sim/input-validation";
+
+export const MODEL_REVISION = "hangar-full-span-2026-10-01";
 
 export type LoadInput = { id: string; kind: LoadKind; magnitude_N: number; k: number };
 
@@ -108,6 +111,8 @@ export type AeroResult = {
 };
 
 export type Evaluation = {
+  validInputs: boolean;
+  modelWarnings: string[];
   mass_g: number;
   vehicleMass_g: number;
   minSafetyFactor: number;
@@ -157,7 +162,9 @@ function section(part: PartInput): { area: number; inertia: number; c: number; l
     const span = n(part.params, "span_mm") * MM;
     const chord = n(part.params, "chord_mm") * MM;
     const thick = n(part.params, "thickness_mm") * MM;
-    const length = span / 2;
+    // Only the full-span, lift-fed wing consists of two half-span cantilevers.
+    // A standalone fin uses its full root-to-tip span; a bay uses rail spacing.
+    const length = part.liftFed ? span / 2 : span;
     return {
       area: chord * thick,
       inertia: rectangleInertia(chord, thick),
@@ -261,13 +268,36 @@ function glidePoints(mass_kg: number, rho: number, g: number, s: number, cd0: nu
   return points;
 }
 
+/** Identity used by both the worker and the UI when accepting completed work. */
+export function evaluationInputHash(input: DesignInput, materials: Material[], processTable: Process[]): string {
+  return hashCanon({ modelRevision: MODEL_REVISION, input, materials, processes: processTable });
+}
+export function analysisInputHash(kind: AnalysisKind, input: DesignInput, materials: Material[], processTable: Process[]): string {
+  return hashCanon({ kind, hash: evaluationInputHash(input, materials, processTable) });
+}
+
 export function evaluate(input: DesignInput, materials: Material[], processTable: Process[]): Evaluation {
+  const inputHash = evaluationInputHash(input, materials, processTable);
+  const errors = designInputErrors(input, materials, processTable);
+  if (errors.length) return {
+    validInputs: false, modelWarnings: errors, inputHash,
+    mass_g: 0, vehicleMass_g: 0, minSafetyFactor: 0, maxUtilization: 0, maxDeflection_mm: 0,
+    cost: null, recommended: null, quotes: [], dfmScore: 0, dfmChecks: [], incompatible: errors,
+    parts: [], aero: null, modal_hz: null, resonance: false, thrustToWeight: null,
+    passStress: false, passBuckling: false, passMass: false, passCost: false,
+    passDeflection: false, passDfm: false, passAero: false, passStability: false,
+    assumptions: ["No result is valid until the input errors are corrected."],
+    failures: [{ mode: "invalid_input", location: "design", utilization: 0, explanationId: "inertia" }],
+  };
+  const modelWarnings: string[] = [];
   const assumptions = [
     "Educational model. Not a certification, a drawing release, or a safety case.",
     "Linear elastic. Small-deflection beam formulas. No stress concentration.",
     "Cantilever tip deflection is FL³/(3EI). A simply supported center load uses FL³/(48EI).",
     "Euler buckling uses P_cr = π²EI/(KL)². The load case carries its own K.",
-    "A plate wing is checked as a cantilever of length = half span, with half the lift as a tip force. Spread-out lift would moment the root less.",
+    "Only a lift-fed full wing uses half span. Standalone fins use full root-to-tip span; a center-loaded plate uses full support spacing.",
+    "Loads are separate screening cases, not simultaneous vector loads. Axial inputs are compressive magnitudes; combined-load interaction is not calculated.",
+    "Temperature is recorded, but these room-temperature material constants do not vary with it. Cost quotes cover the primary part only, not an assembled vehicle.",
   ];
 
   const incompatible: string[] = [];
@@ -352,7 +382,7 @@ export function evaluate(input: DesignInput, materials: Material[], processTable
     }
     for (const load of loads) {
       if (load.kind === "axial") {
-        axial += load.magnitude_N;
+        axial = Math.max(axial, load.magnitude_N);
         const sig = axialStress(load.magnitude_N, Math.max(row.sec.area, 1e-12)) / 1e6;
         stress = Math.max(stress, sig);
         const pcr = eulerBuckling(e, row.sec.inertia, load.k, Math.max(row.sec.length, 1e-6));
@@ -370,6 +400,9 @@ export function evaluate(input: DesignInput, materials: Material[], processTable
         const defl = simplySupportedCenterDeflection(load.magnitude_N, row.sec.length, e, Math.max(row.sec.inertia, 1e-18));
         deflection = Math.max(deflection, defl * 1000);
       }
+    }
+    if (deflection > row.sec.length * 1000 * 0.1) {
+      modelWarnings.push(`${row.part.name}: linear-model sag exceeds 10% of the modeled span. Treat it as an out-of-domain warning, not a physical deflection prediction. This classroom screen is not a general accuracy guarantee below 10%.`);
     }
     const sf = safetyFactor(allowable, stress);
     const util = utilization(stress, allowable);
@@ -438,9 +471,9 @@ export function evaluate(input: DesignInput, materials: Material[], processTable
   const passStress = partResults.every((p) => p.safetyFactor + 1e-9 >= needSf);
   const passBuckling = partResults.every((p) => p.buckling_N === null || p.axial_N * needSf <= p.buckling_N);
   const passMass = input.limits.maxMass_g === undefined || mass_g <= input.limits.maxMass_g + 1e-6;
-  const passCost = input.limits.maxCost_usd === undefined || !selected || selected.terms.unit <= input.limits.maxCost_usd + 1e-6;
-  const passDeflection = input.limits.maxDeflection_mm === undefined || maxDefl <= input.limits.maxDeflection_mm + 1e-6;
-  const passDfm = incompatible.length === 0 && scored + 1e-6 >= (input.limits.dfmScoreMin ?? 70) && dfmChecks.every((c) => c.severity !== "error" || c.pass);
+  const passCost = selected !== null && (input.limits.maxCost_usd === undefined || selected.terms.unit <= input.limits.maxCost_usd + 1e-6);
+  const passDeflection = modelWarnings.length === 0 && (input.limits.maxDeflection_mm === undefined || maxDefl <= input.limits.maxDeflection_mm + 1e-6);
+  const passDfm = input.parts.every(p => Boolean(p.processId)) && incompatible.length === 0 && scored + 1e-6 >= (input.limits.dfmScoreMin ?? 70) && dfmChecks.every((c) => c.severity !== "error" || c.pass);
   const passAero = !aero || aero.lift_N + 1e-6 >= aero.weight_N;
   const passStability = !aero || (aero.stable && !aero.stalled);
 
@@ -465,31 +498,27 @@ export function evaluate(input: DesignInput, materials: Material[], processTable
   let resonance = false;
   const arm = partResults[0];
   if (arm && input.fidelity !== "L0") {
-    const mu = arm.mass_g / 1000 / Math.max(arm.length_m, 1e-6);
+    // The wing result stores both halves' mass; each cantilever has half of it.
+    const modalMassKg = arm.mass_g / 1000 * (primary?.liftFed ? 0.5 : 1);
+    const mu = modalMassKg / Math.max(arm.length_m, 1e-6);
     const e = arm.e_GPa * 1e9;
-    const beta = 1.875104 ** 2;
+    const supported = primary?.loads.some(l => l.kind === "bending_center") ?? false;
+    const beta = (supported ? Math.PI : 1.875104) ** 2;
     modal_hz = (beta / (2 * Math.PI)) * Math.sqrt(e * arm.inertia_m4 / (mu * arm.length_m ** 4));
     const ex = input.excitation_hz ?? 0;
     resonance = ex > 0 && Math.abs(modal_hz - ex) / modal_hz <= 0.15;
-    assumptions.push("L1 modal: Euler-Bernoulli cantilever, first eigenvalue βL = 1.875. One mode only.");
+    assumptions.push(`L1 modal: uniform Euler-Bernoulli beam, ${supported ? "simply supported, βL = π" : "cantilever, βL = 1.875"}. Beam mass only; attached motors/payload, joints and damping are omitted. One mode only.`);
     if (resonance) failures.push({ mode: "resonance", location: arm.name, utilization: 1, explanationId: "resonance" });
   } else {
     assumptions.push("Fidelity is L0. The first bending frequency is not computed until you turn on L1.");
   }
 
-  const inputHash = hashCanon({
-    parts: input.parts,
-    vehicle: input.vehicle,
-    quantity: input.quantity,
-    fidelity: input.fidelity,
-    seed: input.seed,
-    limits: input.limits,
-  });
-
   return {
+    validInputs: true,
+    modelWarnings,
     mass_g,
     vehicleMass_g,
-    minSafetyFactor: Number.isFinite(minSf) ? minSf : 0,
+    minSafetyFactor: minSf,
     maxUtilization: maxUtil,
     maxDeflection_mm: maxDefl,
     cost: selected?.terms ?? null,
@@ -545,7 +574,13 @@ export function runAnalysis(kind: AnalysisKind, input: DesignInput, materials: M
   }
   if (ev.modal_hz !== null) scalars.modal_hz = { value: ev.modal_hz, unit: "Hz" };
 
-  const pass =
+  const applicable = kind === "buckling" ? ev.parts.some(p => p.buckling_N !== null)
+    : kind === "aero_polar" || kind === "stability" ? ev.aero !== null
+    : kind === "modal" ? ev.modal_hz !== null
+    : kind === "cost" ? ev.cost !== null
+    : kind === "static_stress" ? input.parts.some(p => p.liftFed || p.loads.some(l => l.magnitude_N > 0))
+    : true;
+  const pass = ev.validInputs && applicable && (
     kind === "static_stress"
       ? ev.passStress && ev.passDeflection
       : kind === "buckling"
@@ -560,9 +595,10 @@ export function runAnalysis(kind: AnalysisKind, input: DesignInput, materials: M
                 ? ev.passCost
                 : kind === "modal"
                   ? input.fidelity !== "L0" && !ev.resonance
-                  : false;
+                  : false);
 
-  const warnings = [...ev.incompatible];
+  const warnings = [...ev.incompatible, ...ev.modelWarnings];
+  if (!applicable) warnings.push(`${kind}: not applicable to the supplied model; no pass is awarded.`);
   if (kind === "modal" && input.fidelity === "L0") warnings.push("Modal is an L1 check. L0 does not invent a frequency.");
 
   return {

@@ -345,7 +345,7 @@ const sparSpecs: ParamSpec[] = [
 ];
 
 const finSpecs: ParamSpec[] = [
-  { key: "span_mm", label: "Fin span", min: 60, max: 160, step: 2, unit: "mm" },
+  { key: "span_mm", label: "Root-to-tip span", min: 60, max: 160, step: 2, unit: "mm" },
   { key: "chord_mm", label: "Root chord", min: 40, max: 100, step: 2, unit: "mm" },
   { key: "thickness_mm", label: "Thickness", min: 0.8, max: 4, step: 0.1, unit: "mm" },
 ];
@@ -361,7 +361,7 @@ export const missions: Mission[] = [
     id: "glider",
     title: "Balsa glider",
     brief:
-      "Hand-launch a small glider across the bay. It has to weigh under 120 g, stay under $90 in classroom prices, and keep a static margin between 5% and 25% of the chord.\n\nMost of that price is the mill's setup, not the wood. The wing is a solid plate. Half the lift is applied as one force at the tip of each half-span. A real wing's lift is spread out, so this moment is worse than the flying case.\n\nThe center of gravity starts too far forward. Move it until the margin sits in the band.\n\nYou are not certifying an airplane. You are learning which number moved, and why.",
+      "Hand-launch a small glider across the bay. It has to weigh under 120 g, keep the primary wing-part quote under USD 90 in classroom prices, and keep a static margin between 5% and 25% of the chord.\n\nThe quote covers the wing only, not the fuselage, tail, assembly or flight hardware. Most of that price is the mill's setup, not the wood. The wing is a solid plate. Half the lift is applied as one force at the tip of each half-span. For the same total upward load, this tip-load idealization gives a larger root moment than uniform lift; it is not a bound on every real flight load.\n\nThe center of gravity starts too far forward. Move it until the margin sits in the band.\n\nYou are not certifying an airplane. You are learning which number moved, and why.",
     unlockAfter: [],
     artifactType: "glider",
     constraints: { maxMass_g: 120, maxCost_usd: 90, quantity: 1, minSafetyFactor: 1.5, maxDeflection_mm: 12, dfmScoreMin: 70 },
@@ -431,7 +431,7 @@ export const missions: Mission[] = [
     id: "drone_arm",
     title: "Drone arm",
     brief:
-      "One arm of a small quad. A 40 N tip load stands in for a hard motor pull. The arm is a cantilever tube: fixed at the body, free at the motor.\n\nPass needs a safety factor of at least 2 on yield, tip sag at or under 8 mm, mass at or under 40 g, and a unit cost at or under $25 in classroom prices.\n\nQuantity is how many you buy, not how many arms the quad has. The airframe still counts four arms plus a 180 g body when it talks about thrust-to-weight.\n\nThe arm starts in dry nylon, which is too soft at this length. Aluminum mills. Nylon also molds. Watch what quantity does to the recommended process. Aluminum cannot be injection-molded in this shop.",
+      "One arm of a small quad. A 40 N tip load stands in for a hard motor pull. The arm is a cantilever tube: fixed at the body, free at the motor.\n\nPass needs a safety factor of at least 2 on yield, tip sag at or under 8 mm, mass at or under 40 g, and a unit cost at or under $25 in classroom prices.\n\nQuantity is how many you buy, not how many arms the quad has. The airframe still counts four arms plus a 180 g body when it talks about thrust-to-weight.\n\nThe separate 25 N axial case represents compression during landing, not a load added simultaneously to the thrust case. The arm starts in dry nylon, which is too flexible at this length. Aluminum mills. Nylon also molds. Watch what quantity does to the recommended process. Aluminum cannot be injection-molded in this shop.",
     unlockAfter: ["glider"],
     artifactType: "drone_arm",
     constraints: {
@@ -480,7 +480,7 @@ export const missions: Mission[] = [
     id: "water_rocket",
     title: "Water rocket",
     brief:
-      "A two-liter bottle, half full of water, about 4 bar in the headspace. Peak thrust is on the order of 60 to 100 N for under half a second; after that it is a ballistic coast to apogee.\n\nThe sim models none of that. It models one fin: a plate cantilever with a 10 N tip load standing in for the peak gust load as the rocket weathercocks off the rail. Fin flutter is not modeled — this check is static root stress and tip sag only.\n\nThe fin starts at 1.0 mm printed PLA. That is under the printer's 1.2 mm wall rule, and the root stress is past the knocked-down allowable. The ship carries three fins, so the mass and cost budgets are per fin.",
+      "Assess one flat fin, not a complete water rocket. The supplied classroom load is 10 N sideways at the free tip. Span means the full root-to-tip distance: 100 mm initially. Root chord is 60 mm and thickness is 1.0 mm. The root is assumed perfectly fixed.\n\nFor printed PLA, this model multiplies the supplied 3.5 GPa modulus and 50 MPa strength by the illustrative 0.6 layer factor, giving 2.1 GPa and a 30 MPa allowable. These are teaching inputs, not qualified filament properties. The initial fin is also below the shop's 1.2 mm wall rule.\n\nThe initial linear calculation gives 100 MPa stress and about 317 mm tip deflection. A deflection larger than the span is outside this small-deflection model: it is a warning to redesign, not a prediction of the fin's actual bent shape. Doubling thickness multiplies bending stiffness by eight, but also doubles mass; check both.\n\nMeet a safety factor of 2, sag no greater than 6 mm, mass no greater than 15 g, and primary-part cost no greater than USD 30. Mass and cost limits are per fin; the initial production quantity is three. Shortening the span can help this structural screen, but the module does not check whether a smaller fin still provides aerodynamic stability.\n\nNo pressure vessel, launch pressure, thrust, trajectory, fin flutter, attachment strength or recovery system is modeled. Passing these screens is not permission to build, pressurize or launch a rocket.",
     unlockAfter: ["drone_arm"],
     artifactType: "water_rocket",
     constraints: {
@@ -520,7 +520,7 @@ export const missions: Mission[] = [
     id: "rc_aircraft",
     title: "RC aircraft",
     brief:
-      "A 1.2 kg trainer with a 900 mm span, built around a single spar. The sim models one half-span as a cantilever tube with half the weight — 6 N — as a tip load. Same convention as the glider's wing, and just as rough: ribs, sheeting, and torsion are not modeled.\n\nThe spar starts as an 8 mm aluminum tube with a 0.8 mm wall. Stress is fine. The tip sags about 22 mm against a 12 mm limit, and the ailerons would go mushy well before that. Carbon is stiffer per gram and much dearer; aluminum is cheap and honest. The classroom budget is $70. Pick your tradeoff.",
+      "Assess one wing half-spar for a classroom trainer example. The starting half-span is 450 mm, represented by a cantilever tube: fixed at the wing root and free at the tip. A supplied 6 N tip load approximates half the weight of a 1.2 kg aircraft at 1 g: 1.2 × 9.81 / 2 ≈ 5.9 N, rounded to 6 N. It is not a maneuver or gust envelope.\n\nThe starting aluminum tube has an 8 mm outer diameter and a 0.8 mm wall. Using the supplied longitudinal material constants, root stress is about 91 MPa and tip sag about 22.3 mm. The safety factor exceeds 2.5, but sag exceeds the 12 mm limit. Strength passing does not establish adequate stiffness.\n\nMeet mass no greater than 40 g and primary-part cost no greater than USD 70 for one half-spar. Compare changes in diameter, wall thickness and material before choosing: bending stiffness is E × I, so section geometry matters alongside the material's modulus. The carbon-tube option uses longitudinal teaching properties and the shop's illustrative fabrication cost, not a supplier quote.\n\nThis module omits distributed aerodynamic loading, torsion, shear deformation, ribs, skin, root-joint compliance, local tube crushing, fatigue and aeroelastic behavior. Passing a one-load structural model does not qualify an RC aircraft for flight.",
     unlockAfter: ["drone_arm"],
     artifactType: "rc_aircraft",
     constraints: {
@@ -564,7 +564,7 @@ export const missions: Mission[] = [
     id: "payload",
     title: "Payload bay",
     brief:
-      "The avionics bay: a flat plate on rails carrying the flight stack. At 6 g the 500 g stack pushes down with 30 N at the middle of the plate. The sim treats the plate as simply supported with a center load; the rails are assumed rigid, which flatters the answer.\n\nThe plate starts as 2 mm printed PLA. Stress passes with room to spare, but the middle sags about 3.7 mm against a 1.0 mm connector limit. Thin aluminum and thick plastic both get there — at different mass and cost.",
+      "Assess the plate supporting an avionics stack between two rails. The initial support spacing is the full 200 mm span; plate width is 120 mm and thickness is 2.0 mm. Treat the plate as a uniform beam, simply supported at both rails and loaded at midspan.\n\nThe supplied 30 N load is a rounded classroom inertial load: a 0.500 kg stack at a 6 g load factor gives 0.500 × 6 × 9.81 ≈ 29.4 N. The factor already includes the stated total load; do not add another 1 g. The rails are idealized as rigid, and the model does not calculate a time-varying shock.\n\nUsing the printed-PLA teaching inputs after the 0.6 layer factor, E = 2.1 GPa and allowable strength = 30 MPa. At the full 200 mm support spacing, the initial model gives about 18.8 MPa bending stress, safety factor 1.6, and 29.8 mm center sag. It fails both the factor-of-safety requirement and the 1.0 mm sag limit. That large sag also lies outside the small-deflection screen.\n\nMeet safety factor at least 2, sag at most 1.0 mm, plate mass at most 120 g, and primary-part cost at most USD 70. The 500 g stack supplies the load; it is not included in the plate-only mass budget. A shorter support spacing or a stiffer section may help, but every change must still fit the mounting layout.\n\nThe uniform-beam approximation omits two-way plate action, attachment and rail flexibility, holes, connector strain, vibration and impact response. A structural screen does not certify the avionics assembly.",
     unlockAfter: ["drone_arm"],
     artifactType: "payload",
     constraints: {
@@ -605,11 +605,11 @@ export const missions: Mission[] = [
 export const concepts: Record<string, { title: string; body: string }> = {
   yield: {
     title: "Yield",
-    body: "Yield is the stress where the part takes a permanent set. Under it, letting go brings the shape back. Over it, the shape stays wrong. Safety factor is yield divided by the stress you actually have. Utilization is the inverse.",
+    body: "For a ductile metal, yield marks the onset of permanent deformation. Here safety factor is the supplied allowable divided by calculated stress; utilization is its inverse. Wood, printed polymers and composites use teaching strength limits rather than a universal metal yield point. A pass does not rule out buckling, fatigue, fracture or joint failure.",
   },
   inertia: {
     title: "Second moment of area",
-    body: "Stiffness in bending follows I, not area. For a rectangle, I = b·h³/12. Double the thickness and I goes up eight times. Material near the middle is almost a passenger. The wall far from the center does the work.",
+    body: "Bending stiffness is E × I: material modulus times the second moment of area about the bending axis. For a rectangle, I = b·h³/12. Double the thickness and I goes up eight times. Material near the middle is almost a passenger. The wall far from the center does the work.",
   },
   buckling: {
     title: "Buckling",
@@ -629,7 +629,7 @@ export const concepts: Record<string, { title: string; body: string }> = {
   },
   margin: {
     title: "Static margin",
-    body: "Static margin is how far the neutral point sits behind the center of gravity, divided by the chord. The target is 5% to 25%. Below 5%, restoring stability is weak and the glider is twitchy; below zero, it is statically unstable. Above 25%, the CG sits too far forward and the glider is nose-heavy and sluggish.",
+    body: "Static margin is how far the neutral point sits behind the center of gravity, divided by the chord. The classroom target is 5% to 25%; it is not a universal trim or handling-quality standard. Below 5%, restoring stability is weak and the glider is twitchy; below zero, it is statically unstable. Above 25%, the CG sits too far forward and the glider is nose-heavy and sluggish.",
   },
   lift: {
     title: "Lift",
@@ -637,7 +637,7 @@ export const concepts: Record<string, { title: string; body: string }> = {
   },
   resonance: {
     title: "First mode",
-    body: "The L1 check is the first bending frequency of a cantilever. If a motor spins within 15% of that frequency, the arm is in the resonance flag. This is one mode, not a full modal survey.",
+    body: "The L1 check estimates the first bending frequency of an ideal beam with the displayed end supports. A supplied excitation within 15% triggers a classroom proximity warning. Motor forcing may contain several orders of rotational frequency; beam mass alone omits an attached motor or payload. This is not a forced-response or vibration qualification.",
   },
 };
 

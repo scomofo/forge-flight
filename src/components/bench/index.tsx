@@ -1,3 +1,4 @@
+import { BondEnergyBench, BondPredictBench } from "./bonding-labs";
 import type { BenchId } from "@/course/types";
 import {
   AxialBench,
@@ -23,8 +24,6 @@ import {
   AllowableBench,
   AshbyBench,
   BondBench,
-  BondEnergyBench,
-  BondPredictBench,
   CompareBench,
   CorroCheckBench,
   CreepLifeBench,
