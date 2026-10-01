@@ -156,7 +156,7 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
   await openTrigHelp('What if the angle is a little wrong?','How an angle error changes the components',['pounds-force','529.9 lbf','34°'],'trig-measurement-help');
   await openTrigHelp('Work through the two pulls','Turn two pulls into one resultant',['Rx = 650','259.8','do not oppose each other']);
   await page.getByRole('tab',{name:/2 Try/}).click();
-  const angle=page.getByRole('slider',{name:'Angle θ',exact:true});await angle.focus();await page.keyboard.press('Home');
+  const angle=page.getByRole('slider',{name:/^Angle θ/});await angle.focus();await page.keyboard.press('Home');
   for(let i=0;i<34;i++)await page.keyboard.press('ArrowRight');
   record(`${label}: 34-degree bench components`,(await page.locator('article').textContent()).includes('415 N')&&(await page.locator('article').textContent()).includes('280 N'));
   await page.keyboard.press('ArrowRight');
