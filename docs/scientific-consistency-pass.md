@@ -87,11 +87,12 @@ incorrect alternative does not remain available accidentally.
   is identified as a teaching model with geometry/orientation assumptions.
 
 The 18 existing material-specific bank keys and its corrected v2 best-score
-storage key are unchanged. Three ordinary lesson option wordings were updated
-for the corrected science; answer positions and thresholds are unchanged. The
-assessment contract records exactly those reviewed wording changes rather than
-silently resetting every hash. Raw `materials.txt` remains byte-for-byte intact
-(SHA256 `9128660c48cf150f22637f78c535a196c03c5979025dab9fd27e40995a84aa24`).
+storage key are unchanged. Six answer-option wordings across three ordinary
+lesson assessments were updated for the corrected science; answer positions
+and thresholds are unchanged. The assessment contract records exactly those
+reviewed wording changes rather than silently resetting every hash.
+Raw `materials.txt` remains byte-for-byte intact (SHA256
+`9128660c48cf150f22637f78c535a196c03c5979025dab9fd27e40995a84aa24`).
 
 ## Reference basis and limits
 
@@ -137,6 +138,23 @@ The primary numerical regression checks every two-phase point on a 0.5 wt% by
 1 °C grid over the displayed Pb–Sn domain, enforcing ordered endpoints, physical
 fractions and mass conservation. This is a consistency check of a stated model,
 not independent validation of that model as measured alloy data.
+
+### Executed desktop acceptance
+
+Run `36932579972`, source commit `e4595610ad34503af1531b283faec4f9bb4f4b7c`:
+**12/12 scenarios and 116 assertions passed in each of development and production
+components**, with zero recorded failures. The downloaded JSON and representative
+screenshots were inspected. The original two failures were test selectors that
+omitted the values included in the existing sliders' accessible names. Selectors
+now use the exact label prefix while retaining every assertion and the original
+15-second timeout; no failed case is retried. The phase figure's tin-rich labels
+were moved outside the narrow fields to avoid overlapping a test-point marker.
+
+Five separate rational-arithmetic examples reproduce the revised phase endpoints
+and fractions. The grid visits 56,481 states, including 28,885 two-phase states;
+maximum observed mass-balance residual is about 1.42e-14 wt% Sn (floating-point
+roundoff). This additional consistency evidence does not turn supplied teaching
+boundary lines into experimentally validated alloy data.
 
 No authenticated-deployment, physical test, learner study, assistive-technology
 certification, mobile-specific work or blanket certification is claimed.
