@@ -1,4 +1,5 @@
 import type { Lesson } from "./types.ts";
+import { pendulumUnitSections } from "./pendulum-help.ts";
 
 /**
  * Physics 101, Week 1 — Measurement, units & estimation.
@@ -24,10 +25,11 @@ export const physicsW1Lessons: Lesson[] = [
       { kind: "move", heading: "When to use it" },
     ],
     start:
-      "In 1999, the Mars Climate Orbiter was lost after one part of the navigation chain used pound-force seconds and another expected newton-seconds. That is an expensive reminder that units are not clerical details. || Here is the distinction we need. A dimension tells you what kind of quantity you have: mass, length, time, or some combination of them. A unit tells you how you measured it: kilograms or slugs, metres or feet. In mechanics, we can reduce everything to M, L, and T. Force, for example, is MLT⁻² no matter which unit system you use. || Before you touch the calculator, check the dimensions. If one side of an equation is a length and the other is a time, you are done: something upstream is wrong. If you have a programming background, dimensions behave a bit like types. That analogy is useful, but the practical rule is simpler: mismatched dimensions mean a broken equation.",
+      "In 1999, the Mars Climate Orbiter was lost after one part of the navigation chain used pound-force seconds and another expected newton-seconds. Both are force-time units, but their scales differ: matching dimensions alone would not catch that conversion error. Units and conversion factors need checking too. || Here is the distinction we need. A dimension tells you what kind of quantity you have: mass, length, time, or some combination of them. A unit tells you how you measured it: kilograms or slugs, metres or feet. In mechanics, we can reduce everything to M, L, and T. Force, for example, is MLT⁻² no matter which unit system you use. || Before you touch the calculator, check the dimensions. If one side of an equation is a length and the other is a time, you are done: something upstream is wrong. If you have a programming background, dimensions behave a bit like types. That analogy is useful, but the practical rule is simpler: mismatched dimensions mean a broken equation.",
     use: "Use this whenever you are about to trust a formula: one you derived, one from a datasheet, or one you only half remember. It is especially useful before a long calculation. || Rewrite each quantity in M, L, and T. When you multiply, add exponents; when you divide, subtract them. Both sides of the equation must match, and anything inside sin, exp, or log must be dimensionless. || Once both sides match, the formula has passed this check. That does not prove it is correct. It only means the units have stopped objecting.",
     example:
-      "Suppose you half remember the pendulum formula. You know the period T depends on length l and gravity g, but you cannot remember whether the useful combination is √(l/g) or √(g/l). || Check the units before guessing. [l] = L and [g] = LT⁻², so [l/g] = T² and √(l/g) has units of time. Good. Flip the ratio and you get T⁻¹, a frequency. The third candidate, l/g, gives T². || We still have not proved the pendulum formula, and this check will never produce the factor 2π. But in about ten seconds we ruled out two bad versions. That is exactly what dimensional analysis is good at.",
+      "How long does one complete back-and-forth swing take? That time is the period T, measured in seconds. In the ideal small-angle model, we test combinations of l, the pivot-to-bob length in metres, and g, gravitational acceleration in m/s². No numerical value is required here. || Try the units first. l/g gives m ÷ (m/s²) = m × s²/m = s²; its square root gives s. The flipped ratio g/l gives 1/s², so its square root gives 1/s, a rate. Without any square root, l/g remains s². The factor 2π has no units, so it changes none of those results. || Only √(l/g) has time units among these three candidates. We have ruled out two wrong forms, not proved the survivor. Unit checking cannot determine the factor 2π or show that the small-angle model describes a particular real pendulum.",
+    exampleHelp: [{ concept: "pendulum-unit-check" }],
     ideas: [
       {
         heading: "Why SI helps",
@@ -37,8 +39,10 @@ export const physicsW1Lessons: Lesson[] = [
       },
       {
         heading: "A fast way to catch nonsense",
-        body: "Every term in a sum has to describe the same kind of quantity. You can add one length to another length; you cannot add a length to a time and hope the calculator sorts it out. Substitute MᵃLᵇTᶜ for the symbols and do the exponent arithmetic. It is boring in the best possible way: quick, mechanical, and very good at catching mistakes.",
+        body: "Every term in a sum has to describe the same kind of quantity. You can add one length to another length; you cannot add a length to a time and hope the calculator sorts it out. Start with familiar units such as metres and seconds. Once the cancellation is clear, M, L and T are just shorthand for mass, length and time. Square brackets ask for the kind of quantity, not its number.",
         formula: "[F] = MLT⁻², [E] = ML²T⁻²",
+        formulaNote: "[F] means the dimension of force; [E] means the dimension of energy. T⁻² means divided by time squared. Here M, L and T are dimension labels, not measured values.",
+        sections: pendulumUnitSections,
       },
       {
         heading: "When the units disappear",

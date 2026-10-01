@@ -1,4 +1,5 @@
 import type { Lesson, Track } from "./types.ts";
+import { triangleSidesIdea, angleUnitsIdea, vectorComponentsIdea, vectorResultantSections, TRIG_MEASUREMENT_NOTE } from "./trig-help.ts";
 
 export const mathTrack: Track = {
   id: "math",
@@ -651,60 +652,27 @@ export const mathLessons: Lesson[] = [
     lede: "Resolve a force into components with sine and cosine, move between degrees and radians, and add vectors the way equilibrium demands.",
     opening: { mode: "prose", heading: "Start with the physical situation" },
     readFlow: [
-      { kind: "example", heading: "Work one case" },
-      { kind: "idea", idea: 0, label: "First idea" },
-      { kind: "idea", idea: 1, label: "Second idea" },
-      { kind: "idea", idea: 2, label: "Third idea" },
+      { kind: "idea", idea: 0, label: "Name the sides" },
+      { kind: "idea", idea: 1, label: "Choose the angle unit" },
+      { kind: "example", heading: "Resolve the cable force" },
+      { kind: "idea", idea: 2, label: "Combine the pulls" },
       { kind: "move", heading: "When to use it" },
     ],
     start:
       "A cable pulls a bracket with 500 N at 35° above horizontal. For the next calculation, that angled force is easier to use as a horizontal component and a vertical component. || In a right triangle, sine, cosine, and tangent connect the angle to the side ratios. The ratios do not depend on the triangle's overall size. || Resolve the vector into components first. Later equilibrium and stress calculations are almost always written along chosen axes, so this is a basic move you will keep using.",
-    use: "When a force, velocity, or displacement arrives at an angle and the analysis needs axis-aligned pieces. || Draw the right triangle with the vector as the hypotenuse. The adjacent component is magnitude × cos θ, the opposite is magnitude × sin θ. Add vectors by adding their components separately, then recombine with Pythagoras. || Stop when you have (Rx, Ry) — or rebuild the magnitude and check it matches. If √(Rx² + Ry²) is not the original magnitude, a component is wrong.",
+    use: "When a force, velocity, or displacement arrives at an angle and the analysis needs axis-aligned pieces. || Draw the right triangle with the vector as the hypotenuse. The adjacent component is magnitude × cos θ, the opposite is magnitude × sin θ. Add vectors by adding their components separately, then recombine with Pythagoras. || Stop when you have (Rx, Ry) — or rebuild the magnitude and check it matches. For one resolved vector, √(Rx² + Ry²) should recover its magnitude. For several vectors, it gives the resultant magnitude, not the sum of their individual magnitudes.",
     example:
       "Resolve the 500 N cable pull at 35° above horizontal. || Fx = 500·cos 35° ≈ 500 × 0.819 = 410 N. Fy = 500·sin 35° ≈ 500 × 0.574 = 287 N. || Check: √(410² + 287²) = √(168100 + 82369) = √250469 ≈ 500 N. The components recombine to the original magnitude, so the split is consistent.",
+    exampleHelp: [{ concept: "angle-measurement" }],
     ideas: [
-      {
-        heading: "Pick the ratio that uses what you know",
-        body: "Sine is opposite over hypotenuse, cosine is adjacent over hypotenuse, and tangent is opposite over adjacent. Draw the triangle and label the sides before choosing a function. That is usually faster than trying to remember a rule in the abstract.",
-        formula: "sin θ = opp/hyp,   cos θ = adj/hyp,   tan θ = opp/adj",
-      },
-      {
-        heading: "Degrees and radians",
-        body: "A full circle is 360° or 2π radians — two labels for the same turn. Convert with rad = deg × π/180. Physics formulas (arc length, angular velocity) want radians; shop drawings speak degrees. And before any trig on a calculator, check its mode: 35 in radian mode is a different triangle.",
-        formula: "π rad = 180°,   s = rθ (θ in radians)",
-        help: [
-          {
-            trigger: "Why radians?",
-            title: "Radians are the natural angle unit",
-            intro: "A radian measures angle using the circle itself: angle = arc length divided by radius. That is why rotational formulas become clean when θ is in radians.",
-            sections: [
-              {
-                heading: "Definition",
-                body: "θ = s/r. If the arc length equals the radius, the angle is 1 radian.",
-              },
-              {
-                heading: "Conversion",
-                body: "A full turn is 2π radians = 360°, so π radians = 180°. Convert degrees with radians = degrees × π/180.",
-              },
-              {
-                heading: "Why s = rθ works",
-                body: "Because θ was defined as s/r. Rearranging immediately gives s = rθ, with no extra conversion constant.",
-              },
-            ],
-            caution: "Check calculator mode before using sine or cosine. 35° entered while the calculator is in radian mode is a completely different angle.",
-          },
-        ],
-      },
-      {
-        heading: "Add components, then rebuild the vector",
-        body: "For calculations, add x-components together and y-components together. Then rebuild the resultant with Pythagoras and use atan2 for its direction. In equilibrium problems, the same bookkeeping ends with both component sums equal to zero.",
-        formula: "Rx = ΣAx,   Ry = ΣAy,   R = √(Rx² + Ry²)",
-      },
+      triangleSidesIdea,
+      angleUnitsIdea,
+      vectorComponentsIdea,
     ],
     bench: "trig",
     prompt:
       "Set 35° and read off the components of a 500 N pull. Then swing the angle to 0° and 90° and say in one sentence what happens to each component at the extremes.",
-    note: "The bench triangle is exact geometry. Real cable angles are measured, not set — the bench teaches the decomposition, not the measurement.",
+    note: TRIG_MEASUREMENT_NOTE,
     checks: [
       {
         prompt: "sin 30° equals…",
@@ -734,7 +702,9 @@ export const mathLessons: Lesson[] = [
           "774 N at 11.2° to the floor line",
         ],
         answer: 0,
-        why: "Components first: Rx = 500 + 300·cos 60° = 650 N, Ry = 300·sin 60° ≈ 260 N. Then R = √(650² + 260²) ≈ 700 N and θ = atan2(260, 650) = 21.8°. 800 N at 30° adds the magnitudes and averages the angles; 583 N treats the two pulls as if they were at right angles; 774 N at 11.2° swaps sine and cosine on the 60° pull.",
+        why: "Resolve both pulls along the same axes. The totals are Rx = 650 N to the right and Ry ≈ 260 N up on the diagram. Those are the perpendicular legs of the resultant triangle, giving about 700 N at 21.8° to the floor reference line. Here is where each total and the angle come from.",
+        feedbackSections: vectorResultantSections,
+        help: [{ concept: "atan2-direction" }],
       },
     ],
     passAt: RUNWAY_PASS_AT,

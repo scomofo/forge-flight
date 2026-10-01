@@ -1,5 +1,7 @@
 import type { ExampleContext } from "./types.ts";
 import { LOAD_CELL_POINTS } from "./graph-reasoning.ts";
+import { triangleExampleContext } from "./trig-help.ts";
+import { pendulumExampleContext } from "./pendulum-help.ts";
 import { REFERENCE_SPAR, SPAR_MATERIALS, G as SPAR_G } from "./matsynthesis.ts";
 import { CAP_REFERENCE, CAP_MATERIALS, CAP_MISMATCH } from "./capstone.ts";
 import { BEAM_CASE, BRACKET_ALTERNATIVES, BRACKET_CRITERIA, normalizeScores, rankAlternatives } from "./optimization.ts";
@@ -8,6 +10,8 @@ import { LADDER_INPUTS as L } from "./ladder-inputs.ts";
 
 /** Audited, locally visible givens. These supplement—not replace—the canonical lesson text. */
 const supplied: Record<string, ExampleContext> = {
+  "physics/measure": pendulumExampleContext,
+  "math/triangles-vectors": triangleExampleContext,
   "math/ratios-units": {
     "inputs": [
       {

@@ -249,6 +249,10 @@ export type Check = {
   options: [string, string, string, string];
   answer: 0 | 1 | 2 | 3;
   why: string;
+  /** Optional worked feedback, revealed only after the learner selects an answer. */
+  feedbackSections?: ConceptHelpSection[];
+  /** Optional extra explanation, also revealed only after an answer. */
+  help?: IdeaHelp[];
 };
 
 export type Clip = {
@@ -330,6 +334,9 @@ export type ExampleInputTable = {
   rows: string[][];
 };
 export type ExampleContext = {
+  /** Optional local framing for symbolic examples, which may supply no numbers. */
+  heading?: string;
+  intro?: string;
   inputs: ExampleInput[];
   notes?: string[];
   working?: string[];

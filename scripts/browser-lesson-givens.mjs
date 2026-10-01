@@ -13,7 +13,7 @@ await mkdir(out,{recursive:true});
 const entry=join(root,'__givens_acceptance.tsx'),html=join(root,'__givens_acceptance.html');
 const built = process.env.ACCEPTANCE_BUILD === '1';
 const buildDir = resolve('artifacts/lesson-acceptance-build');
-const data=JSON.parse(execFileSync(process.execPath,['--experimental-strip-types','--input-type=module','-e',`import {exampleContexts} from './src/course/example-context.ts';import {lessons} from './src/course/catalog.ts';console.log(JSON.stringify({keys:Object.keys(exampleContexts),powers:lessons.find(l=>l.track==='math'&&l.id==='powers')}));`],{encoding:'utf8'}));
+const data=JSON.parse(execFileSync(process.execPath,['--experimental-strip-types','--input-type=module','-e',`import {exampleContexts} from './src/course/example-context.ts';import {lessons} from './src/course/catalog.ts';console.log(JSON.stringify({keys:Object.keys(exampleContexts),powers:lessons.find(l=>l.track==='math'&&l.id==='powers'),trig:lessons.find(l=>l.track==='math'&&l.id==='triangles-vectors')}));`],{encoding:'utf8'}));
 const results=[],record=(name,condition)=>{assert.ok(condition,name);results.push(name);};
 let server,browser,activePage;
 let failed = false;
@@ -127,6 +127,93 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
   const hole=page.getByRole('slider',{name:/Measured hole/});await hole.focus();await page.keyboard.press('Home');for(let i=0;i<4;i++)await page.keyboard.press('ArrowRight');
   const body=await page.locator('article').textContent();record(`${label}: bonus bench diameter and radius distinct`,body.includes('Zone diameter')&&body.includes('⌀0.40 mm')&&body.includes('Maximum radial offset')&&body.includes('0.20 mm'));
   await hole.scrollIntoViewIfNeeded();await page.screenshot({path:join(out,`${label}-bonus-bench.png`)});
+  await go('math/triangles-vectors');
+  const trigScoresBefore=await page.evaluate(()=>JSON.stringify(JSON.parse(localStorage.getItem('axiom-progress')).state.completed));
+  const names=page.getByRole('heading',{name:'Label the sides, then choose the ratio',exact:true});
+  const cableExample=page.getByRole('heading',{name:'Resolve the cable force',exact:true});
+  record(`${label}: side names are introduced before cable arithmetic`,await names.evaluate((el,other)=>Boolean(el.compareDocumentPosition(other)&Node.DOCUMENT_POSITION_FOLLOWING),await cableExample.elementHandle()));
+  const trigArticle=await page.locator('article').textContent();
+  record(`${label}: side names and angle units are visible without opening help`,trigArticle.includes('across from the 90° corner')&&trigArticle.includes('SOH-CAH-TOA')&&trigArticle.includes('π/2 rad'));
+  record(`${label}: the angle-measurement limit is locally visible`,trigArticle.includes('Correct arithmetic cannot repair an inaccurate input'));
+  const openTrigHelp=async (triggerName,title,fragments,screenshotName)=>{
+   const button=page.getByRole('button',{name:triggerName,exact:true});
+   await button.focus();await page.keyboard.press('Enter');
+   const popup=page.getByRole('dialog',{name:title,exact:true});await popup.waitFor();
+   await page.waitForFunction(()=>{const d=document.querySelector('[role="dialog"]');if(!d)return false;const b=d.getBoundingClientRect();return b.x>=0&&b.y>=0&&b.right<=innerWidth+1&&b.bottom<=innerHeight+1;});
+   const text=await popup.textContent();record(`${label}: trig help content ${title}`,fragments.every(x=>text.includes(x)));
+   record(`${label}: trig help begins at the top ${title}`,await popup.evaluate(el=>el.scrollTop===0));
+   if(screenshotName)await page.screenshot({path:join(out,`${label}-${screenshotName}.png`)});
+   // The explicit close control must remain reachable even in long help.
+   const closeButton=popup.getByRole('button',{name:'Close',exact:true});await closeButton.focus();
+   record(`${label}: trig help close reachable ${title}`,await closeButton.isVisible());
+   await page.keyboard.press('Escape');await popup.waitFor({state:'hidden'});
+   await page.waitForFunction(el=>el===document.activeElement,await button.elementHandle());
+   record(`${label}: trig help restores focus ${title}`,await button.evaluate(el=>el===document.activeElement));
+  };
+  await openTrigHelp('Work through the 30° brace','Choose the ratio from the two sides',['24 in','13.9 in','27.7 in'],'trig-brace-help');
+  await openTrigHelp('What does one radian mean?','A radian is one radius along the circle',['57.3°','without slipping','15.7 in'],'trig-radian-help');
+  await openTrigHelp('Which calculator mode should I use?','Match the angle unit to the calculation',['−0.428','180/π','2 × 30° = 60°'],'trig-mode-help');
+  await openTrigHelp('What if the angle is a little wrong?','How an angle error changes the components',['pounds-force','529.9 lbf','34°'],'trig-measurement-help');
+  await openTrigHelp('Work through the two pulls','Turn two pulls into one resultant',['Rx = 650','259.8','do not oppose each other']);
+  await page.getByRole('tab',{name:/2 Try/}).click();
+  const angle=page.getByRole('slider',{name:'Angle θ',exact:true});await angle.focus();await page.keyboard.press('Home');
+  for(let i=0;i<34;i++)await page.keyboard.press('ArrowRight');
+  record(`${label}: 34-degree bench components`,(await page.locator('article').textContent()).includes('415 N')&&(await page.locator('article').textContent()).includes('280 N'));
+  await page.keyboard.press('ArrowRight');
+  record(`${label}: 35-degree bench components`,(await page.locator('article').textContent()).includes('410 N')&&(await page.locator('article').textContent()).includes('287 N'));
+  await page.keyboard.press('ArrowRight');
+  record(`${label}: 36-degree bench components`,(await page.locator('article').textContent()).includes('405 N')&&(await page.locator('article').textContent()).includes('294 N'));
+  await openTrigHelp('What if the angle is a little wrong?','How an angle error changes the components',['Same 1,000 lbf','pounds-force']);
+  record(`${label}: trig help and bench preserve saved scores`,await page.evaluate(()=>JSON.stringify(JSON.parse(localStorage.getItem('axiom-progress')).state.completed))===trigScoresBefore);
+  await page.getByRole('tab',{name:/3 Check/}).click();
+  for(let attempt=0;attempt<2;attempt++){
+   for(let i=0;i<data.trig.checks.length;i++){
+    const q=data.trig.checks[i],field=page.locator('fieldset');
+    record(`${label}: trig feedback hidden before attempt ${attempt} question ${i}`,await field.getByRole('region',{name:'Two pulls resolved along the same axes',exact:true}).count()===0);
+    const pick=i===3&&attempt===0?1:q.answer;
+    const answer=field.getByRole('button',{name:q.options[pick],exact:true});await answer.focus();await page.keyboard.press('Enter');
+    if(i===3){
+     const table=field.getByRole('region',{name:'Two pulls resolved along the same axes',exact:true});
+     record(`${label}: vector feedback contains component table ${attempt}`,await table.count()===1&&(await table.textContent()).includes('Rx = 650'));
+     record(`${label}: vector feedback teaches rather than changing grading ${attempt}`,(await field.textContent()).includes(attempt===0?'Not quite.':'Yes.')&&(await field.textContent()).includes('do not oppose each other'));
+     await table.focus();await page.keyboard.press('ArrowRight');
+     record(`${label}: vector feedback table keyboard accessible ${attempt}`,await table.evaluate(el=>el===document.activeElement));
+     record(`${label}: vector feedback has no page-wide overflow ${attempt}`,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+     if(attempt===0){
+      await table.scrollIntoViewIfNeeded();await page.screenshot({path:join(out,`${label}-vector-feedback.png`)});
+      await openTrigHelp('What does atan2 mean?','Find an angle from two signed components',['different argument order','returns radians','zero vector'],'trig-atan2-help');
+     }
+    }
+    await field.getByRole('button',{name:i===3?'See the result':'Next question',exact:true}).click();
+   }
+   const result=await page.locator('article').textContent();
+   record(`${label}: trig score is ${attempt===0?'3 of 4, not a pass':'4 of 4, pass'}`,result.includes(attempt===0?'3 of 4.':'4 of 4.')&&result.includes(attempt===0?'Not a pass.':'Pass. 4 or more correct.'));
+   if(attempt===0)await page.getByRole('button',{name:'Try the check again',exact:true}).click();
+  }
+  const trigSaved=await page.evaluate(()=>JSON.parse(localStorage.getItem('axiom-progress')).state.completed);
+  record(`${label}: trig retake saves best score without altering existing scores`,trigSaved['math/triangles-vectors']===4&&trigSaved['physics/measure']===3&&trigSaved['math/ratios-units']===4);
+  await go('physics/measure');
+  const pendulumBefore=await page.evaluate(()=>JSON.stringify(JSON.parse(localStorage.getItem('axiom-progress')).state.completed));
+  const pendulumContext=page.locator('[data-example-inputs="figure"]');
+  const pendulumText=await pendulumContext.textContent();
+  record(`${label}: pendulum symbols visible before the diagram`,['back-and-forth','pivot','not a force','No numerical value','T means time'].every(x => pendulumText.includes(x)));
+  const pendulumFigure=page.locator('figure').first();
+  if(motion==='reduce') record(`${label}: pendulum reduced motion uses a still`,await pendulumFigure.getByRole('slider',{name:'Scrub',exact:true}).count()===0);
+  else {
+   const scrub=pendulumFigure.getByRole('slider',{name:'Scrub',exact:true}); await scrub.focus();await page.keyboard.press('Home');
+   record(`${label}: pendulum setup names period and acceleration`,(await pendulumFigure.locator('figcaption').textContent()).includes('full back-and-forth cycle'));
+   await page.keyboard.press('End');
+  }
+  record(`${label}: pendulum final caption does not claim proof`,(await pendulumFigure.locator('figcaption').textContent()).includes('does not prove'));
+  record(`${label}: pendulum diagram uses real units and explains dimension letters`,(await pendulumFigure.textContent()).includes('√(m ÷ (m/s²))')&&(await pendulumFigure.textContent()).includes('L means length'));
+  record(`${label}: pendulum labels fit inside the diagram`,await pendulumFigure.locator('svg').first().evaluate(svg=>{const vb=svg.viewBox.baseVal;return [...svg.querySelectorAll('text')].every(el=>{const b=el.getBBox();return b.x>=vb.x-1&&b.x+b.width<=vb.x+vb.width+1&&b.y>=vb.y-1&&b.y+b.height<=vb.y+vb.height+1;});}));
+  await pendulumFigure.scrollIntoViewIfNeeded();await page.screenshot({path:join(out,`${label}-pendulum-units.png`)});
+  const candidates=page.getByRole('region',{name:'Three pendulum candidates checked in metres and seconds',exact:true});
+  await candidates.focus();await page.keyboard.press('ArrowRight');
+  record(`${label}: pendulum table accessible by keyboard`,await candidates.evaluate(el=>el===document.activeElement));
+  await openTrigHelp('Walk through the pendulum unit check','Why only one candidate has time units',['T⁻² = 1/T²','5√(l/g)','unit scale'],'pendulum-help');
+  record(`${label}: pendulum help preserves saved scores`,await page.evaluate(()=>JSON.stringify(JSON.parse(localStorage.getItem('axiom-progress')).state.completed))===pendulumBefore);
+  record(`${label}: pendulum page has no horizontal overflow`,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   record(`${label}: no interaction exceptions`,errors.length===0);await ctx.close();
  }
  await writeFile(join(out,'results.json'),JSON.stringify({passed:true,count:results.length,checks:results},null,2));console.log(JSON.stringify({passed:true,count:results.length,out}));

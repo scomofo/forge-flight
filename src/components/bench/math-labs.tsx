@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { ConceptHelp } from "@/components/concept-help";
+import { TRIG_MEASUREMENT_NOTE } from "@/course/trig-help";
 import { ProportionPractice } from "./proportion-practice";
 import { BenchShell, Readouts, Segmented, Slider, fmt } from "./ui";
 
@@ -354,9 +356,10 @@ export function TrigBench() {
   const arcEndY = oy - arcR * Math.sin(th);
 
   return (
+    <>
     <BenchShell
       prompt="Set 35° and read the components of a 500 N pull. || Fx ≈ 410 N, Fy ≈ 287 N. Swing to 90° and watch the horizontal component die to zero."
-      note="The bench triangle is exact geometry. Real cable angles are measured, not set — the bench teaches the decomposition, not the measurement."
+      note={TRIG_MEASUREMENT_NOTE}
       controls={
         <Slider
           label="Angle θ"
@@ -403,8 +406,10 @@ export function TrigBench() {
         </text>
       </svg>
       <p className="mt-2 text-center text-sm text-well-dim">
-        The hypotenuse is the pull; the legs are what the bolt actually feels.
+        The hypotenuse represents the full pull. The legs are its horizontal and vertical components, not extra forces.
       </p>
     </BenchShell>
+    <ConceptHelp help={[{ concept: "angle-measurement" }]} />
+    </>
   );
 }

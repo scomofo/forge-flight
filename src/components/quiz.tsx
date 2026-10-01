@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PASS_AT, type Lesson } from "@/course/types";
+import { ConceptHelp } from "@/components/concept-help";
+import { LessonSections } from "@/components/lesson-sections";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
@@ -129,6 +131,8 @@ export function Quiz({
             {picked === question.answer ? "Yes." : "Not quite."}
           </p>
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">{question.why}</p>
+          {question.feedbackSections?.length ? <LessonSections sections={question.feedbackSections} /> : null}
+          {question.help?.length ? <ConceptHelp key={`${lesson.track}/${lesson.id}/${index}`} help={question.help} /> : null}
           <Button
             className="mt-5"
             onClick={() => {
