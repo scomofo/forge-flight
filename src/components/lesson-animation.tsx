@@ -4,7 +4,7 @@ import { animationAssets, type AnimationId } from "@/course/animation-assets";
 /**
  * Opt-in, local-only teaching media. It never starts simply because it scrolled
  * into view. Native video controls provide pause, seeking and full-screen.
- * Copy this file to src/components/lesson-animation.tsx and the manifest to
+ * This is the integrated component; the manifest lives in
  * src/course/animation-assets.ts. All media paths are under public/learn-media.
  */
 export function LessonAnimation({ id }: { id: AnimationId }) {
