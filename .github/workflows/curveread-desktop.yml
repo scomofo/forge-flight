@@ -22,19 +22,11 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --ignore-scripts
-      - name: Capture reproducible diagnostic workspace
+      - name: Use the runner's installed Chrome
         run: |
-          mkdir -p artifacts/curveread-workspace
-          git archive --format=zip --output=artifacts/curveread-workspace/source.zip HEAD
-          git rev-parse HEAD > artifacts/curveread-workspace/revision.txt
-          tar -czf artifacts/curveread-workspace/dependencies.tar.gz node_modules
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: curveread-diagnostic-workspace
-          path: artifacts/curveread-workspace/
-          retention-days: 1
-          compression-level: 0
-      - run: npx playwright install --with-deps chromium
+          BROWSER=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          "$BROWSER" --version
+          echo "CHROMIUM_EXECUTABLE_PATH=$BROWSER" >> "$GITHUB_ENV"
       - name: Diagnose repeated desktop curveread navigation
         run: |
           python3 - <<'PY'
