@@ -185,8 +185,8 @@ export const processes: Process[] = [
     finishing_usd: 1,
     scrapFactor: 1.1,
     rules: [
-      { id: "min_wall", check: "min_wall", severity: "warn", message: "Wall is under 0.8 mm. A 3-axis cutter will chatter or break it." },
-      { id: "hole_aspect", check: "max_hole_aspect", severity: "warn", message: "Hole is deeper than 4 diameters. The drill wanders." },
+      { id: "min_wall", check: "min_wall", severity: "warn", message: "Wall is under 0.8 mm. This is below the classroom wall-thickness rule; check machining support and tooling." },
+      { id: "hole_aspect", check: "max_hole_aspect", severity: "warn", message: "Hole is deeper than 4 diameters. This exceeds the classroom hole-depth rule; check tooling and guidance." },
       { id: "no_undercut", check: "undercut", severity: "error", message: "Undercut is not reachable with a 3-axis tool coming from one side." },
     ],
   },
@@ -204,7 +204,7 @@ export const processes: Process[] = [
     finishing_usd: 0.5,
     scrapFactor: 1.05,
     rules: [
-      { id: "min_wall", check: "min_wall", severity: "warn", message: "Wall is under 1.2 mm. A printed wall that thin misses layers." },
+      { id: "min_wall", check: "min_wall", severity: "warn", message: "Wall is under 1.2 mm. This is below the classroom printing rule; actual limits depend on the print setup." },
     ],
   },
   {
@@ -221,8 +221,8 @@ export const processes: Process[] = [
     finishing_usd: 0.3,
     scrapFactor: 1.05,
     rules: [
-      { id: "min_wall", check: "min_wall", severity: "warn", message: "Wall is under 1 mm. The plastic freezes before it fills." },
-      { id: "draft", check: "draft", severity: "error", message: "Draft is under 1°. The part sticks in the mold." },
+      { id: "min_wall", check: "min_wall", severity: "warn", message: "Wall is under 1 mm. This is below the classroom molding rule; actual filling depends on the material and process." },
+      { id: "draft", check: "draft", severity: "error", message: "Draft is under 1°. This is below the classroom draft rule; actual release depends on the tooling and surface." },
     ],
   },
   {
@@ -239,7 +239,7 @@ export const processes: Process[] = [
     finishing_usd: 2,
     scrapFactor: 1.15,
     rules: [
-      { id: "min_wall", check: "min_wall", severity: "warn", message: "Wall is under 0.6 mm. A tube this thin crushes under a fitting." },
+      { id: "min_wall", check: "min_wall", severity: "warn", message: "Below this classroom 0.6 mm wall rule; fitting and clamp crushing need a separate check." },
     ],
   },
   {
@@ -256,7 +256,7 @@ export const processes: Process[] = [
     finishing_usd: 0.4,
     scrapFactor: 1.2,
     rules: [
-      { id: "min_wall", check: "min_wall", severity: "warn", message: "Sheet is under 0.5 mm. It will crease instead of holding a bend." },
+      { id: "min_wall", check: "min_wall", severity: "warn", message: "Below this classroom 0.5 mm sheet rule; forming behavior needs a process-specific check." },
     ],
   },
 ];
@@ -361,7 +361,7 @@ export const missions: Mission[] = [
     id: "glider",
     title: "Balsa glider",
     brief:
-      "Hand-launch a small glider across the bay. It has to weigh under 120 g, keep the primary wing-part quote under USD 90 in classroom prices, and keep a static margin between 5% and 25% of the chord.\n\nThe quote covers the wing only, not the fuselage, tail, assembly or flight hardware. Most of that price is the mill's setup, not the wood. The wing is a solid plate. Half the lift is applied as one force at the tip of each half-span. For the same total upward load, this tip-load idealization gives a larger root moment than uniform lift; it is not a bound on every real flight load.\n\nThe center of gravity starts too far forward. Move it until the margin sits in the band.\n\nYou are not certifying an airplane. You are learning which number moved, and why.",
+      "Hand-launch a small glider across the bay. It must have mass at most 120 g, keep the primary wing-part quote at most USD 90 in classroom prices, and keep a static margin between 5% and 25% of the chord.\n\nThe quote covers the wing only, not the fuselage, tail, assembly or flight hardware. Most of that price is the mill's setup, not the wood. The wing is a solid plate. Half the lift is applied as one force at the tip of each half-span. For the same total upward load, this tip-load idealization gives a larger root moment than uniform lift; it is not a bound on every real flight load.\n\nThe center of gravity starts too far forward. Move it until the margin sits in the band.\n\nYou are not certifying an airplane. You are learning which number moved, and why.",
     unlockAfter: [],
     artifactType: "glider",
     constraints: { maxMass_g: 120, maxCost_usd: 90, quantity: 1, minSafetyFactor: 1.5, maxDeflection_mm: 12, dfmScoreMin: 70 },
@@ -431,7 +431,7 @@ export const missions: Mission[] = [
     id: "drone_arm",
     title: "Drone arm",
     brief:
-      "One arm of a small quad. A 40 N tip load stands in for a hard motor pull. The arm is a cantilever tube: fixed at the body, free at the motor.\n\nPass needs a safety factor of at least 2 on yield, tip sag at or under 8 mm, mass at or under 40 g, and a unit cost at or under $25 in classroom prices.\n\nQuantity is how many you buy, not how many arms the quad has. The airframe still counts four arms plus a 180 g body when it talks about thrust-to-weight.\n\nThe separate 25 N axial case represents compression during landing, not a load added simultaneously to the thrust case. The arm starts in dry nylon, which is too flexible at this length. Aluminum mills. Nylon also molds. Watch what quantity does to the recommended process. Aluminum cannot be injection-molded in this shop.",
+      "One arm of a small quad. A 40 N tip load stands in for a hard motor pull. The arm is a cantilever tube: fixed at the body, free at the motor.\n\nPass needs a safety factor of at least 2 against the supplied strength limit, tip sag at most 8 mm, mass at most 40 g, and a primary-part unit cost at most USD 25 in classroom prices.\n\nQuantity is how many you buy, not how many arms the quad has. The airframe still counts four arms plus a 180 g body when it talks about thrust-to-weight.\n\nThe separate 25 N axial case represents compression during landing, not a load added simultaneously to the thrust case. The arm starts in dry nylon, which is too flexible at this length. Aluminum mills. Nylon also molds. Watch what quantity does to the recommended process. Aluminum cannot be injection-molded in this shop.",
     unlockAfter: ["glider"],
     artifactType: "drone_arm",
     constraints: {
@@ -480,7 +480,7 @@ export const missions: Mission[] = [
     id: "water_rocket",
     title: "Water rocket",
     brief:
-      "Assess one flat fin, not a complete water rocket. The supplied classroom load is 10 N sideways at the free tip. Span means the full root-to-tip distance: 100 mm initially. Root chord is 60 mm and thickness is 1.0 mm. The root is assumed perfectly fixed.\n\nFor printed PLA, this model multiplies the supplied 3.5 GPa modulus and 50 MPa strength by the illustrative 0.6 layer factor, giving 2.1 GPa and a 30 MPa allowable. These are teaching inputs, not qualified filament properties. The initial fin is also below the shop's 1.2 mm wall rule.\n\nThe initial linear calculation gives 100 MPa stress and about 317 mm tip deflection. A deflection larger than the span is outside this small-deflection model: it is a warning to redesign, not a prediction of the fin's actual bent shape. Doubling thickness multiplies bending stiffness by eight, but also doubles mass; check both.\n\nMeet a safety factor of 2, sag no greater than 6 mm, mass no greater than 15 g, and primary-part cost no greater than USD 30. Mass and cost limits are per fin; the initial production quantity is three. Shortening the span can help this structural screen, but the module does not check whether a smaller fin still provides aerodynamic stability.\n\nNo pressure vessel, launch pressure, thrust, trajectory, fin flutter, attachment strength or recovery system is modeled. Passing these screens is not permission to build, pressurize or launch a rocket.",
+      "Assess one flat fin, not a complete water rocket. The supplied classroom load is 10 N sideways at the free tip. Span means the full root-to-tip distance: 100 mm initially. Root chord is 60 mm and thickness is 1.0 mm. The root is assumed perfectly fixed.\n\nFor printed PLA, this model multiplies the supplied 3.5 GPa modulus and 50 MPa strength by the illustrative 0.6 layer factor, giving 2.1 GPa and a 30 MPa allowable. These are teaching inputs, not qualified filament properties. The initial fin is also below the shop's 1.2 mm wall rule.\n\nThe initial linear calculation gives 100 MPa stress and about 317 mm tip deflection. A deflection larger than the span is outside this small-deflection model: it is a warning to redesign, not a prediction of the fin's actual bent shape. Doubling thickness multiplies bending stiffness by eight, but also doubles mass; check both.\n\nMeet a safety factor of at least 2, sag at most 6 mm, mass at most 15 g, and primary-part cost at most USD 30. Mass and cost limits are per fin; the initial production quantity is three. Shortening the span can help this structural screen, but the module does not check whether a smaller fin still provides aerodynamic stability.\n\nNo pressure vessel, launch pressure, thrust, trajectory, fin flutter, attachment strength or recovery system is modeled. Passing these screens is not permission to build, pressurize or launch a rocket.",
     unlockAfter: ["drone_arm"],
     artifactType: "water_rocket",
     constraints: {
@@ -520,7 +520,7 @@ export const missions: Mission[] = [
     id: "rc_aircraft",
     title: "RC aircraft",
     brief:
-      "Assess one wing half-spar for a classroom trainer example. The starting half-span is 450 mm, represented by a cantilever tube: fixed at the wing root and free at the tip. A supplied 6 N tip load approximates half the weight of a 1.2 kg aircraft at 1 g: 1.2 × 9.81 / 2 ≈ 5.9 N, rounded to 6 N. It is not a maneuver or gust envelope.\n\nThe starting aluminum tube has an 8 mm outer diameter and a 0.8 mm wall. Using the supplied longitudinal material constants, root stress is about 91 MPa and tip sag about 22.3 mm. The safety factor exceeds 2.5, but sag exceeds the 12 mm limit. Strength passing does not establish adequate stiffness.\n\nMeet mass no greater than 40 g and primary-part cost no greater than USD 70 for one half-spar. Compare changes in diameter, wall thickness and material before choosing: bending stiffness is E × I, so section geometry matters alongside the material's modulus. The carbon-tube option uses longitudinal teaching properties and the shop's illustrative fabrication cost, not a supplier quote.\n\nThis module omits distributed aerodynamic loading, torsion, shear deformation, ribs, skin, root-joint compliance, local tube crushing, fatigue and aeroelastic behavior. Passing a one-load structural model does not qualify an RC aircraft for flight.",
+      "Assess one wing half-spar for a classroom trainer example. The starting half-span is 450 mm, represented by a cantilever tube: fixed at the wing root and free at the tip. A supplied 6 N tip load approximates half the weight of a 1.2 kg aircraft at 1 g: 1.2 × 9.81 / 2 ≈ 5.9 N, rounded to 6 N. It is not a maneuver or gust envelope.\n\nThe starting aluminum tube has an 8 mm outer diameter and a 0.8 mm wall. Using the supplied longitudinal material constants, root stress is about 91 MPa and tip sag about 22.3 mm. The safety factor exceeds 2.5, but sag exceeds the 12 mm limit. Strength passing does not establish adequate stiffness.\n\nMeet mass no greater than 40 g and primary-part cost no greater than USD 70 for one half-spar. Compare changes in diameter, wall thickness and material before choosing: bending stiffness is E × I, where E is elastic modulus (Pa) and I is the second moment of area about the bending axis (m⁴). Section geometry matters alongside the material’s stiffness. The carbon-tube option uses longitudinal teaching properties and the shop's illustrative fabrication cost, not a supplier quote.\n\nThis module omits distributed aerodynamic loading, torsion, shear deformation, ribs, skin, root-joint compliance, local tube crushing, fatigue and aeroelastic behavior. Passing a one-load structural model does not qualify an RC aircraft for flight.",
     unlockAfter: ["drone_arm"],
     artifactType: "rc_aircraft",
     constraints: {
@@ -564,7 +564,7 @@ export const missions: Mission[] = [
     id: "payload",
     title: "Payload bay",
     brief:
-      "Assess the plate supporting an avionics stack between two rails. The initial support spacing is the full 200 mm span; plate width is 120 mm and thickness is 2.0 mm. Treat the plate as a uniform beam, simply supported at both rails and loaded at midspan.\n\nThe supplied 30 N load is a rounded classroom inertial load: a 0.500 kg stack at a 6 g load factor gives 0.500 × 6 × 9.81 ≈ 29.4 N. The factor already includes the stated total load; do not add another 1 g. The rails are idealized as rigid, and the model does not calculate a time-varying shock.\n\nUsing the printed-PLA teaching inputs after the 0.6 layer factor, E = 2.1 GPa and allowable strength = 30 MPa. At the full 200 mm support spacing, the initial model gives about 18.8 MPa bending stress, safety factor 1.6, and 29.8 mm center sag. It fails both the factor-of-safety requirement and the 1.0 mm sag limit. That large sag also lies outside the small-deflection screen.\n\nMeet safety factor at least 2, sag at most 1.0 mm, plate mass at most 120 g, and primary-part cost at most USD 70. The 500 g stack supplies the load; it is not included in the plate-only mass budget. A shorter support spacing or a stiffer section may help, but every change must still fit the mounting layout.\n\nThe uniform-beam approximation omits two-way plate action, attachment and rail flexibility, holes, connector strain, vibration and impact response. A structural screen does not certify the avionics assembly.",
+      "Assess the plate supporting an avionics stack between two rails. The initial support spacing is the full 200 mm span; plate width is 120 mm and thickness is 2.0 mm. Treat the plate as a uniform beam, simply supported at both rails and loaded at midspan.\n\nThe supplied 30 N load is a rounded classroom inertial load: a 0.500 kg stack at a 6 g load factor gives 0.500 × 6 × 9.81 ≈ 29.4 N. The factor already includes the stated total load; do not add another 1 g. The rails are idealized as rigid, and the model does not calculate a time-varying shock.\n\nUsing the printed-PLA teaching inputs after the 0.6 layer factor, elastic modulus E = 2.1 GPa and allowable strength = 30 MPa. At the full 200 mm support spacing, the initial model gives about 18.8 MPa bending stress, safety factor 1.6, and 29.8 mm center sag. Safety factor = 30 MPa / 18.75 MPa = 1.6, below the required 2 despite stress remaining below the supplied allowable. This is a strength-margin shortfall, not a demonstrated yield event. Sag also exceeds the 1.0 mm limit and lies outside the small-deflection screen; use it as a redesign warning, not a prediction of the actual bent shape.\n\nMeet safety factor at least 2, sag at most 1.0 mm, plate mass at most 120 g, and primary-part cost at most USD 70. The 500 g stack supplies the load; it is not included in the plate-only mass budget. A shorter support spacing or a stiffer section may help, but every change must still fit the mounting layout.\n\nThe uniform-beam approximation omits two-way plate action, attachment and rail flexibility, holes, connector strain, vibration and impact response. A structural screen does not certify the avionics assembly.",
     unlockAfter: ["drone_arm"],
     artifactType: "payload",
     constraints: {
@@ -604,16 +604,16 @@ export const missions: Mission[] = [
 
 export const concepts: Record<string, { title: string; body: string }> = {
   yield: {
-    title: "Yield",
+    title: "Strength limit and safety factor",
     body: "For a ductile metal, yield marks the onset of permanent deformation. Here safety factor is the supplied allowable divided by calculated stress; utilization is its inverse. Wood, printed polymers and composites use teaching strength limits rather than a universal metal yield point. A pass does not rule out buckling, fatigue, fracture or joint failure.",
   },
   inertia: {
     title: "Second moment of area",
-    body: "Bending stiffness is E × I: material modulus times the second moment of area about the bending axis. For a rectangle, I = b·h³/12. Double the thickness and I goes up eight times. Material near the middle is almost a passenger. The wall far from the center does the work.",
+    body: "Bending stiffness is E × I. E is the elastic modulus (Pa); I is the second moment of area about the bending axis (m⁴). For a rectangle, I = b·h³/12: b is width and h is thickness in the bending direction, both in metres. EI has units N·m². At fixed width, length and material, doubling h multiplies EI by eight and doubles mass. Recheck both stiffness and mass.",
   },
   buckling: {
     title: "Buckling",
-    body: "A long thin column can bow sideways before the material yields. Euler's load is π²EI/(KL)². K is 2 when one end is fixed and the other is free. Yield strength does not enter until the column is stocky.",
+    body: "A long thin column can bow sideways before the material yields. The ideal elastic critical load is π²EI/(KL)² in newtons: E is elastic modulus (Pa), I is second moment of area (m⁴), L is length (m), and K is a dimensionless end-support factor. K = 2 for a fixed-free column. The ideal model assumes a slender, initially straight, elastic column; a short or imperfect member needs other checks.",
   },
   stall: {
     title: "Stall",
@@ -625,7 +625,7 @@ export const concepts: Record<string, { title: string; body: string }> = {
   },
   tooling: {
     title: "Setup and the mold",
-    body: "A mold costs the same whether you buy ten parts or ten thousand. That cost is divided by quantity. Cycle time is not. At small quantity the mold loses. At large quantity the slow machine loses.",
+    body: "This classroom cost model holds setup and tooling fixed for a chosen process. Per-part allocation = (setup + tooling)/quantity. Machine time, labor and finishing are charged per part. Increasing quantity can change the lowest quote; it does not prove manufacturability or guarantee a real supplier price.",
   },
   margin: {
     title: "Static margin",
@@ -633,7 +633,7 @@ export const concepts: Record<string, { title: string; body: string }> = {
   },
   lift: {
     title: "Lift",
-    body: "Lift is ½ρV²S·CL. Speed is squared. Area and CL are not. CL here climbs with angle until stall, using a thin-airfoil slope corrected for a finite wing.",
+    body: "Lift = ½ρV²S·CL, in newtons. Here ρ (rho) is air density in kg/m³, V is airspeed in m/s, S is wing area in m², and CL is the dimensionless lift coefficient. Speed is squared; area is not. This model increases CL with angle before its teaching stall threshold, using a thin-airfoil slope corrected for a finite wing.",
   },
   resonance: {
     title: "First mode",

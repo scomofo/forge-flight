@@ -839,108 +839,100 @@ Answers: (a) temper it, or temper at a higher temperature, for more toughness; (
 
 ## Materials 101 · Lesson 10: Reading a stress-strain curve
 
-This lesson is about the most important graph in materials: **the tensile test curve**. Each part of the curve is a different property, and the main skill is not mixing them up.
+A tensile-test curve separates properties that are often grouped under the word **strong**. Learn what each landmark means before assigning it a number. The practical uses simulated records, not measurements from physical specimens.
 
 ### 1. The test
 
-A machine grips a bar and **pulls it until it breaks**, recording:
+A tensile machine records force and extension. Convert these to:
 
-- **Stress** σ = force ÷ **original** area (lesson 19 of physics)
-- **Strain** ε = stretch ÷ **original** length
+- **Engineering stress**, σ = F/A₀. σ (sigma) is stress, F is force in newtons, and A₀ is original cross-sectional area in mm². N/mm² equals MPa.
+- **Engineering strain**, ε = ΔL/L₀. ε (epsilon) is a dimensionless ratio; ΔL is extension and L₀ is original gauge length, both in the same length units. Δ means change and the subscript 0 means original.
 
-Plot stress (up) vs strain (across). That curve is the material's "mechanical autobiography."
+Plot stress vertically and strain horizontally. A percentage axis shows 100 × ε, so 0.2% is a ratio of 0.002.
 
 ### 2. The four landmarks
 
 | Landmark | Where on the curve | What it tells you | Units |
 |---|---|---|---|
-| **1. Slope** | the steep straight start | **stiffness, E**: how much it stretches elastically | GPa |
-| **2. Yield** | where it bends away from straight | **yield strength, σy**: where permanent bending starts | MPa |
-| **3. Peak** | the top of the curve | **ultimate tensile strength, σuts**: the most it ever carried | MPa |
-| **4. Fracture** | where the line ends | **ductility**: how far it stretched before breaking | % or a ratio |
+| **1. Slope** | initial linear elastic region | **Young's modulus, E**: elastic stiffness | GPa |
+| **2. Offset yield** | intersection with the specified offset line | **0.2%-offset yield strength, σy**, not the exact first onset of permanent deformation | MPa |
+| **3. Peak** | maximum engineering stress | **ultimate tensile strength, σuts (UTS)** | MPa |
+| **4. Fracture** | final recorded strain | strain at fracture, a measure of elongation to break in this record | % or ratio, explicitly labeled |
 
 ### 3. What the animation shows
 
+The animation is a schematic of the supplied steel example, not the original measured record. Its knee is a reported departure from linearity; the givens do not identify it as an offset intersection.
+
 | Step | Value | Meaning |
 |---|---|---|
-| **1. Slope** | E = 200 GPa | steel: stiff, barely stretches elastically |
-| **2. Yield** | 350 MPa | below this it springs back; above, it stays bent |
-| **3. Peak** | 420 MPa | max stress; after this the bar starts to **neck** (thin down in one spot) |
-| **4. Fracture** | end of curve | it breaks |
+| **1. Slope** | E = 200 GPa | supplied initial elastic slope |
+| **2. Reported departure** | approximately 350 MPa | stress at 42.9 kN; offset yield is not established |
+| **3. Peak** | approximately 420 MPa | maximum engineering stress at 51.5 kN |
+| **4. Fracture** | end of schematic curve | no measured fracture strain is supplied for this example |
 
-**Why does the curve go down after the peak?** After necking, the measured load falls while engineering stress still divides by the fixed **original** area. Local true stress may continue rising as the neck thins; damage can later reverse that trend.
+After necking, a declining load gives a declining engineering stress because the divisor remains the original area. Local true stress may continue rising as the neck thins; the record alone does not establish that trend throughout fracture.
 
 ### 4. The worked example: 1020 steel bar
 
-12.5 mm diameter, so area = π/4 × 12.5² = **122.7 mm²**.
+The supplied original diameter d is 12.5 mm. Original area A₀ = πd²/4 = π × (12.5 mm)²/4 ≈ **122.7 mm²**. Retain the unrounded area in subsequent calculations.
 
-| Reading | Load | Stress |
+| Reading | Load | Stress or modulus |
 |---|---|---|
-| Leaves the straight line | 42.9 kN | 42,900 ÷ 122.7 = **350 MPa** (yield) |
-| Peak load | 51.5 kN | 51,500 ÷ 122.7 = **420 MPa** (ultimate) |
-| Initial slope | | **200 GPa** (stiffness) |
+| Reported departure from linearity | 42.9 kN | 42,900 N ÷ 122.718… mm² ≈ **350 MPa** |
+| Peak force | 51.5 kN | 51,500 N ÷ 122.718… mm² ≈ **420 MPa (UTS)** |
+| Supplied initial elastic slope | not a force reading | **E = 200 GPa** |
 
-Three numbers, three different properties:
+The force and area establish stress at the reported departure, not a 0.2%-offset yield value. No offset-intersection force is supplied. Keep the quantity and unit attached to each result: **350 MPa stress at departure**, **420 MPa UTS**, and **200 GPa modulus**.
 
-- **350** = where it stopped springing back
-- **420** = the most it ever carried
-- **200 GPa** = how little it stretched getting there
+### 5. The 0.2% offset: a specified yield convention
 
-### 5. The 0.2% offset: a standard yield point
+When yielding is gradual, an agreed construction avoids choosing an ill-defined bend by eye:
 
-Many alloys (aluminium, stainless) **bend gradually** with no sharp corner, so "where it leaves the line" is guesswork.
+1. Start at strain **ε = 0.002**, or **0.2%**, on the horizontal axis.
+2. Draw a line parallel to the initial elastic slope **E**.
+3. Read the stress where that line intersects the curve. This is the **0.2%-offset yield strength**, also called 0.2% proof stress.
 
-**The convention:**
-
-1. Start at strain **0.002** (0.2%) on the horizontal axis.
-2. Draw a line **parallel to the elastic slope**.
-3. Where it crosses the curve = **yield strength**.
-
-It's an arbitrary choice, like a speed limit. What matters is that **everyone measures it the same way**, so datasheets are comparable.
+The line is σ = E(ε − 0.002). Use the same stress units for E and σ, and a ratio for ε. The offset defines a convention; it is not an exact measurement of the first onset of permanent deformation. A common method does not eliminate differences in measurements or slope fitting. Upper and lower yield points are separate conventions.
 
 ### 6. Stiffness ≠ strength ≠ hardness
 
-The most common mix-up in the subject:
-
-| Word | What it means | How it's measured |
+| Word | Meaning | How it is obtained |
 |---|---|---|
-| **Stiffness** (E) | resists **stretching** elastically | the **slope** of the curve |
-| **Strength** (σy, σuts) | resists **permanent bending or breaking** | **heights** on the curve |
-| **Hardness** | resists **surface denting or scratching** | a separate indentation test |
+| **Stiffness, E** | resistance to linear elastic stretching | initial slope Δσ/Δε |
+| **Strength, σy or σuts** | a stress at a stated landmark | specified yield construction or peak engineering stress |
+| **Hardness** | resistance to indentation | a separate test |
 
-**Example:** glass is **stiff** (E ≈ 70 GPa) and can be quite **strong**, but it's brittle, the opposite of tough. Don't say "strong" when you mean stiff, or "hard" when you mean strong.
-
-(Hardness does roughly track strength **for steels**, which is why shops use a quick hardness test to estimate strength. It doesn't hold for most other materials.)
+A stiff material can fracture with little plastic strain. Do not use stiffness, strength, ductility and toughness interchangeably. A hardness-to-strength estimate needs an appropriate material-specific relationship rather than a universal conversion.
 
 ### 7. Check the axes first
 
-Strain scales vary hugely between materials:
+The practical provides a full record and an enlarged initial region. The optional dashed offset guide uses the reference fit of the elastic slope. A keyboard-operated sample cursor and a data table expose the same sampled values used for the graph and reference extraction.
 
-| Material | Whole curve fits in… |
+| View | What to read |
 |---|---|
-| Ceramic | below 0.002 (0.2%) |
-| Steel | ~0.2–0.4 |
-| Rubber or polymer | past 2 (200%+) |
+| Full record | peak engineering stress and final strain |
+| Enlarged initial region | elastic slope and offset-line intersection |
+| Sample cursor or curve-data table | stress in MPa and strain as both ratio and percentage |
 
-Put them on the same axes and one becomes invisible. **Always read the axis limits before judging the shape.**
-
-**A straight line all the way to fracture means brittle.** It never yielded at all.
+The axes rescale for each specimen. To calculate E, use Δσ/Δε with strain as a ratio. With stress in MPa, divide the resulting modulus by 1000 to report GPa. Compare several early points rather than relying on one noisy pair. If the offset construction has no intersection before fracture, do not substitute fracture stress for offset yield.
 
 ### 8. The method
 
-1. **Slope** → E (GPa)
-2. **0.2% offset** → yield σy (MPa)
-3. **Peak** → ultimate σuts (MPa)
-4. **End point** → ductility (strain at fracture)
-5. **Name each one separately.** Don't just say "strong."
+1. Check the axes, units and simulated-record label.
+2. Estimate the initial slope E in GPa.
+3. Use the specified offset construction to read σy in MPa.
+4. Read the peak σuts in MPa and final strain as a labeled percentage or ratio.
+5. Compare with the reference extraction. A mismatch prompts a check of scales, units and landmarks; it does not establish its cause.
 
-**Try one:** a 10 mm aluminium bar (E = 69 GPa) is tested. The 0.2% offset yield occurs at 21.2 kN and the peak load is 24.4 kN.
+The generator adds bounded **±0.8% numerical noise to stress**, not strain. These samples and scoring tolerances do not establish real measurement uncertainty or laboratory competence.
 
-- (a) What's the area?
-- (b) What are the yield and ultimate strengths?
-- (c) About what strain is it at when it first yields (elastic part only)?
+**Try one:** a 10 mm aluminium bar has a supplied modulus E = 69 GPa. In this separate example, the **0.2%-offset intersection is explicitly given** at 21.2 kN and the peak load is 24.4 kN.
 
-You should get (a) 78.5 mm², (b) about 270 MPa yield and 311 MPa ultimate, (c) about 270 ÷ 69,000 ≈ 0.004.
+- (a) What is the original area?
+- (b) What are the offset yield strength and UTS?
+- (c) What are the elastic strain component and the total strain at the offset intersection, assuming the fitted linear elastic slope?
+
+You should get (a) A₀ = π × 10²/4 ≈ 78.5 mm²; (b) offset yield ≈ 270 MPa and UTS ≈ 311 MPa; (c) elastic component ≈ 270/69,000 = 0.00391 (0.391%). At the offset intersection, total strain ≈ 0.00391 + 0.002 = 0.00591 (0.591%). The 0.002 offset is a strain ratio, not an extra 0.002%.
 
 ## Materials 101 · Lesson 11: Ductility and toughness
 

@@ -1,3 +1,5 @@
+import { ResultSummary, VirtualTestLimit } from "./result-summary";
+import { requiredChecksPass } from "@/forge/sim/result-messages";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { concepts, materialById, materials, missionById, processById, processes } from "@/forge/content/catalog";
@@ -30,7 +32,7 @@ const conceptClips: Record<string, { src: string; caption: string }> = {
   },
   yield: {
     src: "/clips/yield.mp4",
-    caption: "Past yield, the shape does not come all the way back. Your factor is still allowable divided by stress.",
+    caption: "This clip illustrates permanent deformation in a ductile metal. The model compares calculated stress with a supplied strength limit; a missed safety-factor target is not an observed yield event.",
   },
   margin: {
     src: "/clips/pitch.mp4",
@@ -38,12 +40,12 @@ const conceptClips: Record<string, { src: string; caption: string }> = {
   },
   resonance: {
     src: "/clips/resonance.mp4",
-    caption: "One mode, shaking. The hertz on the page is the cantilever formula.",
+    caption: "This clip illustrates one vibration mode. The frequency estimate uses the beam formula for the displayed supports; it does not predict a forced vibration response.",
   },
 };
 
 const nudges: Record<string, string> = {
-  yield: "Where is the stress relative to yield, and which fiber is seeing it?",
+  yield: "How does calculated stress compare with the supplied strength limit and the required safety factor?",
   inertia: "Thickness changed. What happened to the second moment, not just the area?",
   buckling: "This load is compression. Is yield the first thing a slender column does?",
   stall: "The angle is past the teaching stall. What happens to lift after the flow lets go?",
@@ -51,7 +53,7 @@ const nudges: Record<string, string> = {
   tooling: "Quantity changed the winner. Which cost was divided, and which was not?",
   margin: "Where is the center of gravity relative to the neutral point?",
   lift: "Speed is squared. What happens to lift if speed falls by half?",
-  resonance: "The motor and the first mode are close. What does the arm do then?",
+  resonance: "The supplied excitation and first bending-frequency estimate are close. What additional evidence would establish the vibration response?",
 };
 
 function ConceptFilm({ id }: { id: string }) {
@@ -77,6 +79,8 @@ function GlidePlay({ points }: { points: { x_m: number; h_m: number }[] }) {
   const Y = (h: number) => 132 - (h / maxH) * 112;
   const d = points.map((p, i) => `${i === 0 ? "M" : "L"}${X(p.x_m).toFixed(1)} ${Y(p.h_m).toFixed(1)}`).join(" ");
   useEffect(() => {
+    const X = (x: number) => 12 + (x / maxX) * 300;
+    const Y = (h: number) => 132 - (h / maxH) * 112;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const place = (u: number) => {
       const i = Math.min(points.length - 1, Math.floor(u * Math.max(points.length - 1, 1)));
@@ -284,7 +288,7 @@ export function MissionBench({ missionId }: { missionId: string }) {
                 ? `Static margin is ${num(hot.utilization, 2)}. The band is 0.05 to 0.25 of the chord.`
                 : hot.mode === "stall"
                   ? "Past the teaching stall. Lift is no longer climbing with angle."
-                  : `${hot.mode.replaceAll("_", " ")} at ${hot.location}. ${hot.mode === "yield" ? `Utilization ${num(hot.utilization, 2)}.` : ""}`}
+                  : `${hot.mode.replaceAll("_", " ")} at ${hot.location}. ${["strength_limit_exceeded", "strength_margin_shortfall"].includes(hot.mode) ? `Stress / supplied limit: ${num(hot.utilization, 2)}.` : ""}`}
             </p>
           ) : (
             <p className="text-sm text-dust">No named failure on the current numbers.</p>
@@ -330,11 +334,12 @@ function ConstraintList({ missionId, evaluation }: { missionId: string; evaluati
   const mission = missionById(missionId)!;
   const c = mission.constraints;
   const rows = [
+    evaluation.aero ? ["Lift / model weight", `${num(evaluation.aero.lift_N, 3)} / ${num(evaluation.aero.weight_N, 3)} N`, evaluation.passAero] : null,
     c.maxMass_g !== undefined ? ["Mass", `${num(evaluation.mass_g, 1)} / ${c.maxMass_g} g`, evaluation.passMass] : null,
     c.maxCost_usd !== undefined ? ["Primary-part unit cost", `${evaluation.cost ? money(evaluation.cost.unit) : "Not quoted"} / ${money(c.maxCost_usd)}`, evaluation.passCost] : null,
     c.minSafetyFactor !== undefined ? ["Safety factor", `${num(evaluation.minSafetyFactor, 2)} / ${c.minSafetyFactor}`, evaluation.passStress] : null,
     c.maxDeflection_mm !== undefined ? ["Sag", `${num(evaluation.maxDeflection_mm, 2)} / ${c.maxDeflection_mm} mm`, evaluation.passDeflection] : null,
-    ["DFM", `${num(evaluation.dfmScore, 0)} / ${c.dfmScoreMin ?? 70}`, evaluation.passDfm],
+    ["Design for manufacture (DFM)", `${num(evaluation.dfmScore, 0)} / ${c.dfmScoreMin ?? 70}`, evaluation.passDfm],
     evaluation.aero ? ["Static margin", `${num(evaluation.aero.sm, 2)} / 0.05–0.25`, evaluation.aero.stable] : null,
   ].filter(Boolean) as [string, string, boolean][];
   return (
@@ -368,7 +373,7 @@ function Hud({
     ["Mass", `${num(evaluation.mass_g, 1)} g`, "mass"],
     ["Part quote", evaluation.cost ? money(evaluation.cost.unit) : "Not quoted", "cost"],
     ["Safety", num(evaluation.minSafetyFactor, 2), "sf"],
-    ["DFM", num(evaluation.dfmScore, 0), "dfm"],
+    ["Design for manufacture (DFM)", num(evaluation.dfmScore, 0), "dfm"],
   ];
   if (evaluation.aero) chips.push(["Drag", `${num(evaluation.aero.drag_N, 2)} N`, "drag"]);
   if (mission.constraints.armCount && evaluation.thrustToWeight !== null) {
@@ -407,8 +412,8 @@ function explain(id: string, ev: Evaluation) {
   if (id === "mass") return `Mass is density times volume of every part. ${ev.mass_g.toFixed(1)} g. Classroom densities, not a weigh-in.`;
   if (id === "cost") return "The primary-part quote adds material, machine time, setup and tooling divided by quantity, labor, and finishing. Scrap multiplies material only. Other parts, assembly and real supplier qualification are not included.";
   if (id === "sf") return `Safety factor is allowable divided by the stress in the model. The smallest one is ${ev.minSafetyFactor.toFixed(2)}.`;
-  if (id === "dfm") return "DFM score is the share of process rules that pass. A warning counts half. An error counts zero.";
-  if (id === "drag") return "Drag is ½ρV²S·CD. CD is a teaching CD0 plus induced drag.";
+  if (id === "dfm") return "Design for manufacture (DFM) is a classroom rule score, not fabrication approval. A passing rule earns full credit, a failed warning earns half, and a failed blocking rule earns zero.";
+  if (id === "drag") return "Drag = ½ρV²S·CD: ρ is air density (kg/m³), V is airspeed (m/s), S is wing area (m²), and CD is the dimensionless drag coefficient. The result is in newtons. CD adds a teaching zero-lift term to induced drag.";
   return ev.assumptions[0] ?? "";
 }
 
@@ -465,7 +470,7 @@ function PhaseBody({
     return <div className="space-y-4 text-sm leading-relaxed"><p>Change a dimension. Mass, sag, and stress come from the same model as the checks. A marked number is outside the brief.</p>{missionId === "glider" ? <><p>{stabilityDescription(evaluation.aero?.sm ?? 0)}</p><p>Predict which number will move before changing a slider, then compare. Moving the CG aft reduces static margin; changing tail size or fuselage length also moves the neutral point.</p><GliderCalculations /></> : null}</div>;
   }
   if (run.phase === "materials") {
-    return <p className="text-sm leading-relaxed">Pick a material this shop can actually run. The citation under the name is the source of the constants. If the process is not on that material, the make step will say so.</p>;
+    return <p className="text-sm leading-relaxed">Choose a material compatible with a process in this classroom shop. Read the teaching-input note beneath its name; an overview reference is not a grade-specific data certificate. The manufacturing step flags incompatible choices.</p>;
   }
   if (run.phase === "simulate") {
     const kinds = mission.requiredAnalyses.filter((k) => k !== "dfm" && k !== "cost") as AnalysisKind[];
@@ -496,7 +501,7 @@ function PhaseBody({
             className="min-h-11 rounded-lg bg-panel px-3 text-sm"
             onClick={() => useForge.getState().patch(missionId, { fidelity: run.fidelity === "L0" ? "L1" : "L0" })}
           >
-            {run.fidelity === "L0" ? "Enable L1 modal" : "L1 is on"}
+            {run.fidelity === "L0" ? "Add first bending-frequency estimate (L1)" : "First bending-frequency estimate (L1) is on"}
           </button>
         </div>
         {run.fidelity === "L1" && evaluation.modal_hz !== null ? (
@@ -536,7 +541,7 @@ function PhaseBody({
           <ul className="space-y-1 text-dust">
             <li className="flex justify-between"><span>Material, with scrap</span><span className="font-mono">{money(evaluation.cost.material)}</span></li>
             <li className="flex justify-between"><span>Machine time</span><span className="font-mono">{money(evaluation.cost.machine)}</span></li>
-            <li className="flex justify-between"><span>Setup + tooling / quantity</span><span className="font-mono">{money(evaluation.cost.amortised)}</span></li>
+            <li className="flex justify-between"><span>(Setup + tooling) / quantity</span><span className="font-mono">{money(evaluation.cost.amortised)}</span></li>
             <li className="flex justify-between"><span>Labor</span><span className="font-mono">{money(evaluation.cost.labor)}</span></li>
             <li className="flex justify-between"><span>Finishing</span><span className="font-mono">{money(evaluation.cost.finishing)}</span></li>
           </ul>
@@ -546,7 +551,7 @@ function PhaseBody({
         </p>
         {evaluation.dfmChecks.map((check) => (
           <p key={check.id} className={check.pass ? "text-dust" : "text-alarm"}>
-            {check.pass ? "Passes" : check.severity === "error" ? "Blocks" : "Warns"}: {check.message}
+            {!check.pass && (check.severity === "error" ? "Blocking rule: " : "Warning: ")}{check.message}
           </p>
         ))}
         {evaluation.incompatible.map((line) => (
@@ -558,7 +563,7 @@ function PhaseBody({
             checked={run.dfmOverride}
             onChange={(e) => useForge.getState().patch(missionId, { dfmOverride: e.target.checked })}
           />
-          Build it anyway. The ledger keeps the override, and the test will not call it fine.
+          Continue the virtual exercise with a recorded manufacturing-rule override. This does not approve fabrication or remove the failed check.
         </label>
         <button type="button" className="min-h-11 rounded-lg bg-panel px-3" onClick={() => useForge.getState().recordAnalysis(missionId, "cost")}>
           {run.analyses.includes("cost") ? "Cost checked" : "Check the cost"}
@@ -583,17 +588,8 @@ function PhaseBody({
         </button>
         {run.dfmOverride ? <p>You recorded a manufacturing override. This test does not erase it.</p> : null}
         {run.testDone && evaluation.aero ? <GlidePlay points={evaluation.aero.points} /> : null}
-        {run.testDone ? (
-          <p>
-            {evaluation.failures.length
-              ? `The test reports ${evaluation.failures.map((f) => f.mode.replaceAll("_", " ")).join(", ")}.`
-              : "The checks on this pass are inside the brief."}
-          </p>
-        ) : (
-          <p className="text-dust">{mission.artifactType === "glider"
-            ? "The path is a longitudinal glide from 8 m, not a full flight model."
-            : "This virtual test reruns the same structural equations. It is not a measured physical test, a flight simulation, or independent validation."}</p>
-        )}
+        {run.testDone && <ResultSummary evaluation={evaluation} limits={mission.constraints} />}
+        <VirtualTestLimit glider={mission.artifactType === "glider"} />
       </div>
     );
   }
@@ -614,13 +610,13 @@ function PhaseBody({
         className="min-h-11 rounded-lg bg-brass px-4 text-brass-ink disabled:opacity-40"
         disabled={run.reflection.trim().length < 30 || run.sealed}
         onClick={() => {
-          const met = evaluation.passStress && evaluation.passDeflection && evaluation.passMass && evaluation.passCost && evaluation.passDfm && evaluation.passBuckling && evaluation.passAero && evaluation.passStability;
+          const met = requiredChecksPass(evaluation);
           useForge.getState().submit(missionId, met);
         }}
       >
         Seal this iteration
       </button>
-      {pct !== null ? <p>Rubric {pct.toFixed(0)}%. {run.sealedCount} sealed. Three at 70 or better opens the next mission.</p> : null}
+      {pct !== null ? <p>Rubric {pct.toFixed(0)}%. {run.sealedCount} sealed. Complete three distinct sealed iterations and achieve a best reflection score of at least 70% to unlock modules that depend on this one.</p> : null}
       {run.rubric?.map((item) => (
         <p key={item.rubricItemId} className="text-dust">
           {item.rubricItemId}: {item.score}/2. {item.feedback}
@@ -642,7 +638,7 @@ function Inspector({ missionId }: { missionId: string }) {
         return (
           <div key={part.id} className="rounded-lg border border-line-forge bg-panel p-4">
             <h3 className="font-forge text-lg">{part.name}</h3>
-            <p className="text-xs text-dust">Measured length {num(part.params.length_mm ?? part.params.span_mm ?? 0, 0)} mm</p>
+            <p className="text-xs text-dust">Model length {num(part.params.length_mm ?? part.params.span_mm ?? 0, 0)} mm</p>
             {spec?.specs.map((slider) => (
               <label key={slider.key} className="mt-3 block text-sm">
                 <span className="flex justify-between text-dust">

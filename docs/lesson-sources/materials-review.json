@@ -457,6 +457,12 @@
       "reason": "Keep the mastery reminder consistent with the concentration-defined case depth in lesson 8.",
       "before": "**Temperature → D → case depth** (Arrhenius → 2√(Dt))",
       "after": "**Temperature → D → concentration profile → case depth at a stated concentration** (Arrhenius → Fick’s solution). **2√(Dt) is a characteristic diffusion length**, not the concentration-defined case depth."
+    },
+    {
+      "lesson": 10,
+      "reason": "Reconcile original lesson, animation, practical and imported reading: distinguish reported departure from offset yield without inventing an intersection; define notation and units, label simulation and describe newly implemented graph/data aids. Correct total strain at the explicitly specified practice offset intersection.",
+      "before": "42.9 kN labeled yield without a stated convention; first onset and offset yield conflated; simplified plot and unsupported certainty in feedback.",
+      "after": "Approximately 350 MPa is stress at the reported departure; offset yield is not established for the steel example. The separate aluminium practice explicitly supplies its offset force. Full and enlarged plots, numerical samples and conditional guide support the reading exercise."
     }
   ],
   "notes": {
@@ -492,6 +498,9 @@
     ],
     "30": [
       "The 12-question bench has its own 70% plus corrections gate. The separate lesson Check tab and saved course scores are unchanged by this reading import."
+    ],
+    "10": [
+      "The steel example does not supply an offset-intersection force; approximately 350 MPa is labeled only as stress at the reported departure. Practical records and comparison values are simulated, not independent material qualification."
     ]
   }
 }

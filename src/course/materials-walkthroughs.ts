@@ -2654,7 +2654,7 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
     "intro": [
       {
         "kind": "paragraph",
-        "text": "This lesson is about the most important graph in materials: **the tensile test curve**. Each part of the curve is a different property, and the main skill is not mixing them up."
+        "text": "A tensile-test curve separates properties that are often grouped under the word **strong**. Learn what each landmark means before assigning it a number. The practical uses simulated records, not measurements from physical specimens."
       }
     ],
     "sections": [
@@ -2663,23 +2663,23 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
         "blocks": [
           {
             "kind": "paragraph",
-            "text": "A machine grips a bar and **pulls it until it breaks**, recording:"
+            "text": "A tensile machine records force and extension. Convert these to:"
           },
           {
             "kind": "list",
             "ordered": false,
             "items": [
               {
-                "text": "**Stress** σ = force ÷ **original** area (lesson 19 of physics)"
+                "text": "**Engineering stress**, σ = F/A₀. σ (sigma) is stress, F is force in newtons, and A₀ is original cross-sectional area in mm². N/mm² equals MPa."
               },
               {
-                "text": "**Strain** ε = stretch ÷ **original** length"
+                "text": "**Engineering strain**, ε = ΔL/L₀. ε (epsilon) is a dimensionless ratio; ΔL is extension and L₀ is original gauge length, both in the same length units. Δ means change and the subscript 0 means original."
               }
             ]
           },
           {
             "kind": "paragraph",
-            "text": "Plot stress (up) vs strain (across). That curve is the material's \"mechanical autobiography.\""
+            "text": "Plot stress vertically and strain horizontally. A percentage axis shows 100 × ε, so 0.2% is a ratio of 0.002."
           }
         ]
       },
@@ -2697,27 +2697,27 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
             "rows": [
               [
                 "**1. Slope**",
-                "the steep straight start",
-                "**stiffness, E**: how much it stretches elastically",
+                "initial linear elastic region",
+                "**Young's modulus, E**: elastic stiffness",
                 "GPa"
               ],
               [
-                "**2. Yield**",
-                "where it bends away from straight",
-                "**yield strength, σy**: where permanent bending starts",
+                "**2. Offset yield**",
+                "intersection with the specified offset line",
+                "**0.2%-offset yield strength, σy**, not the exact first onset of permanent deformation",
                 "MPa"
               ],
               [
                 "**3. Peak**",
-                "the top of the curve",
-                "**ultimate tensile strength, σuts**: the most it ever carried",
+                "maximum engineering stress",
+                "**ultimate tensile strength, σuts (UTS)**",
                 "MPa"
               ],
               [
                 "**4. Fracture**",
-                "where the line ends",
-                "**ductility**: how far it stretched before breaking",
-                "% or a ratio"
+                "final recorded strain",
+                "strain at fracture, a measure of elongation to break in this record",
+                "% or ratio, explicitly labeled"
               ]
             ]
           }
@@ -2726,6 +2726,10 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
       {
         "heading": "3. What the animation shows",
         "blocks": [
+          {
+            "kind": "paragraph",
+            "text": "The animation is a schematic of the supplied steel example, not the original measured record. Its knee is a reported departure from linearity; the givens do not identify it as an offset intersection."
+          },
           {
             "kind": "table",
             "columns": [
@@ -2737,28 +2741,28 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
               [
                 "**1. Slope**",
                 "E = 200 GPa",
-                "steel: stiff, barely stretches elastically"
+                "supplied initial elastic slope"
               ],
               [
-                "**2. Yield**",
-                "350 MPa",
-                "below this it springs back; above, it stays bent"
+                "**2. Reported departure**",
+                "approximately 350 MPa",
+                "stress at 42.9 kN; offset yield is not established"
               ],
               [
                 "**3. Peak**",
-                "420 MPa",
-                "max stress; after this the bar starts to **neck** (thin down in one spot)"
+                "approximately 420 MPa",
+                "maximum engineering stress at 51.5 kN"
               ],
               [
                 "**4. Fracture**",
-                "end of curve",
-                "it breaks"
+                "end of schematic curve",
+                "no measured fracture strain is supplied for this example"
               ]
             ]
           },
           {
             "kind": "paragraph",
-            "text": "**Why does the curve go down after the peak?** After necking, the measured load falls while engineering stress still divides by the fixed **original** area. Local true stress may continue rising as the neck thins; damage can later reverse that trend."
+            "text": "After necking, a declining load gives a declining engineering stress because the divisor remains the original area. Local true stress may continue rising as the neck thins; the record alone does not establish that trend throughout fracture."
           }
         ]
       },
@@ -2767,83 +2771,64 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
         "blocks": [
           {
             "kind": "paragraph",
-            "text": "12.5 mm diameter, so area = π/4 × 12.5² = **122.7 mm²**."
+            "text": "The supplied original diameter d is 12.5 mm. Original area A₀ = πd²/4 = π × (12.5 mm)²/4 ≈ **122.7 mm²**. Retain the unrounded area in subsequent calculations."
           },
           {
             "kind": "table",
             "columns": [
               "Reading",
               "Load",
-              "Stress"
+              "Stress or modulus"
             ],
             "rows": [
               [
-                "Leaves the straight line",
+                "Reported departure from linearity",
                 "42.9 kN",
-                "42,900 ÷ 122.7 = **350 MPa** (yield)"
+                "42,900 N ÷ 122.718… mm² ≈ **350 MPa**"
               ],
               [
-                "Peak load",
+                "Peak force",
                 "51.5 kN",
-                "51,500 ÷ 122.7 = **420 MPa** (ultimate)"
+                "51,500 N ÷ 122.718… mm² ≈ **420 MPa (UTS)**"
               ],
               [
-                "Initial slope",
-                "",
-                "**200 GPa** (stiffness)"
+                "Supplied initial elastic slope",
+                "not a force reading",
+                "**E = 200 GPa**"
               ]
             ]
           },
           {
             "kind": "paragraph",
-            "text": "Three numbers, three different properties:"
-          },
-          {
-            "kind": "list",
-            "ordered": false,
-            "items": [
-              {
-                "text": "**350** = where it stopped springing back"
-              },
-              {
-                "text": "**420** = the most it ever carried"
-              },
-              {
-                "text": "**200 GPa** = how little it stretched getting there"
-              }
-            ]
+            "text": "The force and area establish stress at the reported departure, not a 0.2%-offset yield value. No offset-intersection force is supplied. Keep the quantity and unit attached to each result: **350 MPa stress at departure**, **420 MPa UTS**, and **200 GPa modulus**."
           }
         ]
       },
       {
-        "heading": "5. The 0.2% offset: a standard yield point",
+        "heading": "5. The 0.2% offset: a specified yield convention",
         "blocks": [
           {
             "kind": "paragraph",
-            "text": "Many alloys (aluminium, stainless) **bend gradually** with no sharp corner, so \"where it leaves the line\" is guesswork."
-          },
-          {
-            "kind": "paragraph",
-            "text": "**The convention:**"
+            "text": "When yielding is gradual, an agreed construction avoids choosing an ill-defined bend by eye:"
           },
           {
             "kind": "list",
             "ordered": true,
             "items": [
               {
-                "text": "Start at strain **0.002** (0.2%) on the horizontal axis."
+                "text": "Start at strain **ε = 0.002**, or **0.2%**, on the horizontal axis."
               },
               {
-                "text": "Draw a line **parallel to the elastic slope**."
+                "text": "Draw a line parallel to the initial elastic slope **E**."
               },
               {
-                "text": "Where it crosses the curve = **yield strength**."
+                "text": "Read the stress where that line intersects the curve. This is the **0.2%-offset yield strength**, also called 0.2% proof stress."
               }
             ]
           },
           {
             "kind": "paragraph",
-            "text": "It's an arbitrary choice, like a speed limit. What matters is that **everyone measures it the same way**, so datasheets are comparable."
+            "text": "The line is σ = E(ε − 0.002). Use the same stress units for E and σ, and a ratio for ε. The offset defines a convention; it is not an exact measurement of the first onset of permanent deformation. A common method does not eliminate differences in measurements or slope fitting. Upper and lower yield points are separate conventions."
           }
         ]
       },
@@ -2851,41 +2836,33 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
         "heading": "6. Stiffness ≠ strength ≠ hardness",
         "blocks": [
           {
-            "kind": "paragraph",
-            "text": "The most common mix-up in the subject:"
-          },
-          {
             "kind": "table",
             "columns": [
               "Word",
-              "What it means",
-              "How it's measured"
+              "Meaning",
+              "How it is obtained"
             ],
             "rows": [
               [
-                "**Stiffness** (E)",
-                "resists **stretching** elastically",
-                "the **slope** of the curve"
+                "**Stiffness, E**",
+                "resistance to linear elastic stretching",
+                "initial slope Δσ/Δε"
               ],
               [
-                "**Strength** (σy, σuts)",
-                "resists **permanent bending or breaking**",
-                "**heights** on the curve"
+                "**Strength, σy or σuts**",
+                "a stress at a stated landmark",
+                "specified yield construction or peak engineering stress"
               ],
               [
                 "**Hardness**",
-                "resists **surface denting or scratching**",
-                "a separate indentation test"
+                "resistance to indentation",
+                "a separate test"
               ]
             ]
           },
           {
             "kind": "paragraph",
-            "text": "**Example:** glass is **stiff** (E ≈ 70 GPa) and can be quite **strong**, but it's brittle, the opposite of tough. Don't say \"strong\" when you mean stiff, or \"hard\" when you mean strong."
-          },
-          {
-            "kind": "paragraph",
-            "text": "(Hardness does roughly track strength **for steels**, which is why shops use a quick hardness test to estimate strength. It doesn't hold for most other materials.)"
+            "text": "A stiff material can fracture with little plastic strain. Do not use stiffness, strength, ductility and toughness interchangeably. A hardness-to-strength estimate needs an appropriate material-specific relationship rather than a universal conversion."
           }
         ]
       },
@@ -2894,36 +2871,32 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
         "blocks": [
           {
             "kind": "paragraph",
-            "text": "Strain scales vary hugely between materials:"
+            "text": "The practical provides a full record and an enlarged initial region. The optional dashed offset guide uses the reference fit of the elastic slope. A keyboard-operated sample cursor and a data table expose the same sampled values used for the graph and reference extraction."
           },
           {
             "kind": "table",
             "columns": [
-              "Material",
-              "Whole curve fits in…"
+              "View",
+              "What to read"
             ],
             "rows": [
               [
-                "Ceramic",
-                "below 0.002 (0.2%)"
+                "Full record",
+                "peak engineering stress and final strain"
               ],
               [
-                "Steel",
-                "~0.2–0.4"
+                "Enlarged initial region",
+                "elastic slope and offset-line intersection"
               ],
               [
-                "Rubber or polymer",
-                "past 2 (200%+)"
+                "Sample cursor or curve-data table",
+                "stress in MPa and strain as both ratio and percentage"
               ]
             ]
           },
           {
             "kind": "paragraph",
-            "text": "Put them on the same axes and one becomes invisible. **Always read the axis limits before judging the shape.**"
-          },
-          {
-            "kind": "paragraph",
-            "text": "**A straight line all the way to fracture means brittle.** It never yielded at all."
+            "text": "The axes rescale for each specimen. To calculate E, use Δσ/Δε with strain as a ratio. With stress in MPa, divide the resulting modulus by 1000 to report GPa. Compare several early points rather than relying on one noisy pair. If the offset construction has no intersection before fracture, do not substitute fracture stress for offset yield."
           }
         ]
       },
@@ -2935,21 +2908,25 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
             "ordered": true,
             "items": [
               {
-                "text": "**Slope** → E (GPa)"
+                "text": "Check the axes, units and simulated-record label."
               },
               {
-                "text": "**0.2% offset** → yield σy (MPa)"
+                "text": "Estimate the initial slope E in GPa."
               },
               {
-                "text": "**Peak** → ultimate σuts (MPa)"
+                "text": "Use the specified offset construction to read σy in MPa."
               },
               {
-                "text": "**End point** → ductility (strain at fracture)"
+                "text": "Read the peak σuts in MPa and final strain as a labeled percentage or ratio."
               },
               {
-                "text": "**Name each one separately.** Don't just say \"strong.\""
+                "text": "Compare with the reference extraction. A mismatch prompts a check of scales, units and landmarks; it does not establish its cause."
               }
             ]
+          },
+          {
+            "kind": "paragraph",
+            "text": "The generator adds bounded **±0.8% numerical noise to stress**, not strain. These samples and scoring tolerances do not establish real measurement uncertainty or laboratory competence."
           }
         ]
       }
@@ -2958,20 +2935,20 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
       "prompt": [
         {
           "kind": "paragraph",
-          "text": "a 10 mm aluminium bar (E = 69 GPa) is tested. The 0.2% offset yield occurs at 21.2 kN and the peak load is 24.4 kN."
+          "text": "a 10 mm aluminium bar has a supplied modulus E = 69 GPa. In this separate example, the **0.2%-offset intersection is explicitly given** at 21.2 kN and the peak load is 24.4 kN."
         },
         {
           "kind": "list",
           "ordered": false,
           "items": [
             {
-              "text": "(a) What's the area?"
+              "text": "(a) What is the original area?"
             },
             {
-              "text": "(b) What are the yield and ultimate strengths?"
+              "text": "(b) What are the offset yield strength and UTS?"
             },
             {
-              "text": "(c) About what strain is it at when it first yields (elastic part only)?"
+              "text": "(c) What are the elastic strain component and the total strain at the offset intersection, assuming the fitted linear elastic slope?"
             }
           ]
         }
@@ -2979,11 +2956,23 @@ export const materialsWalkthroughs: Readonly<Record<string, LessonWalkthrough>> 
       "answer": [
         {
           "kind": "paragraph",
-          "text": "You should get (a) 78.5 mm², (b) about 270 MPa yield and 311 MPa ultimate, (c) about 270 ÷ 69,000 ≈ 0.004."
+          "text": "You should get (a) A₀ = π × 10²/4 ≈ 78.5 mm²; (b) offset yield ≈ 270 MPa and UTS ≈ 311 MPa; (c) elastic component ≈ 270/69,000 = 0.00391 (0.391%). At the offset intersection, total strain ≈ 0.00391 + 0.002 = 0.00591 (0.591%). The 0.002 offset is a strain ratio, not an extra 0.002%."
         }
       ]
     },
-    "notes": []
+    "notes": [
+      "The steel example does not supply an offset-intersection force; approximately 350 MPa is labeled only as stress at the reported departure. Practical records and comparison values are simulated, not independent material qualification."
+    ],
+    "sources": [
+      {
+        "label": "Offset yield construction — Mississippi State University",
+        "url": "https://www.ae.msstate.edu/vlsm/materials/strength_chars/yield.htm"
+      },
+      {
+        "label": "0.2% proof stress — ZwickRoell",
+        "url": "https://www.zwickroell.com/industries/materials-testing/tensile-test/yield-point/"
+      }
+    ]
   },
   "toughduct": {
     "lessonId": "toughduct",

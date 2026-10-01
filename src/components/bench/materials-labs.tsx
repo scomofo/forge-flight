@@ -1,3 +1,4 @@
+import { CurveReadingPlot } from "./curve-reading-plot";
 import { useEffect, useMemo, useState } from "react";
 import { specificStrength, stocks, type Family, type Stock } from "@/course/stocks";
 import { BenchShell, fmt, Readouts, Slider, useReducedMotion, useTicker, WellButton, Segmented, Segmented as SegmentedControl } from "./ui";
@@ -36,6 +37,7 @@ import {
   extractParams,
   generateCurve,
   MATERIALS,
+  type CurvePoint,
   type ExtractedParams,
   type MaterialParams,
 } from "@/course/mechresponse";
@@ -1989,52 +1991,16 @@ const PRACTICAL_MATERIALS: MaterialParams[] = [
 ];
 
 type PracticalTruth = {
+  curve: CurvePoint[];
   params: MaterialParams;
   extracted: ExtractedParams;
 };
 
 function practicalTruths(): PracticalTruth[] {
-  return PRACTICAL_MATERIALS.map((params, i) => ({
-    params,
-    extracted: extractParams(generateCurve(params, { noise: 0.008, seed: 101 + i })),
-  }));
-}
-
-function CurvePlot({ params, seed }: { params: MaterialParams; seed: number }) {
-  const d = useMemo(() => {
-    const curve = generateCurve(params, { noise: 0.008, seed });
-    const eMax = params.fractureStrain;
-    let sMax = 0;
-    for (const p of curve) if (p.stress > sMax) sMax = p.stress;
-    sMax *= 1.08;
-    const x0 = 34;
-    const y0 = 8;
-    const w = 272;
-    const h = 128;
-    const path = curve
-      .map((p, i) => {
-        const x = x0 + (p.strain / eMax) * w;
-        const y = y0 + h - (p.stress / sMax) * h;
-        return `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`;
-      })
-      .join(" ");
-    return { path, x0, y0, w, h, eMax, sMax };
-  }, [params, seed]);
-  return (
-    <div>
-      <svg viewBox="0 0 320 160" className="h-44 w-full" role="img" aria-label={`Stress-strain curve, strain to ${(d.eMax * 100).toFixed(1)} percent`}>
-        <line x1={d.x0} y1={d.y0 + d.h} x2={d.x0 + d.w} y2={d.y0 + d.h} stroke="currentColor" strokeOpacity="0.4" />
-        <line x1={d.x0} y1={d.y0} x2={d.x0} y2={d.y0 + d.h} stroke="currentColor" strokeOpacity="0.4" />
-        <path d={d.path} fill="none" stroke="currentColor" strokeWidth="2" />
-        <text x={d.x0 + d.w} y={d.y0 + d.h + 14} textAnchor="end" fontSize="10" fill="currentColor" opacity="0.7">
-          ε to {(d.eMax * 100).toFixed(1)}%
-        </text>
-        <text x={d.x0 - 4} y={d.y0 + 4} textAnchor="end" fontSize="10" fill="currentColor" opacity="0.7">
-          σ to {d.sMax.toFixed(0)} MPa
-        </text>
-      </svg>
-    </div>
-  );
+  return PRACTICAL_MATERIALS.map((params, i) => {
+    const curve = generateCurve(params, { noise: 0.008, seed: 101 + i });
+    return { params, curve, extracted: extractParams(curve) };
+  });
 }
 
 const PRACTICAL_FIELDS = [
@@ -2074,8 +2040,8 @@ export function CurveReadBench() {
 
   return (
     <BenchShell
-      prompt="Five tensile records, each with measurement noise. Read E, the 0.2%-offset yield, UTS, and elongation off each curve. || Check against the extraction: the machine's fit is the referee, and its own error is a few percent. || Five materials, four quantities each — twenty readings."
-      note="Simulated from real engineering values with ~1% load-cell noise. The offset construction on these curves lands within ~3% of the book yield; the tolerance bands are wider than the method's error, so a miss is a reading error."
+      prompt="Read five simulated tensile records. Estimate Young’s modulus E (GPa), 0.2%-offset yield (MPa), ultimate tensile strength or UTS (MPa), and strain at fracture (%). || Use the labeled full curve, enlarged initial region, optional offset guide or curve-data table. Compare your estimates with the reference extraction. || Five specimens and four quantities each give twenty readings."
+      note="Generated from teaching parameters, with bounded ±0.8% numerical noise on stress and exact strain coordinates. These are not physical measurements. Scoring tolerances compare estimates with a reference extraction, not with certified material values or real measurement uncertainty."
       controls={
         <>
           <div className="sm:col-span-2">
@@ -2084,8 +2050,8 @@ export function CurveReadBench() {
                 <Readouts items={[{ label: "Readings in tolerance", value: `${score} of 20` }]} />
                 <p className="mt-2 max-w-prose text-sm leading-relaxed text-well-dim">
                   {score >= 16
-                    ? "You read curves like a lab tech. Lesson 3 turns these readings into numbers you can design to."
-                    : "Revisit the misses: E is the initial slope (watch the axis scale), yield is the offset crossing — not the first bend you see — and UTS is the peak, not the fracture point."}
+                    ? "At least 16 of your 20 readings are within this exercise’s tolerance. You have practised four curve landmarks; this score is not a laboratory qualification or a source of certified design values."
+                    : "Use the missed readings to choose what to revisit: E is the initial slope, 0.2%-offset yield is the offset-line intersection, UTS is the peak, and strain at fracture is the final strain. Check the scale and units before changing an estimate."}
                 </p>
                 <button
                   type="button"
@@ -2134,7 +2100,7 @@ export function CurveReadBench() {
                         : field.key === "el"
                           ? target.toFixed(1)
                           : target.toFixed(0)}
-                      {ok === false && " — read the landmark again"}
+                      {ok === false && " — outside this exercise’s tolerance; check units, axis scale and landmark"}
                     </p>
                   )}
                 </div>
@@ -2163,11 +2129,11 @@ export function CurveReadBench() {
     >
       {!done && (
         <>
-          <CurvePlot params={truth.params} seed={101 + round} />
+          <CurveReadingPlot key={round} curve={truth.curve} E={truth.extracted.E} />
           <p className="mt-2 text-sm text-well-dim">
             {checked
               ? `This was ${truth.params.name}. ${roundScore} of 4 readings in tolerance.`
-              : "Read the curve before you touch the numbers. The axes rescale per material — the shape alone tells you nothing."}
+              : "The axes rescale for each specimen. Read the scales before comparing numerical values; the data table and sample cursor show the same points used for grading."}
           </p>
         </>
       )}
