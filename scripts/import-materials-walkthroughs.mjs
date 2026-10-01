@@ -21,6 +21,7 @@ const sources={
   3:[{label:'Silicon carbide is a semiconductor — NIST',url:'https://www.nist.gov/news-events/news/2026/07/department-commerce-announces-direct-funding-agreement-bosch-225-million'}],
   6:[{label:'Glass transition and rubbery behaviour — University of Bath',url:'https://www.bath.ac.uk/announcements/another-way-to-measure-the-glass-transition-in-polymers/'}],
   8:[{label:'Diffusion mechanisms and flux — Cambridge DoITPoMS',url:'https://eng.libretexts.org/Workbench/Materials_Science_for_Electrical_Engineering/02%3A_Solids/2.02%3A_Diffusion/2.2.02%3A_Fick%27s_First_Law_of_Diffusion'}],
+  10:[{label:'Offset yield construction — Mississippi State University',url:'https://www.ae.msstate.edu/vlsm/materials/strength_chars/yield.htm'},{label:'0.2% proof stress — ZwickRoell',url:'https://www.zwickroell.com/industries/materials-testing/tensile-test/yield-point/'}],
   12:[{label:'Population tolerance bounds — NIST',url:'https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm'}],
   23:[{label:'Polymer service above and below Tg — Protolabs',url:'https://www.protolabs.com/en-gb/resources/design-tips/glass-transition-temperature-of-polymers/'}],
 };

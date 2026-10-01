@@ -1,0 +1,54 @@
+name: Manuscript editorial regression
+on:
+  pull_request:
+    paths:
+      - 'src/course/**'
+      - 'src/forge/**'
+      - 'src/components/**'
+      - 'scripts/**'
+      - 'docs/manuscript-editorial-pass.md'
+      - '.github/workflows/manuscript-edit.yml'
+permissions:
+  contents: read
+jobs:
+  editorial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Registered tests and editorial regressions
+        run: |
+          mkdir -p artifacts/manuscript-edit/checks
+          git rev-parse HEAD > artifacts/manuscript-edit/checks/revision.txt
+          set -o pipefail
+          npm test 2>&1 | tee artifacts/manuscript-edit/checks/tests.txt
+      - run: npm run typecheck
+      - run: npm run build
+      - name: Lint edited code
+        run: |
+          npx eslint src/forge/sim/evaluate.ts src/forge/sim/result-messages.ts src/forge/sim/editorial-results.test.ts src/forge/content/catalog.ts src/components/forge/bench.tsx src/components/forge/result-summary.tsx src/components/bench/curve-reading-plot.tsx src/components/bench/materials-labs.tsx src/components/figures/materials-a.tsx src/course/curve-reading.ts src/course/curve-reading.test.ts src/course/mechresponse.ts src/course/materials-w14.ts src/course/materials-walkthroughs.ts scripts/manuscript-regressions.test.mjs scripts/browser-manuscript-edit.mjs scripts/import-materials-walkthroughs.mjs
+      - name: Use the runner's installed Chrome
+        run: |
+          BROWSER=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          "$BROWSER" --version
+          echo "CHROMIUM_EXECUTABLE_PATH=$BROWSER" >> "$GITHUB_ENV"
+      - name: Desktop manuscript acceptance in development
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/browser-manuscript-edit.mjs
+      - name: Desktop manuscript acceptance in production components
+        if: ${{ !cancelled() }}
+        env:
+          ACCEPTANCE_BUILD: '1'
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/browser-manuscript-edit.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: manuscript-editorial-evidence
+          path: artifacts/manuscript-edit/
+          retention-days: 7

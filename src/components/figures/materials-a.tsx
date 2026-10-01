@@ -938,7 +938,7 @@ function ReadCurve() {
     <AnimatedFigure
       height={290}
       duration={5}
-      alt="Engineering stress-strain curve for 1020 steel: a near-vertical elastic line of slope 200 GPa, yield at 350 MPa, a peak of 420 MPa, then a fall to fracture."
+      alt="Engineering stress-strain curve for 1020 steel: a near-vertical elastic line of slope 200 GPa, a reported departure from linearity near 350 MPa (not an established offset yield), a peak of 420 MPa, then a fall to fracture."
       steps={[
         {
           at: 0,
@@ -947,8 +947,8 @@ function ReadCurve() {
         },
         {
           at: 1.4,
-          label: "Yield",
-          caption: "The record bends away from the line at 42.9 kN: σy = 42,900 N / 122.7 mm² = 350 MPa.",
+          label: "Reported departure",
+          caption: "The reported departure is at 42.9 kN: stress = 42,900 N / 122.718… mm² ≈ 350 MPa. The givens do not identify an offset-yield intersection.",
         },
         {
           at: 3,
@@ -958,7 +958,7 @@ function ReadCurve() {
         {
           at: 4.3,
           label: "Fracture",
-          caption: "Three landmarks, three properties: the slope is stiffness, the knee is where it stops springing back, the peak is the most it ever carried.",
+          caption: "This is a schematic of the supplied landmarks, not the measured record. E = 200 GPa is the initial slope; UTS ≈ 420 MPa is peak engineering stress. A departure from linearity alone does not establish offset yield.",
         },
       ]}
     >
@@ -981,7 +981,7 @@ function ReadCurve() {
 
             <Label x={b.x - 8} y={b.py(350)} anchor="end" size={15} tone="accent" opacity={op(seg(t, 1.5, 2))}>350</Label>
             <Label x={b.x - 8} y={b.py(420)} anchor="end" size={15} tone="accent" opacity={op(seg(t, 3.1, 3.6))}>420</Label>
-            <Label x={b.px(0.07)} y={b.py(350) + 22} anchor="start" size={15} tone="accent" weight={600} opacity={op(seg(t, 1.6, 2.1))}>yield σy = 350 MPa</Label>
+            <Label x={b.px(0.07)} y={b.py(350) + 22} anchor="start" size={15} tone="accent" weight={600} opacity={op(seg(t, 1.6, 2.1))}>departure ≈ 350 MPa</Label>
             <Label x={b.px(0.2)} y={b.py(420) - 18} size={15} tone="accent" weight={600} opacity={op(seg(t, 3.2, 3.7))}>peak σuts = 420 MPa</Label>
             <Label x={b.px(end[0])} y={b.py(end[1]) - 20} tone="alarm" size={15} opacity={op(seg(t, 4.4, 4.9))}>fracture</Label>
             <GrowArrow p={seg(t, 0.9, 1.4)} x1={b.px(0.07)} y1={b.py(180)} x2={b.px(0.004)} y2={b.py(180)} tone="accent" width={2} />

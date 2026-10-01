@@ -23,7 +23,7 @@ import {
 import { hashCanon } from "@/forge/sim/hash";
 import { designInputErrors } from "@/forge/sim/input-validation";
 
-export const MODEL_REVISION = "hangar-full-span-2026-10-01";
+export const MODEL_REVISION = "hangar-outcome-messages-2026-10-01";
 
 export type LoadInput = { id: string; kind: LoadKind; magnitude_N: number; k: number };
 
@@ -208,24 +208,30 @@ export function processQuote(mass_kg: number, material: Material, process: Proce
 
 function dfmFor(part: PartInput, process: Process, wall_mm: number): DfmCheck[] {
   return process.rules.map((rule) => {
+    let pass: boolean;
+    let detail: string;
     if (rule.check === "min_wall") {
-      return { id: rule.id, severity: rule.severity, pass: wall_mm + 1e-9 >= process.minWall_mm, message: rule.message };
-    }
-    if (rule.check === "max_hole_aspect") {
+      pass = wall_mm + 1e-9 >= process.minWall_mm;
+      detail = `Minimum-wall check ${pass ? "passed" : "not met"}: thickness ${wall_mm.toFixed(1)} mm; classroom minimum ${process.minWall_mm.toFixed(1)} mm.`;
+    } else if (rule.check === "max_hole_aspect") {
       const dia = n(part.params, "holeDia_mm");
       const depth = n(part.params, "holeDepth_mm");
       const aspect = dia > 0 ? depth / dia : 0;
-      return { id: rule.id, severity: rule.severity, pass: aspect <= process.maxAspectRatio_hole + 1e-9, message: rule.message };
+      pass = aspect <= process.maxAspectRatio_hole + 1e-9;
+      detail = dia > 0
+        ? `Hole-depth check ${pass ? "passed" : "not met"}: depth/diameter ${aspect.toFixed(2)}; classroom maximum ${process.maxAspectRatio_hole}.`
+        : "Hole-depth check: no hole is specified in this model.";
+    } else if (rule.check === "draft") {
+      const draft = n(part.params, "draft_deg");
+      pass = draft + 1e-9 >= process.draftAngle_deg;
+      detail = `Draft check ${pass ? "passed" : "not met"}: angle ${draft.toFixed(1)}°; classroom minimum ${process.draftAngle_deg.toFixed(1)}°.`;
+    } else {
+      pass = n(part.params, "undercut") < 0.5;
+      detail = pass ? "Tool-access check passed: no undercut is specified."
+        : "Tool-access check not met: the modeled undercut is not reachable from the assumed tool direction.";
     }
-    if (rule.check === "draft") {
-      return {
-        id: rule.id,
-        severity: rule.severity,
-        pass: n(part.params, "draft_deg") + 1e-9 >= process.draftAngle_deg,
-        message: rule.message,
-      };
-    }
-    return { id: rule.id, severity: rule.severity, pass: n(part.params, "undercut") < 0.5, message: rule.message };
+    return { id: `${part.id}/${rule.id}`, severity: rule.severity, pass,
+      message: `${part.name}: ${detail} These are this exercise's shop rules, not universal manufacturing limits.` };
   });
 }
 
@@ -479,7 +485,9 @@ export function evaluate(input: DesignInput, materials: Material[], processTable
 
   if (!passStress) {
     const hot = partResults.slice().sort((a, b) => b.utilization - a.utilization)[0];
-    if (hot) failures.push({ mode: "yield", location: hot.name, utilization: hot.utilization, explanationId: "yield" });
+    if (hot) failures.push({ mode: hot.stress_MPa > hot.allowable_MPa
+      ? "strength_limit_exceeded" : "strength_margin_shortfall",
+      location: hot.name, utilization: hot.utilization, explanationId: "yield" });
   }
   if (!passDeflection) {
     const hot = partResults.slice().sort((a, b) => b.deflection_mm - a.deflection_mm)[0];
@@ -491,8 +499,9 @@ export function evaluate(input: DesignInput, materials: Material[], processTable
   if (!passMass) failures.push({ mode: "mass_overrun", location: "vehicle", utilization: mass_g / (input.limits.maxMass_g || 1), explanationId: "inertia" });
   if (!passCost) failures.push({ mode: "cost_overrun", location: "unit cost", utilization: (selected?.terms.unit ?? 0) / (input.limits.maxCost_usd || 1), explanationId: "tooling" });
   if (!passDfm) failures.push({ mode: "dfm_violation", location: "process", utilization: scored / 100, explanationId: "dfm" });
+  if (aero && !passAero) failures.push({ mode: "insufficient_lift", location: "wing", utilization: aero.lift_N / aero.weight_N, explanationId: "lift" });
   if (aero?.stalled) failures.push({ mode: "stall", location: "wing", utilization: 1, explanationId: "stall" });
-  if (aero && !aero.stable) failures.push({ mode: "static_instability", location: "cg", utilization: aero.sm, explanationId: "margin" });
+  if (aero && !aero.stable) failures.push({ mode: aero.sm < 0 ? "static_instability" : "static_margin_outside_target", location: "cg", utilization: aero.sm, explanationId: "margin" });
 
   let modal_hz: number | null = null;
   let resonance = false;
@@ -615,10 +624,10 @@ export function runAnalysis(kind: AnalysisKind, input: DesignInput, materials: M
 }
 
 function relevant(kind: AnalysisKind, mode: string): boolean {
-  if (kind === "static_stress") return mode === "yield" || mode === "excessive_deflection";
+  if (kind === "static_stress") return mode === "strength_limit_exceeded" || mode === "strength_margin_shortfall" || mode === "excessive_deflection";
   if (kind === "buckling") return mode === "buckling";
-  if (kind === "aero_polar") return mode === "stall";
-  if (kind === "stability") return mode === "static_instability";
+  if (kind === "aero_polar") return mode === "stall" || mode === "insufficient_lift";
+  if (kind === "stability") return mode === "static_instability" || mode === "static_margin_outside_target" || mode === "stall";
   if (kind === "dfm") return mode === "dfm_violation";
   if (kind === "cost") return mode === "cost_overrun";
   if (kind === "modal") return mode === "resonance";

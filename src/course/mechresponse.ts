@@ -11,7 +11,7 @@ export type MaterialParams = {
   family: "metal" | "ceramic" | "polymer";
   /** Young's modulus, MPa */
   E: number;
-  /** 0.2%-offset yield strength, MPa (equals UTS for brittle materials) */
+  /** Nominal generator knee stress, MPa. Offset yield is extracted separately; brittle entries use a fracture-scale input, not a measured yield. */
   yieldStrength: number;
   /** ultimate tensile strength, MPa */
   uts: number;
@@ -189,8 +189,9 @@ export function designAllowable(characteristicStrength: number, factorOfSafety: 
 
 /**
  * Representative engineering values (room temperature, tension).
- * yieldStrength is the 0.2% proof stress; brittle entries fracture in the
- * elastic line, so their yield equals their UTS.
+ * yieldStrength sets the generator knee; it is not the recovered 0.2% proof
+ * stress. Brittle entries fracture on the elastic line and may have no offset
+ * intersection. These are teaching inputs, not qualified specimen records.
  */
 export const MATERIALS: MaterialParams[] = [
   {

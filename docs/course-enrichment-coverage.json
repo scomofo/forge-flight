@@ -4,7 +4,7 @@
   "source": "docs/lesson-sources/axiom-course-changes-2026-09-30.md",
   "sourceSha256": "9a6ad5227b572133208756f7a6d0d54bd3681757d9dfbf1bfb889c98e05eaddd",
   "lessonCount": 110,
-  "inlineSections": 228,
+  "inlineSections": 229,
   "contextualHelp": 150,
   "practices": 107,
   "additionalItems": [
@@ -1544,7 +1544,7 @@
         },
         {
           "id": "materials-4",
-          "heading": "The 0.2% offset: a standard yield point",
+          "heading": "The 0.2% offset: a specified yield convention",
           "at": "idea-0",
           "mode": "inline",
           "tables": 0
@@ -1569,11 +1569,18 @@
           "at": "move",
           "mode": "inline",
           "tables": 0
+        },
+        {
+          "id": "model-limits",
+          "heading": "Givens and model limits",
+          "at": "example",
+          "mode": "inline",
+          "tables": 0
         }
       ],
       "practice": true,
       "practiceTables": 0,
-      "contentSha256": "cbbdbd3d974eb51a7d238b5b93a0c2511b11fe878eb012a2c65bddba39e4d35e"
+      "contentSha256": "e692ba61dde964edbd480b15c36aff2e377213302f714428faf1cb84625fa3fd"
     },
     {
       "key": "materials/toughduct",
