@@ -25,7 +25,7 @@ export async function registeredBenches() {
   const index = await readFile('src/components/bench/index.tsx', 'utf8');
   const ladder = (await readFile('src/components/bench/ladder-labs.tsx', 'utf8')).split('const specs:')[1]?.split('type FormulaId')[0] ?? '';
   return [...new Set([...index.matchAll(/case "([\w-]+)"/g)].map(m => m[1])
-    .concat([...ladder.matchAll(/^  ([\w-]+): \{/gm)].map(m => m[1]), ['duty', 'review', 'face']))].sort();
+    .concat([...ladder.matchAll(/^ {2}([\w-]+): \{/gm)].map(m => m[1]), ['duty', 'review', 'face']))].sort();
 }
 export function missionDesign(mission) {
   return structuredClone({ parts: mission.parts, vehicle: mission.vehicle, environment: mission.environment,
