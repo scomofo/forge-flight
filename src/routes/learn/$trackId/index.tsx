@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { getTrack, lessonsFor } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
-import { isPassed, lessonKey, PASS_AT, type TrackId } from "@/course/types";
+import { lessonComplete, lessonKey, type TrackId } from "@/course/types";
 
 export const Route = createFileRoute("/learn/$trackId/")({
   component: TrackPage,
@@ -16,6 +16,7 @@ function TrackPage() {
   const { trackId } = Route.useParams();
   const track = getTrack(trackId);
   const completed = useProgress((s) => s.completed);
+  const capstonePass = useProgress((s) => s.capstonePass);
 
   if (!track) {
     return (
@@ -61,7 +62,10 @@ function TrackPage() {
         <ol className="mt-10 border-t border-line">
           {lessons.map((lesson) => {
             const score = completed[lessonKey(track.id as TrackId, lesson.id)];
-            const passed = isPassed(score, lesson.passAt ?? PASS_AT);
+            const done = lessonComplete(lesson, score, capstonePass);
+            const isCapstone = lesson.bench === "cappackage";
+            const status =
+              done && isCapstone ? "Complete" : done ? "Quiz passed" : score === undefined ? "New" : `${score}/4`;
             return (
               <li key={lesson.id} className="border-b border-line">
                 <Link
@@ -76,8 +80,8 @@ function TrackPage() {
                     <span className="mt-1 block font-serif text-2xl leading-snug">{lesson.title}</span>
                     <span className="mt-1 block text-sm text-muted">{lesson.minutes} min</span>
                   </span>
-                  <span className={passed ? "shrink-0 text-sm text-accent" : "shrink-0 text-sm tabular-nums text-muted"}>
-                    {score === undefined ? "New" : passed ? "Passed" : `${score}/4`}
+                  <span className={done ? "shrink-0 text-sm text-accent" : "shrink-0 text-sm tabular-nums text-muted"}>
+                    {status}
                   </span>
                 </Link>
               </li>

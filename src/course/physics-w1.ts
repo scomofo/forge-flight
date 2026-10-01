@@ -112,6 +112,8 @@ export const physicsW1Lessons: Lesson[] = [
         heading: "Your inputs set the ceiling",
         body: "A calculation cannot manufacture better measurements. For products, combine relative uncertainties in quadrature; for sums, combine absolute uncertainties. If one input contributes most of the uncertainty, improving a different instrument will barely move the final result. This is useful when you are deciding what actually needs a better measurement.",
         formula: "δ(AB)/AB = √((δA/A)² + (δB/B)²)",
+        formulaNote:
+          "Read this with three assumptions beside it: the quoted uncertainties are standard uncertainties, the inputs are uncorrelated, and the uncertainties are small enough for first-order propagation. This is not a guaranteed worst-case bound.",
         help: [{ concept: "quadrature" }],
       },
     ],
@@ -130,7 +132,7 @@ export const physicsW1Lessons: Lesson[] = [
         prompt: "12.3 × 4.56 = 56.088 on the calculator. Honestly reported:",
         options: ["56.1", "56.09", "56.088", "56"],
         answer: 0,
-        why: "12.3 has three significant figures, fewer than 4.56, so the product should be reported with three: 56.1. Keep the extra calculator digits only during the working.",
+        why: "12.3 and 4.56 each have three significant figures, so the product is honestly reported with three: 56.1. Keep the extra calculator digits only during the working.",
       },
       {
         prompt: "A thermometer reads 21.3, 21.4, 21.3, 21.4 °C in a room that is actually 25 °C. The readings are…",

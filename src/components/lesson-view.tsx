@@ -31,7 +31,7 @@ const steps = [
   {
     label: "Check",
     guide:
-      "Four questions. Pick one answer, read why it is right or wrong, then continue. Hit this lesson's pass mark to move on. You can retry.",
+      "Four questions. Pick one answer, read why it is right or wrong, then continue. Hit this lesson's pass mark to record a pass. You can retry.",
   },
 ] as const;
 
@@ -126,6 +126,76 @@ function Move({ text, heading = "The move" }: { text: string; heading?: string }
   );
 }
 
+function Task({ prompt, note }: { prompt: string; note: string }) {
+  const steps = prompt.split(" || ").filter(Boolean);
+  if (steps.length === 0 && !note.trim()) return null;
+  return (
+    <section
+      data-lesson-task
+      className="rounded-lg border border-line bg-surface px-4 py-4 sm:px-5"
+    >
+      <h2 className="font-serif text-sm text-accent">Your task</h2>
+      {steps.length > 0 ? (
+        <ol className="mt-3 flex flex-col gap-2">
+          {steps.map((line, i) => (
+            <li key={i} className="flex gap-3">
+              <span
+                aria-hidden
+                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-soft text-sm font-medium text-accent"
+              >
+                {i + 1}
+              </span>
+              <p className="max-w-prose leading-relaxed text-ink">{line}</p>
+            </li>
+          ))}
+        </ol>
+      ) : null}
+      {note.trim() ? (
+        <aside data-lesson-note className="mt-4 border-l-2 border-accent pl-4">
+          <p className="text-sm font-medium text-accent">Note</p>
+          <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted">{note}</p>
+        </aside>
+      ) : null}
+    </section>
+  );
+}
+
+/**
+ * Explicit practical-evidence action for the Try tab. The learner marks the
+ * bench work done themselves — this is their call, not a grade, and it is
+ * recorded separately from the check score. Never inferred from opening the
+ * bench.
+ */
+function PracticalMark({ progressKey }: { progressKey: string }) {
+  const done = useProgress((s) => s.practical[progressKey]);
+  const markPractical = useProgress((s) => s.markPractical);
+  return (
+    <section className="mt-8 rounded-lg border border-line px-4 py-4 sm:px-5">
+      <h2 className="font-serif text-sm text-accent">Bench work</h2>
+      {done ? (
+        <p className="mt-2 max-w-prose leading-relaxed text-ink">
+          Bench work recorded. The check below still asks its own questions — this mark is your
+          call, not a grade.
+        </p>
+      ) : (
+        <>
+          <p className="mt-2 max-w-prose leading-relaxed text-muted">
+            Worked through the task on the bench? Mark it done. This is your call — nothing here
+            checks your work, and it stays separate from the check score.
+          </p>
+          <button
+            type="button"
+            onClick={() => markPractical(progressKey)}
+            className="mt-3 inline-flex min-h-11 items-center rounded-lg border border-accent px-4 text-sm font-medium text-accent transition-transform duration-150 active:scale-[0.96]"
+          >
+            Mark bench work done
+          </button>
+        </>
+      )}
+    </section>
+  );
+}
+
 function legacyReadFlow(): LessonReadBlock[] {
   return [
     { kind: "idea", idea: 0 },
@@ -191,7 +261,20 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
   const mark = useProgress((s) => s.mark);
   const visit = useProgress((s) => s.visit);
   const score = useProgress((s) => s.completed[key]);
+  const capstoneDone = useProgress((s) => s.capstonePass);
+  const practicalDone = useProgress((s) => s.practical[key]);
   const need = lesson.passAt ?? PASS_AT;
+  // The capstone's completion signal is its rubric gate, not its quiz: the
+  // bench reports the gate verdict into the progress store. Everywhere else
+  // the badge names exactly what it records — a quiz pass, and separately,
+  // whether the learner marked the bench work done.
+  const isCapstone = lesson.bench === "cappackage";
+  const quizPassed = isPassed(score, need);
+  const badgeParts: string[] = [];
+  if (isCapstone && capstoneDone) badgeParts.push("Capstone complete");
+  else if (quizPassed) badgeParts.push("Quiz passed");
+  if (practicalDone && !isCapstone) badgeParts.push("Bench done");
+  const badge = badgeParts.length ? ` · ${badgeParts.join(" · ")}` : "";
   const { prev, next } = lessonNeighbors(lesson.track, lesson.id);
   const Figure = lessonFigures[key];
   const enrichment = getLessonEnrichment(lesson);
@@ -204,7 +287,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
     <article className="mx-auto max-w-3xl px-5 pb-24 pt-8 sm:px-8">
       <p className="font-serif text-sm text-accent">
         Lesson {String(lesson.index).padStart(2, "0")} · {lesson.minutes} min
-        {isPassed(score, need) ? " · Passed" : ""}
+        {badge}
       </p>
       <h1 className="mt-3 font-serif text-4xl leading-tight text-ink sm:text-5xl">{lesson.title}</h1>
       <div className="mt-8">
@@ -258,10 +341,14 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
       {step === 1 ? (
         <div className="pt-8">
           {enrichment?.practice ? <LessonPractice key={key} practice={enrichment.practice} /> : null}
-          <Move text={lesson.use} />
+          <Task prompt={lesson.prompt} note={lesson.note} />
+          <div className="mt-8">
+            <Move text={lesson.use} />
+          </div>
           <div className="mt-8">
             <Bench key={`${lesson.track}/${lesson.id}`} id={lesson.bench} />
           </div>
+          {isCapstone ? null : <PracticalMark progressKey={key} />}
           {lesson.clip ? <LessonClip clip={lesson.clip} /> : null}
           <button
             type="button"

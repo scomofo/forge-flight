@@ -2,19 +2,20 @@ import { Link } from "@tanstack/react-router";
 import { lessons } from "@/course/catalog";
 import { JOB_KEY } from "@/course/job";
 import { useProgress } from "@/course/progress";
-import { isPassed, lessonKey } from "@/course/types";
+import { isPassed, lessonComplete, lessonKey } from "@/course/types";
 
 const intro = new Set(["physics", "materials", "engineering"]);
 
 export function SiteHeader() {
   const completed = useProgress((s) => s.completed);
+  const capstonePass = useProgress((s) => s.capstonePass);
   const hydrated = useProgress((s) => s.hydrated);
   const core = lessons.filter((lesson) => intro.has(lesson.track));
   const making = lessons.filter((lesson) => lesson.track === "manufacturing");
   const upper = lessons.filter((lesson) => lesson.track !== "manufacturing" && !intro.has(lesson.track));
-  const coreDone = core.filter((lesson) => isPassed(completed[lessonKey(lesson.track, lesson.id)])).length;
-  const makingDone = making.filter((lesson) => isPassed(completed[lessonKey(lesson.track, lesson.id)])).length;
-  const upperDone = upper.filter((lesson) => isPassed(completed[lessonKey(lesson.track, lesson.id)])).length;
+  const coreDone = core.filter((lesson) => lessonComplete(lesson, completed[lessonKey(lesson.track, lesson.id)], capstonePass)).length;
+  const makingDone = making.filter((lesson) => lessonComplete(lesson, completed[lessonKey(lesson.track, lesson.id)], capstonePass)).length;
+  const upperDone = upper.filter((lesson) => lessonComplete(lesson, completed[lessonKey(lesson.track, lesson.id)], capstonePass)).length;
   const jobPassed = isPassed(completed[JOB_KEY]);
   const label = !hydrated
     ? "—"

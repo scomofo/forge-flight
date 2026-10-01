@@ -12,6 +12,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { diagnosticQuestions, DIAGNOSTIC_TOPICS, recommendModules, TEST_OUT_AT, type DiagnosticTopic } from "./diagnostic.ts";
+import { shuffledOrder } from "../lib/shuffle.ts";
 import { mathLessons, mathTrack } from "./math.ts";
 import { tracks, lessons, introTrackIds, lessonsFor, lessonNeighbors } from "./catalog.ts";
 import { isPassed, lessonKey, type TrackId } from "./types.ts";
@@ -168,4 +169,53 @@ test("diagnostic recommendation logic", () => {
   const b = recommendModules(boundary);
   assert.ok(b.find((r) => r.moduleId === "graphs")?.take === true, "3/4 takes the module");
   assert.ok(b.find((r) => r.moduleId === "powers")?.take === true, "0/4 takes the module");
+});
+
+test("shuffledOrder is a deterministic seeded permutation", () => {
+  const a = shuffledOrder(4, "diagnostic/ratios-units-1/0");
+  const b = shuffledOrder(4, "diagnostic/ratios-units-1/0");
+  assert.deepEqual(a, b, "the same seed must give the same order");
+  assert.deepEqual(
+    [...a].sort((x, y) => x - y),
+    [0, 1, 2, 3],
+    "the order must be a permutation of the option indices",
+  );
+});
+
+test("diagnostic retake seed reorders the options", () => {
+  // The component seeds with `diagnostic/<id>/<attempt>`; a retake bumps the
+  // attempt, so the layout must change for the great majority of questions.
+  let reordered = 0;
+  for (const q of diagnosticQuestions) {
+    const first = JSON.stringify(shuffledOrder(q.options.length, `diagnostic/${q.id}/0`));
+    const retake = JSON.stringify(shuffledOrder(q.options.length, `diagnostic/${q.id}/1`));
+    if (first !== retake) reordered++;
+  }
+  assert.ok(
+    reordered > diagnosticQuestions.length / 2,
+    `retake reordered ${reordered}/${diagnosticQuestions.length} questions`,
+  );
+});
+
+test("diagnostic: clicking the first displayed answer cannot produce full marks", () => {
+  // Regression guard for the old layout, where every correct answer sat at
+  // display position 0 and a first-answer sweep scored 24/24. The component
+  // seeds with `diagnostic/<id>/<attempt>`; attempt 0 is the first sitting.
+  let firstAnswerCorrect = 0;
+  for (const q of diagnosticQuestions) {
+    const order = shuffledOrder(q.options.length, `diagnostic/${q.id}/0`);
+    assert.deepEqual(
+      [...order].sort((a, b) => a - b),
+      q.options.map((_, i) => i),
+      `shuffled order must stay a permutation for ${q.id}`,
+    );
+    if (order[0] === q.answer) firstAnswerCorrect++;
+    // Grading stays on the canonical authored index: the correct option is
+    // still present in the order, just not always first.
+    assert.ok(order.includes(q.answer), `canonical answer must survive the shuffle for ${q.id}`);
+  }
+  assert.ok(
+    firstAnswerCorrect < diagnosticQuestions.length,
+    `first-answer sweep scored ${firstAnswerCorrect}/${diagnosticQuestions.length} — full marks must be impossible`,
+  );
 });

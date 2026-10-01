@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { courseIntro, lessonsFor, tracks } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
-import { isPassed, lessonKey, PASS_AT } from "@/course/types";
+import { lessonComplete, lessonKey } from "@/course/types";
 
 export const Route = createFileRoute("/learn/")({
   component: CoursesPage,
@@ -13,6 +13,7 @@ export const Route = createFileRoute("/learn/")({
 
 function CoursesPage() {
   const completed = useProgress((s) => s.completed);
+  const capstonePass = useProgress((s) => s.capstonePass);
   return (
     <div className="min-h-screen bg-bg text-ink">
       <SiteHeader />
@@ -38,7 +39,7 @@ function CoursesPage() {
           {tracks.map((track) => {
             const trackLessons = lessonsFor(track.id);
             const passed = trackLessons.filter((lesson) =>
-              isPassed(completed[lessonKey(track.id, lesson.id)], lesson.passAt ?? PASS_AT),
+              lessonComplete(lesson, completed[lessonKey(track.id, lesson.id)], capstonePass),
             ).length;
             const minutes = trackLessons.reduce((sum, lesson) => sum + lesson.minutes, 0);
             return (
