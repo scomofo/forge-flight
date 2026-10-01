@@ -6,6 +6,8 @@ import { getExampleContext } from "@/course/example-context";
 import type { ExampleContext } from "@/course/types";
 import { ConceptHelp } from "@/components/concept-help";
 import { LessonSections } from "@/components/lesson-sections";
+import { LessonWalkthroughPanel } from "@/components/lesson-walkthrough";
+import { materialsWalkthroughs } from "@/course/materials-walkthroughs";
 import { LessonClip } from "@/components/lesson-clip";
 import { lessonFigures } from "@/components/figures";
 import { Quiz } from "@/components/quiz";
@@ -186,6 +188,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
   const need = lesson.passAt ?? PASS_AT;
   const { prev, next } = lessonNeighbors(lesson.track, lesson.id);
   const Figure = lessonFigures[key];
+  const walkthrough = lesson.track === "materials" ? materialsWalkthroughs[lesson.id] : undefined;
 
   useEffect(() => {
     visit(key);
@@ -234,6 +237,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
 
       {step === 0 ? (
         <div>
+          {walkthrough ? <LessonWalkthroughPanel key={key} walkthrough={walkthrough} /> : null}
           <ReadFlow lesson={lesson} />
           <button
             type="button"

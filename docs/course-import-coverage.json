@@ -1,0 +1,728 @@
+{
+  "targetLessonCount": 90,
+  "distinctLessonIds": 90,
+  "materialsIntegratedHere": 30,
+  "scope": "This is the Materials-only patch, not a completion claim for all three course imports.",
+  "lessons": [
+    {
+      "track": "physics",
+      "lessonId": "measure",
+      "lessonNumber": 1,
+      "title": "SI units and dimensions",
+      "source": "Earlier foundation lesson revisions",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "sigfigs",
+      "lessonNumber": 2,
+      "title": "Significant figures and uncertainty",
+      "source": "Earlier foundation lesson revisions",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "fermi",
+      "lessonNumber": 3,
+      "title": "Orders of magnitude and Fermi estimation",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "veccomp",
+      "lessonNumber": 4,
+      "title": "Vectors by components",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "kingraphs",
+      "lessonNumber": 5,
+      "title": "Reading motion graphs",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "projectiles",
+      "lessonNumber": 6,
+      "title": "Constant acceleration and projectiles",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "newton",
+      "lessonNumber": 7,
+      "title": "Newton's laws and the models they live in",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "contact",
+      "lessonNumber": 8,
+      "title": "Contact forces: normal, friction, tension, springs",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "fbd",
+      "lessonNumber": 9,
+      "title": "Free-body diagrams: the discipline",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "work",
+      "lessonNumber": 10,
+      "title": "Work and the work-energy theorem",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "potential",
+      "lessonNumber": 11,
+      "title": "Potential energy and conservation",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "power",
+      "lessonNumber": 12,
+      "title": "Power, efficiency, and energy budgets",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "impulse",
+      "lessonNumber": 13,
+      "title": "Impulse and momentum",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "conserve",
+      "lessonNumber": 14,
+      "title": "Conservation and center of mass",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "collisions",
+      "lessonNumber": 15,
+      "title": "Collisions: elastic and inelastic",
+      "source": "Walkthrough pasted in chat",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "torque",
+      "lessonNumber": 16,
+      "title": "Torque: force with a lever arm",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "rotation",
+      "lessonNumber": 17,
+      "title": "Rotation: kinematics and inertia",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "equilibrium",
+      "lessonNumber": 18,
+      "title": "Static equilibrium and beam reactions",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "elastic",
+      "lessonNumber": 19,
+      "title": "Stress and strain",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "bending",
+      "lessonNumber": 20,
+      "title": "Bending",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "fos",
+      "lessonNumber": 21,
+      "title": "Factor of safety",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "pressure",
+      "lessonNumber": 22,
+      "title": "Pressure and buoyancy",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "movingfluids",
+      "lessonNumber": 23,
+      "title": "Moving fluids: continuity and Bernoulli",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "lift",
+      "lessonNumber": 24,
+      "title": "Lift, drag, stall, static margin",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "shm",
+      "lessonNumber": 25,
+      "title": "Oscillations and natural frequency",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "reswaves",
+      "lessonNumber": 26,
+      "title": "Resonance and waves",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "thermal",
+      "lessonNumber": 27,
+      "title": "Thermal expansion and heat transfer",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "synthmethod",
+      "lessonNumber": 28,
+      "title": "The synthesis method",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "towlaunch",
+      "lessonNumber": 29,
+      "title": "Tow launch, worked end to end",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "physics",
+      "lessonId": "masterycheck",
+      "lessonNumber": 30,
+      "title": "The mastery check",
+      "source": "Pasted text(1).txt (same content as Pasted text.txt)",
+      "status": "not counted as newly imported by this patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "bondzoo",
+      "lessonNumber": 1,
+      "title": "The four bonds",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "bondpacks",
+      "lessonNumber": 2,
+      "title": "Why properties travel together",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "bondread",
+      "lessonNumber": 3,
+      "title": "Reading a material from its bonding",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "crystal",
+      "lessonNumber": 4,
+      "title": "Crystal structures",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "graintex",
+      "lessonNumber": 5,
+      "title": "Grains, texture, and anisotropy",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "disorder",
+      "lessonNumber": 6,
+      "title": "Amorphous solids and what microscopes show",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "defects",
+      "lessonNumber": 7,
+      "title": "Defects are the material",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "diffusion",
+      "lessonNumber": 8,
+      "title": "Atoms move downhill",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "heat-treat",
+      "lessonNumber": 9,
+      "title": "Processing is defect engineering",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "readcurve",
+      "lessonNumber": 10,
+      "title": "Reading a stress-strain curve",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "toughduct",
+      "lessonNumber": 11,
+      "title": "Ductility and toughness",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "allowables",
+      "lessonNumber": 12,
+      "title": "From curve to design allowable",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "strengthen",
+      "lessonNumber": 13,
+      "title": "The four ways to make a metal strong",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "heattreat",
+      "lessonNumber": 14,
+      "title": "Heat treatment is processing, not chemistry",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "processchoice",
+      "lessonNumber": 15,
+      "title": "Choosing the process",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "fracture",
+      "lessonNumber": 16,
+      "title": "Fracture: why cracks run",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "fatigue",
+      "lessonNumber": 17,
+      "title": "Fatigue: death by a thousand cycles",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "creep",
+      "lessonNumber": 18,
+      "title": "Creep: failure on a slow clock",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "phasediagram",
+      "lessonNumber": 19,
+      "title": "Reading a phase diagram",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "leverrule",
+      "lessonNumber": 20,
+      "title": "The lever rule",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "transformations",
+      "lessonNumber": 21,
+      "title": "Transformations",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "famlook",
+      "lessonNumber": 22,
+      "title": "Four families, four property packs",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "dirtemp",
+      "lessonNumber": 23,
+      "title": "Direction and temperature",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "choosefam",
+      "lessonNumber": 24,
+      "title": "Choosing under constraints",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "screenrank",
+      "lessonNumber": 25,
+      "title": "Screen, then rank",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "corrosion",
+      "lessonNumber": 26,
+      "title": "Corrosion is a design load",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "sustain",
+      "lessonNumber": 27,
+      "title": "Embodied impacts and repair",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "matmethod",
+      "lessonNumber": 28,
+      "title": "The synthesis method for materials",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "sparsynth",
+      "lessonNumber": 29,
+      "title": "The spar, end to end",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "materials",
+      "lessonId": "matmastery",
+      "lessonNumber": 30,
+      "title": "The closed-book mastery check",
+      "source": "materials.txt",
+      "status": "integrated in this local patch"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "requirements",
+      "lessonNumber": 1,
+      "title": "Requirements that survive contact with reality",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "verifyvalidate",
+      "lessonNumber": 2,
+      "title": "Verification versus validation",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "ledger",
+      "lessonNumber": 3,
+      "title": "The assumption ledger",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "modelvalid",
+      "lessonNumber": 4,
+      "title": "Models are tools, not truth",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "errprop",
+      "lessonNumber": 5,
+      "title": "Uncertainty travels with the number",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "sensitivity",
+      "lessonNumber": 6,
+      "title": "Sensitivity: where to spend the money",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "loadpath",
+      "lessonNumber": 7,
+      "title": "Follow the load",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "margins",
+      "lessonNumber": 8,
+      "title": "Margins are priced insurance",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "fmea",
+      "lessonNumber": 9,
+      "title": "Design against what you fear",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "bending",
+      "lessonNumber": 10,
+      "title": "Bending: the stress is My/I",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "buckle",
+      "lessonNumber": 11,
+      "title": "Buckling and torsion: slender failure",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "combined",
+      "lessonNumber": 12,
+      "title": "Combined loading: add, then judge",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "indicescontext",
+      "lessonNumber": 13,
+      "title": "The index picks the material; the joint picks the design",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "interfaces",
+      "lessonNumber": 14,
+      "title": "Interfaces: bolts, welds, and glue",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "systemdecision",
+      "lessonNumber": 15,
+      "title": "The materials decision as a system decision",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "processes",
+      "lessonNumber": 16,
+      "title": "How things get made",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "tolerances",
+      "lessonNumber": 17,
+      "title": "Tolerances and stacks",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "dfm",
+      "lessonNumber": 18,
+      "title": "Design for making",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "doeplan",
+      "lessonNumber": 19,
+      "title": "Design the experiment before you run it",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "smallsample",
+      "lessonNumber": 20,
+      "title": "Five readings are data, not noise",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "honestgraph",
+      "lessonNumber": 21,
+      "title": "Graphs that don't lie",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "tradestudy",
+      "lessonNumber": 22,
+      "title": "Trade studies: comparison, kept honest",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "paramsweep",
+      "lessonNumber": 23,
+      "title": "Parametric sweeps: vary one thing",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "convergence",
+      "lessonNumber": 24,
+      "title": "Convergence: knowing when to stop",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "safetyfactor",
+      "lessonNumber": 25,
+      "title": "Safety factors are ethics",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "standards",
+      "lessonNumber": 26,
+      "title": "Codes, standards, and the paper trail",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "designreview",
+      "lessonNumber": 27,
+      "title": "The review and the signature",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "capmethod",
+      "lessonNumber": 28,
+      "title": "The full cycle is the course",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "glidersynth",
+      "lessonNumber": 29,
+      "title": "The glider, end to end",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    },
+    {
+      "track": "engineering",
+      "lessonId": "capmastery",
+      "lessonNumber": 30,
+      "title": "The final gate",
+      "source": "Pasted text(3).txt",
+      "status": "source received; separate import pending"
+    }
+  ]
+}
