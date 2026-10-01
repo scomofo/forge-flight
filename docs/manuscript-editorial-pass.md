@@ -89,3 +89,27 @@ physical experiment, learner study or whole-curriculum scientific certification.
 This focused patch does not close unrelated Pb–Sn tie-line ordering, older
 Physics pre-lab stability terminology or remaining bonding generalizations.
 No physical measurements have been supplied for the missing steel offset datum.
+
+## Test-runner follow-up
+
+The discovery run exposed one legacy assertion using the old unqualified
+`no_undercut` check ID. The result IDs now include the part (`arm/no_undercut`)
+so multipart rule messages have distinct identities. The original failure
+assertion is preserved with the new exact ID.
+
+The existing child-test wrappers could report success without executing their
+suites when they inherited the parent runner's `NODE_TEST_CONTEXT`. This was
+reproduced locally: the golden test failed directly but its old wrapper passed.
+The shared wrapper now starts a separate test process without that inherited
+worker context and requires a complete TAP summary: enough executed tests,
+every test passed, and zero failures, cancellations, skips or TODOs. Four
+regressions check genuine execution, deliberate failure, insufficient coverage
+and skipped-test rejection. The Hangar, capstone and manuscript wrappers require
+at least 54, 16 and 15 executed child tests respectively. These child counts must
+not be added again to overlapping test-run totals.
+
+After the correction, the local registered reports contain 393 script tests
+and 370 TypeScript tests (763 reported tests), all passing. Independent discovery
+of all course/simulation test files contains 400 tests, all passing, and overlaps
+the registered suite. Final CI evidence is recorded on the pull request with its
+exact tested revision; no current browser result is inferred from these counts.

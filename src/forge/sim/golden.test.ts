@@ -139,7 +139,7 @@ test("thin wall warns and an undercut fails the mill", () => {
   input.parts[0]!.params.undercut = 1;
   const ev = evaluate(input, materials, processes);
   assert.equal(ev.passDfm, false);
-  assert.ok(ev.dfmChecks.some((c) => c.id === "no_undercut" && !c.pass));
+  assert.ok(ev.dfmChecks.some((c) => c.id === "arm/no_undercut" && !c.pass));
 });
 
 test("drone arm default nylon misses the deflection limit", () => {
