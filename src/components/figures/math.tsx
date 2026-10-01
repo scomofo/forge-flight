@@ -271,17 +271,17 @@ function TrianglesVectors() {
   return (
     <AnimatedFigure
       height={300}
-      duration={4.5}
+      duration={6.8}
       alt="A 500 N cable pull at 35 degrees above horizontal leaving a bracket, drawn as the hypotenuse of a right triangle whose sides are the components Fx equals 410 N and Fy equals 287 N."
       steps={[
-        { at: 0, label: "Pull", caption: "A cable pulls the bracket with 500 N at 35° above horizontal." },
-        { at: 1.5, label: "Across", caption: "The adjacent side is Fx = 500·cos 35° ≈ 500 × 0.819 = 410 N." },
-        { at: 2.7, label: "Up", caption: "The opposite side is Fy = 500·sin 35° ≈ 500 × 0.574 = 287 N." },
+        { at: 0, label: "Label", caption: "Given: 500 N at θ = 35° above horizontal. The diagonal is the hypotenuse; Fx is adjacent to 35° and Fy is opposite. Use DEG mode for this angle." },
+        { at: 2.2, label: "Across", caption: "Known hypotenuse and wanted adjacent side: choose cosine. cos 35° = Fx/500, so Fx = 500·cos 35° ≈ 410 N." },
+        { at: 3.6, label: "Up", caption: "Known hypotenuse and wanted opposite side: choose sine. sin 35° = Fy/500, so Fy = 500·sin 35° ≈ 287 N." },
         {
-          at: 3.9,
+          at: 5.2,
           label: "Check",
           caption:
-            "The bolt feels the two legs, not the diagonal: 500·cos 35° sliding it, 500·sin 35° lifting it. Recombine them and you get the 500 N back.",
+            "Fx and Fy describe the same 500 N force along two perpendicular directions; they are not extra forces. Recombine them with √(410² + 287²) ≈ 500 N. The small discrepancy is rounding.",
         },
       ]}
     >
@@ -292,8 +292,8 @@ function TrianglesVectors() {
             <Ground x={10} y={250} w={460} />
             <rect x={20} y={175} width={60} height={75} fill={C.soft} stroke={C.ink} strokeWidth={2} />
             <circle cx={50} cy={212} r={6} fill={C.surface} stroke={C.ink} strokeWidth={1.5} />
-            <GrowArrow p={seg(t, 1.5, 2.1)} x1={ox} y1={oy} x2={ox + fx} y2={oy} tone="accent" />
-            <GrowArrow p={seg(t, 2.7, 3.3)} x1={ox + fx} y1={oy} x2={ox + fx} y2={oy - fy} tone="accent" />
+            <GrowArrow p={seg(t, 2.2, 2.8)} x1={ox} y1={oy} x2={ox + fx} y2={oy} tone="accent" />
+            <GrowArrow p={seg(t, 3.6, 4.2)} x1={ox + fx} y1={oy} x2={ox + fx} y2={oy - fy} tone="accent" />
             <GrowArrow p={seg(t, 0.3, 0.9)} x1={ox} y1={oy} x2={ox + fx} y2={oy - fy} tone="ink" />
             <path
               d={`M${ox + r},${oy} A${r},${r} 0 0 0 ${ox + r * Math.cos(th)},${oy - r * Math.sin(th)}`}
@@ -304,9 +304,9 @@ function TrianglesVectors() {
             />
             <Label x={ox + r + 22} y={oy - 16} size={15} tone="muted" opacity={angle}>35°</Label>
             <Label x={ox + fx / 2 - 22} y={oy - fy / 2 - 22} weight={600} opacity={op(seg(t, 0.6, 1.1))}>500 N</Label>
-            <Label x={ox + fx / 2} y={oy + 22} tone="accent" opacity={op(seg(t, 1.8, 2.3))}>Fx = 410 N</Label>
-            <Label x={ox + fx + 10} y={oy - fy / 2} tone="accent" anchor="start" opacity={op(seg(t, 3, 3.5))}>Fy = 287 N</Label>
-            <Label x={240} y={283} size={16} serif opacity={op(seg(t, 3.9, 4.4))}>√(410² + 287²) ≈ 500 N</Label>
+            <Label x={ox + fx / 2} y={oy + 22} tone="accent" opacity={op(seg(t, 2.5, 3))}>Fx = 410 N</Label>
+            <Label x={ox + fx + 10} y={oy - fy / 2} tone="accent" anchor="start" opacity={op(seg(t, 3.9, 4.4))}>Fy = 287 N</Label>
+            <Label x={240} y={283} size={16} serif opacity={op(seg(t, 5.2, 5.7))}>√(410² + 287²) ≈ 500 N</Label>
           </>
         );
       }}

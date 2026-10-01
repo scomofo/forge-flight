@@ -1,8 +1,11 @@
 import type { ConceptHelp } from "./types.ts";
+import { trigConceptHelp } from "./trig-help.ts";
+import { pendulumConceptHelp } from "./pendulum-help.ts";
 
 type RegistryEntry = Omit<ConceptHelp, "trigger"> & { trigger: string };
 
 export const conceptHelpRegistry: Record<string, RegistryEntry> = {
+  ...pendulumConceptHelp,
   "equality-addition": {
     trigger: "Explain this",
     title: "Addition property of equality",
@@ -85,17 +88,7 @@ export const conceptHelpRegistry: Record<string, RegistryEntry> = {
     ],
     caution: "Two points define a line, but they do not prove the real system is linear.",
   },
-  radians: {
-    trigger: "Why radians?",
-    title: "Radians are the natural angle unit",
-    intro: "A radian measures angle using the circle itself: angle = arc length divided by radius.",
-    sections: [
-      { heading: "Definition", body: "θ = s/r. If the arc length equals the radius, the angle is 1 radian." },
-      { heading: "Conversion", body: "2π rad = 360°, so radians = degrees × π/180." },
-      { heading: "Why formulas simplify", body: "Because θ = s/r, the arc-length relation becomes s = rθ with no extra conversion constant." },
-    ],
-    caution: "Check calculator mode before trig. Degrees entered in radian mode give a completely different answer.",
-  },
+  ...trigConceptHelp,
   "delta-symbol": {
     trigger: "What does Δ mean?",
     title: "Delta means change",

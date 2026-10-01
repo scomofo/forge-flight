@@ -54,7 +54,7 @@ test("browser failure survives teardown and a failed or incomplete report is rej
   const verify=()=>spawnSync(process.execPath,['scripts/assert-lesson-acceptance.mjs',path],{encoding:'utf8'}).status;
   assert.equal(verify(),1);
   writeFileSync(path,JSON.stringify({passed:true,count:1,checks:['desktop only']})); assert.equal(verify(),1);
-  const checks=['desktop','mobile'].flatMap(d=>[`${d}: practice does not change saved course scores`,`${d}: no interaction exceptions`]);
+  const checks=['desktop','mobile'].flatMap(d=>[`${d}: practice does not change saved course scores`,`${d}: trig retake saves best score without altering existing scores`,`${d}: pendulum help preserves saved scores`,`${d}: no interaction exceptions`]);
   writeFileSync(path,JSON.stringify({passed:true,count:checks.length,checks})); assert.equal(verify(),0);
  } finally { rmSync(dir,{recursive:true,force:true}); }
 });

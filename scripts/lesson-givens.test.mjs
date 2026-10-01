@@ -12,7 +12,7 @@ import {LADDER_INPUTS,bonusPosition,ladderCreepHours,ladderModeHz,ladderWhirlRpm
 import {BEAM_CASE,beamDeflectionM,beamMassKg,BRACKET_ALTERNATIVES,BRACKET_CRITERIA,rankAlternatives} from './src/course/optimization.ts';
 import {REFERENCE_SPAR,SPAR_MATERIALS} from './src/course/matsynthesis.ts';
 import {CAP_REFERENCE,CAP_MATERIALS,CAP_MISMATCH} from './src/course/capstone.ts';
-const refs=lessons.flatMap(l=>[...(l.exampleHelp??[]),...l.ideas.flatMap(i=>i.help??[])]).filter(h=>'concept' in h);
+const refs=lessons.flatMap(l=>[...(l.exampleHelp??[]),...l.ideas.flatMap(i=>i.help??[]),...l.checks.flatMap(c=>c.help??[])]).filter(h=>'concept' in h);
 const invalidBonus=[NaN,Infinity,9.99].map(x=>{try{bonusPosition(x);return false}catch{return true}});
 console.log(JSON.stringify({lessons,contexts:exampleContexts,missingHelp:refs.filter(h=>!getConceptHelp(h.concept)),
  helpers:{bonus:[bonusPosition(10),bonusPosition(10.2)],invalidBonus,creep:[ladderCreepHours(100,800),ladderCreepHours(200,800),ladderCreepHours(100,850)],mode:[ladderModeHz(.6),ladderModeHz(1.2)],whirl:[ladderWhirlRpm(.4),ladderWhirlRpm(.8)],crack:[ladderCrackGrowth(.5),ladderCrackGrowth(2),ladderCrackGrowth(50)],tool:[ladderToolLifeMinutes(100),ladderToolLifeMinutes(150)],beam:[beamDeflectionM(52),beamDeflectionM(53),beamMassKg(53)]},
@@ -34,7 +34,7 @@ test('all 166 lesson identities, benches, pass marks, answer positions and revie
  }
 });
 test('every authored context points at a real lesson and contains complete, renderable inputs and tables',()=>{
- assert.equal(Object.keys(data.contexts).length,56);
+ assert.equal(Object.keys(data.contexts).length,58);
  for(const [key,c] of Object.entries(data.contexts)){
   assert.ok(lesson(key),key);assert.ok(c.inputs.length,key);
   for(const i of c.inputs){assert.ok(i.label?.trim());assert.ok(i.value?.trim());assert.ok(['Given','Reference','Assumed','Calculated','Measured example'].includes(i.origin));}

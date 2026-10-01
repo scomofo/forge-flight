@@ -7,8 +7,8 @@ export function ExampleInputs({ context, compact = false }: { context?: ExampleC
   if (!context) return null;
   return (
     <aside aria-labelledby={headingId} data-example-inputs={compact ? "figure" : "worked"} className="my-5 min-w-0 rounded-lg border border-line bg-surface p-4 sm:p-5">
-      <h3 id={headingId} className="font-serif text-lg text-ink">{compact ? "Before the animation" : "Where these numbers come from"}</h3>
-      <p className="mt-1 text-sm leading-relaxed text-muted">These values are supplied for this example. You do not need to guess them or memorize a material table.</p>
+      <h3 id={headingId} className="font-serif text-lg text-ink">{compact ? "Before the animation" : context.heading ?? "Where these numbers come from"}</h3>
+      <p className="mt-1 text-sm leading-relaxed text-muted">{context.intro ?? "These values are supplied for this example. You do not need to guess them or memorize a material table."}</p>
       <dl className="mt-4 grid min-w-0 gap-4 sm:grid-cols-2">
         {context.inputs.map((input) => (
           <div key={input.label} className="min-w-0 break-words">
