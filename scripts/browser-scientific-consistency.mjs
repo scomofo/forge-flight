@@ -456,6 +456,16 @@ const router=createRouter({routeTree:r.addChildren([l,b,t,j,h]),history:createMe
       const l = getLesson(...key.split("/"));
       await page.getByRole("heading", { name: l.title, exact: true }).waitFor();
       const text = await page.locator("article").innerText();
+      if (key.startsWith("materials/bond")) {
+        const labelBounds = await page.locator("article svg").first().evaluate(svg => {
+          const frame = svg.getBoundingClientRect();
+          return [...svg.querySelectorAll("text")].filter(node => {
+            const r = node.getBoundingClientRect();
+            return r.width > 0 && (r.left < frame.left - 1 || r.right > frame.right + 1);
+          }).map(node => node.textContent);
+        });
+        ok(`intro figure text stays within SVG: ${labelBounds.join("; ")}`, labelBounds.length === 0);
+      }
       ok(
         "legacy misinformation absent",
         !text.includes("broken wholesale") &&

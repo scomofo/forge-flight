@@ -289,7 +289,7 @@ function BondZoo() {
   );
 }
 
-/** 11.2: bond-energy wells — depth sets melting, curvature sets stiffness. */
+/** 11.2: bond-energy wells — separation energy and local stiffness, not melting predictions. */
 function BondPacks() {
   const b = plotBox({ x: 56, y: 40, w: 390, h: 200, xMin: 0.6, xMax: 3.0, yMin: -1.65, yMax: 0.6 });
   const morse = (D: number, a: number, r0: number) => (r: number) => D * ((1 - Math.exp(-a * (r - r0))) ** 2 - 1);
@@ -337,7 +337,7 @@ function BondPacks() {
             secondary 1–40 kJ/mol
           </Label>
           <Label x={b.px(1.95)} y={b.py(-0.2) + 42} anchor="start" size={15} opacity={op(seg(t, 3.5, 4))}>
-            not a thermal-transition model
+            not a melting model
           </Label>
         </>
       )}
@@ -350,7 +350,7 @@ function BondRead() {
   const rows = [
     { step: "structure", text: "4 unlike neighbors, one network" },
     { step: "bond", text: "covalent network; conductivity needs checking" },
-    { step: "predict", text: "stiff · brittle; electrical behavior still unknown" },
+    { step: "predict", text: "stiff · brittle; conductivity?" },
     { step: "check", text: "silicon carbide: a semiconductor" },
   ];
   const rowY = (i: number) => 34 + i * 66;
