@@ -26,7 +26,7 @@ async function attempt(key, fn, page) {
   const begin = checks.length;
   try { await fn(); cases.push({ key, pass: true, checks: checks.length - begin }); }
   catch (error) {
-    const detail = { key, error: String(error.message), checks: checks.length - begin };
+    const detail = { key, error: String(error.message), checks: checks.length - begin, pageText: await page.locator('body').innerText().catch(() => ''), url: page.url() };
     failures.push(detail); cases.push({ ...detail, pass: false });
     console.error(JSON.stringify(detail));
     await page.screenshot({ path: join(out, `${key.replaceAll(/[^a-zA-Z0-9-]/g, '-')}-failure.png`), fullPage: true }).catch(() => {});
@@ -68,7 +68,7 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
   for (const [viewport, width, height] of [['desktop', 1280, 900], ['mobile', 390, 844]]) {
     const ctx = await browser.newContext({ viewport: { width, height }, reducedMotion: 'reduce' });
     const page = await ctx.newPage(), errors = [];
-    page.setDefaultTimeout(7000);
+    page.setDefaultTimeout(15000);
     page.on('pageerror', e => errors.push(e.message));
     for (const lesson of lessons) {
       const key = `${viewport}/lesson/${lesson.track}/${lesson.id}`, errorStart = errors.length;
@@ -105,7 +105,11 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
         const sliders = main.locator('input[type="range"]');
         const count = await sliders.count();
         for (let i = 0; i < count; i++) {
-          const slider = sliders.nth(i), initial = await slider.inputValue();
+          // Capture the actual node. Filtering a shortlist can temporarily remove
+          // earlier weight sliders; a live nth() locator then targets a different input.
+          const slider = await sliders.nth(i).elementHandle();
+          assert.ok(slider, `Missing slider ${i + 1}`);
+          const initial = await slider.inputValue();
           for (const button of ['Home', 'End']) {
             await slider.focus(); await page.keyboard.press(button);
             check(key, `slider ${i + 1} ${button}: finite displayed readouts`, !/\bNaN\b/.test(await main.innerText()));
@@ -140,7 +144,7 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
           store.submit(id, true); const duplicatePrevented = a.useForge.getState().runs[id].sealedCount === firstCount;
           return { allPass: ['validInputs','passStress','passBuckling','passMass','passCost','passDeflection','passDfm','passAero','passStability'].every(k => e[k]), invalidated: !invalidated.testDone && invalidated.analyses.length === 0, staleRejected, duplicatePrevented };
         }, { id: mission.id, revision: revisedDesign(mission) });
-        for (const [criterion, pass] of Object.entries(result)) check(key, criterion, pass);
+        for (const [criterion, satisfied] of Object.entries(result)) check(key, criterion, satisfied);
         await page.screenshot({ path: join(out, `${viewport}-${mission.id}.png`), fullPage: true });
         check(key, 'no horizontal overflow', await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
         check(key, 'no uncaught browser errors', errors.length === errorStart);

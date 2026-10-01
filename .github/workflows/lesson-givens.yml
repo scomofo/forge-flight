@@ -33,7 +33,16 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
         run: |
-          git diff --name-only --diff-filter=ACMRT "$BASE" HEAD -- '*.ts' '*.tsx' '*.mjs' | xargs -r npx eslint
+          mkdir -p artifacts/lint
+          git diff --name-only -z --diff-filter=ACMRT "$BASE" HEAD -- '*.ts' '*.tsx' '*.mjs' | xargs -0 -r npx eslint --format json --output-file artifacts/lint/changed-source.json
+      - name: Preserve lint findings
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: curriculum-changed-source-lint
+          path: artifacts/lint/changed-source.json
+          if-no-files-found: ignore
+          retention-days: 7
       - run: npx playwright install --with-deps chromium
       - name: Development capstone evidence acceptance
         run: node scripts/browser-capstone-evidence.mjs
