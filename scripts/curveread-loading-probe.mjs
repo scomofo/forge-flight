@@ -2,16 +2,16 @@
 import { readFile, writeFile, rm } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 let s = await readFile('scripts/browser-curriculum-audit.mjs', 'utf8');
-s = s.replace('const benches = await registeredBenches();', "const benches = Array(500).fill('curveread');");
+s = s.replace('const benches = await registeredBenches();', "const benches = Array(3000).fill('curveread');");
 s = s.replace('for (const lesson of lessons)', 'for (const lesson of [])');
 s = s.replace('for (const mission of missions)', 'for (const mission of [])');
 s = s.replace("[['desktop', 1280, 900], ['mobile', 390, 844]]", "[['desktop', 1280, 900]]");
 s = s.replace("createRoot(document.getElementById('root')!).render", "(window as any).__audit.router=router;createRoot(document.getElementById('root')!).render");
 s = s.replace('const page = await ctx.newPage(), errors = [];', `const page = await ctx.newPage(), errors = [];
 page.__diagnostics = [];
-for (const event of ['console', 'pageerror', 'requestfailed', 'requestfinished', 'response']) page.on(event, x => {
-  const detail = event === 'console' ? { type:x.type(),text:x.text() } : event === 'response' ? { url:x.url(),status:x.status(),headers:x.headers() } : event === 'requestfailed' ? { url:x.url(),error:x.failure() } : event === 'requestfinished' ? { url:x.url() } : { message:x.message };
-  page.__diagnostics.push({event,...detail});
+for (const event of ['console', 'pageerror', 'request', 'requestfailed', 'requestfinished', 'response']) page.on(event, x => {
+  const detail = event === 'console' ? { type:x.type(),text:x.text() } : event === 'response' ? { url:x.url(),status:x.status(),headers:x.headers() } : event === 'requestfailed' ? { url:x.url(),error:x.failure() } : ['request','requestfinished'].includes(event) ? { url:x.url(),type:x.resourceType() } : { message:x.message };
+  page.__diagnostics.push({event,time:Date.now(),...detail});
 });`);
 s = s.replace('const begin = checks.length;', 'const begin = checks.length; page.__diagnostics.length = 0;');
 s = s.replace('failures.push(detail); cases.push', `detail.diagnostics = [...page.__diagnostics];
