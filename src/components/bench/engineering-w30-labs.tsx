@@ -3,6 +3,7 @@ import { BenchShell, fmt, Readouts, WellButton } from "./ui";
 import {
   CAP_MASTERY_BANK,
   CAP_MAX_TOTAL,
+  CAP_GATE_PCT,
   CAP_MASTERY_GATE_PCT,
   CAP_MISMATCH,
   CAP_REFERENCE,
@@ -16,86 +17,79 @@ import {
   capTotal,
   capstoneGate,
   type CapMasteryItem,
-  type CapScores,
-  type CapSection,
 } from "@/course/capstone";
+import {
+  PACKAGE_STORE,
+  emptyPackage,
+  loadPackage,
+  savePackage,
+  editPackageText,
+  scorePackageSection,
+} from "@/course/capstone-package";
 import { useProgress } from "@/course/progress";
 
 const inputCls =
   "mt-1 w-full rounded-lg bg-white/10 px-3 py-2 text-sm text-well-fg ring-1 ring-white/25 placeholder:text-well-dim/60";
 
 // ---------------------------------------------------------------------------
-// CapPackageBench — the capstone design package: requirement, model, test,
-// mismatch, justified revision. Each section self-scored 0–2; the gate demands
-// every section present and a 70% total. Simulation alone cannot pass.
+// CapPackageBench — written evidence plus a self-assessed 0–2 rubric.
+// Every section needs evidence and a score; the total must reach 70%.
+// This checks presence and self-scores, not scientific quality.
 // ---------------------------------------------------------------------------
 
-const PACKAGE_STORE = "ff:cappackage-w30";
-
-type PackageState = {
-  text: Record<CapSection, string>;
-  scores: CapScores;
-};
-
-function loadPackage(): PackageState {
-  const empty: PackageState = {
-    text: { requirement: "", model: "", test: "", mismatch: "", revision: "" },
-    scores: { requirement: 0, model: 0, test: 0, mismatch: 0, revision: 0 },
-  };
-  try {
-    const raw = localStorage.getItem(PACKAGE_STORE);
-    if (!raw) return empty;
-    const parsed = JSON.parse(raw) as Partial<PackageState>;
-    return {
-      text: { ...empty.text, ...(parsed.text ?? {}) },
-      scores: { ...empty.scores, ...(parsed.scores ?? {}) },
-    };
-  } catch {
-    return empty;
-  }
-}
-
 export function CapPackageBench() {
-  const [state, setState] = useState<PackageState>(loadPackage);
+  // Load after mount: server rendering must not replace a saved package with
+  // the empty initial state. Never save until that first read has completed.
+  const [state, setState] = useState(emptyPackage);
+  const [loaded, setLoaded] = useState(false);
+  const [saved, setSaved] = useState(true);
   useEffect(() => {
-    try {
-      localStorage.setItem(PACKAGE_STORE, JSON.stringify(state));
-    } catch {
-      /* private mode */
-    }
-    // The stored completion signal for the capstone is the rubric gate on the
-    // persisted package — not the lesson quiz score.
+    setState(loadPackage());
+    setLoaded(true);
+    const sync = (event: StorageEvent) => {
+      if (event.key === PACKAGE_STORE || event.key === null) setState(loadPackage());
+    };
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
+  }, []);
+  useEffect(() => {
+    if (!loaded) return;
+    setSaved(savePackage(state));
     useProgress.getState().setCapstonePass(capstoneGate(state.scores).pass);
-  }, [state]);
+  }, [state, loaded]);
 
   const total = capTotal(state.scores);
   const pct = capPct(state.scores);
   const gate = capstoneGate(state.scores);
-  const missing = CAP_SECTIONS.filter((s) => state.scores[s.id] < 1);
+  const missing = CAP_SECTIONS.filter((s) => !state.text[s.id].trim());
+
+  if (!loaded) return <p role="status">Loading your saved capstone package…</p>;
 
   return (
     <BenchShell
-      prompt="Build your capstone design package: write one requirement, one model, one test, one mismatch, one justified revision. || Score each section 0–2 against the rubric. The gate opens only when every section is present and the total reaches 70% — simulation alone cannot pass."
-      note="The package persists in this browser. Score honestly: a weak section marked 1 keeps the gate honest; a weak section marked 2 fools only you."
+      prompt="Build your capstone design package: write one requirement, one model, one test, one mismatch, one justified revision. || Then self-score each section 0–2 against the rubric. Written evidence in all five sections and a total of at least 70% are required."
+      note="This checks that evidence is present and records your self-assessment; it does not certify the quality of your engineering. Editing a section resets its score so you can reassess the changed evidence."
       controls={
         <div className="sm:col-span-2">
-          <WellButton
-            onClick={() =>
-              setState({
-                text: { requirement: "", model: "", test: "", mismatch: "", revision: "" },
-                scores: { requirement: 0, model: 0, test: 0, mismatch: 0, revision: 0 },
-              })
+          <WellButton onClick={() => {
+            if (window.confirm("Replace all five sections and their self-scores with an empty package? This cannot be undone.")) {
+              setState(emptyPackage());
             }
-          >
+          }}>
             Start a fresh package
           </WellButton>
         </div>
       }
     >
+      {!saved ? (
+        <p role="status" className="mb-4 text-sm text-well-dim">
+          Browser storage is unavailable. Your work remains here for this visit only; copy it before leaving.
+        </p>
+      ) : null}
       <Readouts
         items={[
-          { label: "Total", value: `${total} / ${CAP_MAX_TOTAL} (${fmt(pct, 0)}%)` },
-          { label: "Sections present", value: `${5 - missing.length} / 5` },
+          { label: "Self-scored total", value: `${total} / ${CAP_MAX_TOTAL} (${fmt(pct, 0)}%)` },
+          { label: "Written sections", value: `${CAP_SECTIONS.length - missing.length} / ${CAP_SECTIONS.length}` },
           { label: "Gate", value: gate.pass ? "open" : "closed" },
         ]}
       />
@@ -112,9 +106,15 @@ export function CapPackageBench() {
               className={inputCls + " min-h-20"}
               placeholder={`Write the ${sec.label.toLowerCase()}…`}
               value={state.text[sec.id]}
-              onChange={(e) => setState((s) => ({ ...s, text: { ...s.text, [sec.id]: e.target.value } }))}
+              onChange={(e) => setState((s) => editPackageText(s, sec.id, e.target.value))}
               aria-label={`${sec.label} text`}
+              aria-describedby={`package-${sec.id}-help`}
             />
+            <p id={`package-${sec.id}-help`} className="mt-2 text-xs text-well-dim">
+              {state.text[sec.id].trim()
+                ? "Self-score the current evidence. Further edits reset this section to 0."
+                : "Write this section before assigning it a score."}
+            </p>
             <div className="mt-2 flex gap-1" role="radiogroup" aria-label={`${sec.label} self-score`}>
               {([0, 1, 2] as const).map((v) => (
                 <button
@@ -122,30 +122,34 @@ export function CapPackageBench() {
                   type="button"
                   role="radio"
                   aria-checked={state.scores[sec.id] === v}
-                  onClick={() => setState((s) => ({ ...s, scores: { ...s.scores, [sec.id]: v } }))}
+                  disabled={v > 0 && !state.text[sec.id].trim()}
+                  onClick={() => setState((s) => scorePackageSection(s, sec.id, v))}
                   className={
-                    "min-h-11 flex-1 rounded-lg px-3 py-2 text-sm " +
+                    "min-h-11 flex-1 rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40 " +
                     (state.scores[sec.id] === v ? "bg-well-fg text-well" : "text-well-fg ring-1 ring-white/25")
                   }
                 >
-                  {v === 0 ? "0 · absent" : v === 1 ? "1 · weak" : "2 · strong"}
+                  {v === 0 ? "0 · absent / reassess" : v === 1 ? "1 · weak" : "2 · strong"}
                 </button>
               ))}
             </div>
           </div>
         ))}
       </div>
-      <div className="mt-4">
+      <div className="mt-4" data-capstone-package-gate={gate.pass ? "open" : "closed"}>
         {gate.pass ? (
           <p className="rounded-lg bg-well-fg px-3 py-2 text-sm text-well">
-            Gate open. All five sections present, total at 70% or better — a simulation score alone could
-            never do this. The package is the deliverable.
+            Package gate open. All five sections contain written evidence and your self-scored total
+            reaches 70%. This records your self-assessment, not independent verification of the work.
           </p>
         ) : (
           <ul className="list-disc pl-5 text-sm text-well-dim">
-            {gate.reasons.map((r) => (
-              <li key={r}>{r}</li>
+            {CAP_SECTIONS.filter((sec) => state.scores[sec.id] === 0).map((sec) => (
+              <li key={sec.id}>
+                {sec.label}: {state.text[sec.id].trim() ? "reassess the current evidence" : "write the missing evidence"}.
+              </li>
             ))}
+            {pct < CAP_GATE_PCT ? <li>Your self-scored total must reach {CAP_GATE_PCT}% after every section is assessed.</li> : null}
           </ul>
         )}
       </div>
@@ -295,7 +299,7 @@ export function CapPredictBench() {
               { label: "Chain aluminum", value: `${fmt(al.deflectionMm, 2)} mm` },
               { label: "Your balsa", value: `${state.predictions!.balsaDefl} mm ${marks[1] ? "✓" : "✗"}` },
               { label: "Chain balsa", value: `${fmt(balsa.deflectionMm, 1)} mm` },
-              { label: "Your binding", value: `${state.predictions!.binding} ${marks[3] ? "✓" : "✗"}` },
+              { label: "Your binding", value: `${state.predictions!.binding} ${marks[2] ? "✓" : "✗"}` },
               { label: "Chain binding", value: chain.bindingConstraint },
               { label: "Predictions hit", value: `${hits} / 3` },
             ]}
@@ -304,8 +308,9 @@ export function CapPredictBench() {
             <p className="text-sm font-medium text-well-fg">The test disagrees</p>
             <p className="mt-1 text-sm text-well-dim">{CAP_MISMATCH.description}</p>
             <p className="mt-2 text-sm text-well-dim">
-              The bars do not touch — this is a real disagreement, not noise. Autopsy the ledger: which
-              suspect is prime?
+              The nominal prediction falls outside the supplied measurement interval. Prediction
+              uncertainty is not yet quantified, so this alone does not establish statistical significance.
+              Investigate the assumptions: which suspect would you test first?
             </p>
             <div className="mt-2 grid gap-2">
               {MISMATCH_SUSPECTS.map((s) => {

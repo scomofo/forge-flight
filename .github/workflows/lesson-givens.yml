@@ -35,6 +35,12 @@ jobs:
         run: |
           git diff --name-only --diff-filter=ACMRT "$BASE" HEAD -- '*.ts' '*.tsx' '*.mjs' | xargs -r npx eslint
       - run: npx playwright install --with-deps chromium
+      - name: Development capstone evidence acceptance
+        run: node scripts/browser-capstone-evidence.mjs
+      - name: Production capstone evidence acceptance
+        env:
+          ACCEPTANCE_BUILD: '1'
+        run: node scripts/browser-capstone-evidence.mjs
       - name: Development component acceptance
         run: |
           node scripts/browser-lesson-givens.mjs
@@ -62,4 +68,6 @@ jobs:
             screenshots/lesson-givens-built/
             screenshots/course-enrichment/
             screenshots/course-enrichment-built/
+            screenshots/capstone-evidence/
+            screenshots/capstone-evidence-built/
           retention-days: 7
