@@ -66,7 +66,7 @@ const params=new URLSearchParams(location.search),mode=params.get('mode'),key=pa
 (window as any).__editor={useForge};
 if(mode==='mission'){for(const m of missions){useForge.getState().ensure(m.id);useForge.getState().patch(m.id,{sealedCount:3,bestRubric:80});}}
 const r=createRootRoute({component:()=> <><ProgressHydrator/><Outlet/></>});
-const l=createRoute({getParentRoute:()=>r,path:'/learn/$trackId/$lessonId',component:()=>{const {trackId,lessonId}=l.useParams();return <LessonView lesson={getLesson(trackId,lessonId)!}/>}});
+const l=createRoute({getParentRoute:()=>r,path:'/learn/$trackId/$lessonId',component:()=>{const {trackId,lessonId}=l.useParams();return <LessonView lesson={getLesson(trackId,lessonId)!}/>} });
 const b=createRoute({getParentRoute:()=>r,path:'/bench',component:()=> <main className="mx-auto max-w-3xl p-5"><Bench id="curveread"/></main>});
 const m=createRoute({getParentRoute:()=>r,path:'/mission/$missionId',component:()=> <MissionBench missionId={m.useParams().missionId}/>});
 const t=createRoute({getParentRoute:()=>r,path:'/learn/$trackId',component:()=> <h1>Course</h1>});
@@ -145,7 +145,9 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
     const article = page.locator('article'); await article.waitFor();
     ok('missing yield datum stays explicit in the lesson', (await article.innerText()).includes('No offset-intersection force is provided'));
     ok('symbols and original dimensions are introduced', (await article.innerText()).includes('original gauge length'));
-    ok('schematic does not label the unconfirmed stress as offset yield', (await article.innerText()).includes('Reported departure'));
+    const schematic = article.locator('figure').first();
+    ok('schematic labels the unconfirmed stress as departure, not offset yield', (await schematic.innerText()).includes('departure ≈ 350 MPa') && (await schematic.innerText()).includes('does not establish offset yield'));
+    await schematic.screenshot({ path: join(out, 'lesson-reading-schematic.png') });
     await page.getByRole('tab', { name: /2 Try/ }).click();
     await page.locator('[data-curve-reading]').waitFor();
     ok('the lesson embeds the new full and initial-region plots', await page.locator('[data-curve-reading] svg').count() === 2);
@@ -167,7 +169,7 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
     const text = await virtualTest(page);
     ok('payload names margin shortfall not yielding', text.includes('required strength margin not met') && text.includes('not an observed yield event'));
     ok('actual stress, allowable and factor shown', text.includes('18.75 MPa') && text.includes('30.00 MPa') && text.includes('1.60'));
-    ok('out-of-domain deflection explained', /small.deflection|small.deflections/.test(text));
+    ok('out-of-domain deflection explained', text.includes('out-of-domain warning, not a physical deflection prediction') && text.includes('10% of the modeled span'));
     await page.locator('[data-virtual-result]').screenshot({ path: join(out, 'payload-result.png') });
   });
   await attempt('passing-virtual-result', async (page, ok) => {
