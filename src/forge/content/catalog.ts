@@ -334,6 +334,28 @@ const tubeSpecs: ParamSpec[] = [
   { key: "holeDepth_mm", label: "Hole depth", min: 2, max: 30, step: 1, unit: "mm" },
 ];
 
+const sparSpecs: ParamSpec[] = [
+  { key: "length_mm", label: "Length", min: 300, max: 600, step: 5, unit: "mm" },
+  { key: "outer_mm", label: "Outer diameter", min: 6, max: 16, step: 0.5, unit: "mm" },
+  { key: "wall_mm", label: "Wall", min: 0.6, max: 3, step: 0.1, unit: "mm" },
+  { key: "draft_deg", label: "Draft", min: 0, max: 3, step: 0.5, unit: "°" },
+  { key: "undercut", label: "Undercut (1 = yes)", min: 0, max: 1, step: 1, unit: "" },
+  { key: "holeDia_mm", label: "Hole diameter", min: 2, max: 8, step: 0.5, unit: "mm" },
+  { key: "holeDepth_mm", label: "Hole depth", min: 2, max: 30, step: 1, unit: "mm" },
+];
+
+const finSpecs: ParamSpec[] = [
+  { key: "span_mm", label: "Fin span", min: 60, max: 160, step: 2, unit: "mm" },
+  { key: "chord_mm", label: "Root chord", min: 40, max: 100, step: 2, unit: "mm" },
+  { key: "thickness_mm", label: "Thickness", min: 0.8, max: 4, step: 0.1, unit: "mm" },
+];
+
+const baySpecs: ParamSpec[] = [
+  { key: "span_mm", label: "Span between rails", min: 120, max: 280, step: 5, unit: "mm" },
+  { key: "chord_mm", label: "Plate width", min: 80, max: 160, step: 5, unit: "mm" },
+  { key: "thickness_mm", label: "Thickness", min: 1, max: 5, step: 0.1, unit: "mm" },
+];
+
 export const missions: Mission[] = [
   {
     id: "glider",
@@ -457,46 +479,125 @@ export const missions: Mission[] = [
   {
     id: "water_rocket",
     title: "Water rocket",
-    brief: "Not open yet.",
+    brief:
+      "A two-liter bottle, half full of water, about 4 bar in the headspace. Peak thrust is on the order of 60 to 100 N for under half a second; after that it is a ballistic coast to apogee.\n\nThe sim models none of that. It models one fin: a plate cantilever with a 10 N tip load standing in for the peak gust load as the rocket weathercocks off the rail. Fin flutter is not modeled — this check is static root stress and tip sag only.\n\nThe fin starts at 1.0 mm printed PLA. That is under the printer's 1.2 mm wall rule, and the root stress is past the knocked-down allowable. The ship carries three fins, so the mass and cost budgets are per fin.",
     unlockAfter: ["drone_arm"],
     artifactType: "water_rocket",
-    locked: true,
-    constraints: {},
-    requiredAnalyses: [],
+    constraints: {
+      maxMass_g: 15,
+      maxCost_usd: 30,
+      quantity: 3,
+      minSafetyFactor: 2,
+      maxDeflection_mm: 6,
+      dfmScoreMin: 70,
+    },
+    requiredAnalyses: ["static_stress", "dfm", "cost"],
     environment: { rho_kgm3: 1.225, g: 9.81, temp_C: 20 },
-    reflectionPrompts: [],
-    conceptIds: [],
-    parts: [],
+    reflectionPrompts: [
+      "What did you change, and which constraint did that change help — and which did it hurt?",
+      "The model checks static root stress. Name one failure mode of a real fin that this check cannot see.",
+    ],
+    conceptIds: ["yield", "inertia", "dfm", "tooling"],
+    parts: [
+      {
+        id: "fin",
+        name: "Fin",
+        kind: "plate",
+        params: {
+          span_mm: 100,
+          chord_mm: 60,
+          thickness_mm: 1.0,
+        },
+        specs: finSpecs,
+        materialId: "pla",
+        processId: "fdm_print",
+        loads: [{ id: "gust", kind: "bending_tip", magnitude_N: 10, k: 2 }],
+      },
+    ],
     vehicle: null,
   },
   {
     id: "rc_aircraft",
     title: "RC aircraft",
-    brief: "Not open yet.",
+    brief:
+      "A 1.2 kg trainer with a 900 mm span, built around a single spar. The sim models one half-span as a cantilever tube with half the weight — 6 N — as a tip load. Same convention as the glider's wing, and just as rough: ribs, sheeting, and torsion are not modeled.\n\nThe spar starts as an 8 mm aluminum tube with a 0.8 mm wall. Stress is fine. The tip sags about 22 mm against a 12 mm limit, and the ailerons would go mushy well before that. Carbon is stiffer per gram and much dearer; aluminum is cheap and honest. The classroom budget is $70. Pick your tradeoff.",
     unlockAfter: ["drone_arm"],
     artifactType: "rc_aircraft",
-    locked: true,
-    constraints: {},
-    requiredAnalyses: [],
+    constraints: {
+      maxMass_g: 40,
+      maxCost_usd: 70,
+      quantity: 1,
+      minSafetyFactor: 2.5,
+      maxDeflection_mm: 12,
+      dfmScoreMin: 70,
+    },
+    requiredAnalyses: ["static_stress", "dfm", "cost"],
     environment: { rho_kgm3: 1.225, g: 9.81, temp_C: 20 },
-    reflectionPrompts: [],
-    conceptIds: [],
-    parts: [],
+    reflectionPrompts: [
+      "What did you change, and which constraint did that change help — and which did it hurt?",
+      "The deflection limit sizes this spar, not the stress limit. In one sentence, say why.",
+    ],
+    conceptIds: ["yield", "inertia", "dfm", "tooling"],
+    parts: [
+      {
+        id: "spar",
+        name: "Wing spar",
+        kind: "tube",
+        params: {
+          length_mm: 450,
+          outer_mm: 8,
+          wall_mm: 0.8,
+          draft_deg: 1,
+          undercut: 0,
+          holeDia_mm: 4,
+          holeDepth_mm: 10,
+        },
+        specs: sparSpecs,
+        materialId: "al6061",
+        processId: "cnc_3axis",
+        loads: [{ id: "lift", kind: "bending_tip", magnitude_N: 6, k: 2 }],
+      },
+    ],
     vehicle: null,
   },
   {
     id: "payload",
     title: "Payload bay",
-    brief: "Not open yet.",
+    brief:
+      "The avionics bay: a flat plate on rails carrying the flight stack. At 6 g the 500 g stack pushes down with 30 N at the middle of the plate. The sim treats the plate as simply supported with a center load; the rails are assumed rigid, which flatters the answer.\n\nThe plate starts as 2 mm printed PLA. Stress passes with room to spare, but the middle sags about 3.7 mm against a 1.0 mm connector limit. Thin aluminum and thick plastic both get there — at different mass and cost.",
     unlockAfter: ["drone_arm"],
     artifactType: "payload",
-    locked: true,
-    constraints: {},
-    requiredAnalyses: [],
+    constraints: {
+      maxMass_g: 120,
+      maxCost_usd: 70,
+      quantity: 1,
+      minSafetyFactor: 2,
+      maxDeflection_mm: 1.0,
+      dfmScoreMin: 70,
+    },
+    requiredAnalyses: ["static_stress", "dfm", "cost"],
     environment: { rho_kgm3: 1.225, g: 9.81, temp_C: 20 },
-    reflectionPrompts: [],
-    conceptIds: [],
-    parts: [],
+    reflectionPrompts: [
+      "What did you change, and which constraint did that change help — and which did it hurt?",
+      "The rails are assumed rigid. What changes about the answer if they are not?",
+    ],
+    conceptIds: ["yield", "inertia", "dfm", "tooling"],
+    parts: [
+      {
+        id: "bayplate",
+        name: "Bay plate",
+        kind: "plate",
+        params: {
+          span_mm: 200,
+          chord_mm: 120,
+          thickness_mm: 2.0,
+        },
+        specs: baySpecs,
+        materialId: "pla",
+        processId: "fdm_print",
+        loads: [{ id: "stack", kind: "bending_center", magnitude_N: 30, k: 1 }],
+      },
+    ],
     vehicle: null,
   },
 ];
