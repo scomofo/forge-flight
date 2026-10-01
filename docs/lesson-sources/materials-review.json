@@ -1,0 +1,491 @@
+{
+  "source": "materials.txt",
+  "sourceSha256": "9128660c48cf150f22637f78c535a196c03c5979025dab9fd27e40995a84aa24",
+  "edits": [
+    {
+      "lesson": 1,
+      "reason": "Bonding predicts tendencies, not universal electrical properties.",
+      "before": "- **Nothing?** → it's an insulator and brittle",
+      "after": "- **No easy charge transport or slip?** → expect low electrical conductivity and brittle behaviour; check exceptions such as semiconductors."
+    },
+    {
+      "lesson": 1,
+      "reason": "SiC is a semiconductor, not a categorical insulator.",
+      "before": "| **nothing** | insulator, **brittle**, very high melting point | diamond, silicon carbide |",
+      "after": "| little easy slip | often insulating or semiconducting, **brittle**, high-temperature resistance | diamond, silicon carbide |"
+    },
+    {
+      "lesson": 1,
+      "reason": "Distinguish Coulomb energy, force and strength.",
+      "before": "Strength depends on **charge × charge ÷ distance**.",
+      "after": "The attractive **energy** scales with charge × charge ÷ distance; the attractive **force** scales with charge × charge ÷ distance². Neither alone is a bulk-strength formula."
+    },
+    {
+      "lesson": 1,
+      "reason": "Introduce looked-up material value before use.",
+      "before": "- Double charges, tightly packed → **melts near 2,850 °C**",
+      "after": "- Double charges, tightly packed → predict a **high melting temperature**; **about 2,850 °C is a supplied reference value**, not a result calculated from the bond."
+    },
+    {
+      "lesson": 1,
+      "reason": "Do not imply bonding gives an exact melting temperature.",
+      "before": "All of this was predicted from the bond, before looking anything up.",
+      "after": "The qualitative property package follows from the bonding. The numerical melting temperature must be looked up."
+    },
+    {
+      "lesson": 1,
+      "reason": "No universal warning before tool failure.",
+      "before": "**Steel tools bend** before they break (metallic), which gives warning",
+      "after": "**Many ductile steel parts bend** before breaking; hardened or embrittled tools may fracture without that warning"
+    },
+    {
+      "lesson": 1,
+      "reason": "Practice answer agrees with the corrected SiC explanation.",
+      "before": "(b) covalent network: insulator, brittle, very high melting point",
+      "after": "(b) covalent network: brittle and heat-resistant; silicon carbide is a semiconductor, so conductivity needs more than the bonding label"
+    },
+    {
+      "lesson": 2,
+      "reason": "Graphite anisotropy does not make cross-plane conductivity identically zero.",
+      "before": "sheets slide off easily, insulates",
+      "after": "sheets slide off easily; conducts much less well across the layers"
+    },
+    {
+      "lesson": 2,
+      "reason": "Clarify causal order while retaining the four linked topics.",
+      "before": "**Structure → processing → properties → performance**",
+      "after": "**Processing changes structure → structure sets properties → properties affect performance**"
+    },
+    {
+      "lesson": 3,
+      "reason": "Avoid predicting insulation from covalent bonding alone.",
+      "before": "| **2. Bond** | covalent network | every electron is locked in a bond |",
+      "after": "| **2. Bond** | covalent network | strong directional bonds; charge transport still needs a separate check |"
+    },
+    {
+      "lesson": 3,
+      "reason": "Keep the prediction honest about SiC.",
+      "before": "hard, brittle, insulating, very high melting",
+      "after": "hard, brittle, high-temperature resistance; conductivity to be checked"
+    },
+    {
+      "lesson": 3,
+      "reason": "Record a prediction correction instead of asserting every prediction was right.",
+      "before": "Silicon carbide is the grit on grinding wheels and sandpaper, and it matches every prediction.",
+      "after": "Silicon carbide is used as abrasive grit and is a semiconductor. The mechanical predictions fit; the electrical exception is a reason to check rather than trust the bond label alone."
+    },
+    {
+      "lesson": 3,
+      "reason": "Direction-dependent is not on/off.",
+      "before": "graphite conducts in one direction only",
+      "after": "graphite conducts much better within its layers"
+    },
+    {
+      "lesson": 3,
+      "reason": "Keep work hardening distinct from elastic stiffness.",
+      "before": "it gets stiffer, then snaps",
+      "after": "it gets harder to bend permanently, then may crack; this is not a large increase in Young's modulus"
+    },
+    {
+      "lesson": 3,
+      "reason": "Avoid deterministic failure claims from a family label.",
+      "before": "A ceramic part that took an impact had no chance. Its bond means it can't bend.",
+      "after": "A brittle ceramic may need a different geometry, support or impact rating. Bonding alone cannot certify whether an impact will break it."
+    },
+    {
+      "lesson": 4,
+      "reason": "Specify the HCP cell convention.",
+      "before": "| **HCP** (hexagonal close-packed) | hexagonal stacking | **6** |",
+      "after": "| **HCP** (hexagonal close-packed) | hexagonal stacking | **6** in the conventional hexagonal cell (2 in a primitive cell) |"
+    },
+    {
+      "lesson": 4,
+      "reason": "Carry guard digits into the density calculation.",
+      "before": "a = 2√2 × 143 ≈ **404 pm**",
+      "after": "a = 2√2 × 143 ≈ **404.5 pm**"
+    },
+    {
+      "lesson": 4,
+      "reason": "Keep the density substitution consistent.",
+      "before": "(404×10⁻¹⁰ cm)³",
+      "after": "(404.5×10⁻¹⁰ cm)³"
+    },
+    {
+      "lesson": 4,
+      "reason": "Pure-iron transition is not the universal heat-treatment setting.",
+      "before": "**Heat treating steel:**",
+      "after": "**Heat treating steel (not a furnace recipe):**\n\n912 °C is the transition for **pure iron**. Steel austenitizing temperatures depend on composition and the treatment specification."
+    },
+    {
+      "lesson": 4,
+      "reason": "Remove universal 912 °C instruction.",
+      "before": "1. Heat above 912 °C → iron becomes FCC → carbon dissolves in",
+      "after": "1. Heat to the alloy-specific austenitizing range → FCC austenite forms → carbon dissolves in"
+    },
+    {
+      "lesson": 4,
+      "reason": "Avoid a single-cause historical claim.",
+      "before": "It's also why the Titanic's steel cracked in icy water.",
+      "after": "Cold-service toughness also depends on grade, processing, flaws, loading rate and section thickness; crystal structure alone is not a failure diagnosis."
+    },
+    {
+      "lesson": 5,
+      "reason": "Grain boundaries are obstacles, not absolute barriers.",
+      "before": "it **can't continue**",
+      "after": "its motion is **impeded or redirected**"
+    },
+    {
+      "lesson": 5,
+      "reason": "Texture is not universally strongest along the rolling direction.",
+      "before": "**Rolled sheet** is stronger along the rolling direction.",
+      "after": "**Rolled sheet** can have direction-dependent properties; use the measured orientation for the grade."
+    },
+    {
+      "lesson": 6,
+      "reason": "Amorphous solids retain short-range order.",
+      "before": "solids with **no pattern at all**",
+      "after": "solids with **no long-range repeating pattern**"
+    },
+    {
+      "lesson": 6,
+      "reason": "Distinguish glass transition, rubbery behaviour and melting.",
+      "before": "Above it, the material flows like extremely thick syrup.",
+      "after": "Above it, the amorphous regions become more mobile and often rubbery; this is not automatically melting or free flow. Crystals and crosslinks can still support the material."
+    },
+    {
+      "lesson": 6,
+      "reason": "Separate glass-fracture features from cleavage river patterns.",
+      "before": "| **Mirror-smooth with \"river\" lines** | glass or a glassy material |",
+      "after": "| **Mirror, mist and hackle regions** | often glass fracture; river patterns are commonly associated with crystalline cleavage |"
+    },
+    {
+      "lesson": 6,
+      "reason": "Replace blanket material prohibition with a property check.",
+      "before": "Never use it where you need warning.",
+      "after": "Check the specific alloy, geometry and failure behaviour where warning before failure matters."
+    },
+    {
+      "lesson": 7,
+      "reason": "Work hardening raises strength, not Young's modulus.",
+      "before": "gets **stiffer** (cold work, tangled dislocations)",
+      "after": "gets **harder to bend permanently** (cold work, tangled dislocations), without a comparable increase in elastic modulus"
+    },
+    {
+      "lesson": 7,
+      "reason": "Keep explanation distinct from a repair procedure.",
+      "before": "Heat it with a torch and let it cool, and it's **soft** again (annealed).",
+      "after": "A controlled anneal can restore ductility. For a real component, follow the alloy and component specification rather than treating this as a torch-heating procedure."
+    },
+    {
+      "lesson": 8,
+      "reason": "Carbon in iron diffuses interstitially.",
+      "before": "They hop from vacancy to vacancy (lesson 7), moving from **crowded to less crowded**.",
+      "after": "Substitutional atoms can hop into vacancies; small atoms such as carbon in iron move between interstitial sites. In this simple concentration-driven model, the net flow goes from **higher to lower concentration**."
+    },
+    {
+      "lesson": 8,
+      "reason": "Define flux including its area denominator.",
+      "before": "- **J** = how many atoms flow through per second",
+      "after": "- **J** = diffusion flux: amount crossing **unit area per second** (for example atoms/(m²·s), with a compatible concentration scale)"
+    },
+    {
+      "lesson": 9,
+      "reason": "Annealing outcome depends on alloy and treatment.",
+      "before": "Result: **soft, ductile, stress-free**.",
+      "after": "Result: usually **softer and more ductile**, with reduced residual stress—not a guarantee of zero stress."
+    },
+    {
+      "lesson": 9,
+      "reason": "Not the only treatments that can alter composition.",
+      "before": "The one treatment that **does** change composition, and only at the surface:",
+      "after": "These treatments **do** change composition near the surface:"
+    },
+    {
+      "lesson": 9,
+      "reason": "Do not treat TTT as a literal continuous-cooling schedule.",
+      "before": "To get martensite, you must cool **past the nose** before it has time to transform into softer structures.",
+      "after": "A TTT chart describes isothermal holds; a continuous-cooling transformation (CCT) chart is the appropriate map for a changing cooling path. The teaching idea is to avoid substantial diffusional transformation before reaching the martensite range."
+    },
+    {
+      "lesson": 10,
+      "reason": "Explain the load decrease rather than a denominator-only bookkeeping effect.",
+      "before": "The bar is necking. The real area at the neck is shrinking, but engineering stress still divides by the **original** area, so the curve dips even though the material at the neck is still getting stronger.",
+      "after": "After necking, the measured load falls while engineering stress still divides by the fixed **original** area. Local true stress may continue rising as the neck thins; damage can later reverse that trend."
+    },
+    {
+      "lesson": 11,
+      "reason": "Tensile toughness alone is not an impact certification.",
+      "before": "The high-strength bar snaps first when hit.",
+      "after": "For these illustrative curves and equal material volume, the high-strength bar has the lower tensile energy capacity. A real impact also depends on geometry, notches, loading rate and temperature."
+    },
+    {
+      "lesson": 12,
+      "reason": "Remove unsupported universal measurement accuracy.",
+      "before": "Even done well, expect about **1% error on E** and **a few % on yield**. That's the method's normal error, not a mistake.",
+      "after": "Use the test method, instrument calibration and specimen repeatability to estimate uncertainty; a universal 1% error cannot be promised."
+    },
+    {
+      "lesson": 12,
+      "reason": "Do not misdescribe engineering stress after necking.",
+      "before": "The fall after necking is a bookkeeping effect.",
+      "after": "The fall in engineering stress reflects a falling measured load, using a fixed original area."
+    },
+    {
+      "lesson": 12,
+      "reason": "Bound the stress convention to the model.",
+      "before": "**For design, use engineering stress.** Your part's cross-section is the original one.",
+      "after": "**For these small-deformation classroom checks, use engineering stress** with compatible allowables. Large-deformation models may require true stress and strain."
+    },
+    {
+      "lesson": 12,
+      "reason": "A three-specimen estimate is not a certified allowable.",
+      "before": "**Mean − 2s** is a quick screen: most bars will be stronger than that. (Real certified aerospace values need many more test bars and extra statistics.)",
+      "after": "**Mean − 2s is only a classroom screening estimate.** With three specimens it does not establish a certified lower bound or a stated population coverage. Real allowables need the applicable sampling and tolerance-bound method."
+    },
+    {
+      "lesson": 13,
+      "reason": "Introduce the missing units of the Hall–Petch coefficient.",
+      "before": "**1045 steel**, σ₀ = 110 MPa, k = 0.65:",
+      "after": "**Supplied classroom model for 1045 steel:** σ₀ = 110 MPa, k = **0.65 MPa·√m**, with d entered in metres:"
+    },
+    {
+      "lesson": 13,
+      "reason": "Distinguish work hardening from stiffness.",
+      "before": "Bend a wire back and forth: it gets stiffer each time, then snaps.",
+      "after": "Bend a wire back and forth: it resists further permanent bending more strongly, but accumulating damage can make it crack. Elastic stiffness is a different property."
+    },
+    {
+      "lesson": 14,
+      "reason": "Not an absolute block of every dislocation.",
+      "before": "That distortion **blocks every dislocation**.",
+      "after": "That distortion and the resulting microstructure strongly impede dislocation motion."
+    },
+    {
+      "lesson": 14,
+      "reason": "T6 is a treatment designation, not an unconditional maximum-strength claim.",
+      "before": "**T6** = artificially aged to peak strength",
+      "after": "**T6** = solution heat-treated and artificially aged; the specified condition is alloy-dependent"
+    },
+    {
+      "lesson": 16,
+      "reason": "Do not turn a geometry example into an unsafe repair instruction.",
+      "before": "- **Drill a small \"stop hole\"** at the tip of a crack. It turns an infinitely sharp tip into a rounded one, which can stop the crack running.",
+      "after": "- A rounded crack tip reduces an ideal elastic stress concentration, but **stop-drilling is not a general repair approval**. A cracked load-bearing part needs its specified inspection and repair or replacement process."
+    },
+    {
+      "lesson": 16,
+      "reason": "Detectability alone cannot establish safety.",
+      "before": "- a_c well above the detection limit → OK",
+      "after": "- a_c above the detection limit → a necessary first check, not approval; allow for detection probability, growth, inspection intervals and margin"
+    },
+    {
+      "lesson": 17,
+      "reason": "Miner damage fraction is not a universal fraction of lifetime.",
+      "before": "Total = **0.75**, so a quarter of the life is left",
+      "after": "Total = **0.75**, so one quarter of this model's damage budget remains—not necessarily one quarter of the service time"
+    },
+    {
+      "lesson": 17,
+      "reason": "Practice answer does not imply guaranteed remaining life.",
+      "before": "so about 39% of its life is left",
+      "after": "so about 39% of the model's damage budget remains; remaining cycles depend on the future loading"
+    },
+    {
+      "lesson": 17,
+      "reason": "Avoid an infinite-life guarantee.",
+      "before": "Below that, it effectively lasts forever (the **endurance limit**).",
+      "after": "Some tested steels show an **endurance limit** under specified conditions; corrosion, welds, notches and variable loading can invalidate it."
+    },
+    {
+      "lesson": 17,
+      "reason": "Qualify fatigue screening.",
+      "before": "**Steel below its endurance limit** can last indefinitely. **Aluminium can't**, so plan inspections.",
+      "after": "Use a fatigue curve for the actual material, surface, environment and loading. An ideal endurance limit is not a maintenance exemption."
+    },
+    {
+      "lesson": 18,
+      "reason": "13× is greater than the stated 10× threshold.",
+      "before": "roughly 13× the test time, which is borderline but about one decade",
+      "after": "roughly 13× the test time, so it exceeds this lesson's illustrative 10× caution threshold"
+    },
+    {
+      "lesson": 18,
+      "reason": "Strain-limit time differs from rupture life.",
+      "before": "Work out how much stretch the part can tolerate, divide by the steady rate, and you have its life.",
+      "after": "Allowed creep strain divided by a representative steady rate estimates time to that strain limit. It does not by itself predict rupture life."
+    },
+    {
+      "lesson": 18,
+      "reason": "Match method to the corrected creep distinction.",
+      "before": "allowed strain ÷ rate = life",
+      "after": "allowed strain ÷ rate = approximate time to the strain limit; check rupture separately"
+    },
+    {
+      "lesson": 19,
+      "reason": "Explicit provenance and model boundary for phase coefficients.",
+      "before": "Using the page's simplified lines:",
+      "after": "**Given teaching equations, not a real Cu–Ni phase diagram:**"
+    },
+    {
+      "lesson": 22,
+      "reason": "Beam and panel indices depend on different free dimensions.",
+      "before": "For **beams and panels**, aluminium beats steel by about **1.7×** for the same stiffness.",
+      "after": "For the **geometrically similar beam sections in this comparison**, aluminium scores about **1.7×** higher. Panels with thickness as the free variable use E^⅓/ρ instead."
+    },
+    {
+      "lesson": 23,
+      "reason": "State the rule-of-mixtures model limit.",
+      "before": "**Across the fibres (series):** the load passes **through** fibre, then matrix, then fibre.",
+      "after": "**Across the fibres (series approximation):** imagine an ideal equal-stress arrangement of fibre and matrix. This gives a useful simple bound, not an exact transverse-modulus model for every composite."
+    },
+    {
+      "lesson": 23,
+      "reason": "Many semicrystalline polymers and elastomers serve above Tg.",
+      "before": "| **Polymers** | past the **glass transition** (Tg), chains unlock and stiffness **collapses** | design **below Tg**, not at the melting point |",
+      "after": "| **Polymers** | amorphous regions soften near Tg; crystallinity and crosslinks also matter | use the grade's stiffness and creep data at service temperature; not all polymers operate below Tg |"
+    },
+    {
+      "lesson": 23,
+      "reason": "Remove the universal below-Tg design rule.",
+      "before": "- Polymer: stay **below Tg with margin**.",
+      "after": "- Polymer: check service-temperature stiffness, creep, Tg and any melting/degradation limits for that grade."
+    },
+    {
+      "lesson": 23,
+      "reason": "A rough stress estimate cannot certify thermal shock survival.",
+      "before": "so it sees about ⅓ the shock stress and survives oven-to-counter.",
+      "after": "so this simplified restrained-strain comparison gives about ⅓ the stress. It is not a guarantee against thermal shock or a cookware-use instruction."
+    },
+    {
+      "lesson": 23,
+      "reason": "Thermal shock is not uniformly E alpha delta T.",
+      "before": "so it gets **4× too much stress** and cracks.",
+      "after": "so this fully restrained estimate is **4× the supplied tensile strength**. It flags a risk; actual transient thermal stress depends on geometry, gradients, cooling rate and constraints."
+    },
+    {
+      "lesson": 23,
+      "reason": "Fix the inconsistent homologous-temperature conversion.",
+      "before": "aluminium ~150 °C, steel ~450 °C",
+      "after": "a screening flag, not a sharp onset temperature; 0.4 × 933 K for Al is about 100 °C"
+    },
+    {
+      "lesson": 24,
+      "reason": "Family screen is not a service-life proof.",
+      "before": "| **3. Survivors** | nickel superalloy | survives |",
+      "after": "| **3. Candidates for detailed checks** | nickel superalloy | check creep life, grade and geometry |"
+    },
+    {
+      "lesson": 24,
+      "reason": "Ceramic candidate is not automatically qualified.",
+      "before": "| | ceramic (alumina, SiC) | survives |",
+      "after": "| | ceramic (alumina, SiC) | check brittle strength, creep, mounts and thermal cycling |"
+    },
+    {
+      "lesson": 24,
+      "reason": "State the choice as a teaching decision, not certification.",
+      "before": "**Ceramic, forced by the 900 °C requirement.",
+      "after": "**Ceramic is the classroom shortlist choice for the 900 °C requirement, pending grade-specific checks."
+    },
+    {
+      "lesson": 25,
+      "reason": "Introduce units of the comparison values.",
+      "before": "**Example: add wood** (E ≈ 10 GPa, ρ ≈ 0.6 g/cm³):",
+      "after": "**Given comparison data:** use E in GPa and ρ in g/cm³ consistently. Wood: E ≈ 10 GPa along grain, ρ ≈ 0.6 g/cm³. These index values carry compound units and are only compared on the same basis."
+    },
+    {
+      "lesson": 26,
+      "reason": "Breaking a galvanic cell does not prevent all corrosion.",
+      "before": "**Break any one part and the corrosion stops.**",
+      "after": "**Interrupt the cell and you can reduce or stop that galvanic pathway.** Other corrosion mechanisms may still operate on the same part."
+    },
+    {
+      "lesson": 26,
+      "reason": "No invented inspection schedule for load-bearing hardware.",
+      "before": "or accept it and **inspect every season**.",
+      "after": "and set inspection intervals from the actual exposure, component rating and consequences—not a universal seasonal interval."
+    },
+    {
+      "lesson": 27,
+      "reason": "Do not present grinding as the only possible recovery route.",
+      "before": "can't be remelted; at best ground into filler",
+      "after": "cannot simply be remelted like thermoplastics; mechanical, thermal or chemical recovery routes depend on the resin, fibres and available facilities"
+    },
+    {
+      "lesson": 27,
+      "reason": "Do not generalise a bounded comparison to every use case.",
+      "before": "What's the best option in every scenario?",
+      "after": "Which option has the lowest energy in the two stated classroom scenarios?"
+    },
+    {
+      "lesson": 28,
+      "reason": "Agreement supports a hypothesis, not a unique diagnosis.",
+      "before": "That matches the measurement exactly.",
+      "after": "That agrees at the reported precision; it supports checking the temperature but does not uniquely prove the cause."
+    },
+    {
+      "lesson": 28,
+      "reason": "Limit checks are not inspection approvals.",
+      "before": "a_c → ∞ (any crack is safe)",
+      "after": "a_c → ∞ in the ideal zero-applied-stress model; not a real crack-safety verdict"
+    },
+    {
+      "lesson": 28,
+      "reason": "Empirical Hall–Petch intercept is not universally a single-crystal property.",
+      "before": "σy → σ₀ (single-crystal strength)",
+      "after": "σy → σ₀ in the fitted equation; extrapolation to a single crystal requires caution"
+    },
+    {
+      "lesson": 28,
+      "reason": "A local approximation need not be valid at every extreme.",
+      "before": "**If a formula gives nonsense at the extremes, it's wrong everywhere.**",
+      "after": "**Check limits inside the model's valid domain.** A failure there may expose an error; behaviour outside the domain may instead show that the approximation has ended."
+    },
+    {
+      "lesson": 29,
+      "reason": "Passing a requirement does not make it irrelevant.",
+      "before": "Strength never mattered.",
+      "after": "Strength was checked and passed; it did not decide between the surviving options."
+    },
+    {
+      "lesson": 29,
+      "reason": "Do not claim a beyond-geometry crack model clears fracture.",
+      "before": "- **Fracture:** the critical crack size comes out larger than the part itself, which means fracture isn't a concern **for this load**. It's not an inspection approval.",
+      "after": "- **Fracture:** a predicted critical crack larger than the section warns that the ideal large-plate crack model is outside its geometric range. Check finite-section failure, defects and the material-specific mode; this is not an inspection approval."
+    }
+  ],
+  "notes": {
+    "default": [
+      "Numerical material properties, coefficients and costs here are supplied classroom inputs unless a step says they are measured or calculated. They are not certified allowables, current prices or repair instructions."
+    ],
+    "4": [
+      "The 912 °C transition belongs to pure iron; choose steel heat-treatment settings from the alloy-specific specification."
+    ],
+    "8": [
+      "Given: D₀ = 2.3 × 10⁻⁵ m²/s, Q = 148,000 J/mol and R = 8.314 J/(mol·K). The 0.80 mm diffusion length is not the same as the 0.69 mm depth to 0.4% carbon."
+    ],
+    "12": [
+      "Mean minus two sample standard deviations is a classroom screen, not a certified population tolerance bound."
+    ],
+    "17": [
+      "The supplied Basquin coefficients apply to this illustrative curve. Miner damage does not determine remaining calendar life without the future load spectrum."
+    ],
+    "19": [
+      "1085, 3.7 and 3.2 are coefficients of supplied simplified teaching equations, not values the learner is expected to remember."
+    ],
+    "21": [
+      "Phase percentages use mass fractions. A eutectic microconstituent is not a third phase."
+    ],
+    "25": [
+      "Index exponents depend on the loading, geometric constraints and which dimensions are free to change."
+    ],
+    "28": [
+      "This example compares 2√(Dt), a characteristic diffusion length. A measured concentration-defined case depth requires the same threshold on both sides."
+    ],
+    "29": [
+      "The calculation is for one half-wing spar with an ideal uniform load. Given densities: balsa 160, aluminium 2810, carbon/epoxy 1600 kg/m³; properties are along the grain or fibres."
+    ],
+    "30": [
+      "The 12-question bench has its own 70% plus corrections gate. The separate lesson Check tab and saved course scores are unchanged by this reading import."
+    ]
+  }
+}
