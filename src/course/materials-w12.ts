@@ -110,7 +110,7 @@ export const materialsW12Lessons: Lesson[] = [
       },
       {
         heading: "Texture is anisotropy with a paper trail",
-        body: "Rolling, forging, and drawing rotate grains toward preferred orientations, so properties differ by direction: a rolled sheet resists tension along the rolling direction better than across it, and deep-drawn cups can develop ears where the texture is uneven. None of that is a defect. It is the processing history made legible: design with it (align fibers and rolling direction with the load) or specify against it (cross-rolling, annealing), but never pretend the metal is the same in every direction.",
+        body: "Rolling, forging, and drawing rotate grains toward preferred orientations, so properties can depend on direction: a rolled sheet may test stronger along one axis than another — use the measured orientation for the grade rather than assuming the rolling direction is strongest — and deep-drawn cups can develop ears where the texture is uneven. None of that is a defect. It is the processing history made legible: design with it (align the load with the tested-strong direction) or specify against it (cross-rolling, annealing), but never pretend the metal is the same in every direction.",
       },
     ],
     bench: "microinterp",
@@ -141,7 +141,7 @@ export const materialsW12Lessons: Lesson[] = [
         why: "At metal temperatures above 1000°C (in gas near 1500°C), boundaries slide and voids nucleate there — creep failure starts at the mosaic lines. One crystal means no boundaries, so no boundary sliding. It is structure → performance at temperature.",
       },
       {
-        prompt: "A rolled sheet is stronger along the rolling direction because…",
+        prompt: "A rolled sheet's strength can differ by direction because…",
         options: [
           "Rolling develops texture — preferred grain orientation",
           "Rolling adds carbon to the steel",
@@ -149,7 +149,7 @@ export const materialsW12Lessons: Lesson[] = [
           "Rolling removes all grain boundaries",
         ],
         answer: 0,
-        why: "Deformation rotates grains into preferred orientations, so slip systems line up unevenly with the load. The metal is genuinely different by direction — anisotropy with a processing paper trail.",
+        why: "Deformation rotates grains into preferred orientations, so slip systems line up unevenly with the load. But which direction tests strongest depends on the grade and its processing — use the measured orientation for the grade; never assume the rolling direction is strongest.",
       },
       {
         prompt: "On an etched optical micrograph, the dark lines are…",
@@ -181,7 +181,7 @@ export const materialsW12Lessons: Lesson[] = [
     ],
     start:
       "An amorphous solid lacks long-range crystalline order. That changes the available deformation mechanisms. || Without a regular lattice, dislocation slip does not operate in the usual way. Metallic glasses can therefore be very strong, but plastic deformation may localize into narrow shear bands and lead to abrupt failure. || Whether a material crystallizes or becomes amorphous can depend strongly on cooling rate. Processing controls the resulting structure.",
-    use: "When a part must be hard, wear-resistant, or corrosion-proof but will never be asked to bend — and whenever you look at a broken part. || Read the fracture surface: a dimpled surface means ductile microvoid coalescence (it stretched before it parted); flat, faceted cleavage means brittle fracture along crystal planes; a mirror-smooth surface with river patterns means glass. Match the surface to the failure mode before you blame the load. || Stop when you can hold a broken part and reconstruct the failure from the surface alone.",
+    use: "When a part must be hard, wear-resistant, or corrosion-proof but will never be asked to bend — and whenever you look at a broken part. || Read the fracture surface: a dimpled surface means ductile microvoid coalescence (it stretched before it parted); flat, faceted cleavage means brittle fracture along crystal planes — river patterns belong to that crystalline cleavage; a mirror-smooth region breaking into mist and hackle means glass. Match the surface to the failure mode before you blame the load. || Stop when you can hold a broken part and reconstruct the failure from the surface alone.",
     example:
       "A Zr-based metallic glass: yield strength ≈ 1.9 GPa, elastic strain limit ≈ 2%. A high-strength crystalline steel: ≈ 1.5 GPa, elastic limit ≈ 0.75%. || The glass is the better spring by a wide margin — it stores roughly three to four times the elastic energy per volume (σ²/2E: 19 vs 5.6 MJ/m³). But bend the glass past 2% and a single shear band takes the whole deformation: catastrophic, silent, total. || The call: specify metallic glass for a spring, a scalpel edge, or a golf club face — never for a bracket that must fail gracefully and warn you first.",
     ideas: [

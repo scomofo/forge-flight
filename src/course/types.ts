@@ -324,6 +324,21 @@ export function isPassed(score: number | undefined, passAt: number = PASS_AT) {
   return score !== undefined && score >= passAt;
 }
 
+/**
+ * Lesson completion. The capstone lesson (bench "cappackage") completes on its
+ * rubric gate — the bench reports the gate verdict into the progress store —
+ * because its quiz only asks recognition questions about the gate. Every other
+ * lesson completes on its quiz pass mark.
+ */
+export function lessonComplete(
+  lesson: { bench: string; passAt?: number },
+  score: number | undefined,
+  capstonePass: boolean,
+) {
+  if (lesson.bench === "cappackage") return capstonePass;
+  return isPassed(score, lesson.passAt ?? PASS_AT);
+}
+
 /** Data supplied before a worked example, separate from its calculated answer. */
 export type ExampleInput = {
   label: string;

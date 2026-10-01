@@ -8,6 +8,8 @@ import {
   type DiagnosticTopic,
   type TopicScore,
 } from "@/course/diagnostic";
+import { useProgress } from "@/course/progress";
+import { shuffledOrder } from "@/lib/shuffle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
@@ -17,6 +19,9 @@ export function Diagnostic() {
   const [stage, setStage] = useState<Stage>("intro");
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
+  const [attempt, setAttempt] = useState(0);
+  const savePlacement = useProgress((s) => s.savePlacement);
+  const lastPlacement = useProgress((s) => s.placement);
   const [correct, setCorrect] = useState<Record<DiagnosticTopic, number>>(() => ({
     "ratios-units": 0,
     algebra: 0,
@@ -51,9 +56,21 @@ export function Diagnostic() {
         </p>
         <p className="mt-4 max-w-prose leading-relaxed text-muted">
           This assigns modules, never a pass/fail label. Score 4 of 4 on a topic and you test
-          out of its module. Score 3 or fewer and the module is assigned. Each module takes roughly
-          3–6 hours and its check wants 4 of 4, the same bar.
+          out of its module. Score 3 or fewer and the module is assigned. Each module is a
+          single lesson of about 30–45 minutes, and its check wants 4 of 4, the same bar.
         </p>
+        {lastPlacement ? (
+          <div className="mt-6 rounded-lg border border-line bg-surface px-4 py-4 sm:px-5">
+            <p className="text-sm font-medium text-accent">Your last placement</p>
+            <ul className="mt-2 grid grid-cols-2 gap-1 sm:grid-cols-3">
+              {DIAGNOSTIC_TOPICS.map((t) => (
+                <li key={t} className="text-sm text-muted">
+                  {TOPIC_LABELS[t]}: <span className="tabular-nums text-ink">{lastPlacement[t] ?? 0} / 4</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
         <Button className="mt-8" onClick={() => setStage("quiz")}>
           Begin the diagnostic
         </Button>
@@ -63,6 +80,10 @@ export function Diagnostic() {
 
   if (stage === "quiz") {
     const revealed = picked !== null;
+    // Options are shuffled with a seeded order (same mechanism as the lesson
+    // quiz) so the correct answer is not always first; grading still uses the
+    // canonical option index.
+    const order = shuffledOrder(question.options.length, `diagnostic/${question.id}/${attempt}`);
     return (
       <div className="mx-auto max-w-3xl px-5 pb-24 pt-8 sm:px-8">
         <p className="font-serif text-sm text-accent">
@@ -70,12 +91,13 @@ export function Diagnostic() {
         </p>
         <p className="mt-3 font-serif text-2xl leading-snug text-ink">{question.prompt}</p>
         <div className="mt-5 flex flex-col gap-2">
-          {question.options.map((option, i) => {
+          {order.map((i) => {
+            const option = question.options[i];
             const isAnswer = i === question.answer;
             const isPick = i === picked;
             return (
               <button
-                key={option}
+                key={i}
                 type="button"
                 disabled={revealed}
                 onClick={() => setPicked(i)}
@@ -105,6 +127,7 @@ export function Diagnostic() {
                 if (picked === question.answer) nextCorrect[question.topic] += 1;
                 setCorrect(nextCorrect);
                 if (index === diagnosticQuestions.length - 1) {
+                  savePlacement(nextCorrect);
                   setStage("results");
                   return;
                 }
@@ -132,7 +155,7 @@ export function Diagnostic() {
       </h1>
       <p className="mt-4 max-w-prose leading-relaxed text-muted">
         Per-topic scores below. This is placement, not a verdict — the modules it assigns are
-        3–6 hours each, and every one gates at 80% with retakes.
+        single lessons of 30–45 minutes each, and every one gates at 4 of 4 with retakes.
       </p>
 
       <h2 className="mt-10 font-serif text-sm text-accent">By topic</h2>
@@ -182,6 +205,7 @@ export function Diagnostic() {
           onClick={() => {
             setIndex(0);
             setPicked(null);
+            setAttempt(attempt + 1);
             setCorrect({
               "ratios-units": 0,
               algebra: 0,

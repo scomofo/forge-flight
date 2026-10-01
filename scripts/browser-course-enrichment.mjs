@@ -21,7 +21,7 @@ try{
 import{createRootRoute,createRoute,createRouter,createMemoryHistory,RouterProvider,Outlet}from'@tanstack/react-router';
 import{LessonView}from'./src/components/lesson-view';import{getLesson}from'./src/course/catalog';import{ProgressHydrator}from'./src/course/progress';import'./src/styles.css';
 const r=createRootRoute({component:()=> <><ProgressHydrator/><Outlet/></>});
-const l=createRoute({getParentRoute:()=>r,path:'/learn/$trackId/$lessonId',component:()=>{const{trackId,lessonId}=l.useParams();const lesson=getLesson(trackId,lessonId);return lesson?<LessonView key={trackId+'/'+lessonId} lesson={lesson}/>:<h1>Missing lesson</h1>}});
+const l=createRoute({getParentRoute:()=>r,path:'/learn/$trackId/$lessonId',component:()=>{const{trackId,lessonId}=l.useParams();const lesson=getLesson(trackId,lessonId);if(lesson){(window as any).__acceptanceTaskExpected=Boolean((lesson.prompt||'').trim()||(lesson.note||'').trim());(window as any).__acceptanceNoteExpected=Boolean((lesson.note||'').trim());}return lesson?<LessonView key={trackId+'/'+lessonId} lesson={lesson}/>:<h1>Missing lesson</h1>}});
 const t=createRoute({getParentRoute:()=>r,path:'/learn/$trackId',component:()=> <h1>Course index</h1>});
 const m=createRoute({getParentRoute:()=>r,path:'/mission/$missionId',component:()=> <h1>Mission</h1>});
 const j=createRoute({getParentRoute:()=>r,path:'/learn/job',component:()=> <h1>Shelf job</h1>});
@@ -77,6 +77,20 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
     await inline.first().scrollIntoViewIfNeeded();await page.screenshot({path:join(out,`${label}-${row.key.replaceAll('/','-')}.png`)});
    }
    await page.getByRole('tab',{name:/2 Try/}).click();
+   // Authored prompt/note must be visibly rendered on the Try tab — the data
+   // existing in the lesson is not enough. The harness entry exposes what the
+   // lesson authors so the check asserts rendered output, not data presence.
+   const taskExpected=await page.evaluate(()=>Boolean(window.__acceptanceTaskExpected));
+   const noteExpected=await page.evaluate(()=>Boolean(window.__acceptanceNoteExpected));
+   const task=page.locator('[data-lesson-task]');
+   record(`${prefix}: authored task block ${taskExpected?'rendered':'absent when not authored'}`,(await task.count()>0)===taskExpected);
+   if(taskExpected){
+    record(`${prefix}: authored task visible`,await task.first().isVisible());
+    record(`${prefix}: authored task carries readable steps`,(await task.first().innerText()).length>40);
+    const note=page.locator('[data-lesson-note]');
+    record(`${prefix}: authored note ${noteExpected?'rendered':'absent when not authored'}`,(await note.count()>0)===noteExpected);
+    if(noteExpected)record(`${prefix}: authored note visible`,await note.first().isVisible());
+   }
    const answer=page.locator('[data-practice-answer]');
    if(row.practice){
     await answer.waitFor();

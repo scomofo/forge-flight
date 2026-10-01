@@ -19,6 +19,7 @@ import {
   type CapScores,
   type CapSection,
 } from "@/course/capstone";
+import { useProgress } from "@/course/progress";
 
 const inputCls =
   "mt-1 w-full rounded-lg bg-white/10 px-3 py-2 text-sm text-well-fg ring-1 ring-white/25 placeholder:text-well-dim/60";
@@ -62,6 +63,9 @@ export function CapPackageBench() {
     } catch {
       /* private mode */
     }
+    // The stored completion signal for the capstone is the rubric gate on the
+    // persisted package — not the lesson quiz score.
+    useProgress.getState().setCapstonePass(capstoneGate(state.scores).pass);
   }, [state]);
 
   const total = capTotal(state.scores);

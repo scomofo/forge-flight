@@ -36,7 +36,7 @@ export const mathLessons: Lesson[] = [
       "The drawing says 240 mm. The stock list is in inches. This is the kind of conversion that seems trivial right up until a factor gets flipped. || Write the conversion as a fraction: 1 in / 25.4 mm. The numerator and denominator represent the same length, so multiplying by the fraction changes the unit without changing the quantity. || Keep the units on the page and cancel them just like algebraic factors. If the unit you are trying to remove is still there at the end, the setup is wrong. Fix that before you calculate.",
     use: "Use this whenever you convert units or scale a quantity by a ratio. || Start with the number and its unit. Multiply by conversion factors arranged so the unwanted units cancel. Keep the units visible on every line. || When only the target unit remains, do a rough size check. For 240 mm, something near 10 inches makes sense. Something near 100 or 6000 does not.",
     example:
-      "Supplied reference factors: 1 in = 25.4 mm exactly; 1 kg ≈ 2.20462 lb (rounded). The price is a given for this exercise, not a current quote. Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.449 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.055 lb, so 7.055 lb × ($4.10 / 1 lb) = $28.92. Keep the extra digits until the last line; round only the answer. || Call it 9.4 in and $29. The 3.2 kg only has two digits, so two or three digits is all any answer can honestly claim. In every line the starting unit cancelled and the target unit survived. Flip the factor to (25.4 mm / 1 in) and you get 6096 mm²/in, which is meaningless — you'll spot the mistake before any money is involved.",
+      "Supplied reference factors: 1 in = 25.4 mm exactly; 1 kg ≈ 2.20462 lb (rounded). The price is a given for this exercise, not a current quote. Convert 240 mm to inches, then price a 3.2 kg bracket at $4.10 a pound. || 240 mm × (1 in / 25.4 mm) = 9.449 in. And 3.2 kg × (2.20462 lb / 1 kg) = 7.055 lb, so 7.055 lb × ($4.10 / 1 lb) = $28.92. Keep the extra digits until the last line; round only the answer. || Call it 9.4 in and $29. The 3.2 kg only has two digits, so two or three digits is all any answer can honestly claim. In every line the starting unit cancelled and the target unit survived. Flip the factor to (25.4 mm / 1 in) and you get 6096 mm²/in. That still has the dimension of length (L²/L = L), but it is not an answer in inches — do not strip the units and label 6096 as inches. The leftover unit is the giveaway that the factor was upside down, and you'll spot it before any money is involved.",
     ideas: [
       {
         heading: "Keep the unit attached",
@@ -101,7 +101,7 @@ export const mathLessons: Lesson[] = [
           "5 ft × (3.2808 ft / 1 m)",
         ],
         answer: 0,
-        why: "Feet cancel only when ft is on the bottom of the factor. The setup with (1 ft / 0.3048 m) leaves ft²/m, which isn't a real unit — that tells you the setup is wrong before you compute anything.",
+        why: "Feet cancel only when ft is on the bottom of the factor. The setup with (1 ft / 0.3048 m) leaves ft²/m. That still has the dimension of length (L²/L = L), but it is not an answer in metres — do not strip the units and call the bare number metres. The leftover unit tells you the setup is wrong before you compute anything.",
       },
       {
         prompt: "A glider flies at 1:8 scale. The full-size span is 4.0 m. The model's span is…",

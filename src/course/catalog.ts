@@ -116,7 +116,10 @@ export const courseIntro: { heading: string; approach: string[]; terms: CourseTe
     { term: "Track", body: "One course: Math Runway, Physics 101, Materials 101, Engineering 101, Manufacturing, and the deeper 201/301/401 ladder tracks." },
     { term: "Lesson", body: "One sitting, with a minute estimate up top. The estimate is honest; the bench is where the time goes." },
     { term: "Bench", body: "The interactive workbench inside each lesson. Not a quiz — the place where you change a value and watch what happens." },
-    { term: "Checks", body: "The four questions at the end of each lesson. Three out of four moves you on; the Math Runway wants four." },
+    { term: "Checks", body: "The four questions at the end of each lesson. Three out of four records a quiz pass; the Math Runway wants four. A quiz pass never locks or unlocks anything — every lesson stays open." },
+    { term: "Quiz passed", body: "What the checks record. It says you answered the questions; it does not say the bench work is done." },
+    { term: "Bench done", body: "You marked the bench work done on the Try tab. It records your own call that you worked through the task — nothing here checks your work, and it stays separate from the check score." },
+    { term: "Capstone complete", body: "The one completion that is not a quiz score. The capstone design package passes its rubric gate — every section present, 70% total — and only then counts as complete." },
     { term: "Diagnostic", body: "The 24-question placement quiz for the Math Runway. It assigns modules. It doesn’t grade you." },
   ],
 };

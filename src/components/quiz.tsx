@@ -5,6 +5,7 @@ import { SectionContinuation } from "@/components/section-continuation";
 import { ConceptHelp } from "@/components/concept-help";
 import { LessonSections } from "@/components/lesson-sections";
 import { Button } from "@/components/ui/button";
+import { shuffledOrder } from "@/lib/shuffle";
 import { cn } from "@/lib/cn";
 
 /**
@@ -12,28 +13,6 @@ import { cn } from "@/lib/cn";
  * shuffled order. The order is seeded from the lesson and question, so it is
  * stable across renders and server/client, and changes on each retake.
  */
-function hash(text: string) {
-  let h = 2166136261;
-  for (let i = 0; i < text.length; i++) {
-    h ^= text.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
-
-function shuffledOrder(count: number, seed: string): number[] {
-  const order = Array.from({ length: count }, (_, i) => i);
-  let state = hash(seed) || 1;
-  for (let i = count - 1; i > 0; i--) {
-    state ^= state << 13;
-    state ^= state >>> 17;
-    state ^= state << 5;
-    state >>>= 0;
-    const j = state % (i + 1);
-    [order[i], order[j]] = [order[j], order[i]];
-  }
-  return order;
-}
 
 export function Quiz({
   lesson,
@@ -66,7 +45,7 @@ export function Quiz({
         </p>
         <p className="mt-3 max-w-prose leading-relaxed text-ink">
           {passed
-            ? `Pass. ${need} or more correct. You can go to the next lesson. The bench stays available if you want another look.`
+            ? `Pass. ${need} or more correct. Your best score is the one that is saved. The next lesson is open whenever you are ready, and the bench stays available if you want another look.`
             : `Not a pass. You need ${need} of ${lesson.checks.length}. Go back to Try, do the task again, then retake this check. Your best score is the one that is saved.`}
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
