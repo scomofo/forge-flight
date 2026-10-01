@@ -1,12 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { missionById, type Mission } from "@/forge/content/catalog";
+import { materials, processes, missionById, type Mission } from "@/forge/content/catalog";
 import { gradeReflection, sealEntry, type LedgerEntry, type RubricScore } from "@/forge/ledger";
 import type { DesignInput, PartInput, VehicleInput } from "@/forge/sim/evaluate";
-import { PHASES, type Phase } from "@/forge/types";
+import { analysisInputHash, MODEL_REVISION } from "@/forge/sim/evaluate";
+import { PHASES, type Phase, type AnalysisKind } from "@/forge/types";
 
 export type MissionRun = {
   missionId: string;
+  modelRevision?: string;
   iteration: number;
   phase: Phase;
   everSealed: boolean;
@@ -37,7 +39,8 @@ type ForgeStore = {
   setVehicle: (id: string, partial: Partial<VehicleInput>) => void;
   go: (id: string, phase: Phase) => void;
   advance: (id: string) => void;
-  recordAnalysis: (id: string, kind: string) => void;
+  recordAnalysis: (id: string, kind: AnalysisKind, inputHash?: string) => boolean;
+  recordTest: (id: string, kind: AnalysisKind, inputHash: string) => boolean;
   submit: (id: string, constraintsMet: boolean) => void;
   see: (conceptId: string) => void;
   nudge: () => boolean;
@@ -46,6 +49,7 @@ type ForgeStore = {
 function blank(mission: Mission): MissionRun {
   return {
     missionId: mission.id,
+    modelRevision: MODEL_REVISION,
     iteration: 1,
     phase: "brief",
     everSealed: false,
@@ -116,6 +120,17 @@ function snapshot(run: MissionRun) {
   };
 }
 
+/** A changed design cannot inherit an earlier analysis or virtual test. */
+function invalidateEvidence(run: MissionRun): MissionRun {
+  return { ...run, modelRevision: MODEL_REVISION, analyses: [], testDone: false,
+    dfmOverride: false, rubric: null, sealed: false,
+    iteration: run.sealed ? run.iteration + 1 : run.iteration };
+}
+function currentResult(run: MissionRun, kind: AnalysisKind, inputHash: string): boolean {
+  const mission = missionById(run.missionId);
+  return !!mission && inputHash === analysisInputHash(kind, toDesign(run, mission), materials, processes);
+}
+
 export const useForge = create<ForgeStore>()(
   persist(
     (set, get) => ({
@@ -123,7 +138,11 @@ export const useForge = create<ForgeStore>()(
       seen: [],
       lastNudge: 0,
       ensure: (id) => {
-        if (get().runs[id]) return;
+        const saved = get().runs[id];
+        if (saved) {
+          if (saved.modelRevision !== MODEL_REVISION) set({ runs: { ...get().runs, [id]: invalidateEvidence(saved) } });
+          return;
+        }
         const mission = missionById(id);
         if (!mission || mission.locked) return;
         set({ runs: { ...get().runs, [id]: blank(mission) } });
@@ -131,16 +150,17 @@ export const useForge = create<ForgeStore>()(
       patch: (id, partial) => {
         const run = get().runs[id];
         if (!run) return;
-        set({ runs: { ...get().runs, [id]: { ...run, ...partial } } });
+        const changed = (["parts", "vehicle", "quantity", "fidelity"] as const).some(key => key in partial && JSON.stringify(partial[key]) !== JSON.stringify(run[key]));
+        set({ runs: { ...get().runs, [id]: { ...(changed ? invalidateEvidence(run) : run), ...partial } } });
       },
       setParam: (id, partId, key, value) => {
         const run = get().runs[id];
-        if (!run) return;
+        if (!run || run.parts.find(p => p.id === partId)?.params[key] === value) return;
         set({
           runs: {
             ...get().runs,
             [id]: {
-              ...run,
+              ...invalidateEvidence(run),
               parts: run.parts.map((part) => (part.id === partId ? { ...part, params: { ...part.params, [key]: value } } : part)),
             },
           },
@@ -152,14 +172,14 @@ export const useForge = create<ForgeStore>()(
         set({
           runs: {
             ...get().runs,
-            [id]: { ...run, parts: run.parts.map((part) => (part.id === partId ? { ...part, ...partial } : part)) },
+            [id]: { ...invalidateEvidence(run), parts: run.parts.map((part) => (part.id === partId ? { ...part, ...partial } : part)) },
           },
         });
       },
       setVehicle: (id, partial) => {
         const run = get().runs[id];
         if (!run?.vehicle) return;
-        set({ runs: { ...get().runs, [id]: { ...run, vehicle: { ...run.vehicle, ...partial } } } });
+        set({ runs: { ...get().runs, [id]: { ...invalidateEvidence(run), vehicle: { ...run.vehicle, ...partial } } } });
       },
       go: (id, phase) => {
         const run = get().runs[id];
@@ -223,14 +243,21 @@ export const useForge = create<ForgeStore>()(
           },
         });
       },
-      recordAnalysis: (id, kind) => {
+      recordAnalysis: (id, kind, inputHash) => {
         const run = get().runs[id];
-        if (!run || run.analyses.includes(kind)) return;
-        set({ runs: { ...get().runs, [id]: { ...run, analyses: [...run.analyses, kind] } } });
+        if (!run || (inputHash && !currentResult(run, kind, inputHash))) return false;
+        if (!run.analyses.includes(kind)) set({ runs: { ...get().runs, [id]: { ...run, analyses: [...run.analyses, kind] } } });
+        return true;
+      },
+      recordTest: (id, kind, inputHash) => {
+        const run = get().runs[id];
+        if (!run || !currentResult(run, kind, inputHash)) return false;
+        set({ runs: { ...get().runs, [id]: { ...run, testDone: true } } });
+        return true;
       },
       submit: (id, constraintsMet) => {
         const run = get().runs[id];
-        if (!run || run.reflection.trim().length < 30) return;
+        if (!run || run.sealed || run.reflection.trim().length < 30) return;
         const rubric = gradeReflection(run.reflection, run.iteration, constraintsMet);
         const pct = rubricPercent(rubric);
         const parent = run.ledger.at(-1)?.hash ?? null;

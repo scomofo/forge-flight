@@ -24,6 +24,12 @@ export interface PropertyPack {
   thermal: Thermal;
 }
 
+export type ReferencePropertyPack = {
+  conduction: Conduction | "semiconductor" | "material-dependent";
+  mechanical: Mechanical;
+  thermal: Thermal | "high-temperature";
+};
+
 export interface BondProfile extends PropertyPack {
   kind: BondKind;
   label: string;
@@ -58,11 +64,11 @@ export const BOND_PROFILES: Record<BondKind, BondProfile> = {
     kind: "covalent-network",
     label: "Covalent (network)",
     energyRangeKJ: [150, 600],
-    examples: "Diamond, silicon carbide, quartz",
+    examples: "Diamond and quartz are representative insulating networks; silicon carbide is a semiconductor",
     conduction: "insulator",
     mechanical: "brittle",
     thermal: "high-melting",
-    why: "Every atom shares directional bonds with its neighbors in a continuous network. Melting means breaking those bonds wholesale, so the melting point is high; directional bonds do not slip, so it is brittle; every electron is spoken for, so it insulates.",
+    why: "Strong directional bonds in a continuous network often give high stiffness and limited easy slip. Electrical behavior needs the specific material: diamond can insulate, silicon carbide is a semiconductor, and graphite conducts especially well within its layers. High-temperature resistance is not a promise that the material melts instead of decomposing or subliming; atmosphere also matters.",
   },
   "covalent-molecular": {
     kind: "covalent-molecular",
@@ -86,6 +92,7 @@ export const BOND_PROFILES: Record<BondKind, BondProfile> = {
   },
 };
 
+/** Legacy representative pack, not a universal family classification. */
 export function predictProperties(kind: BondKind): PropertyPack {
   const p = BOND_PROFILES[kind];
   return { conduction: p.conduction, mechanical: p.mechanical, thermal: p.thermal };
@@ -107,6 +114,8 @@ export interface ChallengeSubstance {
   hint: string;
   kind: BondKind;
   why: string;
+  /** Measured/reference exceptions override a broad family tendency. */
+  properties?: ReferencePropertyPack;
 }
 
 /** Unfamiliar substances for the prediction bench — the week's evidence. */
@@ -115,7 +124,8 @@ export const SUBSTANCES: ChallengeSubstance[] = [
     name: "Silicon carbide",
     hint: "Every silicon atom is bonded tetrahedrally to four carbons, and every carbon to four silicons, in one continuous network. It is sold as an abrasive.",
     kind: "covalent-network",
-    why: "A continuous covalent network: hard, high-melting, brittle, insulating. Sold as an abrasive precisely because those directional bonds refuse to slip.",
+    properties: { conduction: "semiconductor", mechanical: "brittle", thermal: "high-temperature" },
+    why: "Its strong covalent network helps explain hardness and brittleness. Silicon carbide is a semiconductor, not a categorical insulator. Its high-temperature resistance does not imply a simple ambient-pressure melting point. Check the named material rather than treating its bond label as an electrical measurement.",
   },
   {
     name: "Magnesium",
@@ -143,13 +153,26 @@ export const SUBSTANCES: ChallengeSubstance[] = [
   },
   {
     name: "Graphite",
-    hint: "Sheets of carbon in a hexagonal mesh — strong within the sheet, weak between sheets. It marks paper and conducts electricity.",
+    hint: "Sheets of carbon form a hexagonal mesh, with strong bonds within each sheet and weak bonding between sheets. For this round, predict electrical conduction along a sheet and mechanical sliding between sheets. Consider thermal behavior in a non-oxidizing atmosphere.",
     kind: "covalent-network",
-    why: "The trick case: covalent in the plane (strong, stiff, conducting along the sheet via delocalized π electrons) and secondary between planes (soft, slippery — which is why it writes). Mixed bonding means a mixed pack.",
+    properties: { conduction: "conductor", mechanical: "soft", thermal: "high-temperature" },
+    why: "Delocalized electrons allow conduction along the sheets; conduction across them is much poorer, not identically zero. Layers slide relatively easily, although the sheets themselves are stiff. These directional properties cannot be graded against an isotropic network template. High-temperature resistance here assumes a non-oxidizing atmosphere, not unlimited service in air.",
   },
 ];
 
-export function scorePrediction(guess: PropertyPack, actual: PropertyPack): number {
+/** Use the named substance's reference behavior, not a universal bond lookup.
+ * Sources: NIST, Characterization and Modeling of Silicon-Carbide Power Devices;
+ * Cambridge DoITPoMS, Anisotropic electrical conductivity. See audit references. */
+export function profileProperties(kind: BondKind): ReferencePropertyPack {
+  if (kind === "covalent-network") return { conduction: "material-dependent", mechanical: "brittle", thermal: "high-temperature" };
+  return predictProperties(kind);
+}
+
+export function substanceProperties(substance: ChallengeSubstance): ReferencePropertyPack {
+  return { ...(substance.properties ?? predictProperties(substance.kind)) };
+}
+
+export function scorePrediction(guess: ReferencePropertyPack, actual: ReferencePropertyPack): number {
   let score = 0;
   if (guess.conduction === actual.conduction) score += 1;
   if (guess.mechanical === actual.mechanical) score += 1;

@@ -1,23 +1,17 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { capstoneGate } from "./capstone.ts";
+import { loadPackage, PACKAGE_STORE } from "./capstone-package.ts";
 
 type ProgressState = {
   completed: Record<string, number>;
   lastKey: string | null;
   /** Last diagnostic placement: topic -> correct count. Persisted separately from lesson completion. */
   placement: Record<string, number> | null;
-  /**
-   * Whether the capstone design package currently passes its rubric gate.
-   * This is the capstone's completion signal — distinct from the lesson quiz
-   * score, which only records recognition questions.
-   */
+  /** Derived from the current written package and its self-scores, never a persisted authority. */
   capstonePass: boolean;
-  /**
-   * Practical evidence, per lesson: the learner explicitly marked the bench
-   * work done on the Try tab. This is the learner's own call — nothing here
-   * checks their work — and it is recorded separately from the quiz score.
-   */
+  /** Learner-marked bench work, not an independent assessment. */
   practical: Record<string, boolean>;
   hydrated: boolean;
   mark: (key: string, correct: number) => void;
@@ -27,6 +21,10 @@ type ProgressState = {
   markPractical: (key: string) => void;
   reset: () => void;
 };
+
+function savedPackagePass() {
+  return capstoneGate(loadPackage().scores).pass;
+}
 
 export const useProgress = create<ProgressState>()(
   persist(
@@ -51,20 +49,35 @@ export const useProgress = create<ProgressState>()(
         set((s) => ({
           practical: { ...s.practical, [key]: true },
         })),
-      reset: () => set({ completed: {}, lastKey: null, placement: null, capstonePass: false, practical: {} }),
+      // Reset tracking, not the separately saved written package. Clearing that
+      // evidence is an explicit, confirmed action in the capstone bench.
+      reset: () => set({ completed: {}, lastKey: null, placement: null, capstonePass: savedPackagePass(), practical: {} }),
     }),
     {
       name: "axiom-progress",
       skipHydration: true,
+      // Keep tracking usable in memory when storage is blocked or full. The
+      // capstone bench separately reports whether its written evidence saved.
+      storage: createJSONStorage(() => ({
+        getItem: (name) => {
+          try { return localStorage.getItem(name); } catch { return null; }
+        },
+        setItem: (name, value) => {
+          try { localStorage.setItem(name, value); } catch { /* in-memory only */ }
+        },
+        removeItem: (name) => {
+          try { localStorage.removeItem(name); } catch { /* storage unavailable */ }
+        },
+      })),
       partialize: (s) => ({
         completed: s.completed,
         lastKey: s.lastKey,
         placement: s.placement,
-        capstonePass: s.capstonePass,
         practical: s.practical,
       }),
       onRehydrateStorage: () => () => {
-        useProgress.setState({ hydrated: true });
+        // Ignore legacy cached completion, even when the bench is not mounted.
+        useProgress.setState({ hydrated: true, capstonePass: savedPackagePass() });
       },
     },
   ),
@@ -73,6 +86,15 @@ export const useProgress = create<ProgressState>()(
 export function ProgressHydrator() {
   useEffect(() => {
     void useProgress.persist.rehydrate();
+    const sync = (event: StorageEvent) => {
+      if (event.key === PACKAGE_STORE || event.key === null) {
+        // Refresh other progress before publishing derived completion: this
+        // tab may have an older quiz/placement snapshot than the writing tab.
+        void useProgress.persist.rehydrate();
+      }
+    };
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
   }, []);
   return null;
 }

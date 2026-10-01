@@ -33,6 +33,8 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --ignore-scripts
+      - name: Enumerate all curriculum and simulation items
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/curriculum-audit.mjs
       - name: Baseline registered tests
         run: |
           set -o pipefail
@@ -40,10 +42,23 @@ jobs:
       - name: Discover every course and simulation test
         run: |
           set -o pipefail
-          find src/course src/forge -name '*.test.ts' -print0 | sort -z | xargs -0 node --experimental-strip-types --test 2>&1 | tee artifacts/curriculum-audit/discovered-tests.txt
+          find src/course src/forge -name '*.test.ts' -print0 | sort -z | xargs -0 node --experimental-strip-types --import ./scripts/register-alias.mjs --test 2>&1 | tee artifacts/curriculum-audit/discovered-tests.txt
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Every lesson and simulation in a browser
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/browser-curriculum-audit.mjs
+      - name: Every lesson and simulation in built components
+        if: ${{ !cancelled() }}
+        env:
+          ACCEPTANCE_BUILD: '1'
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/browser-curriculum-audit.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: curriculum-audit-results
-          path: artifacts/curriculum-audit/*tests.txt
+          path: |
+            artifacts/curriculum-audit/*tests.txt
+            artifacts/curriculum-audit/inventory.json
+            artifacts/curriculum-audit/register.md
+            artifacts/curriculum-audit/browser*/
           retention-days: 7

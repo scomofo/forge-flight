@@ -6,7 +6,7 @@ import type { Evaluation, PartInput, VehicleInput } from "@/forge/sim/evaluate";
 import { palette, stressTint } from "@/forge/palette";
 
 type Props = {
-  artifact: "glider" | "drone_arm";
+  artifact: "glider" | "drone_arm" | "water_rocket" | "rc_aircraft" | "payload";
   parts: PartInput[];
   vehicle: VehicleInput | null;
   evaluation: Evaluation;
@@ -25,6 +25,9 @@ export function ForgeViewport(props: Props) {
   }, []);
   if (!mounted) {
     return <div className="h-56 w-full bg-panel lg:h-full" />;
+  }
+  if (props.artifact === "water_rocket" || props.artifact === "payload") {
+    return <PlateSchematic {...props} />;
   }
   return (
     <Canvas
@@ -57,13 +60,13 @@ function Scene({ artifact, parts, vehicle, evaluation, exaggerate, replay, cut, 
         <planeGeometry args={[1.2, 0.8]} />
         <meshStandardMaterial color={palette.panel} />
       </mesh>
-      {artifact === "drone_arm" ? (
+      {artifact !== "glider" ? (
         <Arm parts={parts} evaluation={evaluation} exaggerate={exaggerate} replay={replay} plane={plane} reduce={reduce} />
       ) : (
         <Glider parts={parts} vehicle={vehicle} evaluation={evaluation} exaggerate={exaggerate} plane={plane} />
       )}
       {hot && hot.utilization >= 1 ? (
-        <mesh position={artifact === "drone_arm" ? [0, 0.012, 0] : [0.05, 0.02, 0]}>
+        <mesh position={artifact !== "glider" ? [0, 0.012, 0] : [0.05, 0.02, 0]}>
           <sphereGeometry args={[0.006, 16, 16]} />
           <meshStandardMaterial color={palette.alarm} />
         </mesh>
@@ -194,8 +197,45 @@ function Glider({
       </mesh>
       <mesh position={[cg, fuseH / 2 + 0.02, 0]}>
         <sphereGeometry args={[0.008, 16, 16]} />
-        <meshStandardMaterial color={palette.brass} />
+        <meshStandardMaterial color={palette.brass} clippingPlanes={clip} />
       </mesh>
     </group>
   );
+}
+
+/** The new plate exercises show the modeled boundary conditions, not an
+ * invented complete vehicle. Coordinates are a labeled schematic. */
+function PlateSchematic({ artifact, parts, evaluation, exaggerate }: Props) {
+  const part = parts[0];
+  const result = evaluation.parts[0];
+  const supported = artifact === "payload";
+  const span = part?.params.span_mm ?? 0;
+  const sag = result?.deflection_mm ?? 0;
+  const force = part?.loads.find(l => l.kind === (supported ? "bending_center" : "bending_tip"))?.magnitude_N ?? 0;
+  const amplitude = Math.min(55, Math.max(0, sag / Math.max(span, 1) * 260 * exaggerate));
+  const points = Array.from({ length: 41 }, (_, i) => {
+    const u = i / 40;
+    const half = Math.min(u, 1 - u);
+    const shape = supported ? half * (3 - 4 * half * half) : u * u * (3 - u) / 2;
+    return `${55 + 260 * u},${95 + amplitude * shape}`;
+  }).join(" ");
+  const loadX = supported ? 185 : 315;
+  return <figure data-hangar-diagram={artifact} className="flex h-full flex-col justify-center bg-panel p-3 text-bone">
+    <svg viewBox="0 0 370 205" role="img" aria-label={supported ? "Payload plate: full rail-to-rail span, simply supported with a center load" : "One fin: full root-to-tip span, fixed root and free tip load"} className="min-h-0 w-full flex-1">
+      <text x="185" y="18" textAnchor="middle" fill="currentColor" fontSize="12">{supported ? "Plate between two rails" : "Single fin — fixed root"}</text>
+      <line x1="55" y1="95" x2="315" y2="95" stroke="currentColor" strokeDasharray="5 4" opacity="0.5" />
+      <polyline points={points} fill="none" stroke={palette.brass} strokeWidth="4" />
+      {supported ? <>
+        <path d="M55 99 l-12 20 h24 Z M315 99 l-12 20 h24 Z" fill="none" stroke="currentColor" />
+        <text x="55" y="137" textAnchor="middle" fill="currentColor" fontSize="11">Rail</text>
+        <text x="315" y="137" textAnchor="middle" fill="currentColor" fontSize="11">Rail</text>
+      </> : <><rect x="42" y="75" width="13" height="50" fill={palette.dust} /><text x="48" y="140" fill="currentColor" fontSize="11">Root</text></>}
+      <path d={`M${loadX} 43 V78 m-5 -8 l5 8 l5 -8`} fill="none" stroke={palette.alarm} strokeWidth="2" />
+      <text x={loadX - 7} y="37" textAnchor="end" fill="currentColor" fontSize="12">{force} N</text>
+      <path d="M55 159 v10 M55 164 H315 M315 159 v10" stroke="currentColor" />
+      <text x="185" y="181" textAnchor="middle" fill="currentColor" fontSize="12">Full span: {span} mm</text>
+      <text x="185" y="198" textAnchor="middle" fill="currentColor" fontSize="11">Width {part?.params.chord_mm} mm · thickness {part?.params.thickness_mm} mm</text>
+    </svg>
+    <figcaption className="text-center text-xs text-dust">Boundary-condition schematic, not to scale. Deflection display is exaggerated and capped; use the numerical checks.</figcaption>
+  </figure>;
 }

@@ -28,9 +28,9 @@ export const materialsW11Lessons: Lesson[] = [
     ],
     start:
       "Copper wire, table salt, diamond, and polyethylene behave very differently because their atoms are bonded in different ways. || Metallic, ionic, covalent, and secondary bonding each place different limits on electron motion and atomic rearrangement. Those differences show up as conductivity, ductility, stiffness, melting temperature, and failure mode. || The useful habit is to start with the bond and ask three questions: can electrons move, can atomic planes or chains move, and how much energy does it take to separate the structure?",
-    use: "When you meet an unfamiliar material, before you look anything up. Also when a property surprises you — 'why does this conduct but that doesn't' is almost always a bonding question. || Name the bond: metallic (shared electron sea), ionic (transferred electrons, charge lattice), covalent (shared pairs, directional — network or molecular), secondary (weak, between molecules or chains). Then ask what moves: electrons? slip planes? nothing? || Stop when you can predict conductivity, ductility, and rough melting behavior from the bond alone. If the bonding is mixed, name both bonds.",
+    use: "When you meet an unfamiliar material, before you look anything up. Also when a property surprises you — 'why does this conduct but that doesn't' is almost always a bonding question. || Name the bond: metallic (shared electron sea), ionic (transferred electrons, charge lattice), covalent (shared pairs, directional — network or molecular), secondary (weak, between molecules or chains). Then ask what moves: electrons? slip planes? nothing? || Stop when you have a qualified prediction and know what needs checking. A bonding label alone does not determine electrical conduction or a numerical melting point. If the bonding is mixed, name both bonds.",
     example:
-      "Magnesium oxide, MgO: a white powder used to line furnaces. || Magnesium gives two electrons to oxygen; the result is Mg²⁺ and O²⁻ locked in a lattice, each ion surrounded by counter-ions. No electron is free to move, so it insulates. Sliding one plane past another brings like charges face to face, so it cracks instead of yielding. Pulling the lattice apart means fighting the full charge attraction — the lattice energy is around 3800 kJ/mol — so it melts near 2850°C. || Bond named, pack predicted: insulator, brittle, very high melting.",
+      "Magnesium oxide, MgO: a white powder used to line furnaces. || Magnesium gives two electrons to oxygen; the result is Mg²⁺ and O²⁻ locked in a lattice, each ion surrounded by counter-ions. No electron is free to move, so it insulates. Sliding one plane past another brings like charges face to face, so it cracks instead of yielding. Pulling the lattice apart means fighting the full charge attraction — the lattice energy is around 3800 kJ/mol — consistent with a high melting temperature; about 2850 °C is a supplied reference value, not a value derived from the bond energy. || Bond named, pack predicted: insulator, brittle, very high melting.",
     ideas: [
       {
         heading: "Metallic bonding allows electron motion and slip",
@@ -39,7 +39,7 @@ export const materialsW11Lessons: Lesson[] = [
       },
       {
         heading: "Ionic bonding is strong but resists slip",
-        body: "Electron transfer makes a lattice of alternating charges, and the strength scales with charge over distance — doubly-charged ions at short range (MgO) hold far harder than singly-charged ones (NaCl). No free electrons in the solid means it insulates; but melt it and the ions themselves move, so the melt conducts. And slip is catastrophic: shift one plane by half a spacing and like charges meet, repelling — so ionic solids are brittle, always.",
+        body: "Electron transfer makes a lattice of alternating charges, and attractive energy scales with charge product divided by distance, while attractive force scales with charge product divided by distance squared. These are not bulk-strength formulas. No free electrons in the solid means it insulates; but melt it and the ions themselves move, so the melt conducts. And slip is catastrophic: shift one plane by half a spacing and like charges meet, repelling — so many ionic crystals are brittle under ordinary room-temperature loading. Temperature, defects and the available slip systems still matter.",
         formula: "lattice energy ∝ q₁·q₂ / r — charge and closeness set the price of pulling apart",
       },
       {
@@ -115,7 +115,7 @@ export const materialsW11Lessons: Lesson[] = [
       { kind: "idea", idea: 2, label: "One more consequence" },
     ],
     start:
-      "Copper, alumina, and polyethylene do not need separate stories for every property. Their bonding already explains a great deal. || Electron mobility affects conductivity. The ease of atomic or molecular rearrangement affects ductility. Bond strength affects stiffness and temperature limits. || Throughout Materials 101, keep the same chain in view: structure → processing → properties → performance. Bonding is the starting structure.",
+      "Copper, alumina, and polyethylene do not need separate stories for every property. Their bonding already explains a great deal. || Electron mobility affects conductivity. The ease of atomic or molecular rearrangement affects ductility. Bond strength affects stiffness and temperature limits. || Throughout Materials 101, keep the same chain in view: processing changes structure → structure affects properties → properties affect performance. Bonding is the starting structure.",
     use: "When a datasheet surprises you, or when two properties seem to 'go together' and you want to know if that is law or coincidence. Also before selecting a material: one demand usually forces the whole pack. || Take the bond, list what it permits and forbids, and check each property against that list. Expect correlation: high bond energy with high melting point, delocalized electrons with ductility. Treat every correlation as rough — graphite and the mixed cases are the test of whether you actually understand it. || Stop when you can say which property in the pack is the odd one out for a mixed-bonding material, and name both bonds responsible.",
     example:
       "Tungsten melts at 3422°C, the highest of any metal, and it is notoriously hard to draw into wire at room temperature. || Metallic bonding with a very deep cohesive well (~850 kJ/mol): enormous thermal energy is needed to break the lattice apart, hence the melting point. But the same strong, short bonds raise the stress needed to move dislocations — slip is expensive — so room-temperature ductility is poor. || One bond, two consequences pointing in opposite directions: the bond strength that survives the heat also makes slip expensive.",
@@ -132,7 +132,7 @@ export const materialsW11Lessons: Lesson[] = [
       },
       {
         heading: "Mixed bonding means a mixed pack",
-        body: "Graphite conducts in the plane and insulates across it; it is stiff in the sheet and soft between sheets — because it is covalent in two dimensions and secondary in the third. Glass is part ionic, part covalent. Real materials routinely carry two bonds, and then the property pack splits along the bond directions. 'What is the bonding' sometimes has two answers, and the properties will tell you which bond is answering each question.",
+        body: "Graphite conducts much better in the plane than across it; it is stiff in the sheet and soft between sheets — because it is covalent in two dimensions and secondary in the third. Glass is part ionic, part covalent. Real materials routinely carry two bonds, and then the property pack splits along the bond directions. 'What is the bonding' sometimes has two answers, and the properties will tell you which bond is answering each question.",
         formula: "two bonds → the pack splits; read each property against the bond that owns it",
       },
     ],
@@ -203,7 +203,7 @@ export const materialsW11Lessons: Lesson[] = [
       { kind: "move", heading: "Practical use" },
     ],
     start:
-      "Suppose all you know about an unfamiliar solid is that its atoms form a continuous tetrahedral network. You can still make useful property predictions. || Directional covalent bonding suggests strong resistance to bond stretching, limited easy slip, and poor electron mobility. That points toward high stiffness and hardness, brittleness, electrical insulation, and a high temperature capability. || Silicon carbide is one example. The point is not to memorize the name; it is to practice moving from structure to likely properties before looking at a datasheet.",
+      "Suppose all you know about an unfamiliar solid is that its atoms form a continuous tetrahedral network. You can still make useful property predictions. || Directional covalent bonding suggests strong resistance to bond stretching and limited easy slip. That points toward high stiffness and hardness, brittleness, and high-temperature resistance. Electrical behavior still needs a material-specific check; the network label alone cannot decide it. || Silicon carbide is one example and is a semiconductor, not a categorical insulator. The point is not to memorize the name; it is to practice moving from structure to likely properties before looking at a datasheet.",
     use: "When selecting or troubleshooting — a part failed and you need to know whether the material was ever capable of the job, or you are choosing between candidates with no test data yet. || Read the structural description, name the bond (or bonds), read off the pack: conduction, mechanical response, thermal behavior. Write the prediction before you check. Then, for every miss, find the bond feature you ignored — mixed bonding, molecular vs network, a slip system you assumed. || Stop when every miss is 'I missed the second bond' rather than 'I guessed'. One is a method working; the other is luck.",
     example:
       "A white crystalline solid: alternating positive and negative ions, shatters under a hammer, dissolves in water. Predict, then verify. || Bond: ionic — charge-locked lattice, no free electrons. Prediction: brittle (slip brings like charges together), insulating as a solid, high melting (strong electrostatic lattice). Bonus prediction: the melt conducts, because the ions themselves become mobile charges. || That is table salt, and every line checks out — including the bonus.",
@@ -249,7 +249,7 @@ export const materialsW11Lessons: Lesson[] = [
           "The prediction method is useless",
         ],
         answer: 1,
-        why: "Graphite is the archetype: covalent in-plane with delocalized π electrons conducts along the sheet, secondary between sheets does not. One bond per material is the assumption that fails.",
+        why: "Graphite is the archetype: covalent in-plane with delocalized π electrons conducts along the sheet, conduction across the sheets is much poorer, not zero. One bond per material is the assumption that fails.",
       },
       {
         prompt: "An ionic solid is predicted brittle and high-melting. Which further prediction follows from the same bond?",

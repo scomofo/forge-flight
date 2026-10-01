@@ -176,10 +176,10 @@ export function MissionBench({ missionId }: { missionId: string }) {
       <main className="forge min-h-dvh bg-hangar px-5 py-8 text-bone">
         <p className="font-forge text-2xl">{mission.title} stays shut.</p>
         <p className="mt-3 max-w-prose text-dust">
-          Seal the glider three times, with a reflection at 70 or better, and this arm opens.
+          Complete three distinct iterations of {mission.unlockAfter.map(id => missionById(id)?.title ?? id).join(" and ")}, with a best reflection score of at least 70%, to open this module.
         </p>
-        <Link to="/mission/$missionId" params={{ missionId: "glider" }} className="mt-4 inline-flex min-h-11 items-center text-brass">
-          Return to the glider
+        <Link to="/mission/$missionId" params={{ missionId: mission.unlockAfter[0] ?? "glider" }} className="mt-4 inline-flex min-h-11 items-center text-brass">
+          Return to the prerequisite module
         </Link>
       </main>
     );
@@ -196,7 +196,7 @@ export function MissionBench({ missionId }: { missionId: string }) {
         </Link>
         <span className="text-dust">{mission.title}</span>
         <span className="font-mono text-sm text-dust">Iteration {run.iteration}</span>
-        <span className="ml-auto text-xs text-dust">Educational model. Not for a real aircraft.</span>
+        <span className="ml-auto text-xs text-dust">Educational model. Not a build or flight approval.</span>
       </header>
       <div className="flex gap-2 overflow-x-auto px-4 py-3">
         {PHASES.map((phase) => {
@@ -218,11 +218,15 @@ export function MissionBench({ missionId }: { missionId: string }) {
       <div className="grid gap-4 px-4 pb-8 lg:grid-cols-[16rem_minmax(0,1fr)_18rem]">
         <aside className="order-2 space-y-3 lg:order-1">
           <ConstraintList missionId={mission.id} evaluation={evaluation} />
+          {evaluation.modelWarnings.length ? <div role="status" className="rounded-lg border border-alarm p-3 text-sm">
+            <p className="font-medium">Model validity warning</p>
+            {evaluation.modelWarnings.map(line => <p key={line} className="mt-2">{line}</p>)}
+          </div> : null}
         </aside>
         <section className="order-1 min-w-0 space-y-4 lg:order-2">
           <div className="relative h-56 overflow-hidden rounded-lg border border-line-forge lg:h-[28rem]">
             <ForgeViewport
-              artifact={mission.artifactType === "glider" ? "glider" : "drone_arm"}
+              artifact={mission.artifactType}
               parts={run.parts}
               vehicle={run.vehicle}
               evaluation={evaluation}
@@ -234,7 +238,7 @@ export function MissionBench({ missionId }: { missionId: string }) {
             <div className="pointer-events-none absolute bottom-2 left-2 right-2 flex items-center gap-2 text-xs text-dust">
               <span>Low</span>
               <span className="h-2 flex-1 rounded-full" style={{ background: `linear-gradient(90deg, ${palette.bone}, ${palette.alarm})` }} />
-              <span>At yield</span>
+              <span>At model allowable</span>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -253,7 +257,7 @@ export function MissionBench({ missionId }: { missionId: string }) {
               <input type="range" min={0} max={1} step={0.05} value={cut} onChange={(e) => setCut(Number(e.target.value))} />
             </label>
           </div>
-          <p className="text-xs text-dust">The bow is exaggerated. The sag number is not. Color runs from the cool tip to the hot root on a cantilever.</p>
+          <p className="text-xs text-dust">The shape is schematic and deflection is exaggerated. Read numerical sag together with any model-validity warning. The supported plate has its greatest bending moment at midspan; a cantilever has its greatest at the root.</p>
           <Hud evaluation={evaluation} missionId={mission.id} why={why} setWhy={setWhy} />
           {concept ? (
             <aside className="rounded-lg border border-line-forge bg-panel p-4">
@@ -327,7 +331,7 @@ function ConstraintList({ missionId, evaluation }: { missionId: string; evaluati
   const c = mission.constraints;
   const rows = [
     c.maxMass_g !== undefined ? ["Mass", `${num(evaluation.mass_g, 1)} / ${c.maxMass_g} g`, evaluation.passMass] : null,
-    c.maxCost_usd !== undefined ? ["Unit cost", `${money(evaluation.cost?.unit ?? 0)} / ${money(c.maxCost_usd)}`, evaluation.passCost] : null,
+    c.maxCost_usd !== undefined ? ["Primary-part unit cost", `${evaluation.cost ? money(evaluation.cost.unit) : "Not quoted"} / ${money(c.maxCost_usd)}`, evaluation.passCost] : null,
     c.minSafetyFactor !== undefined ? ["Safety factor", `${num(evaluation.minSafetyFactor, 2)} / ${c.minSafetyFactor}`, evaluation.passStress] : null,
     c.maxDeflection_mm !== undefined ? ["Sag", `${num(evaluation.maxDeflection_mm, 2)} / ${c.maxDeflection_mm} mm`, evaluation.passDeflection] : null,
     ["DFM", `${num(evaluation.dfmScore, 0)} / ${c.dfmScoreMin ?? 70}`, evaluation.passDfm],
@@ -362,7 +366,7 @@ function Hud({
   const mission = missionById(missionId)!;
   const chips = [
     ["Mass", `${num(evaluation.mass_g, 1)} g`, "mass"],
-    ["Cost", money(evaluation.cost?.unit ?? 0), "cost"],
+    ["Part quote", evaluation.cost ? money(evaluation.cost.unit) : "Not quoted", "cost"],
     ["Safety", num(evaluation.minSafetyFactor, 2), "sf"],
     ["DFM", num(evaluation.dfmScore, 0), "dfm"],
   ];
@@ -401,7 +405,7 @@ function chipState(id: string, ev: Evaluation) {
 
 function explain(id: string, ev: Evaluation) {
   if (id === "mass") return `Mass is density times volume of every part. ${ev.mass_g.toFixed(1)} g. Classroom densities, not a weigh-in.`;
-  if (id === "cost") return "Unit cost adds material, machine time, setup and tooling divided by quantity, labor, and finishing. Scrap multiplies material only.";
+  if (id === "cost") return "The primary-part quote adds material, machine time, setup and tooling divided by quantity, labor, and finishing. Scrap multiplies material only. Other parts, assembly and real supplier qualification are not included.";
   if (id === "sf") return `Safety factor is allowable divided by the stress in the model. The smallest one is ${ev.minSafetyFactor.toFixed(2)}.`;
   if (id === "dfm") return "DFM score is the share of process rules that pass. A warning counts half. An error counts zero.";
   if (id === "drag") return "Drag is ½ρV²S·CD. CD is a teaching CD0 plus induced drag.";
@@ -475,9 +479,12 @@ function PhaseBody({
               className="min-h-11 rounded-lg bg-panel px-3 text-sm"
               onClick={() => {
                 void runInWorker(kind, toDesign(run, mission)).then((result) => {
-                  useForge.getState().recordAnalysis(missionId, kind);
-                  setWorkerNote(`${kind.replaceAll("_", " ")} ${result.pass ? "passes" : "fails"} in ${result.computeMs.toFixed(1)} ms. Hash ${result.inputHash.slice(0, 8)}.`);
-                });
+                  if (!useForge.getState().recordAnalysis(missionId, kind, result.inputHash)) {
+                    setWorkerNote("The design changed while the solver was running. Run the check again for the current inputs.");
+                    return;
+                  }
+                  setWorkerNote(`${kind.replaceAll("_", " ")} ${result.pass ? "passes" : "does not pass"}. ${result.warnings.join(" ")} Hash ${result.inputHash.slice(0, 8)}.`);
+                }).catch(() => setWorkerNote("The solver could not finish. No analysis was recorded; retry the check."));
               }}
             >
               Run {kind.replaceAll("_", " ")}
@@ -493,7 +500,7 @@ function PhaseBody({
           </button>
         </div>
         {run.fidelity === "L1" && evaluation.modal_hz !== null ? (
-          <p className="text-sm">First mode {num(evaluation.modal_hz, 0)} Hz. Excitation is a stated 180 Hz stand-in for a motor, not a measured rpm.</p>
+          <p className="text-sm">First beam-only mode {num(evaluation.modal_hz, 0)} Hz. The 180 Hz excitation is a supplied classroom comparison, not a measured motor speed or a load spectrum. Attached mass and joint flexibility are omitted.</p>
         ) : null}
         {workerNote ? <p className="text-sm text-dust">{workerNote}</p> : null}
         <AssumptionList lines={evaluation.assumptions} />
@@ -519,7 +526,7 @@ function PhaseBody({
             <li key={quote.id} className="flex justify-between gap-3">
               <span>
                 {quote.name}
-                {evaluation.recommended?.id === quote.id ? " · recommended" : ""}
+                {evaluation.recommended?.id === quote.id ? " · lowest classroom quote" : ""}
               </span>
               <span className="font-mono">{money(quote.terms.unit)}</span>
             </li>
@@ -535,7 +542,7 @@ function PhaseBody({
           </ul>
         ) : null}
         <p className="text-dust">
-          At 10 the mill is cheaper than the mold. At 10,000 the mold is cheaper, because the tooling is divided and the cycle is short.
+          Quotes are for the primary part, not a complete vehicle. Compare only material-compatible processes, then check geometry and manufacturing rules: the lowest quote is not proof that a process can make the part. Setup and tooling are spread over quantity; cycle time is charged per part.
         </p>
         {evaluation.dfmChecks.map((check) => (
           <p key={check.id} className={check.pass ? "text-dust" : "text-alarm"}>
@@ -567,9 +574,9 @@ function PhaseBody({
           className="min-h-11 rounded-lg bg-brass px-4 text-brass-ink"
           onClick={() => {
             const kind: AnalysisKind = mission.artifactType === "glider" ? "aero_polar" : "static_stress";
-            void runInWorker(kind, toDesign(run, mission)).then(() => {
-              useForge.getState().patch(missionId, { testDone: true });
-            });
+            void runInWorker(kind, toDesign(run, mission)).then((result) => {
+              if (!useForge.getState().recordTest(missionId, kind, result.inputHash)) setWorkerNote("The design changed during the virtual test. Run it again for the current inputs.");
+            }).catch(() => setWorkerNote("The virtual test could not finish. Retry it; no test completion was recorded."));
           }}
         >
           Run the virtual test
@@ -583,7 +590,9 @@ function PhaseBody({
               : "The checks on this pass are inside the brief."}
           </p>
         ) : (
-          <p className="text-dust">The path is a longitudinal glide from 8 m. It is not a 6-degree-of-freedom flight.</p>
+          <p className="text-dust">{mission.artifactType === "glider"
+            ? "The path is a longitudinal glide from 8 m, not a full flight model."
+            : "This virtual test reruns the same structural equations. It is not a measured physical test, a flight simulation, or independent validation."}</p>
         )}
       </div>
     );

@@ -14,6 +14,8 @@ import {
   SUBSTANCES,
   meltingRegime,
   predictProperties,
+  substanceProperties,
+  profileProperties,
   scorePrediction,
   type BondKind,
   type PropertyPack,
@@ -24,7 +26,7 @@ function split3(s: string): string[] {
   return s.split(" || ").map((p) => p.trim());
 }
 
-test("week 11 opens the materials track in syllabus order", () => {
+ test("week 11 opens the materials track in syllabus order", () => {
   assert.equal(materialsW11Lessons.length, 3);
   assert.deepEqual(
     materialsW11Lessons.map((l) => l.id),
@@ -174,4 +176,19 @@ test("melting regime is a rough, monotonic mapping", () => {
   assert.equal(meltingRegime(5), "low");
   assert.equal(meltingRegime(300), "moderate");
   assert.equal(meltingRegime(3000), "high");
+});
+
+
+test("named silicon carbide and graphite are graded against their actual directional properties", () => {
+  const sic = substanceProperties(SUBSTANCES.find(s => s.name === "Silicon carbide")!);
+  assert.equal(sic.conduction, "semiconductor");
+  assert.equal(sic.mechanical, "brittle");
+  assert.equal(scorePrediction(sic, sic), 3);
+  assert.equal(scorePrediction({ ...sic, conduction: "insulator" }, sic), 2);
+  const graphite = substanceProperties(SUBSTANCES.find(s => s.name === "Graphite")!);
+  assert.equal(graphite.conduction, "conductor");
+  assert.equal(graphite.mechanical, "soft");
+  assert.equal(graphite.thermal, "high-temperature");
+  assert.notDeepEqual(graphite, predictProperties("covalent-network"));
+  assert.equal(profileProperties("covalent-network").conduction, "material-dependent");
 });
