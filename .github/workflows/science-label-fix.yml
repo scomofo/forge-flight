@@ -1,0 +1,55 @@
+name: Apply science figure label follow-up
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/science-label-fix.yml'
+permissions:
+  contents: write
+jobs:
+  apply:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'codex/phase-stability-bonding-consistency'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Validate exact source and apply the two edits
+        run: |
+          python3 - <<'PY'
+          import pathlib,hashlib,subprocess
+          changes=[('src/components/figures/materials-a.tsx','f643ec95fe6d8524f35d511ef2b167fadf097850dc925b6aac715b873f627abb','d4b9e598dd35ded73e43093881ba07fc89db0de830a7184de3550173175a4a6b',[
+          ('stiff · brittle; electrical behavior still unknown','stiff · brittle; conductivity?'),
+          ('not a thermal-transition model','not a melting model'),
+          ('11.2: bond-energy wells — depth sets melting, curvature sets stiffness.','11.2: bond-energy wells — separation energy and local stiffness, not melting predictions.')]),
+          ('scripts/browser-scientific-consistency.mjs','245ce58990fdcffaedfbebf0478efe7b7db6dba72c959a3b0525e7cb26678187','756ad936e6f417eb125399051280bd6ea936c4f190c1124735b9a7302797c899',[
+          ('      const text = await page.locator("article").innerText();\n',
+          '      const text = await page.locator("article").innerText();\n      if (key.startsWith("materials/bond")) {\n        const labelBounds = await page.locator("article svg").first().evaluate(svg => {\n          const frame = svg.getBoundingClientRect();\n          return [...svg.querySelectorAll("text")].filter(node => {\n            const r = node.getBoundingClientRect();\n            return r.width > 0 && (r.left < frame.left - 1 || r.right > frame.right + 1);\n          }).map(node => node.textContent);\n        });\n        ok(`intro figure text stays within SVG: ${labelBounds.join("; ")}`, labelBounds.length === 0);\n      }\n')])]
+          outputs={}
+          for name,before,after,replacements in changes:
+              p=pathlib.Path(name);raw=p.read_bytes()
+              assert hashlib.sha256(raw).hexdigest()==before, 'Concurrent source change: '+name
+              s=raw.decode()
+              for old,new in replacements:
+                  assert s.count(old)==1, 'Replacement count changed: '+name
+                  s=s.replace(old,new)
+              raw=s.encode();assert hashlib.sha256(raw).hexdigest()==after, 'Edited hash mismatch: '+name
+              outputs[p]=raw
+          for p,data in outputs.items():p.write_bytes(data)
+          subprocess.run(['git','add','--',*[str(p) for p in outputs]],check=True)
+          PY
+      - run: npm ci --ignore-scripts
+      - name: Verify before publication
+        run: |
+          node --test scripts/scientific-consistency.test.mjs
+          npm run typecheck
+          npx eslint src/components/figures/materials-a.tsx scripts/browser-scientific-consistency.mjs
+      - name: Publish only this branch without force
+        run: |
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix: keep scientific figure labels readable and test SVG text bounds'
+          git push origin HEAD:refs/heads/codex/phase-stability-bonding-consistency
