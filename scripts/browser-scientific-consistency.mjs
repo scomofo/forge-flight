@@ -255,10 +255,10 @@ const router=createRouter({routeTree:r.addChildren([l,b,t,j,h]),history:createMe
     await page.goto(url("bench", "phaseset"));
     await radio(page, "Mode", "Explore the diagram").click();
     await page
-      .getByRole("slider", { name: "Composition", exact: true })
+      .getByRole("slider", { name: /^Composition\s/ })
       .fill("100");
     await page
-      .getByRole("slider", { name: "Temperature", exact: true })
+      .getByRole("slider", { name: /^Temperature\s/ })
       .fill("232");
     ok(
       "pure-component melting is not a fictitious unique amount",
@@ -271,10 +271,10 @@ const router=createRouter({routeTree:r.addChildren([l,b,t,j,h]),history:createMe
       (await page.locator("[data-phase-tie]").count()) === 0,
     );
     await page
-      .getByRole("slider", { name: "Composition", exact: true })
+      .getByRole("slider", { name: /^Composition\s/ })
       .fill("90");
     await page
-      .getByRole("slider", { name: "Temperature", exact: true })
+      .getByRole("slider", { name: /^Temperature\s/ })
       .fill("200");
     ok(
       "liquid stays at low-tin end",
@@ -284,12 +284,12 @@ const router=createRouter({routeTree:r.addChildren([l,b,t,j,h]),history:createMe
     );
     await page.goto(url("bench", "solidify"));
     await page
-      .getByRole("slider", { name: "Alloy composition", exact: true })
+      .getByRole("slider", { name: /^Alloy composition\s/ })
       .waitFor();
     ok(
       "local model does not extrapolate to pure nickel",
       (await page
-        .getByRole("slider", { name: "Alloy composition", exact: true })
+        .getByRole("slider", { name: /^Alloy composition\s/ })
         .getAttribute("max")) === "45",
     );
     await radio(
@@ -316,7 +316,7 @@ const router=createRouter({routeTree:r.addChildren([l,b,t,j,h]),history:createMe
     ];
     for (const [cg, label] of options) {
       await page
-        .getByRole("slider", { name: "CG from nose", exact: true })
+        .getByRole("slider", { name: /^CG from nose\s/ })
         .fill(cg);
       await radio(page, "Stability", label).click();
       await page
@@ -336,7 +336,7 @@ const router=createRouter({routeTree:r.addChildren([l,b,t,j,h]),history:createMe
       .locator("main")
       .screenshot({ path: join(out, "static-margin-meaning.png") });
     await page
-      .getByRole("slider", { name: "CG from nose", exact: true })
+      .getByRole("slider", { name: /^CG from nose\s/ })
       .focus();
     await page.keyboard.press("ArrowRight");
     ok(

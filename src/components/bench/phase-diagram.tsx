@@ -162,15 +162,15 @@ export function EutecticDiagram({
         <text x={x(4)} y={y(140)} fontSize="14" fill="currentColor">
           α
         </text>
-        <text x={x(99)} y={y(140)} fontSize="14" fill="currentColor">
-          β
-        </text>
+        <path d={`M${x(99.2)},${y(140)} H570`} fill="none" stroke="currentColor" strokeWidth="1" />
+        <text x={576} y={y(140) + 4} fontSize="14" fill="currentColor">β</text>
         <text x={x(23)} y={y(230)} fontSize="13" fill="currentColor">
           L + α
         </text>
-        <text x={x(88)} y={y(205)} fontSize="13" fill="currentColor">
-          L + β
-        </text>
+        <g data-phase-label="L+beta">
+          <path d={`M${x(95)},${y(212)} L570,${y(240)} H576`} fill="none" stroke="currentColor" strokeWidth="1" />
+          <text x={578} y={y(240) + 4} fontSize="12" fill="currentColor">L + β</text>
+        </g>
         <text x={x(52)} y={y(120)} fontSize="13" fill="currentColor">
           α + β
         </text>
