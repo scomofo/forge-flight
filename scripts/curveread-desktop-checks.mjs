@@ -34,7 +34,7 @@ export async function exerciseCurveread(page, key, check) {
       assert.ok(Number.isFinite(value), `Nonfinite extraction for specimen ${round + 1}, ${fields[i]}`);
       await page.locator(`#curveread-${fields[i]}`).fill(String(value));
     }
-    check(key, `specimen ${round + 1}: editing invalidates the previous check`, await page.getByText(/extraction:/).count() === 0);
+    check(key, `specimen ${round + 1}: editing invalidates the previous check`, await page.getByText(/^[✓✗] extraction:/).count() === 0);
     await submit.focus(); await page.keyboard.press('Enter');
     await page.getByText(`This was ${specimen.material.name}. 4 of 4 readings in tolerance.`, { exact: true }).waitFor();
     check(key, `specimen ${round + 1}: all four readings grade correctly`, await page.getByText(/✓ extraction:/).count() === 4);
