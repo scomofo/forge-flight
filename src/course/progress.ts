@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { capstoneGate } from "./capstone.ts";
 import { loadPackage, PACKAGE_STORE } from "./capstone-package.ts";
 
@@ -56,6 +56,19 @@ export const useProgress = create<ProgressState>()(
     {
       name: "axiom-progress",
       skipHydration: true,
+      // Keep tracking usable in memory when storage is blocked or full. The
+      // capstone bench separately reports whether its written evidence saved.
+      storage: createJSONStorage(() => ({
+        getItem: (name) => {
+          try { return localStorage.getItem(name); } catch { return null; }
+        },
+        setItem: (name, value) => {
+          try { localStorage.setItem(name, value); } catch { /* in-memory only */ }
+        },
+        removeItem: (name) => {
+          try { localStorage.removeItem(name); } catch { /* storage unavailable */ }
+        },
+      })),
       partialize: (s) => ({
         completed: s.completed,
         lastKey: s.lastKey,
@@ -75,7 +88,9 @@ export function ProgressHydrator() {
     void useProgress.persist.rehydrate();
     const sync = (event: StorageEvent) => {
       if (event.key === PACKAGE_STORE || event.key === null) {
-        useProgress.setState({ capstonePass: savedPackagePass() });
+        // Refresh other progress before publishing derived completion: this
+        // tab may have an older quiz/placement snapshot than the writing tab.
+        void useProgress.persist.rehydrate();
       }
     };
     window.addEventListener("storage", sync);

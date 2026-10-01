@@ -106,6 +106,28 @@ createRoot(document.getElementById('root')!).render(<App/>);`);
     await page.getByRole('button', { name: 'Start a fresh package', exact: true }).click();
     await page.waitForFunction(key => Object.values(JSON.parse(localStorage.getItem(key)).text).every(text => text === ''), packageKey);
     check(`${viewport}: confirmed reset clears written sections`, true);
+    const other = await ctx.newPage();
+    other.on('pageerror', error => errors.push(error.message));
+    await other.goto(url);
+    await other.locator('[data-ready="true"]').waitFor();
+    await other.evaluate(({ packageKey, keys }) => {
+      const progress = JSON.parse(localStorage.getItem('axiom-progress'));
+      progress.state.completed['physics/measure'] = 4;
+      localStorage.setItem('axiom-progress', JSON.stringify(progress));
+      localStorage.setItem(packageKey, JSON.stringify({
+        text: Object.fromEntries(keys.map(k => [k, `Other-tab ${k} evidence`])),
+        scores: Object.fromEntries(keys.map(k => [k, 2])),
+      }));
+    }, { packageKey, keys });
+    await page.locator('[data-complete="true"]').waitFor();
+    await page.waitForFunction(() => document.querySelector('textarea[aria-label="Requirement text"]')?.value === 'Other-tab requirement evidence');
+    check(`${viewport}: another tab refreshes written evidence and completion`, true);
+    check(`${viewport}: package sync retains newer quiz scores`, await page.evaluate(() => JSON.parse(localStorage.getItem('axiom-progress')).state.completed['physics/measure']) === 4);
+    await other.evaluate(key => localStorage.removeItem(key), packageKey);
+    await page.locator('[data-complete="false"]').waitFor();
+    await page.waitForFunction(() => document.querySelector('textarea[aria-label="Requirement text"]')?.value === '');
+    check(`${viewport}: another tab removing evidence revokes completion`, true);
+    await other.close();
     await page.getByRole('button', { name: 'Open predictions', exact: true }).click();
     await page.getByLabel('Predicted aluminum tip deflection in mm').fill('0.46');
     await page.getByLabel('Predicted balsa tip deflection in mm').fill('11');
@@ -114,6 +136,20 @@ createRoot(document.getElementById('root')!).render(<App/>);`);
     check(`${viewport}: correct binding prediction has a tick`, /stiffness ✓/.test(await page.locator('main').innerText()));
     check(`${viewport}: uncertainty limitation is visible`, (await page.locator('main').innerText()).includes('does not establish statistical significance'));
     check(`${viewport}: no horizontal overflow`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    // A quota or privacy failure must not escape through the progress store
+    // after the package saver has already reported its failed write.
+    await page.evaluate(() => {
+      Storage.prototype.setItem = () => { throw new DOMException('Storage is full', 'QuotaExceededError'); };
+    });
+    await page.getByRole('button', { name: 'Open package', exact: true }).click();
+    await page.getByRole('status').filter({ hasText: 'Browser storage is unavailable' }).waitFor();
+    for (const label of labels) {
+      await page.getByLabel(`${label} text`, { exact: true }).fill(`Unsaved ${label} evidence`);
+      await page.getByRole('radiogroup', { name: `${label} self-score`, exact: true }).getByRole('radio', { name: '2 · strong', exact: true }).click();
+    }
+    await page.locator('[data-capstone-package-gate="open"]').waitFor();
+    await page.locator('[data-complete="true"]').waitFor();
+    check(`${viewport}: blocked storage allows in-memory work with a warning`, await page.getByRole('status').filter({ hasText: 'Browser storage is unavailable' }).isVisible());
     check(`${viewport}: no uncaught browser errors`, errors.length === 0);
     await ctx.close();
   }
