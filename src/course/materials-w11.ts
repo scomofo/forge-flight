@@ -17,7 +17,7 @@ export const materialsW11Lessons: Lesson[] = [
     index: 1,
     title: "The four bonds",
     minutes: 30,
-    lede: "Name the bond holding a material together, and say what that bond lets electrons and atoms do — that decides conductivity, ductility, and melting point before any datasheet is opened.",
+    lede: "Use bonding as a first clue to conductivity, deformation and thermal behavior, then check the named material and its conditions.",
     opening: { mode: "steps", heading: "Read the materials first", labels: ["Four materials", "What changes", "What to predict"] },
     readFlow: [
       { kind: "idea", idea: 0, label: "Metallic" },
@@ -28,30 +28,30 @@ export const materialsW11Lessons: Lesson[] = [
     ],
     start:
       "Copper wire, table salt, diamond, and polyethylene behave very differently because their atoms are bonded in different ways. || Metallic, ionic, covalent, and secondary bonding each place different limits on electron motion and atomic rearrangement. Those differences show up as conductivity, ductility, stiffness, melting temperature, and failure mode. || The useful habit is to start with the bond and ask three questions: can electrons move, can atomic planes or chains move, and how much energy does it take to separate the structure?",
-    use: "When you meet an unfamiliar material, before you look anything up. Also when a property surprises you — 'why does this conduct but that doesn't' is almost always a bonding question. || Name the bond: metallic (shared electron sea), ionic (transferred electrons, charge lattice), covalent (shared pairs, directional — network or molecular), secondary (weak, between molecules or chains). Then ask what moves: electrons? slip planes? nothing? || Stop when you have a qualified prediction and know what needs checking. A bonding label alone does not determine electrical conduction or a numerical melting point. If the bonding is mixed, name both bonds.",
+    use: "When you meet an unfamiliar material or a surprising property, use bonding to form a hypothesis before consulting data. || Name the bonding: metallic (delocalized electrons), ionic (oppositely charged ions), covalent (shared electrons in a network or within molecules), or secondary interactions between molecules or chains. Ask which charges and structural units can move. || Stop with a qualified prediction, not a design value. Structure, defects, processing, temperature and direction can change the answer; identify which information is still missing.",
     example:
-      "Magnesium oxide, MgO: a white powder used to line furnaces. || Magnesium gives two electrons to oxygen; the result is Mg²⁺ and O²⁻ locked in a lattice, each ion surrounded by counter-ions. No electron is free to move, so it insulates. Sliding one plane past another brings like charges face to face, so it cracks instead of yielding. Pulling the lattice apart means fighting the full charge attraction — the lattice energy is around 3800 kJ/mol — consistent with a high melting temperature; about 2850 °C is a supplied reference value, not a value derived from the bond energy. || Bond named, pack predicted: insulator, brittle, very high melting.",
+      "Magnesium oxide, MgO, is used in refractory linings; consider a dense crystal under ordinary room-temperature loading. || A simplified ionic picture uses Mg²⁺ and O²⁻ ions. The solid has little mobile charge and often fractures rather than accommodating easy slip. A lattice-separation energy near 3800 kJ/mol and melting temperature near 2850 °C are supplied illustrative reference values. The former concerns separation into gaseous ions; it is not the energy of fusion and does not calculate the latter. || Predict an electrically insulating, relatively brittle solid with a high melting temperature. Real high-temperature conduction and deformation still require measurements under the intended conditions.",
     ideas: [
       {
         heading: "Metallic bonding allows electron motion and slip",
-        body: "In a metal the valence electrons are delocalized — a sea shared by the whole lattice, not owned by any atom. Two consequences ride together: the electrons carry current, and the bonds have no direction, so planes of atoms can slip past each other without breaking the lattice apart. Slip is ductility. That is why the metal that conducts is usually the metal that can be drawn into wire: one bond feature, two properties.",
-        formula: "conductivity and ductility share a cause: delocalized, non-directional bonding",
+        body: "Metallic bonding has delocalized valence electrons that can carry current. Its relatively non-directional character can also permit slip, in which layers of atoms rearrange through dislocation motion. Copper is a useful ductile example, but a metal is not guaranteed ductile: crystal structure, defects, temperature and processing affect which slip processes are available.",
+        formula: "mobile electrons support conduction; available slip processes help explain ductility",
       },
       {
         heading: "Ionic bonding is strong but resists slip",
-        body: "Electron transfer makes a lattice of alternating charges, and attractive energy scales with charge product divided by distance, while attractive force scales with charge product divided by distance squared. These are not bulk-strength formulas. No free electrons in the solid means it insulates; but melt it and the ions themselves move, so the melt conducts. And slip is catastrophic: shift one plane by half a spacing and like charges meet, repelling — so many ionic crystals are brittle under ordinary room-temperature loading. Temperature, defects and the available slip systems still matter.",
-        formula: "lattice energy ∝ q₁·q₂ / r — charge and closeness set the price of pulling apart",
+        body: "A simplified ionic lattice contains alternating charges. For an isolated ion pair, electrostatic potential energy scales as q₁q₂/r and force magnitude as |q₁q₂|/r²; q is charge and r is separation. These are not bulk-strength formulas. Many salts conduct poorly as room-temperature solids but conduct when molten because ions move. Some slip directions bring like charges together; brittleness is common, but defects, temperature and slip systems also matter.",
+        formula: "ion-pair potential energy ∝ q₁q₂/r; lattice energy also depends on the whole structure",
       },
       {
         heading: "Covalent bonding is directional",
-        body: "Shared electron pairs are directional and strong, but the architecture matters more than the bond: a continuous network (diamond, silicon carbide) must be broken wholesale to melt — high melting point, brittle. Separate molecules (S₈ rings) melt when only the weak forces between molecules yield — low melting point. And secondary bonds — van der Waals, hydrogen bonds, 1–40 kJ/mol against hundreds for primary bonds — are what actually set the softening of polymers and waxes, because the strong bonds are internal to chains that barely hold each other.",
-        formula: "network: melt = break primary bonds; molecular: melt = defeat secondary bonds",
+        body: "Covalent networks and covalent molecules are different architectures. Diamond and silicon carbide have extended networks; sulfur has strongly bonded S₈ molecules with weaker interactions between them. Melting sulfur need not dissociate each ring. A network does not simply break every bond on melting, and it may instead transform, decompose or sublime under the stated pressure and atmosphere. In polymers, chain mobility, crystallinity and crosslinks matter: glass-transition softening, melting of crystalline regions and chemical degradation are distinct processes.",
+        formula: "network ≠ separate molecules; glass transition ≠ melting ≠ decomposition",
       },
     ],
     bench: "bonding",
     prompt:
-      "Select each bond type in the explorer. || Watch conduction, melting, and ductility move together as you switch — they are not three separate choices. || Then say out loud which bond lets planes slip and which one punishes slip with fracture.",
-    note: "These are the textbook extremes. Graphite is covalent in the sheet and weak between sheets. Many ceramics are part ionic, part covalent. Reading a material from its bonding, later this week, is where mixed bonding stops being a footnote.",
+      "Select each bond type in the explorer. || Separate a useful tendency from a property that still needs the material name, temperature or direction. || Explain why a copper example does not establish the ductility of every metal.",
+    note: "These are qualified structural clues, not universal property packages. Graphite is strongly bonded within sheets and weakly bonded between them; many ceramics mix ionic and covalent character.",
     checks: [
       {
         prompt: "Why do metals conduct electricity?",
@@ -65,7 +65,7 @@ export const materialsW11Lessons: Lesson[] = [
         why: "Conduction needs mobile charge. In a metal the valence electrons belong to the lattice, not to atoms, so an applied field moves them. Packing density and bond strength are not the mechanism.",
       },
       {
-        prompt: "An ionic solid is brittle because…",
+        prompt: "In the simplified room-temperature ionic-crystal picture, why can some slip directions promote fracture?",
         options: [
           "Its bonds are too weak to hold under load",
           "Slip brings like charges together, which repel",
@@ -73,10 +73,10 @@ export const materialsW11Lessons: Lesson[] = [
           "Ionic bonds only form at low temperature",
         ],
         answer: 1,
-        why: "The bonds are strong — that is why the melting point is high. Brittleness comes from geometry: a half-step slip puts cation against cation, and the repulsion cracks the lattice instead of letting it yield.",
+        why: "A displacement can bring like charges into unfavorable alignment. This explains a common brittleness tendency, not a prohibition on plastic deformation in every ionic crystal at every temperature.",
       },
       {
-        prompt: "Diamond and sulfur are both covalent, yet diamond survives past 3500°C without melting and sulfur melts at 115°C. Why?",
+        prompt: "Diamond is a covalent network; sulfur consists of S₈ molecules and has a supplied melting point near 115 °C. Why can their thermal behavior differ?",
         options: [
           "Sulfur's bonds are ionic, not covalent",
           "Diamond is a network; sulfur is molecular — melting sulfur only defeats the weak forces between S₈ rings",
@@ -84,18 +84,18 @@ export const materialsW11Lessons: Lesson[] = [
           "Diamond contains metallic bonds between the covalent ones",
         ],
         answer: 1,
-        why: "A network must be broken wholesale to melt; a molecular solid melts when the weak secondary bonds between molecules yield. Same bond family, about a hundred degrees versus thousands.",
+        why: "Melting a molecular crystal mainly reorganizes intermolecular contacts, without necessarily breaking the strong bonds inside each molecule. Diamond has a different network and phase behavior. It can graphitize or oxidize under suitable conditions; no atmosphere-independent 3500 °C survival claim follows from the bond label.",
       },
       {
-        prompt: "A solid polymer softens at 130°C though its C–C backbone bonds are ~350 kJ/mol. The softening is governed by…",
+        prompt: "An uncrosslinked thermoplastic softens without chemical degradation. Which process is consistent with that observation?",
         options: [
           "The backbone bonds breaking",
-          "The weak secondary bonds between chains yielding",
+          "Increased chain mobility and rearrangement of inter-chain contacts",
           "Electrons becoming delocalized with temperature",
           "The chains converting to ionic bonds",
         ],
         answer: 1,
-        why: "The strong bonds are internal to each chain; the chains hold each other only by van der Waals forces at 1–40 kJ/mol. Heating defeats the weak links first — that is what softening is.",
+        why: "Softening can occur while covalent backbones remain intact. Glass transition concerns mobility in amorphous regions; melting concerns crystalline regions; degradation changes chemical structure. Which transition occurs depends on the polymer and test conditions.",
       },
     ],
   },
@@ -105,7 +105,7 @@ export const materialsW11Lessons: Lesson[] = [
     index: 2,
     title: "Why properties travel together",
     minutes: 30,
-    lede: "Read conductivity, ductility, melting point, and stiffness as four expressions of one bond — and stop treating any of them as an independent fact about a material.",
+    lede: "Connect bonding to property trends while keeping independent material data, processing history and test conditions in view.",
     opening: { mode: "steps", heading: "Build the idea", labels: ["Situation", "Model", "Takeaway"] },
     readFlow: [
       { kind: "idea", idea: 0, label: "Start here" },
@@ -116,19 +116,19 @@ export const materialsW11Lessons: Lesson[] = [
     ],
     start:
       "Copper, alumina, and polyethylene do not need separate stories for every property. Their bonding already explains a great deal. || Electron mobility affects conductivity. The ease of atomic or molecular rearrangement affects ductility. Bond strength affects stiffness and temperature limits. || Throughout Materials 101, keep the same chain in view: processing changes structure → structure affects properties → properties affect performance. Bonding is the starting structure.",
-    use: "When a datasheet surprises you, or when two properties seem to 'go together' and you want to know if that is law or coincidence. Also before selecting a material: one demand usually forces the whole pack. || Take the bond, list what it permits and forbids, and check each property against that list. Expect correlation: high bond energy with high melting point, delocalized electrons with ductility. Treat every correlation as rough — graphite and the mixed cases are the test of whether you actually understand it. || Stop when you can say which property in the pack is the odd one out for a mixed-bonding material, and name both bonds responsible.",
+    use: "When a datasheet surprises you, ask whether a trend is being mistaken for a rule. || Use bonding to suggest mechanisms, then check the named material. Compare energies only after identifying what one mole refers to and what separation process is measured. || Stop when you can distinguish a qualitative tendency, a supplied reference value and a result actually derived from a model.",
     example:
-      "Tungsten melts at 3422°C, the highest of any metal, and it is notoriously hard to draw into wire at room temperature. || Metallic bonding with a very deep cohesive well (~850 kJ/mol): enormous thermal energy is needed to break the lattice apart, hence the melting point. But the same strong, short bonds raise the stress needed to move dislocations — slip is expensive — so room-temperature ductility is poor. || One bond, two consequences pointing in opposite directions: the bond strength that survives the heat also makes slip expensive.",
+      "Tungsten has a supplied melting temperature of 3422 °C and a cohesive-energy scale near 850 kJ/mol of atoms. Many bulk tungsten products have limited room-temperature ductility. || Cohesive energy describes separating the solid into atoms, not melting it. Neither that energy nor the melting temperature determines room-temperature ductility alone. Research on rolled tungsten foil shows that processing can shift its brittle-to-ductile transition and permit ductile behavior at room temperature. || Keep the thermal reference value separate from the deformation question. For ductility, identify the product form, microstructure, temperature and loading conditions rather than assigning one answer to every tungsten specimen.",
     ideas: [
       {
-        heading: "Bond energy sets the temperature scale",
-        body: "Melting is the point where thermal motion defeats the bonds, so stronger bonds mean higher melting points — across three to four orders of magnitude of bond energy, from waxes at ~1 kJ/mol to tungsten near 850 and MgO near 3800. It is a correlation with wide scatter, not a formula: network topology, entropy, and decomposition all move the real number. Use it to place a material on the temperature map, never to compute a melting point.",
-        formula: "T_m rises with bond energy — correlation, not a law; scatter is real",
+        heading: "Energy values need a defined reference process",
+        body: "Cohesive energy, ionic lattice-separation energy and molecular bond dissociation energy refer to different processes and different molar bases. Their broad ranges are not a calibrated melting-point axis. At fixed pressure, melting depends on the relative free energies of solid and liquid; strong interactions can suggest trends within comparable systems, but entropy and competing transformations matter. Use a supplied melting datum as data, not as the output of a bond-energy formula.",
+        formula: "T_m: melting temperature at a stated pressure; not calculated from these energy ranges",
       },
       {
         heading: "Stiffness is bond stiffness, scaled up",
-        body: "Pull a bond slightly and it resists like a spring; the curvature of the bond-energy curve at its minimum is the atomic spring constant. A macroscopic modulus is that spring constant divided by the bond length: the bonds per area set the force, and the bond length turns stretch into strain. Diamond's deep, narrow energy well is why it is both hard to melt and hard to stretch — one curve, two macroscopic properties. Polymers live in shallow secondary wells, so they are compliant at room temperature.",
-        formula: "E ≈ S₀/r₀ — bond stiffness ÷ bond length (equivalently S₀ × bonds per area × r₀)",
+        body: "Near an equilibrium spacing, a bond can be approximated as a spring. Let S₀ be its small-displacement stiffness in N/m and r₀ its equilibrium spacing in m. A simple spring-lattice estimate gives E ≈ S₀/r₀ in pascals. The numerical factor depends on geometry, bond orientation and deformation mode. This is a model for elastic response, not a calculation of melting or hardness; polymer stiffness also depends on temperature, crystallinity, chain orientation and crosslinks.",
+        formula: "E ≈ S₀/r₀: (N/m)/m = N/m² = Pa, for a simple spring-lattice estimate",
       },
       {
         heading: "Mixed bonding means a mixed pack",
@@ -138,8 +138,8 @@ export const materialsW11Lessons: Lesson[] = [
     ],
     bench: "bondenergy",
     prompt:
-      "Pick each bond type in the explorer and read its energy range against its melting behavior. || Find the widest energy range and the narrowest, and say what that width means for how precisely you can predict. || Then name one material whose real melting point the rough correlation would miss, and why.",
-    note: "The energy numbers are orders of magnitude. The explorer shows the correlation honestly: a trend with scatter, not a calculator. If you want a melting point, measure it.",
+      "Pick each bond type and read its illustrative energy range and reference basis. || Explain why kJ/mol alone does not make cohesive, lattice-separation and bond-dissociation energies interchangeable. || Identify one property that needs a named material or processing condition before you can predict it.",
+    note: "Ranges illustrate different separation processes; they do not calculate melting points. Use measured phase-transition data at the relevant pressure and atmosphere. The broad metallic family does not fix ductility or melting temperature.",
     checks: [
       {
         prompt: "Copper is ductile and conductive. In this week's model these two properties…",
@@ -153,26 +153,26 @@ export const materialsW11Lessons: Lesson[] = [
         why: "One bond feature explains both: mobile electrons conduct, and non-directional bonds let planes slip. Properties travel in packs because they share a cause.",
       },
       {
-        prompt: "Tungsten's extreme melting point and its poor room-temperature ductility…",
+        prompt: "What is a defensible interpretation of tungsten’s high melting temperature and variable room-temperature ductility?",
         options: [
           "Contradict each other — one must be mismeasured",
-          "Both follow from very strong metallic bonding: hard to break apart, hard to slip",
+          "Its high melting temperature does not fix ductility; processing and test conditions also matter",
           "Mean tungsten is actually a ceramic",
           "Are caused by impurities, not bonding",
         ],
         answer: 1,
-        why: "Strong bonds resist both thermal disruption and dislocation motion. The same well depth gives the 3422°C melting point and the expensive slip.",
+        why: "Bulk tungsten can show low room-temperature ductility, while suitably processed foil can behave differently. The cohesive-energy scale alone does not specify dislocation mobility, fracture behavior or the ductile-to-brittle transition.",
       },
       {
-        prompt: "Why is 'bond energy predicts melting point' only a correlation?",
+        prompt: "Why can the explorer’s energy ranges not calculate a material’s melting point?",
         options: [
           "Bond energies cannot be measured",
-          "Network topology, entropy, and decomposition scatter the real values widely",
+          "The ranges use different separation processes; phase free energies and competing transformations also matter",
           "Melting points are arbitrary conventions",
           "Only ionic solids obey it",
         ],
         answer: 1,
-        why: "A molecular solid melts by defeating weak inter-molecular forces regardless of strong internal bonds; some networks decompose before melting. The trend is real and the scatter is real — use it for placement, not calculation.",
+        why: "Energy bases must first be comparable. Melting reorganizes a condensed structure, rather than necessarily atomizing it. Entropy, pressure and competing transformations prevent a universal conversion from an energy range to a melting point.",
       },
       {
         prompt: "Graphite conducts in-plane but is soft between planes. The correct reading is…",
@@ -193,7 +193,7 @@ export const materialsW11Lessons: Lesson[] = [
     index: 3,
     title: "Reading a material from its bonding",
     minutes: 30,
-    lede: "Take an unfamiliar substance, name its bonding from a structural description, and predict its conductivity, mechanical response, and thermal behavior — then check yourself and explain every miss.",
+    lede: "Use a structural description to make a qualified prediction, check a named-material reference, and explain what remains uncertain.",
     opening: { mode: "prose", heading: "Get the rule on the table first" },
     readFlow: [
       { kind: "idea", idea: 0, label: "Rule" },
@@ -204,19 +204,19 @@ export const materialsW11Lessons: Lesson[] = [
     ],
     start:
       "Suppose all you know about an unfamiliar solid is that its atoms form a continuous tetrahedral network. You can still make useful property predictions. || Directional covalent bonding suggests strong resistance to bond stretching and limited easy slip. That points toward high stiffness and hardness, brittleness, and high-temperature resistance. Electrical behavior still needs a material-specific check; the network label alone cannot decide it. || Silicon carbide is one example and is a semiconductor, not a categorical insulator. The point is not to memorize the name; it is to practice moving from structure to likely properties before looking at a datasheet.",
-    use: "When selecting or troubleshooting — a part failed and you need to know whether the material was ever capable of the job, or you are choosing between candidates with no test data yet. || Read the structural description, name the bond (or bonds), read off the pack: conduction, mechanical response, thermal behavior. Write the prediction before you check. Then, for every miss, find the bond feature you ignored — mixed bonding, molecular vs network, a slip system you assumed. || Stop when every miss is 'I missed the second bond' rather than 'I guessed'. One is a method working; the other is luck.",
+    use: "When screening a candidate or investigating a surprising property, write down what the structure suggests and what it does not establish. || State the material, direction, temperature and relevant phase. Predict before revealing the reference, then compare the result and its assumptions. || A mismatch may reflect a missing condition or an over-simple rule, not just a learner error. Record the revised explanation and any information still needed.",
     example:
       "A white crystalline solid: alternating positive and negative ions, shatters under a hammer, dissolves in water. Predict, then verify. || Bond: ionic — charge-locked lattice, no free electrons. Prediction: brittle (slip brings like charges together), insulating as a solid, high melting (strong electrostatic lattice). Bonus prediction: the melt conducts, because the ions themselves become mobile charges. || That is table salt, and every line checks out — including the bonus.",
     ideas: [
       {
         heading: "The protocol: bond first, properties second",
-        body: "Describe the structure in one sentence: what holds to what, and how strongly. Name the bond from that sentence — metallic, ionic, covalent network, covalent molecular, or secondary-dominated. Read the pack off the bond. Only then look at the answer. Reversing the order — peeking, then rationalizing — teaches nothing; the learning is in the miss, and only a written prediction can miss.",
+        body: "Describe what is bonded to what. Name the main interactions, then state a likely property and its conditions. Compare the prediction with the named-material reference. Writing first makes the comparison useful; a single bond label is not a substitute for measurements or a complete electronic-structure model.",
         formula: "structure → bond → pack; prediction written before the reveal",
       },
       {
         heading: "Use wrong predictions to refine the model",
-        body: "Every wrong prediction has a cause and the causes repeat: you called it a network when it was molecular (sulfur), you missed the second bond (graphite), you forgot the melt conducts (salts), you assumed 'strong bonds' means 'strong material' when the weak inter-chain bonds govern (polymers). Collect your misses by cause and the taxonomy of bonding stops being a list and becomes a diagnostic instrument.",
-        formula: "classify each miss by cause, not by substance",
+        body: "Check common sources of disagreement: confusing a molecule with a network, overlooking graphite’s directions, forgetting that salt ions become mobile in a melt, or assuming one polymer transition applies to every polymer. Also ask whether the hint supplied enough information. A reference match is a success within this exercise, not validation of a real component.",
+        formula: "prediction → reference comparison → revised explanation or missing-condition query",
       },
       {
         heading: "Processing moves the structure, so properties follow",
@@ -226,25 +226,25 @@ export const materialsW11Lessons: Lesson[] = [
     ],
     bench: "bondpredict",
     prompt:
-      "For each substance, read the structural hint and predict all three properties before revealing. || Score yourself 0–3 per round; the reveal explains the bond behind the answer. || When you finish, write down the cause of each miss — 'missed the second bond' beats 'guessed wrong'.",
-    note: "Six substances, three properties each. Graphite is in there on purpose: it punishes anyone who assigns one bond per material. Your best score is saved on this device.",
+      "For each substance, read the structural hint and stated conditions, then predict all three properties. || Reveal the named-material reference and compare your choices. || Record what changed in your explanation, including any condition the simplified property label leaves out.",
+    note: "Six substances, three properties each. Graphite distinguishes conduction along a sheet from sliding between sheets. The saved best score belongs to this corrected, qualitative reference bank, not a laboratory qualification.",
     checks: [
       {
-        prompt: "A substance is described as 'long chains, covalently bonded along the chain, weakly held between chains'. Your thermal prediction:",
+        prompt: "An uncrosslinked thermoplastic has covalent backbones and weaker inter-chain contacts. What can explain softening without chemical degradation?",
         options: [
           "Very high melting point — covalent bonds are strong",
-          "Softens or decomposes at modest temperature — the weak inter-chain bonds govern",
+          "Greater chain mobility without necessarily breaking the covalent backbones",
           "Sublimes directly with no softening",
           "Melting point cannot be estimated at all",
         ],
         answer: 1,
-        why: "Heating defeats the weak links first. The strong backbone bonds are internal to chains; the material yields where the chains grip each other — secondary bonds at 1–40 kJ/mol.",
+        why: "Glass-transition softening and melting of crystalline regions can occur without chemical decomposition. Crosslinked polymers behave differently; neither a transition temperature nor degradation follows from the structural hint alone.",
       },
       {
-        prompt: "You predict a material is an insulator; it turns out to conduct along one direction. The most likely cause of the miss:",
+        prompt: "For graphite, why should a prediction distinguish conduction along a sheet from behavior across sheets?",
         options: [
           "You misread the hint entirely",
-          "Mixed bonding — the bond along that direction differs from the bond across it",
+          "Its layered electronic and bonding structure produces directional properties",
           "All insulators conduct a little",
           "The prediction method is useless",
         ],
@@ -266,12 +266,12 @@ export const materialsW11Lessons: Lesson[] = [
         prompt: "Why write the prediction before checking the answer?",
         options: [
           "It is faster",
-          "Only a written prediction can miss — and the miss is where the learning is",
+          "It makes the comparison with the reference explicit, including assumptions you need to revise",
           "The bench requires it for scoring",
           "Predictions are always right",
         ],
         answer: 1,
-        why: "Peeking then rationalizing teaches nothing. A committed prediction that fails forces you to find the bond feature you ignored, which is the actual skill being trained.",
+        why: "An explicit prediction lets you identify changed assumptions and missing information. A mismatch is useful feedback, but it does not by itself identify the cause or prove a lack of understanding.",
       },
     ],
   },

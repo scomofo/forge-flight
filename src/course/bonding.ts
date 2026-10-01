@@ -26,14 +26,15 @@ export interface PropertyPack {
 
 export type ReferencePropertyPack = {
   conduction: Conduction | "semiconductor" | "material-dependent";
-  mechanical: Mechanical;
-  thermal: Thermal | "high-temperature";
+  mechanical: Mechanical | "material-dependent";
+  thermal: Thermal | "high-temperature" | "material-dependent";
 };
 
 export interface BondProfile extends PropertyPack {
   kind: BondKind;
   label: string;
-  /** Typical bond/cohesive energy, kJ/mol — order of magnitude, not a constant. */
+  /** Illustrative separation energy; compare only with its stated molar basis. */
+  energyBasis: string;
   energyRangeKJ: [number, number];
   examples: string;
   why: string;
@@ -42,26 +43,29 @@ export interface BondProfile extends PropertyPack {
 export const BOND_PROFILES: Record<BondKind, BondProfile> = {
   metallic: {
     kind: "metallic",
+    energyBasis: "Cohesive separation per mole of atoms; not heat of fusion",
     label: "Metallic",
     energyRangeKJ: [100, 850],
     examples: "Sodium, copper, iron, tungsten",
     conduction: "conductor",
     mechanical: "ductile",
     thermal: "high-melting",
-    why: "Valence electrons are delocalized over the whole lattice, so charge moves freely. The same non-directional bonding lets planes of atoms slip past each other without shattering the lattice — that slip is ductility.",
+    why: "Mobile, delocalized electrons support metallic conduction. Slip can be possible without changing the whole bonding pattern, but ductility depends on microstructure, processing and test temperature. Metallic bonding alone does not establish a melting temperature or guarantee ductility; sodium and tungsten illustrate the breadth of this family.",
   },
   ionic: {
     kind: "ionic",
+    energyBasis: "Separation to gaseous ions per mole of formula units; not heat of fusion",
     label: "Ionic",
     energyRangeKJ: [600, 4000],
     examples: "Sodium chloride, magnesium oxide",
     conduction: "insulator-until-molten",
     mechanical: "brittle",
     thermal: "high-melting",
-    why: "Electrons are transferred, not shared: a lattice of locked charges. No mobile electrons in the solid, so it insulates — but melt it and the ions themselves carry current. Slip brings like charges together, so it cracks instead of yielding.",
+    why: "A simplified salt lattice has oppositely charged ions. Many room-temperature salt crystals have little mobile charge and are brittle under ordinary loading. Molten salts conduct through ion motion. These are representative tendencies; temperature, defects and available slip processes can alter solid-state behavior.",
   },
   "covalent-network": {
     kind: "covalent-network",
+    energyBasis: "Illustrative bond dissociation per mole of bonds; not a bulk melting calculation",
     label: "Covalent (network)",
     energyRangeKJ: [150, 600],
     examples: "Diamond and quartz are representative insulating networks; silicon carbide is a semiconductor",
@@ -72,23 +76,25 @@ export const BOND_PROFILES: Record<BondKind, BondProfile> = {
   },
   "covalent-molecular": {
     kind: "covalent-molecular",
+    energyBasis: "Intramolecular bond dissociation per mole of bonds, not intermolecular fusion",
     label: "Covalent (molecular)",
     energyRangeKJ: [150, 600],
     examples: "Sulfur (S₈ rings), ice, sugar",
     conduction: "insulator",
     mechanical: "brittle",
     thermal: "low-melting",
-    why: "Strong bonds inside each molecule, weak secondary bonds between them. Heating only has to defeat the weak ones, so it melts low — while the strong internal bonds make the cold crystal brittle rather than soft.",
+    why: "Strong bonds hold each molecule together; weaker interactions act between molecules. Sulfur is a representative brittle, insulating molecular crystal with a low melting temperature. Other molecular solids can instead decompose. Their internal bond energy is not their heat of fusion.",
   },
   secondary: {
     kind: "secondary",
+    energyBasis: "Intermolecular interaction scale; the interacting units must be specified",
     label: "Secondary (dominant)",
     energyRangeKJ: [1, 40],
     examples: "Polyethylene, waxes, rubber",
     conduction: "insulator",
     mechanical: "soft",
     thermal: "decomposes-or-softens",
-    why: "The load-bearing structure is held by van der Waals forces or hydrogen bonds between chains or molecules. They are one to two orders of magnitude weaker than primary bonds, so the solid softens or decomposes at modest temperature and deforms easily.",
+    why: "Interactions between chains influence rearrangement, but the chains themselves are covalently bonded. Glass-transition softening, crystalline melting and chemical degradation are different. Mechanical response depends on temperature, crystallinity, orientation and crosslinks; this family does not have one universal softness or thermal threshold.",
   },
 };
 
@@ -99,9 +105,9 @@ export function predictProperties(kind: BondKind): PropertyPack {
 }
 
 /**
- * Rough melting regime from a bond energy, kJ/mol. This is a correlation
- * with wide scatter — network topology, entropy, and decomposition all
- * move the real number. Never present it as a formula.
+ * Legacy numeric energy-band classifier, retained for saved integrations.
+ * Despite its historical name, this is NOT a melting regime or temperature
+ * prediction and is not displayed by the current teaching components.
  */
 export function meltingRegime(energyKJ: number): "low" | "moderate" | "high" {
   if (energyKJ < 100) return "low";
@@ -129,24 +135,28 @@ export const SUBSTANCES: ChallengeSubstance[] = [
   },
   {
     name: "Magnesium",
-    hint: "A light metal. It can be rolled into ribbon and it burns with a blinding white flame.",
+    properties: { conduction: "conductor", mechanical: "ductile", thermal: "high-melting" },
+    hint: "Consider processed magnesium ribbon: a conducting metal that has undergone plastic forming. For this qualitative exercise its 650 °C melting temperature belongs to the high-melting choice relative to sulfur and polyethylene; that category is not a service-temperature rating.",
     kind: "metallic",
-    why: "Metallic bonding: delocalized electrons conduct, and non-directional bonds let planes slip, so it rolls into ribbon instead of shattering.",
+    why: "Magnesium conducts. The specified processed ribbon demonstrates plastic formability; it does not imply that every magnesium product is equally ductile at room temperature. Its supplied 650 °C melting point is reference information, not derived from metallic bonding.",
   },
   {
     name: "Polyethylene",
-    hint: "Long chains of carbon atoms, each chain covalently bonded along its length — but the chains hold to each other only weakly. A grocery bag.",
+    properties: { conduction: "insulator", mechanical: "soft", thermal: "decomposes-or-softens" },
+    hint: "Consider an unfilled, uncrosslinked polyethylene film: covalent backbones with weaker inter-chain interactions. For this exercise choose its easy deformation, electrical insulation, and thermal softening rather than a precise transition temperature.",
     kind: "secondary",
-    why: "Strong along the chain, weak between chains — and between chains is where melting and stretching happen. So it softens near 130°C, stretches, and insulates.",
+    why: "The specified polyethylene film is an electrical insulator and deforms relatively easily. Its chains can become more mobile without backbone decomposition. Glass transition and melting of crystalline regions are distinct; grade and crystallinity affect their temperatures. The broad thermal answer here identifies softening, not measured chemical degradation.",
   },
   {
     name: "Sodium chloride",
+    properties: { conduction: "insulator-until-molten", mechanical: "brittle", thermal: "high-melting" },
     hint: "A crystal of alternating positive and negative ions. It shatters under a hammer and dissolves in water.",
     kind: "ionic",
     why: "A charge-locked lattice: brittle, high-melting, insulating as a solid — but the melt conducts, because the ions themselves are mobile charges.",
   },
   {
     name: "Sulfur",
+    properties: { conduction: "insulator", mechanical: "brittle", thermal: "low-melting" },
     hint: "Rings of eight sulfur atoms, each ring strongly bonded internally; the rings stack on each other weakly. It melts at 115°C.",
     kind: "covalent-molecular",
     why: "Molecular, not network: heating defeats only the weak inter-ring bonds, so it melts low. The cold crystal is brittle and insulating.",
@@ -164,6 +174,8 @@ export const SUBSTANCES: ChallengeSubstance[] = [
  * Sources: NIST, Characterization and Modeling of Silicon-Carbide Power Devices;
  * Cambridge DoITPoMS, Anisotropic electrical conductivity. See audit references. */
 export function profileProperties(kind: BondKind): ReferencePropertyPack {
+  if (kind === "metallic") return { conduction: "conductor", mechanical: "material-dependent", thermal: "material-dependent" };
+  if (kind === "secondary") return { conduction: "insulator", mechanical: "material-dependent", thermal: "material-dependent" };
   if (kind === "covalent-network") return { conduction: "material-dependent", mechanical: "brittle", thermal: "high-temperature" };
   return predictProperties(kind);
 }

@@ -463,6 +463,42 @@
       "reason": "Reconcile original lesson, animation, practical and imported reading: distinguish reported departure from offset yield without inventing an intersection; define notation and units, label simulation and describe newly implemented graph/data aids. Correct total strain at the explicitly specified practice offset intersection.",
       "before": "42.9 kN labeled yield without a stated convention; first onset and offset yield conflated; simplified plot and unsupported certainty in feedback.",
       "after": "Approximately 350 MPa is stress at the reported departure; offset yield is not established for the steel example. The separate aluminium practice explicitly supplies its offset force. Full and enlarged plots, numerical samples and conditional guide support the reading exercise."
+    },
+    {
+      "lesson": 1,
+      "reason": "Qualify network and polymer phase behavior; distinguish lattice separation from fusion.",
+      "before": "Network must break all bonds to melt; plastics have one softening mechanism.",
+      "after": "Material, phase, pressure and structure qualify the prediction; softening, melting and degradation distinguished."
+    },
+    {
+      "lesson": 2,
+      "reason": "Separate energy reference processes and processing-dependent tungsten ductility.",
+      "before": "Well depth sets melting and poor tungsten ductility.",
+      "after": "Supplied thermal data retained; cohesion is not fusion; processed tungsten can have different ductility."
+    },
+    {
+      "lesson": 3,
+      "reason": "Reconcile silicon-carbide figure and conditional prediction feedback.",
+      "before": "Named-material prediction holds without qualification.",
+      "after": "SiC is semiconducting; compare conditions and evidence rather than blame every mismatch on the learner."
+    },
+    {
+      "lesson": 19,
+      "reason": "Clarify exact boundaries and label classroom solvus values.",
+      "before": "Boundary is a transition, not a state.",
+      "after": "Use coexistence/zero-fraction limits; three-phase amounts are not fixed by T and overall composition."
+    },
+    {
+      "lesson": 20,
+      "reason": "Attach phase identity to endpoints and verify both mass balances.",
+      "before": "Unlabeled left/right fractions.",
+      "after": "Ordered endpoints retain L/alpha/beta labels; composition and amount have different meanings."
+    },
+    {
+      "lesson": 21,
+      "reason": "Do not present equilibrium comparison as a quenched coring profile.",
+      "before": "Fast cooling necessarily reduces primary alpha; final equilibrium composition is a quenched rim.",
+      "after": "Kinetics are unmodeled; first-vs-final equilibrium composition comparison is labeled explicitly."
     }
   ],
   "notes": {

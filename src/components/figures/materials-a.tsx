@@ -153,18 +153,18 @@ function BondZoo() {
         {
           at: 1.9,
           label: "Ionic, covalent",
-          caption: "Ionic charges are locked in their lattice and covalent pairs are shared and directional: no electron is free to move.",
+          caption: "The sketches show alternating ions and directional covalent bonds. They do not establish conductivity for every solid: the named material, mobile defects and temperature matter.",
         },
         {
           at: 4,
           label: "Secondary",
-          caption: "Secondary: the strong bonds are internal to chains that barely hold each other, so whole chains can slide.",
+          caption: "Secondary interactions act between the covalent chains shown here. Chain mobility depends on temperature and structure; crosslinks can restrict it.",
         },
         {
           at: 5.7,
           label: "What moves",
           caption:
-            "Same question in every panel: what is free to move? Electrons and slip planes in the metal, nothing in the ionic and covalent lattices, whole chains past each other in the polymer.",
+            "Ask what can move under the stated conditions. Mobile charge and available deformation mechanisms differ; a structural sketch alone does not measure the properties.",
         },
       ]}
     >
@@ -305,24 +305,24 @@ function BondPacks() {
         {
           at: 0,
           label: "Deep well",
-          caption: "Tungsten's metallic bond is a very deep well, about 850 kJ/mol: breaking it takes enormous heat, so it melts at 3422°C.",
+          caption: "A schematic deep cohesive well represents a large energy of separation. Tungsten’s supplied reference melting point is 3422 °C, not a value calculated from the sketch.",
         },
         {
           at: 2.3,
           label: "Shallow well",
-          caption: "Secondary bonds are shallow wells of 1–40 kJ/mol, so polymers are compliant at room temperature.",
+          caption: "The secondary-interaction scale is smaller than a primary-bond scale, but the molar basis differs. Polymer stiffness also depends on temperature and structure.",
         },
         {
           at: 4.1,
           label: "Compare",
           caption:
-            "One curve, two properties: the well's depth sets how hot it must get to melt, and its steepness at the bottom sets the stiffness. Depths not to scale.",
+            "Well depth describes the chosen separation process; curvature near its minimum describes small-displacement stiffness. These schematic curves do not calculate melting or ductility.",
         },
       ]}
     >
       {({ t }) => (
         <>
-          <Axes box={b} xLabel="atom separation r" yLabel="bond energy" />
+          <Axes box={b} xLabel="atom separation r" yLabel="energy (schematic)" />
           <line x1={b.px(0.6)} y1={b.py(0)} x2={b.px(3)} y2={b.py(0)} stroke={C.muted} strokeWidth={1.5} strokeDasharray="5 5" />
           <Label x={b.px(0.6) - 8} y={b.py(0)} anchor="end" tone="muted" size={15}>0</Label>
           <path d={b.path(partial(shallow, seg(t, 2.4, 3.4)))} fill="none" stroke={C.ink} strokeWidth={2.5} />
@@ -331,13 +331,13 @@ function BondPacks() {
             tungsten ~850 kJ/mol
           </Label>
           <Label x={b.px(0.98)} y={b.py(-1.22) + 20} anchor="start" tone="accent" size={15} opacity={op(seg(t, 1.6, 2.1))}>
-            deep: melts 3422°C, stiff
+            melting datum: 3422 °C
           </Label>
           <Label x={b.px(1.95)} y={b.py(-0.2) + 22} anchor="start" size={15} weight={600} opacity={op(seg(t, 3.2, 3.7))}>
             secondary 1–40 kJ/mol
           </Label>
           <Label x={b.px(1.95)} y={b.py(-0.2) + 42} anchor="start" size={15} opacity={op(seg(t, 3.5, 4))}>
-            shallow: soft, compliant
+            not a thermal-transition model
           </Label>
         </>
       )}
@@ -349,9 +349,9 @@ function BondPacks() {
 function BondRead() {
   const rows = [
     { step: "structure", text: "4 unlike neighbors, one network" },
-    { step: "bond", text: "covalent network: every electron spoken for" },
-    { step: "predict", text: "hard · brittle · insulating · very high melting" },
-    { step: "check", text: "silicon carbide — prediction holds" },
+    { step: "bond", text: "covalent network; conductivity needs checking" },
+    { step: "predict", text: "stiff · brittle; electrical behavior still unknown" },
+    { step: "check", text: "silicon carbide: a semiconductor" },
   ];
   const rowY = (i: number) => 34 + i * 66;
   const rowAt = [0.3, 1.6, 2.9, 4.6]; // each line of the protocol, in writing order
@@ -359,7 +359,7 @@ function BondRead() {
     <AnimatedFigure
       height={290}
       duration={5.6}
-      alt="A four-step flow down the page: structure (four unlike neighbors in one network), bond (covalent network), written prediction (hard, brittle, insulating, very high melting), and the check (silicon carbide, prediction holds)."
+      alt="A four-step flow: tetrahedral structure, covalent network, qualified stiffness and brittleness prediction, then the named-material check that silicon carbide is a semiconductor."
       steps={[
         {
           at: 0,
@@ -369,17 +369,17 @@ function BondRead() {
         {
           at: 1.3,
           label: "Bond",
-          caption: "Name the bond: directional covalent, with poor electron mobility and limited easy slip.",
+          caption: "Name the main bonding: directional covalent. This suggests limited easy slip but does not determine electrical behavior.",
         },
         {
           at: 2.6,
           label: "Predict",
-          caption: "Read the pack off the bond and write it down: hard, brittle, insulating, very high melting.",
+          caption: "Write a qualified prediction: high stiffness and limited easy slip. Leave electrical behavior open until the named-material check.",
         },
         {
           at: 4.3,
           label: "Check",
-          caption: "Write line three before you look at line four — only a committed prediction can miss, and the miss is where the learning is.",
+          caption: "Silicon carbide is a semiconductor. Comparing this reference with the prediction shows why a network label is not proof of insulation.",
         },
       ]}
     >

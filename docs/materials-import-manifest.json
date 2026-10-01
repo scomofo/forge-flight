@@ -1,12 +1,12 @@
 {
   "source": "materials.txt",
   "sourceSha256": "9128660c48cf150f22637f78c535a196c03c5979025dab9fd27e40995a84aa24",
-  "reviewedSha256": "dd73cd4fdd33a0c82b4da88af03814b33b70c3d9d3b68f7a028dda5d6b3d0e5b",
+  "reviewedSha256": "82b70dc961da0be30838b994e3e611e4327c59547ac955b4016bccfd8c7e0510",
   "lessonCount": 30,
   "sectionCount": 218,
   "tableCount": 103,
   "practiceCount": 29,
-  "reviewEditCount": 77,
+  "reviewEditCount": 83,
   "lessons": [
     {
       "track": "materials",

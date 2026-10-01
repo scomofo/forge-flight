@@ -2,7 +2,10 @@
   "base": "4e6d6879db8293ed288fecf8bbfe57369a8db16b",
   "reviewedWording": [
     "engineering/standards",
-    "manufacturing-301/bonus"
+    "manufacturing-301/bonus",
+    "materials/bondzoo",
+    "materials/bondpacks",
+    "materials/bondread"
   ],
   "contracts": [
     {
@@ -471,7 +474,7 @@
         1,
         1
       ],
-      "optionsSha256": "79798118251db68b996ce52b7ac06ee9237aaa1b81a82e386ba8e96c6aad33b0"
+      "optionsSha256": "7ad0048acea73f37f91cced5ab136a3bb7d8aae8700f0c4586accf1cf1fd01f1"
     },
     {
       "key": "materials/bondpacks",
@@ -484,7 +487,7 @@
         1,
         1
       ],
-      "optionsSha256": "9ab8309c7e3b445eefd2f47472d72636987298ad020e6bedb4293fd014503653"
+      "optionsSha256": "8fe2b6a6097c0d09ce1e6ff971d7492b8420d292578caeb6a1e7c01a9b31adcc"
     },
     {
       "key": "materials/bondread",
@@ -497,7 +500,7 @@
         1,
         1
       ],
-      "optionsSha256": "84820314bcf698958ea91764c4959ada55a18da03f1925fe06ffadb2adc3ccaf"
+      "optionsSha256": "aa8766e91416c5402aad60af45f7b9e5ae0b7f1234e86c073795fee5f3dc1eb0"
     },
     {
       "key": "materials/crystal",

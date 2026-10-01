@@ -1,6 +1,6 @@
 ## Materials 101 · Lesson 1: The four bonds
 
-Physics told you how loads move through parts. Materials explains **why steel bends, ceramic shatters, and plastic goes soft when hot**. The answer starts with how the atoms are stuck together.
+Physics describes loads and motion. Materials asks how bonding, structure and processing influence a part’s response. This chapter introduces useful clues, not universal property predictions.
 
 ### 1. The one question to ask
 
@@ -14,48 +14,48 @@ For any material: **what is free to move?**
 
 | Bond | How atoms hold on | What can move | So it's… | Example |
 |---|---|---|---|---|
-| **Metallic** | atoms share a "sea" of loose electrons | **electrons** and **slip planes** | conductive, **bends** (ductile) | copper, steel, aluminium |
-| **Ionic** | one atom gives electrons to another, making + and − ions that attract | **nothing** (in the solid) | insulator, **brittle**, high melting point | table salt, magnesium oxide |
+| **Metallic** | atoms share a "sea" of loose electrons | mobile electrons; slip depends on structure | conducts; ductility is condition-dependent | copper, steel, aluminium |
+| **Ionic** | one atom gives electrons to another, making + and − ions that attract | limited charge motion in ordinary salt crystals | often insulating and brittle at room temperature | table salt, magnesium oxide |
 | **Covalent network** | atoms share electron pairs in fixed directions, in one giant connected structure | little easy slip | often insulating or semiconducting, **brittle**, high-temperature resistance | diamond, silicon carbide |
-| **Secondary** | weak attraction **between** molecules or chains | **whole chains** slide past each other | soft, low melting point, softens with heat | polyethylene, wax |
+| **Secondary** | weak attraction **between** molecules or chains | chain mobility depends on temperature and crosslinks | distinguish softening, crystalline melting and degradation | polyethylene, wax |
 
 ### 3. Why metals bend
 
-The electron "sea" doesn't care about direction. Rows of atoms can **slide past each other** and the bonding just re-forms. That sliding is **ductility**: why you can bend a steel bar or draw copper into wire.
+Delocalized electrons support metallic conduction. Relatively non-directional bonding can also permit slip through dislocation motion. Copper is a ductile example, but a metal’s ductility still depends on structure, processing and test temperature.
 
-**One feature, two properties:** the same loose electrons that let metal **bend** also let it **conduct**. That's why conductive materials and bendable materials are usually the same ones.
+**Related mechanisms, not identical properties.** Electrical conduction does not establish that a particular specimen will bend without cracking.
 
 ### 4. Why ionic materials shatter
 
-Ions sit in a checkerboard: + − + −. Try to slide one row over by half a step and suddenly **+ faces +** and **− faces −**. They repel and the crystal **cracks apart** instead of bending.
+In a simplified ionic lattice, some slip directions bring like charges together. That unfavorable alignment helps explain the brittleness of many salt crystals under room-temperature loading. It does not prohibit all solid-state slip at other temperatures or defect conditions.
 
 The attractive **energy** scales with charge × charge ÷ distance; the attractive **force** scales with charge × charge ÷ distance². Neither alone is a bulk-strength formula. Doubly charged ions close together (Mg²⁺, O²⁻) hold **much** harder than singly charged ones (Na⁺, Cl⁻).
 
-**Odd fact:** solid salt doesn't conduct, but **molten** salt does, because then the ions themselves can move.
+**Compare phases:** ordinary solid sodium chloride has little mobile charge, while its melt conducts through mobile ions. Other ionic solids and high-temperature conditions require a separate check.
 
 ### 5. Covalent: the structure matters
 
-Covalent bonds are strong and **directional** (they point at specific angles). What matters is how they're connected:
+Covalent bonds are directional; what matters is how they connect. Diamond may graphitize or oxidize depending on pressure, atmosphere and heating conditions. Its network alone does not establish an unconditional service-temperature limit:
 
-| Structure | To melt it, you must… | Result |
+| Structure | Relevant distinction | Qualified prediction |
 |---|---|---|
-| **Network** (diamond, SiC) | break the strong bonds themselves | extremely high melting point, brittle |
-| **Separate molecules** | just pull the molecules apart (weak forces) | low melting point |
+| **Network** (diamond, SiC) | extended directional bonding | often stiff and brittle; phase behavior and conductivity require a named-material check |
+| **Separate molecules** | intermolecular contacts can reorganize without dissociating each molecule | sulfur has a supplied low melting point; other molecular solids may decompose |
 
 ### 6. Secondary bonds: why plastics soften
 
-In polyethylene, the bonds **along** each chain are strong, but the chains only cling to **each other** weakly. Secondary bonds are roughly **10–100× weaker** than primary bonds.
+Polyethylene has covalent backbones and weaker inter-chain interactions. The energy ranges in the explorer refer to different separation processes; their molar bases must be stated before comparing them.
 
-Heat it and the chains start **sliding past each other** before anything breaks. That's why plastics soften and creep, and why a plastic part near an engine can sag.
+Increased chain mobility can produce softening while the backbones remain intact. Glass transition concerns amorphous regions; crystalline regions can melt. Chemical degradation is a different process. Temperature, crystallinity, orientation and crosslinks determine the response, so “all plastics melt” is not a valid rule.
 
 ### 7. What the animation shows
 
 | Step | Panel | What moves |
 |---|---|---|
-| **1. Metallic** | electrons drifting through + ions | electrons ✔, slip planes ✔ |
-| **2. Ionic, covalent** | locked + − lattice; fixed shared pairs | nothing |
-| **3. Secondary** | long chains loosely held | whole chains slide |
-| **4. What moves** | side-by-side comparison | the answer predicts the properties |
+| **1. Metallic** | electrons drifting through + ions | mobile electrons; slip is not guaranteed |
+| **2. Ionic, covalent** | locked + − lattice; fixed shared pairs | charge transport needs the named material and conditions |
+| **3. Secondary** | long chains loosely held | chain mobility depends on structure and temperature |
+| **4. What moves** | side-by-side comparison | the answer suggests properties to check |
 
 ### 8. The worked prediction: magnesium oxide (MgO)
 
@@ -65,13 +65,13 @@ Mg gives **two** electrons to O → Mg²⁺ and O²⁻ (**ionic**, double charge
 - Sliding brings like charges together → **brittle**
 - Double charges, tightly packed → predict a **high melting temperature**; **about 2,850 °C is a supplied reference value**, not a result calculated from the bond.
 
-That's why it's used to **line furnaces**. The qualitative property package follows from the bonding. The numerical melting temperature must be looked up.
+MgO’s thermal use is consistent with the supplied reference value. The illustrative lattice-separation energy, about 3800 kJ/mol of formula units, is for separation into gaseous ions, not the heat of fusion. It does not calculate the melting temperature.
 
 ### 9. Where you'll see this in the shop
 
 - **Many ductile steel parts bend** before breaking; hardened or embrittled tools may fracture without that warning
 - **Grinding wheels and ceramic inserts** are hard but **chip and shatter** if dropped (covalent or ionic)
-- **Plastic parts** soften and deform near heat (secondary bonds between chains)
+- **Plastic parts** may soften or creep when heated; the relevant threshold depends on polymer and structure
 
 ### 10. The method
 
@@ -90,7 +90,7 @@ You should get (a) metallic: conducts, bends, moderate melting point; (b) covale
 
 ## Materials 101 · Lesson 2: Why properties travel together
 
-The last lesson named the four bonds. This one shows that **a material's properties aren't separate facts**. Melting point, stiffness, conductivity and ductility all come from the same bond, so they tend to come **as a package**.
+Bonding can connect explanations for several properties. Those properties nevertheless remain independently measured quantities, affected by structure and conditions as well as bonding.
 
 ### 1. The bond-energy curve: a valley
 
@@ -100,20 +100,20 @@ Think of a marble sitting at the bottom of a valley:
 
 | Feature of the valley | What it controls |
 |---|---|
-| **Depth** (how far to climb out) | **melting point**: how much heat it takes to shake the atoms apart |
+| **Depth** (how far to climb out) | energy for the defined separation process, not heat of fusion |
 | **Steepness at the bottom** (how quickly it curves up) | **stiffness (E)**: how hard the bond pushes back when you stretch it |
 
-**One curve, two properties.** A deep, narrow valley means high melting **and** stiff. A shallow, wide one means low melting **and** floppy.
+**Distinguish depth from curvature.** Depth represents the chosen separation energy; curvature near the minimum relates to small-displacement stiffness. Neither makes the sketch a melting-point calculator.
 
 ### 2. What the animation shows
 
 | Step | Valley | Result |
 |---|---|---|
-| **1. Deep well** | tungsten, ~850 kJ/mol | melts at **3,422 °C**, very stiff |
-| **2. Shallow well** | secondary bonds, 1–40 kJ/mol | soft, low melting (waxes, many plastics) |
+| **1. Deep well** | tungsten cohesion, ~850 kJ/mol of atoms | supplied melting datum **3,422 °C**, not calculated by the sketch |
+| **2. Shallow well** | secondary interaction scale, 1–40 kJ/mol of specified interacting units | not a universal polymer stiffness or transition temperature |
 | **3. Compare** | | same shape of curve, wildly different depth |
 
-### 3. Melting point follows bond strength (roughly)
+### 3. Energy scales and independent melting data
 
 | Material | Bond energy (roughly) | Melting |
 |---|---|---|
@@ -121,7 +121,7 @@ Think of a marble sitting at the bottom of a valley:
 | Tungsten | ~850 | 3,422 °C |
 | MgO | ~3,800 | ~2,850 °C |
 
-**This is a trend, not a formula.** Use it to say "hot," "warm" or "barely above room temperature," not to calculate an exact melting point. (MgO has a bigger number than tungsten but melts lower. The scatter is real.)
+**Different energy bases are not one melting scale.** These supplied approximate values are retained for comparison, not recalibrated as measurements. Metallic cohesion is per mole of atoms; the MgO value is lattice separation per mole of formula units; a secondary interaction needs its interacting units specified. Melting reorganizes a condensed structure, not necessarily separating it into gas-phase atoms or ions.
 
 ### 4. Stiffness is bond stiffness, scaled up
 
@@ -130,18 +130,18 @@ Each bond acts like a tiny **spring**. A material's modulus E is basically those
 **E ≈ bond stiffness ÷ bond length**
 
 - **Diamond:** deep, narrow valley → extremely stiff
-- **Polymers:** shallow secondary bonds between chains → flexible
+- **Polymers:** temperature, crystallinity, chain orientation and crosslinks affect stiffness
 
-This explains the E values from the physics block: steel 200 GPa, aluminium 69, wood ~10. Aluminium melts at 660 °C and iron at 1,538 °C. The one with the deeper valley is also the stiffer one.
+A spring-lattice estimate uses S₀ in N/m for one small-displacement bond stiffness and r₀ in m for equilibrium spacing: E ≈ S₀/r₀, in N/m² or Pa. The prefactor depends on geometry and orientation. It does not derive melting, hardness or the bulk stiffness of every polymer from one bond.
 
-### 5. Tungsten: one bond, two opposite effects
+### 5. Tungsten: processing matters for ductility
 
-Tungsten's very strong metallic bonds mean:
+Tungsten’s supplied melting temperature is 3422 °C. Many bulk tungsten products have limited room-temperature ductility, but its bonding label does not establish the behavior of every product form.
 
-- ✔ **Survives huge heat** (highest melting point of any metal), which is why it's used for lamp filaments and TIG welding electrodes
-- ✘ **Hard to bend at room temperature**, because strong, short bonds make slip expensive, so it's brittle-ish cold
+- **Thermal reference:** 3422 °C is supplied melting data, not an operating-temperature limit or a result calculated from a cohesive well.
+- **Deformation:** the brittle-to-ductile transition depends on microstructure and processing. Published tests of suitably rolled tungsten foil demonstrate that room-temperature ductility can differ from bulk material.
 
-The same strength that helps with heat **hurts** ductility. Properties travel together, and sometimes that's a trade-off.
+This is a reason to specify the material’s condition and test, not to infer ductility from cohesive energy alone. Processing can alter the answer without changing tungsten into a different bond family.
 
 ### 6. Mixed bonding means a mixed package
 
@@ -158,7 +158,7 @@ That's why a pencil writes: sheets peel off onto the paper. It's also why graphi
 
 **Glass** is part ionic, part covalent, so it's brittle and insulating, with a fairly high softening point.
 
-**When properties seem contradictory, look for a second bond.**
+**When a prediction fails, check material identity, direction, phase, temperature and processing.** A second bond may matter, but it is not the only possible explanation.
 
 ### 7. The chain for the whole course
 
@@ -168,24 +168,21 @@ Bonding is the first link in "structure." The rest of the course adds the other 
 
 ### 8. The method
 
-1. **Name the bond** (or bonds).
-2. **List what it allows:** electrons moving? planes slipping? chains sliding?
-3. **Predict the package:**
-   - deep valley → high melting, stiff
-   - loose electrons → conductive **and** ductile
-   - shallow bonds between chains → soft, low melting
-4. **If one property doesn't fit**, look for a second bond and work out which property belongs to which bond.
+1. **Name the bond** and the relevant structure.
+2. **State conditions:** direction, phase, temperature and processing.
+3. **Make a qualified prediction:** identify which quantities are still unknown.
+4. **Check a reference:** separate supplied data from a result derived by a model.
 
 **Try one:**
 
 - (a) Graphite and diamond are both pure carbon. Why does graphite write on paper but diamond scratches glass?
 - (b) A plastic part sags on a hot dashboard. Which bond is giving up?
 
-You should get (a) graphite has weak secondary bonds between its sheets, which slide off, while diamond is covalent in all directions; (b) the secondary bonds between the chains, not the strong bonds along each chain.
+You should get (a) graphite can slide between sheets while diamond has a three-dimensional network; neither description alone supplies a service-temperature limit; (b) increased chain mobility can allow sag without breaking the covalent backbone. The polymer, temperature, crystallinity and crosslinks determine the mechanism.
 
 ## Materials 101 · Lesson 3: Reading a material from its bonding
 
-Lessons 1–2 gave you the four bonds and their property packages. This lesson turns that into a **routine** for an unknown material, and asks you to **commit to a prediction before checking**.
+Lessons 1–2 introduced bonding as a starting explanation. This lesson turns that into a qualified prediction-and-check routine, with material identity and conditions kept explicit.
 
 ### 1. The protocol
 
@@ -196,7 +193,7 @@ Lessons 1–2 gave you the four bonds and their property packages. This lesson t
 3. **Write down the predictions:** conductive? bends or shatters? melting point?
 4. **Then check** the answer.
 
-**Write the prediction before you look.** If you peek first, it's easy to convince yourself you'd have got it right. A written prediction can be wrong, and finding out why is where you learn something. (It's the same idea as predict-then-measure in the factor of safety lesson.)
+**Write the prediction before the reveal** so you can compare assumptions. A disagreement may expose a missing condition or a simplified rule, not merely a learner mistake. The qualitative reference is not a component qualification.
 
 ### 2. What the animation shows
 
@@ -205,7 +202,7 @@ Lessons 1–2 gave you the four bonds and their property packages. This lesson t
 | **1. Structure** | "4 unlike neighbours, one network" | each atom bonded to 4 others in a continuous 3D framework |
 | **2. Bond** | covalent network | strong directional bonds; charge transport still needs a separate check |
 | **3. Predict** | written **before** the reveal | hard, brittle, high-temperature resistance; conductivity to be checked |
-| **4. Check** | silicon carbide | ✔ prediction holds |
+| **4. Check** | silicon carbide | semiconductor: the electrical property needed a named-material check |
 
 Silicon carbide is used as abrasive grit and is a semiconductor. The mechanical predictions fit; the electrical exception is a reason to check rather than trust the bond label alone.
 
@@ -221,7 +218,7 @@ Silicon carbide is used as abrasive grit and is a semiconductor. The mechanical 
 | **Melting** | strong charge attraction → **high** |
 | **Bonus** | melted, the ions can move → **the melt conducts** |
 
-**Reveal:** table salt. Every line checks out.
+**Reveal:** table salt. These qualitative reference choices concern the ordinary crystal and its melt, not every ionic material at every temperature.
 
 ### 4. Why predictions go wrong: the usual causes
 
@@ -232,9 +229,9 @@ The page's main point is to **sort your mistakes by cause**, because the same fe
 | Called it a **network** when it's separate **molecules** | sulfur melts at only ~115 °C | ask: is it one big connected structure or many small pieces? |
 | **Missed a second bond** | graphite conducts much better within its layers | check for weak bonds between layers or chains |
 | **Forgot the melt** | molten salt conducts | ions move once melted |
-| Assumed "strong bonds" = "strong material" | polyethylene has strong C–C bonds but is soft | the **weakest** bond (between chains) controls it |
+| Assumed "strong bonds" = "strong material" | polyethylene has strong C–C bonds but is soft | specify temperature, chain mobility, crystallinity, orientation and crosslinks |
 
-Once your mistakes all sound like "I missed the second bond" instead of "I guessed," the method is working.
+Record the revised explanation or the missing information. Do not assume every mismatch has one of the listed causes.
 
 ### 5. Preview: processing changes the structure
 
@@ -242,7 +239,7 @@ The bond package is the **starting point**. Processing changes the structure, an
 
 | Process | What changes | Result |
 |---|---|---|
-| **Cold working** (bending, hammering, rolling a metal) | creates tangles of defects | **harder**, less bendable. Bend a wire back and forth: it gets harder to bend permanently, then may crack; this is not a large increase in Young's modulus |
+| **Cold working** (bending, hammering, rolling a metal) | creates tangles of defects | many metals harden and lose ductility; the outcome depends on the material and processing. This is not a large increase in Young’s modulus |
 | **Quenching steel** (heat, then plunge in water or oil) | traps carbon in a strained structure | **much harder**, more brittle |
 | **Stretching a plastic** | lines the chains up | **stronger along the stretch**. Pull a strip of plastic bag: it gets tougher as it thins |
 
@@ -255,11 +252,11 @@ Later lessons cover these in detail. The idea now: **properties come from struct
 
 ### 7. The method
 
-1. One-sentence structure description.
-2. Name the bond (or bonds).
-3. Write the predictions: conduction, bend vs shatter, temperature behaviour.
-4. Check.
-5. For every miss, name the bond feature you overlooked.
+1. Describe the structure.
+2. Name the main interactions.
+3. State conditions and make qualified predictions.
+4. Compare with the named-material reference.
+5. Record changed assumptions or information still missing.
 
 **Try one.** Write your prediction for each before checking:
 
@@ -267,7 +264,7 @@ Later lessons cover these in detail. The idea now: **properties come from struct
 - (b) Long carbon chains, each strong internally, loosely attracted to each other.
 - (c) Small ring-shaped molecules (8 atoms each), weakly attracted to each other.
 
-Answers: (a) metallic: conducts, bends, moderate-to-high melting; (b) polymer, governed by secondary bonds: insulator, flexible, softens when warmed; (c) covalent molecular (this is sulfur): insulator, crumbly, low melting, because only the weak forces between molecules need to break.
+Answers: (a) metallic conduction is expected, but ductility and melting temperature need a material and condition; (b) an unfilled, uncrosslinked thermoplastic can soften through chain mobility without necessarily degrading, but no exact transition temperature follows from the hint; (c) the specified sulfur is a molecular, brittle, insulating solid with the supplied low melting temperature. These are qualitative checks, not design properties.
 
 ## Materials 101 · Lesson 4: Crystal structures
 
@@ -1703,7 +1700,7 @@ At 1,190 °C, draw a **horizontal line** across the two-phase region. Where it h
 
 Every boundary answers the same question: **how much B can this phase hold at this temperature?** Usually the answer **shrinks as it cools**.
 
-**Example:** tin in lead can dissolve **19.2%** at 183 °C, but only **~2%** near room temperature. Cool it and the extra tin has to come out as a second phase.
+**Teaching-model example:** the α solvus is 19.2 wt% Sn at 183 °C and 19.2 × 25/183 ≈ 2.62 wt% at 25 °C. These are linearized classroom values, not a measured solubility curve. Cool it and the extra tin has to come out as a second phase.
 
 **That's the basis of precipitation hardening** (lessons 13–14): dissolve hot, cool, and the excess forms the tiny particles that block dislocations.
 
@@ -1713,7 +1710,7 @@ Every boundary answers the same question: **how much B can this phase hold at th
 2. **Horizontal line** at your temperature.
 3. **Read the region** where they cross: L, α, or L + α.
 4. **In a two-phase region:** draw the tie line. Its ends are the compositions of each phase, **not** your alloy's composition.
-5. **On a boundary exactly?** Say which side you mean. The line is a transition, not a state.
+5. **On a boundary exactly?** Say which side you mean. On a two-phase boundary one phase can have a limiting zero fraction. At a three-phase eutectic reaction, temperature and overall composition do not uniquely fix all three amounts.
 
 **Try one:** using the same simplified lines, for a **Cu–40% Ni** alloy:
 
@@ -1779,14 +1776,14 @@ The composition axis is **weight %**, so the lever rule gives **mass fractions**
 
 ### 7. If you forget which arm goes where
 
-**Don't memorise the picture. Re-derive it** from C₀ = W_L·C_L + W_α·C_α. It takes 30 seconds and can't go wrong.
+**Don't memorise the picture. Re-derive it** from C₀ = W_L·C_L + W_α·C_α. Check both total mass and solute mass; algebra alone does not identify which endpoint belongs to which phase.
 
 ### 8. The method
 
-1. Draw the **tie line** at your temperature and read its ends (C_left, C_right).
+1. Draw the **tie line** and identify both phases. Record their compositions as C_left < C_right in wt% Sn. For L + β, liquid is the lower-Sn end and β the higher-Sn end; in L + α, α is the lower-Sn end.
 2. **W_left = (C_right − C₀) ÷ (C_right − C_left)**, the far arm over the whole.
 3. **W_right = 1 − W_left.**
-4. **Check:** they add to 1, and the phase nearer your alloy dominates.
+4. **Check:** W_left + W_right = 1 and W_left·C_left + W_right·C_right = C₀. W values are mass fractions from 0 to 1; C values are mass percentages. A single phase has fraction 1; do not invent a two-phase tie line for it.
 
 **Try one:**
 
@@ -1803,13 +1800,13 @@ This lesson puts phase diagrams (lesson 19) and the lever rule (lesson 20) toget
 
 "Eutectic" comes from Greek for "easily melted." In lead–tin:
 
-**At exactly 61.9% tin and 183 °C:** liquid → α (lead-rich solid) + β (tin-rich solid), **all at once**
+**At fixed pressure and 183 °C:** liquid of 61.9 wt% Sn can coexist with α at 19.2 wt% Sn and β at 97.5 wt% Sn in this model. The overall alloy need not be 61.9%. During the reaction, temperature and overall composition alone leave the three phase amounts underdetermined.
 
 - It happens at **one fixed temperature**, like a pure metal freezing, with **no mushy zone**
 - That's the **lowest melting point** of any lead–tin mix
-- The two solids grow together as **fine alternating layers** (lamellae), because each one pushes the other's atoms aside as it grows
+- The two solids may form **alternating layers** (lamellae); morphology depends on growth conditions and is not fixed by phase fractions alone
 
-**Practical:** **63/37 solder** is close to eutectic, so it goes from liquid to solid instantly (clean joints). **60/40** is off-eutectic, so it passes through a pasty range first.
+**Practical:** a near-eutectic composition has a narrower freezing range than a substantially off-eutectic composition. Constant reaction temperature does not mean instantaneous freezing or guarantee a sound joint.
 
 ### 2. What the animation shows (Pb–40% Sn, cooling from 300 °C)
 
@@ -1818,7 +1815,7 @@ This lesson puts phase diagrams (lesson 19) and the lever rule (lesson 20) toget
 | **1. Liquidus** | crossing the liquidus | first α crystals start to grow (tree-like "dendrites") |
 | **2. Primary α** | cooling toward 183 °C | more α grows; the leftover liquid gets richer in tin |
 | **3. Lever rule** | just above 183 °C | W_α = (61.9 − 40) ÷ (61.9 − 19.2) = 21.9 ÷ 42.7 = **51% primary α**; the other **49% is liquid** at exactly 61.9% Sn |
-| **4. Eutectic** | at 183 °C | that 49% liquid freezes all at once into fine α + β layers |
+| **4. Eutectic** | at 183 °C | that remaining liquid transforms at the eutectic temperature; the layers shown are a schematic morphology |
 
 **Final structure below 183 °C:**
 
@@ -1838,7 +1835,7 @@ The diagram is the **destination**. Cooling rate decides whether you get there.
 - **Fast cooling:** no time to diffuse, so each crystal keeps a **nickel-rich core** and a **nickel-poor rim**. You can see it after etching.
 - **Fix:** a **homogenizing anneal**. Hold it hot and let diffusion finish the job.
 
-**For the lead–tin casting**, fast cooling gives **less** primary α and a **finer** eutectic than the diagram predicts.
+**For the lead–tin casting**, cooling rate can affect segregation and morphology, but this equilibrium diagram does not calculate a guaranteed reduction of primary α or a particular lamellar or divorced structure. The Cu–Ni explorer likewise compares first-solid composition with the final homogeneous equilibrium composition; it does not compute a quenched rim or diffusion history.
 
 ### 4. Iron–carbon: the most important diagram
 

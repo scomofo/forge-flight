@@ -70,22 +70,34 @@ export function stallSpeed(
   return Math.sqrt((2 * mass_kg * g) / denom);
 }
 
-/** Wing loading: weight per unit wing area. The single number that sets stall speed. */
+/** Wing loading: weight per unit wing area. Sets stall speed only when air density and maximum lift coefficient are also fixed. */
 export function wingLoading(mass_kg: number, g: number, wingArea_m2: number): number {
   if (wingArea_m2 <= 0) return Number.POSITIVE_INFINITY;
   return (mass_kg * g) / wingArea_m2;
 }
 
-export type StabilityVerdict = "unstable" | "marginal" | "stable" | "overstable";
+export type StabilityVerdict = "unstable" | "neutral" | "marginal" | "stable" | "overstable" | "invalid";
 
-/**
- * The glider model's teaching band: stable means the neutral point sits
- * 5–25% of a chord behind the CG. Negative is unflyable; beyond 25% the
- * glider is nose-heavy and mushy rather than unstable.
+export const STABILITY_LABELS: Record<StabilityVerdict, string> = {
+  unstable: "Statically unstable (negative margin)",
+  neutral: "Neutral (zero margin)",
+  marginal: "Statically stable — below classroom target",
+  stable: "Statically stable — within classroom target",
+  overstable: "Statically stable — above classroom target",
+  invalid: "Invalid static margin",
+};
+
+/** Positive margin gives a restoring tendency in the attached-flow linear model.
+ * The inclusive 5–25% classroom target is a separate requirement, not a universal
+ * trim, controllability, dynamic-stability or airworthiness criterion.
+ * Legacy category names are retained; labels do not call positive margin unstable.
  */
 export function stabilityVerdict(sm: number): StabilityVerdict {
-  if (sm < 0.05) return "unstable";
-  if (sm <= 0.25) return "stable";
+  if (!Number.isFinite(sm)) return "invalid";
+  if (sm < 0) return "unstable";
+  if (sm === 0) return "neutral";
+  if (sm < 0.05 - 1e-12) return "marginal";
+  if (sm <= 0.25 + 1e-12) return "stable";
   return "overstable";
 }
 

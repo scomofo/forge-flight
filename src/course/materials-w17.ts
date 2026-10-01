@@ -24,9 +24,9 @@ export const materialsW17Lessons: Lesson[] = [
     ],
     start:
       "A binary phase diagram maps equilibrium phases as a function of composition and temperature. || Composition is on the horizontal axis and temperature on the vertical. A point on the diagram tells you which phases are present at equilibrium, and tie lines tell you the compositions of coexisting phases. || The diagram predicts the equilibrium destination, not how quickly the material gets there. Kinetics and cooling rate come later.",
-    use: "Choosing an alloy, a casting temperature, or a heat-treatment window — anywhere the question is 'what phases am I dealing with.' || Fix the composition: drop a vertical line at your alloy's weight percent. Fix the temperature: draw the horizontal line. Read the field their intersection falls in — that is your phase assemblage. In a two-phase field, extend the horizontal tie line through your point to both boundaries; its ends are the compositions of the two phases, which are generally not your alloy's composition. || Stop when you can name every phase present and the composition of each. If your point sits exactly on a boundary, say which side you mean — the line itself is a transition, not a state.",
+    use: "Choosing an alloy, a casting temperature, or a heat-treatment window — anywhere the question is 'what phases am I dealing with.' || Fix the composition: drop a vertical line at your alloy's weight percent. Fix the temperature: draw the horizontal line. Read the field their intersection falls in — that is your phase assemblage. In a two-phase field, extend the horizontal tie line through your point to both boundaries; its ends are the compositions of the two phases, which are generally not your alloy's composition. || Stop when you can name every phase present and the composition of each. If your point sits exactly on a boundary, say which side you mean — a boundary marks coexistence or a limiting zero fraction, not an absence of a state.",
     example:
-      "Supplied teaching boundary equations: liquidus T = 1085 + 3.7C and solidus T = 1085 + 3.2C, with T in °C and C entered as numerical wt% Ni (30, not 0.30). The coefficients belong to this approximate diagram in the 20–45 wt% Ni teaching range, not a universal phase rule. A Cu–30 wt% Ni alloy cools slowly from 1400°C. Nothing happens until its vertical line meets the liquidus: T = 1085 + 3.7 × 30 = 1196°C, where the first α solid appears. Freezing finishes at the solidus: T = 1085 + 3.2 × 30 = 1181°C — a 15-degree freezing range, the 'mushy zone' where the casting is neither liquid nor solid. || Halfway through, at 1190°C, the tie line runs from liquidus to solidus: C_L = (1190 − 1085)/3.7 = 28.4 wt% Ni in the liquid, C_α = (1190 − 1085)/3.2 = 32.8 wt% Ni in the solid. The solid is richer in nickel — the higher-melting component — exactly as the lens shape promised. || The alloy is 30% nickel on average, but at 1190°C no phase actually is: the liquid holds 28.4% and the solid 32.8%. Overall composition and phase composition are different numbers. Confusing them is the most common beginner error with these diagrams.",
+      "Supplied teaching boundary equations: liquidus T = 1085 + 3.7C and solidus T = 1085 + 3.2C, with T in °C and C entered as numerical wt% Ni (30, not 0.30). The coefficients belong to this approximate diagram in the 20–45 wt% Ni teaching range, not a universal phase rule. A Cu–30 wt% Ni alloy cools slowly from 1400°C. Nothing happens until its vertical line meets the liquidus: T = 1085 + 3.7 × 30 = 1196°C, where the first α solid appears. Freezing finishes at the solidus: T = 1085 + 3.2 × 30 = 1181°C — a 15-degree freezing range, the 'mushy zone' where liquid and solid coexist. || During freezing, at 1190°C, the tie line runs from liquidus to solidus: C_L = (1190 − 1085)/3.7 = 28.4 wt% Ni in the liquid, C_α = (1190 − 1085)/3.2 = 32.8 wt% Ni in the solid. The solid is richer in nickel — the higher-melting component — exactly as the lens shape promised. || The alloy is 30% nickel on average, but at 1190°C no phase actually is: the liquid holds 28.4% and the solid 32.8%. Overall composition and phase composition are different numbers. Confusing them is the most common beginner error with these diagrams.",
     ideas: [
       {
         heading: "Read composition horizontally and temperature vertically",
@@ -35,11 +35,11 @@ export const materialsW17Lessons: Lesson[] = [
       {
         heading: "Phase boundaries mark changes in equilibrium phases",
         body: "Above the liquidus, all liquid. Below the solidus, all solid. The solvus is the most solute the solid can hold before a second phase precipitates out. Every line answers the same question — how much of B can this phase dissolve at this temperature — and the answer usually shrinks as things cool, which is why precipitation hardens so many alloys.",
-        formula: "Sn in Pb: 19.2 wt% at 183°C, ≈2 wt% near room temperature",
+        formula: "classroom α solvus: C_Sn = 19.2T/183 wt%, T in °C; at 25 °C, C_Sn ≈ 2.62 wt%",
       },
       {
         heading: "Tie lines give phase compositions for the lever rule",
-        body: "In any two-phase field, only the tie-line ends exist as compositions — your alloy's overall composition lies somewhere along the line between them, and where it lies decides how much of each phase you get. The ends are inputs; the fractions are arithmetic. That arithmetic is the entire next lesson.",
+        body: "In any two-phase field, only the tie-line ends exist as compositions — your alloy's overall composition lies somewhere along the line between them, and where it lies decides how much of each phase you get. Keep the phase identity with each end. In Pb–Sn L + α, α is the lower-Sn end and liquid the higher. In L + β, liquid is the lower-Sn end and β the higher. The endpoints are phase compositions in wt%; the lever rule gives amounts as mass fractions. That arithmetic is the entire next lesson.",
         formula: "tie-line ends: C_L and C_α (not C₀)",
         help: [{ concept: "phase-diagram" }],
       },
@@ -81,7 +81,7 @@ export const materialsW17Lessons: Lesson[] = [
         prompt: "The line separating the all-liquid field from the two-phase field is the…",
         options: ["Liquidus", "Solidus", "Solvus", "Eutectic"],
         answer: 0,
-        why: "Liquidus above, two-phase below. The solidus bounds the all-solid field; the solvus bounds solid solubility; the eutectic is a point and a reaction, not a line.",
+        why: "Liquidus above, two-phase below. The solidus bounds the all-solid field; the solvus bounds solid solubility; the eutectic reaction occurs on a horizontal isotherm; its liquid composition is the eutectic point.",
       },
     ],
   },
@@ -123,8 +123,8 @@ export const materialsW17Lessons: Lesson[] = [
     ],
     bench: "phaseset",
     prompt:
-      "Run the problem set again, but predict each fraction from the tie line before you touch the entry boxes. || Say the fulcrum sentence for each one: which phase is nearer, so which dominates. || All six at ±0.03 — the grader is strict because the foundry is stricter.",
-    note: "Same diagram, same six problems — the lever rule is the only new tool. If a fraction surprises you, re-draw the tie line; the error is in the reading, not the arithmetic.",
+      "Run the same six problems, first identifying each endpoint’s phase and composition. || Predict which phase dominates before calculating its fraction. || Enter fractions from 0 to 1 with sum 1; the exercise tolerances are ±0.03 per fraction, not foundry acceptance limits.",
+    note: "The horizontal axis is mass percent Sn; the lever rule gives mass fractions, not volume fractions. A mismatch can come from phase identity, endpoints, units or arithmetic. Check both the sum of fractions and the reconstructed composition.",
     checks: [
       {
         prompt: "Cu–40 wt% Ni at 1220°C (C_L = 36.5, C_α = 42.2). The liquid fraction is…",
@@ -181,17 +181,17 @@ export const materialsW17Lessons: Lesson[] = [
       "A phase diagram tells you the equilibrium phases, but the actual microstructure also depends on how fast the material is cooled. || Transformations require atomic rearrangement, and many of those changes need diffusion. Slow cooling gives the structure more time to approach equilibrium; rapid cooling can freeze in nonequilibrium compositions or phases. || Treat the phase diagram as the thermodynamic destination. Cooling rate determines whether the material has enough time to get there.",
     use: "Cooling any alloy through a transformation, or choosing the cooling rate for a casting or heat treatment. || Drop a vertical line at your composition. Walk down in temperature: at each boundary, name what starts to form. At a eutectic, split the remaining liquid into the eutectic microconstituent, and apply the lever rule just above the eutectic temperature for primary versus eutectic fractions. Then ask the rate question: slow enough for diffusion to keep up, or fast enough to freeze the high-temperature state in? || Stop when you can sketch the room-temperature microstructure — which phases, roughly how much of each, in what arrangement — and say what changes if you quench instead.",
     example:
-      "Pb–40 wt% Sn cools from 300°C. At the liquidus the first α appears; by just above 183°C the lever rule on the L + α field gives primary α: W_α = (61.9 − 40)/(61.9 − 19.2) = 21.9/42.7 = 0.513 — about 51% chunky primary α dendrites, 49% remaining liquid at the eutectic composition. || At 183°C that liquid undergoes the eutectic reaction: L → α + β, freezing into fine alternating lamellae of lead-rich α and tin-rich β. Just below 183°C the alloy is 51% primary α plus 49% eutectic microconstituent — two morphologies, only two phases (α and β), all from one cooling curve. || The numbers came from the diagram at equilibrium. A fast-cooled casting of the same alloy shows less primary α and a finer, more divorced eutectic — the same destination on the map, but the casting did not get all the way there.",
+      "Pb–40 wt% Sn cools from 300 °C under the equilibrium assumptions of this teaching diagram. Just above 183 °C, W_α = (61.9 − 40)/(61.9 − 19.2) = 21.9/42.7 ≈ 0.513. Thus about 51% of the mass is primary α and 49% remains liquid approaching the eutectic composition. || At 183 °C, that remaining liquid transforms to α + β. Just below it, the microstructure can be described as 51% primary α plus 49% eutectic microconstituent. The eutectic is a mixture of two phases, not a third phase. || These fractions follow from equilibrium mass balance. Faster cooling can change spacing, morphology and segregation; the equilibrium diagram alone does not predict how much primary material or which eutectic morphology a nonequilibrium casting will produce.",
     ideas: [
       {
         heading: "Eutectic reactions occur at a fixed composition and temperature",
-        body: "One temperature, one composition, three phases in equilibrium — the phase rule allows no freedom there, so the reaction runs at constant temperature, like a pure metal freezing. All liquid of eutectic composition becomes the two solids simultaneously, in an intimate lamellar mixture, because neither solid can grow without rejecting the other's solute.",
+        body: "At fixed pressure, three phases coexist at the eutectic temperature with fixed phase compositions. The liquid has the eutectic composition; the overall alloy need not. Temperature and overall composition alone do not determine all three amounts during the reaction. Two mass-balance equations cannot uniquely determine three phase fractions. Lamellae are a common eutectic morphology, not a universal consequence for every cooling condition.",
         formula: "L(61.9 wt% Sn) → α(19.2%) + β(97.5%) at 183°C",
       },
       {
         heading: "Rapid solidification can leave composition gradients",
-        body: "In Cu–Ni the first solid to freeze is nickel-rich and the last is nickel-poor; with slow cooling, solid-state diffusion evens this out as the temperature falls. Quench the casting and diffusion never gets its chance: each dendrite keeps a nickel-rich core and a nickel-poor rim — microsegregation you can etch and see. The cure is a homogenizing anneal: hold hot, and let diffusion finish the job the quench interrupted.",
-        formula: "first solid ≈ 1.16 × C₀ (Ni-rich); at equilibrium everything ends at C₀, but a quench leaves the last solid below C₀ (Ni-poor rim)",
+        body: "In this local Cu–Ni model, the first equilibrium solid is Ni-rich relative to the bulk alloy. With enough solid-state diffusion, the final equilibrium solid has the bulk composition C₀. Fast cooling can leave segregation, but predicting the actual core-to-rim profile requires a nonequilibrium model. The explorer compares first-solid composition with the final equilibrium value; its second number is not a predicted quenched rim.",
+        formula: "local model: first solid = (3.7/3.2)C₀; final equilibrium solid = C₀; neither specifies a quenched rim",
       },
       {
         heading: "Iron–carbon runs the world",
@@ -200,8 +200,8 @@ export const materialsW17Lessons: Lesson[] = [
     ],
     bench: "solidify",
     prompt:
-      "Pick an alloy composition and cool it step by step through freezing. || Watch the tie line sweep: the liquid and solid compositions at each temperature, the fractions, the mushy-zone width. || Then flip on coring and compare the dendrite core to its rim — that gradient is what a quench freezes in.",
-    note: "Cu–Ni teaching model: linearized liquidus and solidus. Real boundaries curve and real coring needs the Scheil equation; the core-to-rim story is the same.",
+      "Pick a composition from 20–45 wt% Ni and cool through the local model’s freezing interval. || Compare liquid and solid compositions with their mass fractions; confirm mass balance. || Turn on the composition comparison: first solid versus final equilibrium solid. Explain why this is not a computed coring profile.",
+    note: "Local Cu–Ni teaching linearization, restricted to 20–45 wt% Ni. Real boundaries curve. This explorer assumes equilibrium and does not compute a Scheil path, diffusion kinetics or a quenched core-to-rim profile.",
     checks: [
       {
         prompt: "Pb–40 wt% Sn just below 183°C contains roughly…",
