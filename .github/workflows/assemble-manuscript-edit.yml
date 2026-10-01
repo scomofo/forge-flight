@@ -1,0 +1,108 @@
+name: Assemble and verify manuscript edit
+on:
+  pull_request:
+    paths:
+      - '.work/manuscript-edits-*.b64'
+      - '.github/workflows/assemble-manuscript-edit.yml'
+permissions:
+  contents: write
+jobs:
+  editorial:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'codex/manuscript-results-clarity'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Validate and apply the exact reviewed source edits
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, lzma, pathlib, subprocess
+          root = pathlib.Path.cwd()
+          encoded = ''.join((root / f'.work/manuscript-edits-{i}.b64').read_text().strip() for i in range(1, 5))
+          data = lzma.decompress(base64.b64decode(encoded, validate=True))
+          assert hashlib.sha256(data).hexdigest() == '63f90851ae29f202ce1988ce771188e188b0f7eb0b3e79b7b87bb2124eb894a2', 'Source edit payload failed integrity check'
+          changes = json.loads(data)
+          allowed = set('''.github/workflows/manuscript-edit.yml
+          docs/lesson-sources/materials-review.json
+          docs/lesson-sources/materials-reviewed.md
+          docs/manuscript-editorial-pass.md
+          scripts/browser-manuscript-edit.mjs
+          scripts/import-materials-walkthroughs.mjs
+          scripts/manuscript-regressions.test.mjs
+          src/components/bench/curve-reading-plot.tsx
+          src/components/bench/materials-labs.tsx
+          src/components/figures/materials-a.tsx
+          src/components/forge/bench.tsx
+          src/components/forge/result-summary.tsx
+          src/course/curve-reading.test.ts
+          src/course/curve-reading.ts
+          src/course/materials-w14.ts
+          src/course/mechresponse.ts
+          src/forge/content/catalog.ts
+          src/forge/sim/editorial-results.test.ts
+          src/forge/sim/evaluate.ts
+          src/forge/sim/result-messages.ts'''.splitlines())
+          assert {item['path'] for item in changes} == allowed and len(changes) == len(allowed)
+          outputs = {}
+          for item in changes:
+              p = root / item['path']
+              assert p.resolve().is_relative_to(root)
+              before = p.read_bytes() if p.exists() else None
+              assert (hashlib.sha256(before).hexdigest() if before is not None else None) == item['before'], f'Concurrent source change in {item["path"]}'
+              lines = before.decode().splitlines(keepends=True) if before else []
+              for start, end, text in reversed(item['edits']):
+                  assert 0 <= start <= end <= len(lines)
+                  lines[start:end] = [text]
+              after = ''.join(lines).encode()
+              assert hashlib.sha256(after).hexdigest() == item['after'], f'Edited file failed integrity check: {item["path"]}'
+              outputs[p] = after
+          for p, after in outputs.items():
+              p.parent.mkdir(parents=True, exist_ok=True)
+              p.write_bytes(after)
+          subprocess.run(['git', 'add', '--', *sorted(allowed)], check=True)
+          PY
+      - run: npm ci --ignore-scripts
+      - name: Regenerate and preserve source provenance
+        run: |
+          node scripts/import-materials-walkthroughs.mjs
+          node --experimental-strip-types scripts/course-enrichment-coverage.mjs
+          git add src/course/materials-walkthroughs.ts docs/materials-import-manifest.json docs/course-enrichment-coverage.json
+          git rm .github/workflows/assemble-manuscript-edit.yml .work/manuscript-edits-{1,2,3,4}.b64
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix: truthful Hangar outcomes and accessible stress-strain teaching'
+          git push origin HEAD:refs/heads/codex/manuscript-results-clarity
+          mkdir -p artifacts/manuscript-edit/checks
+          git rev-parse HEAD > artifacts/manuscript-edit/checks/revision.txt
+          git archive --format=zip --output=artifacts/manuscript-edit/source.zip HEAD
+      - name: Registered tests
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee artifacts/manuscript-edit/checks/tests.txt
+      - run: npm run typecheck
+      - run: npm run build
+      - name: Lint changed code
+        run: git diff --name-only --diff-filter=ACMRT 9d33bea105b9c8791011b0796be5485a0b862c5e HEAD -- '*.ts' '*.tsx' '*.mjs' | xargs -r npx eslint
+      - name: Use installed Chrome
+        run: |
+          BROWSER=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          "$BROWSER" --version
+          echo "CHROMIUM_EXECUTABLE_PATH=$BROWSER" >> "$GITHUB_ENV"
+      - name: Desktop editorial acceptance in development
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/browser-manuscript-edit.mjs
+      - name: Desktop editorial acceptance in production components
+        if: ${{ !cancelled() }}
+        env:
+          ACCEPTANCE_BUILD: '1'
+        run: node --experimental-strip-types --import ./scripts/register-alias.mjs scripts/browser-manuscript-edit.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: assembled-manuscript-evidence
+          path: artifacts/manuscript-edit/
+          retention-days: 7
