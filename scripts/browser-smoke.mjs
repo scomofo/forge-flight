@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname } from "node:path";
 import { chromium } from "playwright";
 import { checkedOutputPath, checkedUrl } from "./browser-guard.mjs";
 import { computeBrandWarnings } from "./brand-check.mjs";
@@ -66,11 +66,7 @@ const VIEWPORTS = [
   { name: "mobile", width: 390, height: 844, screenshot: mobilePng },
 ];
 
-try {
-  mkdirSync(dirname(outPng), { recursive: true });
-} catch {
-  // Ignore fallback if /workspace is not writable
-}
+mkdirSync(dirname(outPng), { recursive: true });
 
 function compareAgainstBaseline(verdict) {
   if (!baselinePath) {

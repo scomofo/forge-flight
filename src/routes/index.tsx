@@ -25,8 +25,12 @@ function Bay() {
   const runs = useForge((s) => s.runs);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    if (useForge.persist.hasHydrated()) setReady(true);
-    else return useForge.persist.onFinishHydration(() => setReady(true));
+    const init = () => {
+      useForge.getState().ensure("glider");
+      setReady(true);
+    };
+    if (useForge.persist.hasHydrated()) init();
+    else return useForge.persist.onFinishHydration(init);
   }, []);
 
   return (
