@@ -30,23 +30,57 @@ export function ForgeViewport(props: Props) {
     return <PlateSchematic {...props} />;
   }
   return (
-    <Canvas
-      key={props.ortho ? "ortho" : "persp"}
-      orthographic={props.ortho}
-      gl={{ localClippingEnabled: true, antialias: true }}
-      camera={
-        props.ortho
-          ? { position: [0.55, 0.38, 0.72], zoom: 420, near: 0.01, far: 20 }
-          : { position: [0.48, 0.28, 0.62], fov: 38, near: 0.01, far: 20 }
-      }
-      style={{ touchAction: "none" }}
-    >
-      <color attach="background" args={[palette.hangar]} />
-      <ambientLight intensity={1.05} />
-      <directionalLight position={[0.4, 0.8, 0.3]} intensity={1.8} />
-      <Scene {...props} reduce={reduce} />
-      <OrbitControls makeDefault enablePan target={[0.2, 0.02, 0]} />
-    </Canvas>
+    <div className="relative h-full w-full">
+      <Canvas
+        key={props.ortho ? "ortho" : "persp"}
+        orthographic={props.ortho}
+        gl={{ localClippingEnabled: true, antialias: true }}
+        camera={
+          props.ortho
+            ? { position: [0.55, 0.38, 0.72], zoom: 420, near: 0.01, far: 20 }
+            : { position: [0.48, 0.28, 0.62], fov: 38, near: 0.01, far: 20 }
+        }
+        style={{ touchAction: "none" }}
+      >
+        <color attach="background" args={[palette.hangar]} />
+        <ambientLight intensity={1.05} />
+        <directionalLight position={[0.4, 0.8, 0.3]} intensity={1.8} />
+        <Scene {...props} reduce={reduce} />
+        <OrbitControls makeDefault enablePan target={[0.2, 0.02, 0]} />
+      </Canvas>
+
+      {/* Live Telemetry HUD Overlay */}
+      <div className="pointer-events-none absolute top-3 right-3 flex flex-col gap-1.5 rounded-lg border border-brass/30 bg-panel/80 p-2.5 font-mono text-xs text-bone shadow-md backdrop-blur-sm">
+        <div className="flex items-center justify-between gap-3 text-[10px] tracking-wider uppercase text-brass font-forge border-b border-line-forge/40 pb-1">
+          <span>Telemetry HUD</span>
+          <span className="flex size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        </div>
+        <div className="flex justify-between gap-4">
+          <span className="text-dust">Mass:</span>
+          <span>{props.evaluation.mass_g.toFixed(1)} g</span>
+        </div>
+        <div className="flex justify-between gap-4">
+          <span className="text-dust">Safety Factor:</span>
+          <span className={props.evaluation.passStress ? "text-brass" : "text-alarm font-bold"}>
+            {props.evaluation.minSafetyFactor.toFixed(2)}
+          </span>
+        </div>
+        {props.vehicle ? (
+          <div className="flex justify-between gap-4">
+            <span className="text-dust">Airspeed:</span>
+            <span>{props.vehicle.speed_ms.toFixed(1)} m/s</span>
+          </div>
+        ) : null}
+        {props.evaluation.aero ? (
+          <div className="flex justify-between gap-4">
+            <span className="text-dust">Static Margin:</span>
+            <span className={props.evaluation.aero.stable ? "text-emerald-400" : "text-alarm"}>
+              {props.evaluation.aero.sm.toFixed(2)}
+            </span>
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
 }
 

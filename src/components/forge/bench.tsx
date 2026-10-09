@@ -10,6 +10,10 @@ import { PHASES, type AnalysisKind, type Phase } from "@/forge/types";
 import { runInWorker } from "@/forge/worker-client";
 import { palette } from "@/forge/palette";
 import { ForgeViewport } from "@/components/forge/viewport";
+import { playClick, playLaunch, playSlider, playSolverComplete } from "@/lib/audio";
+import { useAchievements } from "@/course/achievements";
+import { AchievementToast } from "@/components/achievements";
+import { EngineeringCalculator } from "@/components/calculator";
 
 const phaseLabel: Record<Phase, string> = {
   brief: "Brief",
@@ -158,6 +162,25 @@ export function MissionBench({ missionId }: { missionId: string }) {
     if (useForge.getState().nudge()) setNudge(nudges[id] ?? null);
   }, [evaluation, seen]);
 
+  // Check and trigger achievements based on evaluation state
+  useEffect(() => {
+    if (!evaluation) return;
+    const unlock = useAchievements.getState().unlockBadge;
+
+    if (evaluation.aero && evaluation.aero.stable && evaluation.aero.sm >= 0.10 && evaluation.aero.sm <= 0.20 && requiredChecksPass(evaluation)) {
+      unlock("aero_stability");
+    }
+    if (evaluation.mass_g > 0 && evaluation.mass_g < 38 && requiredChecksPass(evaluation)) {
+      unlock("featherspar");
+    }
+    if (evaluation.dfmScore === 100) {
+      unlock("dfm_pro");
+    }
+    if (run?.sealedCount && run.sealedCount >= 3) {
+      unlock("full_seal");
+    }
+  }, [evaluation, run]);
+
   if (!mission || mission.locked) {
     return (
       <main className="forge min-h-dvh bg-hangar px-5 py-8 text-bone">
@@ -211,8 +234,11 @@ export function MissionBench({ missionId }: { missionId: string }) {
               key={phase}
               type="button"
               disabled={!open}
-              onClick={() => useForge.getState().go(missionId, phase)}
-              className={`min-h-11 shrink-0 rounded-lg px-3 text-sm ${on ? "bg-brass text-brass-ink" : "bg-panel text-bone"} disabled:opacity-40`}
+              onClick={() => {
+                playClick();
+                useForge.getState().go(missionId, phase);
+              }}
+              className={`min-h-11 shrink-0 rounded-lg px-3 text-sm font-medium transition-all ${on ? "bg-brass text-brass-ink shadow-md" : "bg-panel text-bone hover:bg-panel-2"} disabled:opacity-40`}
             >
               {phaseLabel[phase]}
             </button>
@@ -302,8 +328,11 @@ export function MissionBench({ missionId }: { missionId: string }) {
           <button
             type="button"
             disabled={!ready || run.phase === "review"}
-            onClick={() => useForge.getState().advance(missionId)}
-            className="min-h-11 rounded-lg bg-brass px-4 text-sm text-brass-ink disabled:opacity-40"
+            onClick={() => {
+              playClick();
+              useForge.getState().advance(missionId);
+            }}
+            className="min-h-11 rounded-lg bg-brass px-4 text-sm font-medium text-brass-ink hover:brightness-110 transition-all disabled:opacity-40"
           >
             {run.phase === "brief" ? "Accept brief" : run.phase === "review" ? "Sealed above" : "Continue"}
           </button>
@@ -313,6 +342,8 @@ export function MissionBench({ missionId }: { missionId: string }) {
         </aside>
       </div>
       <Ledger missionId={mission.id} assumptions={evaluation.assumptions} />
+      <AchievementToast />
+      <EngineeringCalculator />
     </main>
   );
 }
@@ -483,11 +514,13 @@ function PhaseBody({
               type="button"
               className="min-h-11 rounded-lg bg-panel px-3 text-sm"
               onClick={() => {
+                playClick();
                 void runInWorker(kind, toDesign(run, mission)).then((result) => {
                   if (!useForge.getState().recordAnalysis(missionId, kind, result.inputHash)) {
                     setWorkerNote("The design changed while the solver was running. Run the check again for the current inputs.");
                     return;
                   }
+                  playSolverComplete(result.pass);
                   setWorkerNote(`${kind.replaceAll("_", " ")} ${result.pass ? "passes" : "does not pass"}. ${result.warnings.join(" ")} Hash ${result.inputHash.slice(0, 8)}.`);
                 }).catch(() => setWorkerNote("The solver could not finish. No analysis was recorded; retry the check."));
               }}
@@ -576,8 +609,10 @@ function PhaseBody({
       <div className="space-y-3 text-sm">
         <button
           type="button"
-          className="min-h-11 rounded-lg bg-brass px-4 text-brass-ink"
+          className="min-h-11 rounded-lg bg-brass px-4 text-brass-ink font-medium hover:brightness-110 transition-all shadow-md"
           onClick={() => {
+            playLaunch();
+            useAchievements.getState().unlockBadge("first_flight");
             const kind: AnalysisKind = mission.artifactType === "glider" ? "aero_polar" : "static_stress";
             void runInWorker(kind, toDesign(run, mission)).then((result) => {
               if (!useForge.getState().recordTest(missionId, kind, result.inputHash)) setWorkerNote("The design changed during the virtual test. Run it again for the current inputs.");
