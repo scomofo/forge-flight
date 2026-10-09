@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+
 export function normalizeBodyText(text) {
   return String(text ?? "")
     .replace(/\s+/g, " ")

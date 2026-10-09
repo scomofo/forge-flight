@@ -3,6 +3,10 @@ import { SiteHeader } from "@/components/site-header";
 import { courseIntro, lessonsFor, tracks } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
 import { lessonComplete, lessonKey } from "@/course/types";
+import { SkillRadar } from "@/components/analytics";
+import { BadgesShelf, AchievementToast } from "@/components/achievements";
+import { EngineeringCalculator } from "@/components/calculator";
+import { playClick } from "@/lib/audio";
 
 export const Route = createFileRoute("/learn/")({
   component: CoursesPage,
@@ -17,7 +21,9 @@ function CoursesPage() {
   return (
     <div className="min-h-screen bg-bg text-ink">
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-5 pb-24 pt-8 sm:px-8">
+      <main className="mx-auto max-w-5xl px-5 pb-24 pt-8 sm:px-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_20rem]">
+          <div>
         <p className="font-serif text-sm text-accent">Axiom</p>
         <h1 className="mt-3 font-serif text-4xl leading-tight sm:text-5xl">All courses</h1>
         <h2 className="mt-8 font-serif text-2xl leading-snug">{courseIntro.heading}</h2>
@@ -47,7 +53,8 @@ function CoursesPage() {
                 <Link
                   to="/learn/$trackId"
                   params={{ trackId: track.id }}
-                  className="flex min-h-16 items-center justify-between gap-4 py-4"
+                  onClick={playClick}
+                  className="flex min-h-16 items-center justify-between gap-4 py-4 hover:bg-panel-2/50 px-2 rounded-lg transition-colors"
                 >
                   <span>
                     <span className="font-serif text-sm text-accent">{track.index}</span>
@@ -65,7 +72,19 @@ function CoursesPage() {
             );
           })}
         </ol>
+
+        <div className="mt-12">
+          <BadgesShelf />
+        </div>
+        </div>
+
+        <aside className="space-y-6">
+          <SkillRadar />
+        </aside>
+        </div>
       </main>
+      <EngineeringCalculator />
+      <AchievementToast />
     </div>
   );
 }
