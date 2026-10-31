@@ -16,21 +16,6 @@ export function sealEntry(entry: Omit<LedgerEntry, "hash">): LedgerEntry {
   return { ...entry, hash: hashCanon({ ...entry, hash: "" }) };
 }
 
-export function replay(entries: LedgerEntry[]): { wall: number } | null {
-  let prev: string | null = null;
-  let last: { wall: number } | null = null;
-  for (const entry of entries) {
-    if (entry.parentHash !== prev) return null;
-    const { hash, ...rest } = entry;
-    if (hashCanon({ ...rest, hash: "" }) !== hash) return null;
-    if (entry.snapshot && typeof entry.snapshot === "object" && "wall" in entry.snapshot) {
-      last = entry.snapshot as { wall: number };
-    }
-    prev = entry.hash;
-  }
-  return last;
-}
-
 export type RubricScore = { rubricItemId: string; score: number; evidenceQuote: string; feedback: string };
 
 export function gradeReflection(text: string, iteration: number, constraintsMet: boolean): RubricScore[] {
