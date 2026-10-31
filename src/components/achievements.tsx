@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BADGES, useAchievements, type Badge } from "@/course/achievements";
+import { BADGES, useAchievements } from "@/course/achievements";
 import { Award, Cpu, Feather, Layers, PlaneTakeoff, Trophy, Wind, X } from "lucide-react";
 
 const ICON_MAP: Record<string, typeof Award> = {

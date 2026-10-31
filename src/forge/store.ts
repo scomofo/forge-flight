@@ -39,7 +39,7 @@ type ForgeStore = {
   setVehicle: (id: string, partial: Partial<VehicleInput>) => void;
   go: (id: string, phase: Phase) => void;
   advance: (id: string) => void;
-  recordAnalysis: (id: string, kind: AnalysisKind, inputHash?: string) => boolean;
+  recordAnalysis: (id: string, kind: AnalysisKind, inputHash: string) => boolean;
   recordTest: (id: string, kind: AnalysisKind, inputHash: string) => boolean;
   submit: (id: string, constraintsMet: boolean) => void;
   see: (conceptId: string) => void;
@@ -245,7 +245,7 @@ export const useForge = create<ForgeStore>()(
       },
       recordAnalysis: (id, kind, inputHash) => {
         const run = get().runs[id];
-        if (!run || (inputHash && !currentResult(run, kind, inputHash))) return false;
+        if (!run || !currentResult(run, kind, inputHash)) return false;
         if (!run.analyses.includes(kind)) set({ runs: { ...get().runs, [id]: { ...run, analyses: [...run.analyses, kind] } } });
         return true;
       },

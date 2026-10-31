@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useProgress } from "@/course/progress";
 import { useForge } from "@/forge/store";
 import { lessonsFor } from "@/course/catalog";
@@ -11,13 +11,16 @@ export function SkillRadar() {
   const runs = useForge((s) => s.runs);
 
   // Compute 0..100 scores for 5 core dimensions
-  const categories = [
-    { label: "Physics", score: calculateTrackScore("physics" as TrackId, completed, capstonePass) },
-    { label: "Materials", score: calculateTrackScore("materials" as TrackId, completed, capstonePass) },
-    { label: "Mechanics", score: calculateTrackScore("engineering" as TrackId, completed, capstonePass) },
-    { label: "Aerodynamics", score: calculateMissionScore("glider", runs) },
-    { label: "DFM & Cost", score: calculateMissionScore("drone_arm", runs) },
-  ];
+  const categories = useMemo(
+    () => [
+      { label: "Physics", score: calculateTrackScore("physics" as TrackId, completed, capstonePass) },
+      { label: "Materials", score: calculateTrackScore("materials" as TrackId, completed, capstonePass) },
+      { label: "Mechanics", score: calculateTrackScore("engineering" as TrackId, completed, capstonePass) },
+      { label: "Aerodynamics", score: calculateMissionScore("glider", runs) },
+      { label: "DFM & Cost", score: calculateMissionScore("drone_arm", runs) },
+    ],
+    [completed, capstonePass, runs],
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -109,7 +112,7 @@ export function SkillRadar() {
       ctx.lineWidth = 2;
       ctx.stroke();
     }
-  }, [completed, capstonePass, runs]);
+  }, [categories]);
 
   return (
     <div className="flex flex-col items-center rounded-xl border border-line-forge bg-panel p-5 shadow-lg">
