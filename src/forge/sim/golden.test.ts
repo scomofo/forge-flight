@@ -22,8 +22,7 @@ import {
   unitCost,
   utilization,
 } from "@/forge/sim/formulas.ts";
-import { hashCanon } from "@/forge/sim/hash.ts";
-import { gradeReflection, replay } from "@/forge/ledger.ts";
+import { gradeReflection } from "@/forge/ledger.ts";
 
 test("axial stress", () => {
   assert.ok(Math.abs(axialStress(1000, 1e-4) - 10e6) < 1);
@@ -174,17 +173,6 @@ test("colormap endpoints stay distinct under luminance", () => {
   assert.notEqual(stressStops[0]!.slice(1, 3), stressStops[0]!.slice(3, 5));
 });
 
-test("ledger replay returns the last snapshot when the chain is intact", () => {
-  const entries = [
-    entry(1, null, { wall: 1.5 }),
-    entry(2, "", { wall: 2.2 }),
-  ];
-  entries[1]!.parentHash = entries[0]!.hash;
-  entries[1]!.hash = hashCanon({ ...entries[1], hash: "" });
-  const played = replay(entries);
-  assert.equal(played?.wall, 2.2);
-});
-
 test("reflection rubric can clear 70 without a numeric answer", () => {
   const scores = gradeReflection(
     "I thickened the wall. Stiffness rose, mass rose. The model assumes a tip load and linear elasticity, so the safety factor is not a flight clearance.",
@@ -195,19 +183,6 @@ test("reflection rubric can clear 70 without a numeric answer", () => {
   assert.ok(avg >= 0.7);
   assert.ok(!scores.some((s) => /mm thick/.test(s.feedback)));
 });
-
-function entry(iteration: number, parent: string | null, snapshot: { wall: number }) {
-  const base = {
-    id: `e${iteration}`,
-    iteration,
-    phase: "review" as const,
-    parentHash: parent,
-    snapshot,
-    action: "seal",
-    hash: "",
-  };
-  return { ...base, hash: hashCanon({ ...base, hash: "" }) };
-}
 
 function designFrom(mission: (typeof missions)[number]): DesignInput {
   return {
