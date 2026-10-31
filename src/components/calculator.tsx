@@ -10,7 +10,7 @@ export function EngineeringCalculator() {
   const [loadN, setLoadN] = useState(100);
   const [lengthMm, setLengthMm] = useState(200);
   const [youngsGpa, setYoungsGpa] = useState(69); // Aluminum default
-  const [inertiaMm4, setInertiaMm4] = useState(1000);
+  const [inertiaMm4] = useState(1000);
 
   // Inertia state
   const [widthMm, setWidthMm] = useState(12);
