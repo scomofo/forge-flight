@@ -4,13 +4,13 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { concepts, materialById, materials, missionById, processById, processes } from "@/forge/content/catalog";
 import { notebookMarkdown } from "@/forge/ledger";
-import { evaluate, type Evaluation } from "@/forge/sim/evaluate";
+import { analysisInputHash, evaluate, type Evaluation } from "@/forge/sim/evaluate";
 import { canEnter, rubricPercent, toDesign, unlocked, useForge } from "@/forge/store";
 import { PHASES, type AnalysisKind, type Phase } from "@/forge/types";
 import { runInWorker } from "@/forge/worker-client";
 import { palette } from "@/forge/palette";
 import { ForgeViewport } from "@/components/forge/viewport";
-import { playClick, playLaunch, playSlider, playSolverComplete } from "@/lib/audio";
+import { playClick, playLaunch, playSolverComplete } from "@/lib/audio";
 import { useAchievements } from "@/course/achievements";
 import { AchievementToast } from "@/components/achievements";
 import { EngineeringCalculator } from "@/components/calculator";
@@ -598,7 +598,14 @@ function PhaseBody({
           />
           Continue the virtual exercise with a recorded manufacturing-rule override. This does not approve fabrication or remove the failed check.
         </label>
-        <button type="button" className="min-h-11 rounded-lg bg-panel px-3" onClick={() => useForge.getState().recordAnalysis(missionId, "cost")}>
+        <button
+          type="button"
+          className="min-h-11 rounded-lg bg-panel px-3"
+          onClick={() => {
+            const inputHash = analysisInputHash("cost", toDesign(run, mission), materials, processes);
+            useForge.getState().recordAnalysis(missionId, "cost", inputHash);
+          }}
+        >
           {run.analyses.includes("cost") ? "Cost checked" : "Check the cost"}
         </button>
       </div>
